@@ -5,9 +5,13 @@ import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function ThemeToggle() {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState<boolean | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    // Mark component as mounted
+    setIsMounted(true)
+
     // Check if user has a theme preference in localStorage
     const savedTheme = localStorage.getItem("theme")
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -33,16 +37,18 @@ export default function ThemeToggle() {
     }
   }
 
+  // Only render the icon after client-side hydration
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="rounded-full w-9 h-9"
+      className="h-9 w-9"
       aria-label="Toggle theme"
     >
-      {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {isMounted && isDarkMode !== null && (
+        isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />
+      )}
     </Button>
   )
 }
-

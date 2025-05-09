@@ -10,6 +10,13 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  turbopack: {
+    // Example: adding an alias and custom file extension
+    resolveAlias: {
+      underscore: 'lodash',
+    },
+    resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.json'],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

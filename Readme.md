@@ -23,3 +23,19 @@
 4. Village Banking on Blockchaiin
    * Individual Loans
    * Institution Loans
+
+
+
+   #MetaMask
+   1. tragic 
+2. sadness 
+3.penalty 
+4.come 
+5.expand 
+6.inject 
+7.siren 
+8.exit 
+9.champion 
+10.meadow 
+11.beef 
+12. already

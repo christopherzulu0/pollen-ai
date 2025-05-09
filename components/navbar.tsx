@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import ThemeToggle from "@/components/theme-toggle"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
+import { SignIn } from "@clerk/nextjs"
 
 
 
@@ -33,6 +34,10 @@ export default function Navbar() {
       window.removeEventListener("scroll", handleScroll)
     }
   }, [])
+
+  const handleGetStarted = () => {
+    router.push('/sign-in')
+  }
 
   return (
     <header
@@ -112,7 +117,9 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center space-x-4">
             {/* <ThemeToggle /> */}
-            <Button className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
+            <Button 
+            onClick={handleGetStarted}
+            className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
               Get Started
             </Button>
           </div>
@@ -244,7 +251,9 @@ export default function Navbar() {
             </Link>
 
             <div className="pt-6">
-              <Button className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
+              <Button
+              onClick={handleGetStarted}
+              className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
                 Get Started
               </Button>
             </div>
