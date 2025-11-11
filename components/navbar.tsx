@@ -234,7 +234,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-white dark:bg-gray-900 z-50 p-4 overflow-y-auto">
+        <div className="md:hidden fixed left-0 right-0 top-20 bg-white dark:bg-gray-900 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)]">
           <nav className="flex flex-col space-y-2">
             <Link
               href="/"
