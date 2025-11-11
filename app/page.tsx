@@ -316,8 +316,7 @@ export default function HomePage() {
                 </Button>
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="text-white border-white/30 hover:bg-white/10 rounded-full backdrop-blur-sm"
+                  className="text-white border border-white/30 bg-transparent hover:bg-white/10 rounded-full backdrop-blur-sm"
                 >
                   <Play className="mr-2 h-4 w-4" />
                   Watch Demo

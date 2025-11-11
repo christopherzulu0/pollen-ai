@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
 
@@ -10,8 +10,8 @@ export async function GET() {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    {/**  Get the user with their wallet, groups, and savings goals */}
-    const user = await prisma.user.findUnique({
+    // Get the user with their wallet, groups, and savings goals
+    let user = await prisma.user.findUnique({
       where: { clerkUserId: userId },
       include: {
         wallet: true,
@@ -30,7 +30,41 @@ export async function GET() {
     });
 
     if (!user) {
-      return new NextResponse("User not found", { status: 404 });
+      // User not found in database, create a new user with Clerk information
+      const clerkUser = await currentUser();
+
+      // Create a new user
+      user = await prisma.user.create({
+        data: {
+          name: clerkUser?.firstName && clerkUser?.lastName
+            ? `${clerkUser.firstName} ${clerkUser.lastName}`
+            : clerkUser?.username || "User" + Date.now(),
+          email: clerkUser?.emailAddresses[0]?.emailAddress || `${userId}@example.com`,
+          password: "clerk-auth", // This is a placeholder since we're using Clerk for auth
+          avatar: clerkUser?.imageUrl || null,
+          clerkUserId: userId,
+          wallet: {
+            create: {} // Create an empty wallet for the user
+          },
+          personalSavings: {
+            create: {} // Create empty personal savings for the user
+          }
+        },
+        include: {
+          wallet: true,
+          personalSavings: true,
+          memberships: {
+            include: {
+              group: {
+                include: {
+                  memberships: true
+                }
+              }
+            }
+          },
+          savingsGoals: true
+        }
+      });
     }
 
     // Format the response

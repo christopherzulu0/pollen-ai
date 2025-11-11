@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Dashboard from "@/components/dashboard"
+import ProtectedDashboard from "@/components/dashboard-protected"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,9 +20,11 @@ export default function DashboardLayout({
 }>) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-      <Dashboard>
-        {children}
-      </Dashboard>
+      <ProtectedDashboard>
+        <Dashboard>
+          {children}
+        </Dashboard>
+      </ProtectedDashboard>
     </ThemeProvider>
   )
 }

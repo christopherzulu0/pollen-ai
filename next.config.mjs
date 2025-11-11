@@ -10,6 +10,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  env: {
+    KNOCK_SECRET_API_KEY: process.env.KNOCK_SECRET_API_KEY,
+  },
   webpack: (config) => {
     // Add alias for react to provide useEffectEvent polyfill
     // Only apply this alias for node_modules to avoid circular dependencies

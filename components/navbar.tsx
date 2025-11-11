@@ -7,14 +7,52 @@ import { Button } from "@/components/ui/button"
 import ThemeToggle from "@/components/theme-toggle"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
-import { SignIn } from "@clerk/nextjs"
+import { SignedOut, SignedIn, SignIn, SignInButton, UserButton, useUser } from "@clerk/nextjs"
 
 
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [userRole, setUserRole] = useState<string | undefined>(undefined)
+  const [userOrganizations, setUserOrganizations] = useState<any[]>([])
   const router = useRouter()
+  const { user, isLoaded } = useUser()
+
+  // Get user's organizations and their role
+  useEffect(() => {
+    if (isLoaded && user) {
+      console.log("=== User Data ===")
+      console.log("User ID:", user?.id)
+      console.log("User email:", user?.emailAddresses[0]?.emailAddress)
+      console.log("User organizations:", user?.organizationMemberships)
+      console.log("==================")
+
+      if (user?.organizationMemberships && user.organizationMemberships.length > 0) {
+        const orgs = user.organizationMemberships
+        setUserOrganizations(orgs)
+        
+        // Get the primary/first organization
+        const primaryOrg = orgs[0]
+        const role = primaryOrg?.role
+        setUserRole(role)
+
+        console.log("=== Organization Information ===")
+        orgs.forEach((org, index) => {
+          console.log(`Organization ${index + 1}:`, {
+            name: org.organization.name,
+            id: org.organization.id,
+            role: org.role,
+            createdAt: org.createdAt,
+          })
+        })
+        console.log("Primary role:", role)
+        console.log("================================")
+      } else {
+        console.log("No organizations found for user")
+      }
+    }
+  }, [isLoaded, user])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -38,6 +76,26 @@ export default function Navbar() {
   const handleGetStarted = () => {
     router.push('/sign-in')
   }
+
+  const handleDashboardClick = () => {
+    console.log("Dashboard click - userRole:", userRole)
+    if (userRole === 'org:admin' || userRole === 'admin') {
+      router.push('/admin')
+    } else if (userRole === 'org:member' || userRole === 'member') {
+      router.push('/dashboard')
+    } else {
+      console.log("User role not authorized - showing request access")
+    }
+  }
+
+  const handleRequestAccess = () => {
+    alert('Access request submitted. An administrator will review your request.')
+    console.log("Access request submitted for user:", user?.id)
+  }
+
+  // Determine which button to show
+  const isAuthorized = userRole === 'org:admin' || userRole === 'admin' || userRole === 'org:member' || userRole === 'member'
+  const isAdmin = userRole === 'org:admin' || userRole === 'admin'
 
   return (
     <header
@@ -117,11 +175,46 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center space-x-4">
             {/* <ThemeToggle /> */}
-            <Button 
-            onClick={handleGetStarted}
-            className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
-              Get Started
-            </Button>
+            <SignedOut>
+              <Button 
+              onClick={handleGetStarted}
+              className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
+                Get Started
+              </Button>
+            </SignedOut>
+
+            <SignedIn>
+              {isAuthorized ? (
+                <Button 
+                  onClick={handleDashboardClick}
+                  className={`${
+                    isScrolled 
+                      ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white" 
+                      : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+                  } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
+                  {isAdmin ? '📊 Admin' : '📈 Dashboard'}
+                </Button>
+              ) : (
+                <Button 
+                  onClick={handleRequestAccess}
+                  className={`${
+                    isScrolled 
+                      ? "bg-yellow-500 hover:bg-yellow-600 text-white" 
+                      : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
+                  } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
+                  🔐 Request Access
+                </Button>
+              )}
+
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "h-10 w-10 rounded-full"
+                  }
+                }}
+                showName={false}
+              />
+            </SignedIn>
           </div>
 
           <div className="md:hidden flex items-center space-x-2">
@@ -250,12 +343,48 @@ export default function Navbar() {
               Contact
             </Link>
 
-            <div className="pt-6">
-              <Button
-              onClick={handleGetStarted}
-              className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
-                Get Started
-              </Button>
+            <div className="pt-6 space-y-3">
+              <SignedOut>
+                <Button
+                onClick={handleGetStarted}
+                className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
+                  Get Started
+                </Button>
+              </SignedOut>
+              
+              <SignedIn>
+                {isAuthorized ? (
+                  <Button
+                    onClick={() => {
+                      handleDashboardClick()
+                      setIsMenuOpen(false)
+                    }}
+                    className="w-full bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white rounded-xl py-3 font-bold text-base transition-all duration-300 shadow-lg">
+                    {isAdmin ? '📊 Admin Dashboard' : '📈 Dashboard'}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      handleRequestAccess()
+                      setIsMenuOpen(false)
+                    }}
+                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-bold text-base transition-all duration-300 shadow-lg">
+                    🔐 Request Access
+                  </Button>
+                )}
+
+                <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                  <span className="font-medium">Account</span>
+                  <UserButton 
+                    appearance={{
+                      elements: {
+                        avatarBox: "h-10 w-10 rounded-full"
+                      }
+                    }}
+                    showName={false}
+                  />
+                </div>
+              </SignedIn>
             </div>
           </nav>
         </div>

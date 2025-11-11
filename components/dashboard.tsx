@@ -184,25 +184,25 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   }
 
   const renderHeader = () => (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-10 flex h-14 sm:h-16 items-center justify-between border-b bg-background px-3 sm:px-6">
       {isMobile && (
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
+            <Button variant="ghost" size="icon" className="md:hidden h-9 w-9">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[240px] p-0">
-            <div >
+            <div>
               <SidebarMenu>
                 <SidebarMenuItem>
                   <Link href="/dashboard" passHref>
                     <SidebarMenuButton
                       isActive={pathname === "/dashboard"}
                     >
-                      <Home className="h-5 w-5 text-gray-500 dark:text-white" />
-                      <span>Dashboard</span>
+                      <Home className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-white" />
+                      <span className="text-sm">Dashboard</span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>
@@ -211,8 +211,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     <SidebarMenuButton
                       isActive={pathname === "/dashboard/groups"}
                     >
-                      <Users className="h-5 w-5 text-gray-500 dark:text-white" />
-                      <span>Groups</span>
+                      <Users className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-white" />
+                      <span className="text-sm">Groups</span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>
@@ -224,45 +224,49 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
       <div className="flex items-center gap-2">
         {!isMobile && <SidebarTrigger />}
-        <h2 className="text-lg font-bold">Pollen</h2>
+        <h2 className="text-lg sm:text-xl font-bold truncate">Pollen</h2>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="icon" className="h-9 w-9">
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Search</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[300px] p-0" align="end">
-            <div className="flex items-center border-b p-2">
-              <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-              <Input placeholder="Search..." className="border-0 p-1 shadow-none focus-visible:ring-0" autoFocus />
-            </div>
-            <div className="p-2">
-              <p className="p-2 text-sm text-muted-foreground">Recent searches</p>
-              <div className="space-y-1">
-                <Button variant="ghost" className="w-full justify-start text-sm">
-                  <Users className="mr-2 h-4 w-4" />
-                  Community Savings Circle
-                </Button>
-                <Button variant="ghost" className="w-full justify-start text-sm">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Payment Schedule
-                </Button>
+      <div className="flex items-center gap-1 sm:gap-2">
+        {/* Search Button - Hidden on very small screens */}
+        <div className="hidden xs:block">
+          <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="icon" className="h-8 sm:h-9 w-8 sm:w-9">
+                <Search className="h-4 w-4" />
+                <span className="sr-only">Search</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[280px] sm:w-[320px] p-0" align="end">
+              <div className="flex items-center border-b p-2">
+                <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+                <Input placeholder="Search..." className="border-0 p-1 shadow-none focus-visible:ring-0 text-sm" autoFocus />
               </div>
-            </div>
-          </PopoverContent>
-        </Popover>
+              <div className="p-2">
+                <p className="p-2 text-xs text-muted-foreground">Recent searches</p>
+                <div className="space-y-1">
+                  <Button variant="ghost" className="w-full justify-start text-xs">
+                    <Users className="mr-2 h-3 w-3" />
+                    Community Savings Circle
+                  </Button>
+                  <Button variant="ghost" className="w-full justify-start text-xs">
+                    <Calendar className="mr-2 h-3 w-3" />
+                    Payment Schedule
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
 
+        {/* Theme Toggle */}
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="h-9 w-9"
+                className="h-8 sm:h-9 w-8 sm:w-9"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
                 {isMounted && (
@@ -277,54 +281,55 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           </Tooltip>
         </TooltipProvider>
 
+        {/* Notifications */}
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" size="icon" className="h-9 w-9 relative" onClick={handleNotificationClick}>
+            <Button variant="outline" size="icon" className="h-8 sm:h-9 w-8 sm:w-9 relative" onClick={handleNotificationClick}>
               <Bell className="h-4 w-4" />
               {notifications > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+                <span className="absolute -right-1 -top-1 flex h-4 sm:h-5 w-4 sm:w-5 items-center justify-center rounded-full bg-red-500 text-[8px] sm:text-[10px] text-white font-bold">
                   {notifications}
                 </span>
               )}
               <span className="sr-only">Notifications</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[320px] p-0" align="end">
-            <div className="flex items-center justify-between border-b p-3">
-              <h4 className="font-medium">Notifications</h4>
+          <PopoverContent className="w-[300px] sm:w-[320px] p-0" align="end">
+            <div className="flex items-center justify-between border-b p-2 sm:p-3">
+              <h4 className="font-medium text-sm">Notifications</h4>
               <Button variant="ghost" size="sm" className="h-auto p-1 text-xs">
                 Mark all as read
               </Button>
             </div>
             <ScrollArea className="h-[300px]">
               <div className="space-y-1 p-1">
-                <div className="flex items-start gap-3 rounded-md p-3 hover:bg-muted">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                <div className="flex items-start gap-2 sm:gap-3 rounded-md p-2 sm:p-3 hover:bg-muted">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-700 flex-shrink-0">
                     <Users className="h-4 w-4" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">New member joined your group</p>
-                    <p className="text-xs text-muted-foreground">Sarah Johnson joined Community Savings Circle</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium">New member joined your group</p>
+                    <p className="text-xs text-muted-foreground truncate">Sarah Johnson joined Community Savings Circle</p>
                     <p className="mt-1 text-xs text-muted-foreground">2 hours ago</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 rounded-md p-3 hover:bg-muted">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+                <div className="flex items-start gap-2 sm:gap-3 rounded-md p-2 sm:p-3 hover:bg-muted">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-700 flex-shrink-0">
                     <Calendar className="h-4 w-4" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Payment reminder</p>
-                    <p className="text-xs text-muted-foreground">Your monthly contribution of $100 is due in 3 days</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium">Payment reminder</p>
+                    <p className="text-xs text-muted-foreground truncate">Your monthly contribution of $100 is due in 3 days</p>
                     <p className="mt-1 text-xs text-muted-foreground">5 hours ago</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 rounded-md p-3 hover:bg-muted">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                <div className="flex items-start gap-2 sm:gap-3 rounded-md p-2 sm:p-3 hover:bg-muted">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 flex-shrink-0">
                     <DollarSign className="h-4 w-4" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Deposit successful</p>
-                    <p className="text-xs text-muted-foreground">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium">Deposit successful</p>
+                    <p className="text-xs text-muted-foreground truncate">
                       Your deposit of $200 to Personal Savings was successful
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">Yesterday</p>
@@ -332,41 +337,42 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
             </ScrollArea>
-            <div className="border-t p-3">
-              <Button variant="outline" size="sm" className="w-full">
+            <div className="border-t p-2 sm:p-3">
+              <Button variant="outline" size="sm" className="w-full text-xs">
                 View all notifications
               </Button>
             </div>
           </PopoverContent>
         </Popover>
 
+        {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9">
+            <Button variant="ghost" className="relative h-8 sm:h-9 w-8 sm:w-9 rounded-full p-0">
+              <Avatar className="h-8 sm:h-9 w-8 sm:w-9">
                 <AvatarImage src="/placeholder.svg?height=36&width=36" alt="John Doe" />
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarFallback className="text-xs">JD</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="w-48 sm:w-56">
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-muted-foreground">john.doe@example.com</p>
+                <p className="text-xs text-muted-foreground truncate">john.doe@example.com</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-xs sm:text-sm">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-xs sm:text-sm">
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-xs sm:text-sm">
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>
@@ -572,22 +578,22 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         <SidebarInset className="flex flex-col">
           {renderHeader()}
 
-          <main className="flex-1 overflow-auto p-4 md:p-6">
+          <main className="flex-1 overflow-auto p-2 xs:p-3 sm:p-4 md:p-6">
             {loading ? (
               // Loading skeleton
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="space-y-2">
-                  <Skeleton className="h-8 w-[250px]" />
-                  <Skeleton className="h-4 w-[350px]" />
+                  <Skeleton className="h-7 sm:h-8 w-[200px] sm:w-[250px]" />
+                  <Skeleton className="h-3 sm:h-4 w-[250px] sm:w-[350px]" />
                 </div>
-                <div className="grid gap-6 md:grid-cols-3">
-                  <Skeleton className="h-[180px] rounded-xl" />
-                  <Skeleton className="h-[180px] rounded-xl" />
-                  <Skeleton className="h-[180px] rounded-xl" />
+                <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                  <Skeleton className="h-[150px] sm:h-[180px] rounded-lg sm:rounded-xl" />
+                  <Skeleton className="h-[150px] sm:h-[180px] rounded-lg sm:rounded-xl" />
+                  <Skeleton className="h-[150px] sm:h-[180px] rounded-lg sm:rounded-xl" />
                 </div>
-                <div className="grid gap-6 md:grid-cols-2">
-                  <Skeleton className="h-[300px] rounded-xl" />
-                  <Skeleton className="h-[300px] rounded-xl" />
+                <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
+                  <Skeleton className="h-[250px] sm:h-[300px] rounded-lg sm:rounded-xl" />
+                  <Skeleton className="h-[250px] sm:h-[300px] rounded-lg sm:rounded-xl" />
                 </div>
               </div>
             ) : (

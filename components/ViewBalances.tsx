@@ -36,7 +36,23 @@ export default function ViewBalances() {
     queryKey: ['balances'],
     queryFn: async () => {
       const response = await fetch('/api/balances')
-      if (!response.ok) throw new Error('Failed to fetch balances')
+      if (!response.ok) {
+        try {
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to fetch balances');
+          } else {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Failed to fetch balances');
+          }
+        } catch (parseError) {
+          if (parseError instanceof Error) {
+            throw parseError;
+          }
+          throw new Error('Failed to fetch balances');
+        }
+      }
       const data = await response.json()
       console.log('Balance data:', data)
       return data

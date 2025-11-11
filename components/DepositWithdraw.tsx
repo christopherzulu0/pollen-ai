@@ -37,6 +37,25 @@ export default function DepositWithdraw() {
         const fetchBalances = async () => {
             try {
                 const response = await fetch('/api/balances')
+
+                if (!response.ok) {
+                    try {
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.includes("application/json")) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Failed to fetch balances');
+                        } else {
+                            const errorText = await response.text();
+                            throw new Error(errorText || 'Failed to fetch balances');
+                        }
+                    } catch (parseError) {
+                        if (parseError instanceof Error) {
+                            throw parseError;
+                        }
+                        throw new Error('Failed to fetch balances');
+                    }
+                }
+
                 const data = await response.json()
                 setWalletBalance(data.walletBalance)
                 setSavingsBalance(data.savingsBalance)
@@ -46,7 +65,7 @@ export default function DepositWithdraw() {
                 console.error('Error fetching balances:', error)
                 toast({
                     title: "Error",
-                    description: "Failed to fetch balances and savings goals",
+                    description: error instanceof Error ? error.message : "Failed to fetch balances and savings goals",
                     variant: "destructive",
                 })
             } finally {
@@ -91,8 +110,21 @@ export default function DepositWithdraw() {
             })
 
             if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message || 'Deposit failed')
+                try {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Deposit failed');
+                    } else {
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Deposit failed');
+                    }
+                } catch (parseError) {
+                    if (parseError instanceof Error) {
+                        throw parseError;
+                    }
+                    throw new Error('Deposit failed');
+                }
             }
 
             const data = await response.json()
@@ -130,7 +162,7 @@ export default function DepositWithdraw() {
             setIsTransactionInProgress(false)
         }
       }
-    
+
     const handleWithdraw = async (amount: string, account: string, momoNumber: string) => {
         setIsTransactionInProgress(true)
         try {
@@ -174,8 +206,21 @@ export default function DepositWithdraw() {
             })
 
             if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message || 'Withdrawal failed')
+                try {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Withdrawal failed');
+                    } else {
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Withdrawal failed');
+                    }
+                } catch (parseError) {
+                    if (parseError instanceof Error) {
+                        throw parseError;
+                    }
+                    throw new Error('Withdrawal failed');
+                }
             }
 
             const data = await response.json()

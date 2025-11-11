@@ -2,11 +2,13 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
 import { SettingsProvider } from "@/contexts/settings-context"
 import { ClerkProvider } from '@clerk/nextjs'
 import { Providers } from "@/lib/providers"
+import LayoutClient from "@/components/layout-client"
+import Widget from "@/components/voice/Widget"
+import UserSync from "@/components/UserSync"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
@@ -24,14 +26,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className="light" suppressHydrationWarning>
-        <body className={`${inter.className} bg-gray-900 text-white`}>
+        <body className={`${inter.className}`}>
           <SettingsProvider>
             <Providers>
-              <div className="flex flex-col min-h-screen">
-                {/* <Navbar /> */}
-                <main className="flex-1">{children}</main>
-                {/* <Footer /> */}
-              </div>
+              <LayoutClient>
+                {children}
+              </LayoutClient>
+              <UserSync/>
+              <Widget />
             </Providers>
           </SettingsProvider>
         </body>

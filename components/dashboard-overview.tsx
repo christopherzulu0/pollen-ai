@@ -109,106 +109,113 @@ const recentActivities = [
 
 export default function DashboardOverview() {
   return (
-    <div className="space-y-6">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div className="w-full space-y-4 sm:space-y-6">
+      {/* Stats Cards - Mobile First */}
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Total Savings */}
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-500">Total Savings</p>
-                <h3 className="mt-1 text-2xl font-bold">K4,550</h3>
+          <CardContent className="p-3 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-slate-500 truncate">Total Savings</p>
+                <h3 className="mt-1 text-lg sm:text-2xl font-bold truncate">K4,550</h3>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-100 text-teal-700">
-                <DollarSign className="h-6 w-6" />
+              <div className="flex h-10 sm:h-12 w-10 sm:w-12 flex-shrink-0 items-center justify-center rounded-full bg-teal-100 text-teal-700">
+                <DollarSign className="h-5 sm:h-6 w-5 sm:w-6" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-sm">
+            <div className="mt-3 sm:mt-4 flex items-center text-xs sm:text-sm gap-1 sm:gap-2 flex-wrap">
               <div className="flex items-center text-emerald-500">
-                <ArrowUpRight className="mr-1 h-4 w-4" />
+                <ArrowUpRight className="mr-1 h-3 sm:h-4 w-3 sm:w-4" />
                 <span>12.5%</span>
               </div>
-              <span className="ml-2 text-slate-500">from last month</span>
+              <span className="text-slate-500 text-xs">from last month</span>
             </div>
           </CardContent>
         </Card>
 
+        {/* Active Groups */}
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-500">Active Groups</p>
-                <h3 className="mt-1 text-2xl font-bold">2</h3>
+          <CardContent className="p-3 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-slate-500 truncate">Active Groups</p>
+                <h3 className="mt-1 text-lg sm:text-2xl font-bold">2</h3>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-700">
-                <Users className="h-6 w-6" />
+              <div className="flex h-10 sm:h-12 w-10 sm:w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                <Users className="h-5 sm:h-6 w-5 sm:w-6" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-sm">
+            <div className="mt-3 sm:mt-4 flex items-center text-xs sm:text-sm gap-1 sm:gap-2 flex-wrap">
               <div className="flex items-center text-emerald-500">
-                <ArrowUpRight className="mr-1 h-4 w-4" />
+                <ArrowUpRight className="mr-1 h-3 sm:h-4 w-3 sm:w-4" />
                 <span>1</span>
               </div>
-              <span className="ml-2 text-slate-500">new this month</span>
+              <span className="text-slate-500 text-xs">new this month</span>
             </div>
           </CardContent>
         </Card>
 
+        {/* Upcoming Payments */}
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-500">Upcoming Payments</p>
-                <h3 className="mt-1 text-2xl font-bold">3</h3>
+          <CardContent className="p-3 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-slate-500 truncate">Up. Payments</p>
+                <h3 className="mt-1 text-lg sm:text-2xl font-bold">3</h3>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-                <Calendar className="h-6 w-6" />
+              <div className="flex h-10 sm:h-12 w-10 sm:w-12 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+                <Calendar className="h-5 sm:h-6 w-5 sm:w-6" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-sm">
+            <div className="mt-3 sm:mt-4 flex items-center text-xs sm:text-sm gap-1 sm:gap-2 flex-wrap">
               <div className="flex items-center text-red-500">
-                <ArrowDownRight className="mr-1 h-4 w-4" />
+                <ArrowDownRight className="mr-1 h-3 sm:h-4 w-3 sm:w-4" />
                 <span>1</span>
               </div>
-              <span className="ml-2 text-slate-500">due this week</span>
+              <span className="text-slate-500 text-xs">due this week</span>
             </div>
           </CardContent>
         </Card>
 
+        {/* Total Members */}
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-500">Total Members</p>
-                <h3 className="mt-1 text-2xl font-bold">25</h3>
+          <CardContent className="p-3 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-slate-500 truncate">Total Members</p>
+                <h3 className="mt-1 text-lg sm:text-2xl font-bold">25</h3>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-700">
-                <Users className="h-6 w-6" />
+              <div className="flex h-10 sm:h-12 w-10 sm:w-12 flex-shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-700">
+                <Users className="h-5 sm:h-6 w-5 sm:w-6" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-sm">
+            <div className="mt-3 sm:mt-4 flex items-center text-xs sm:text-sm gap-1 sm:gap-2 flex-wrap">
               <div className="flex items-center text-emerald-500">
-                <ArrowUpRight className="mr-1 h-4 w-4" />
+                <ArrowUpRight className="mr-1 h-3 sm:h-4 w-3 sm:w-4" />
                 <span>4</span>
               </div>
-              <span className="ml-2 text-slate-500">new members</span>
+              <span className="text-slate-500 text-xs">new members</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+      {/* Charts Section - Stacked on mobile */}
+      <div className="grid gap-3 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+        {/* Savings Overview Chart */}
         <Card className="lg:col-span-4">
-          <CardHeader className="pb-2">
-            <CardTitle>Savings Overview</CardTitle>
-            <CardDescription>Your deposit history over the past 6 months</CardDescription>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Savings Overview</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Your deposit history over the past 6 months</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
+          <CardContent className="p-3 sm:p-6">
+            <div className="h-[250px] sm:h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={depositData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <BarChart data={depositData} margin={{ top: 15, right: 15, left: 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
+                  <XAxis dataKey="name" fontSize={12} />
+                  <YAxis fontSize={12} />
                   <Tooltip />
                   <Bar dataKey="amount" fill="#10b981" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -217,13 +224,14 @@ export default function DashboardOverview() {
           </CardContent>
         </Card>
 
+        {/* Group Distribution Chart */}
         <Card className="lg:col-span-3">
-          <CardHeader className="pb-2">
-            <CardTitle>Group Distribution</CardTitle>
-            <CardDescription>Member distribution across groups</CardDescription>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Group Distribution</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Members across groups</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
+          <CardContent className="p-3 sm:p-6">
+            <div className="h-[250px] sm:h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -231,7 +239,7 @@ export default function DashboardOverview() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={80}
+                    outerRadius={60}
                     fill="#8884d8"
                     dataKey="value"
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
@@ -248,97 +256,100 @@ export default function DashboardOverview() {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+      {/* Activity Section - Stacked on mobile */}
+      <div className="grid gap-3 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+        {/* Recent Activity Chart */}
         <Card className="lg:col-span-4">
-          <CardHeader className="pb-2">
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Deposits and withdrawals in April</CardDescription>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Recent Activity</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Deposits and withdrawals in April</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
+          <CardContent className="p-3 sm:p-6">
+            <div className="h-[250px] sm:h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={activityData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <LineChart data={activityData} margin={{ top: 15, right: 15, left: 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
+                  <XAxis dataKey="date" fontSize={12} />
+                  <YAxis fontSize={12} />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="deposits" stroke="#10b981" activeDot={{ r: 8 }} />
-                  <Line type="monotone" dataKey="withdrawals" stroke="#ef4444" />
+                  <Line type="monotone" dataKey="deposits" stroke="#10b981" activeDot={{ r: 6 }} strokeWidth={2} />
+                  <Line type="monotone" dataKey="withdrawals" stroke="#ef4444" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
 
+        {/* Activity Feed */}
         <Card className="lg:col-span-3">
-          <Tabs defaultValue="events">
-            <CardHeader className="pb-0">
-              <div className="flex items-center justify-between">
-                <CardTitle>Activity Feed</CardTitle>
-                <TabsList>
-                  <TabsTrigger value="events">Events</TabsTrigger>
-                  <TabsTrigger value="activities">Activities</TabsTrigger>
+          <Tabs defaultValue="events" className="w-full">
+            <CardHeader className="pb-2 sm:pb-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <CardTitle className="text-base sm:text-lg">Activity Feed</CardTitle>
+                <TabsList className="w-full sm:w-auto">
+                  <TabsTrigger value="events" className="text-xs sm:text-sm">Events</TabsTrigger>
+                  <TabsTrigger value="activities" className="text-xs sm:text-sm">Activities</TabsTrigger>
                 </TabsList>
               </div>
             </CardHeader>
-            <CardContent className="pt-4">
+            <CardContent className="p-3 sm:p-6 pt-2 sm:pt-4">
               <TabsContent value="events" className="m-0">
-                <div className="space-y-4">
+                <div className="space-y-2 sm:space-y-4">
                   {upcomingEvents.map((event) => (
-                    <div key={event.id} className="flex items-start gap-4 rounded-lg border p-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100">
-                        <Calendar className="h-5 w-5 text-slate-600" />
+                    <div key={event.id} className="flex items-start gap-2 sm:gap-4 rounded-lg border p-2 sm:p-3 hover:bg-slate-50 transition-colors">
+                      <div className="flex h-8 sm:h-10 w-8 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-100">
+                        <Calendar className="h-4 sm:h-5 w-4 sm:w-5 text-slate-600" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">{event.title}</h4>
-                          <Badge variant="outline" className="text-xs">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
+                          <h4 className="font-medium text-sm truncate">{event.title}</h4>
+                          <Badge variant="outline" className="text-xs flex-shrink-0">
                             {event.date}
                           </Badge>
                         </div>
-                        <div className="mt-1 flex items-center gap-2 text-sm text-slate-500">
+                        <div className="mt-1 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-slate-500 flex-wrap">
                           <span>{event.time}</span>
-                          <span>•</span>
-                          <span>{event.group}</span>
+                          <span className="hidden sm:inline">•</span>
+                          <span className="truncate">{event.group}</span>
                         </div>
                       </div>
                     </div>
                   ))}
-                  <Button variant="outline" className="w-full justify-between">
+                  <Button variant="outline" className="w-full justify-between text-xs sm:text-sm">
                     View All Events
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 sm:h-4 w-3 sm:w-4" />
                   </Button>
                 </div>
               </TabsContent>
               <TabsContent value="activities" className="m-0">
-                <div className="space-y-4">
+                <div className="space-y-2 sm:space-y-4">
                   {recentActivities.map((activity) => (
-                    <div key={activity.id} className="flex items-start gap-4 rounded-lg border p-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100">
-                        {activity.type === "deposit" && <DollarSign className="h-5 w-5 text-emerald-600" />}
-                        {activity.type === "withdrawal" && <CreditCard className="h-5 w-5 text-red-600" />}
-                        {activity.type === "member_joined" && <Users className="h-5 w-5 text-blue-600" />}
+                    <div key={activity.id} className="flex items-start gap-2 sm:gap-4 rounded-lg border p-2 sm:p-3 hover:bg-slate-50 transition-colors">
+                      <div className="flex h-8 sm:h-10 w-8 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-100">
+                        {activity.type === "deposit" && <DollarSign className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />}
+                        {activity.type === "withdrawal" && <CreditCard className="h-4 sm:h-5 w-4 sm:w-5 text-red-600" />}
+                        {activity.type === "member_joined" && <Users className="h-4 sm:h-5 w-4 sm:w-5 text-blue-600" />}
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
+                          <h4 className="font-medium text-sm truncate">
                             {activity.type === "deposit" && "Deposit Made"}
                             {activity.type === "withdrawal" && "Withdrawal"}
                             {activity.type === "member_joined" && "New Member"}
                           </h4>
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs flex-shrink-0">
                             {activity.date}
                           </Badge>
                         </div>
-                        <div className="mt-1 flex items-center gap-2 text-sm text-slate-500">
-                          <span>{activity.user}</span>
-                          <span>•</span>
-                          <span>{activity.group}</span>
+                        <div className="mt-1 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-slate-500 flex-wrap">
+                          <span className="truncate">{activity.user}</span>
+                          <span className="hidden sm:inline">•</span>
+                          <span className="truncate">{activity.group}</span>
                           {(activity.type === "deposit" || activity.type === "withdrawal") && (
                             <>
-                              <span>•</span>
-                              <span className={activity.type === "deposit" ? "text-emerald-600" : "text-red-600"}>
+                              <span className="hidden sm:inline">•</span>
+                              <span className={`flex-shrink-0 ${activity.type === "deposit" ? "text-emerald-600" : "text-red-600"}`}>
                                 {activity.type === "deposit" ? "+" : "-"}${activity.amount}
                               </span>
                             </>
@@ -347,9 +358,9 @@ export default function DashboardOverview() {
                       </div>
                     </div>
                   ))}
-                  <Button variant="outline" className="w-full justify-between">
+                  <Button variant="outline" className="w-full justify-between text-xs sm:text-sm">
                     View All Activities
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 sm:h-4 w-3 sm:w-4" />
                   </Button>
                 </div>
               </TabsContent>

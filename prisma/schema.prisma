@@ -10,289 +10,288 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  //directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
-  id               String                    @id @default(cuid())
-  name              String              @unique
-  email             String              @unique
-  phone             String?
-  clerkUserId       String?             @unique
-  password          String
-  avatar            String?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  isAdmin           Boolean             @default(false)
-  memberships       Membership[]
-  ownedGroups       Group[]             @relation("GroupOwner")
-  transactions      Transaction[]
-  personalSavings   PersonalSavings?
-  savingsGoals      SavingsGoal[]
-  notifications     Notification[]
-  sentInvitations   GroupInvitation[]   @relation("SentInvitations")
+  id                  String            @id @default(cuid())
+  name                String?
+  email               String            @unique
+  phone               String?
+  clerkUserId         String?           @unique
+  avatar              String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  isAdmin             Boolean           @default(false)
+  memberships         Membership[]
+  ownedGroups         Group[]           @relation("GroupOwner")
+  transactions        Transaction[]
+  personalSavings     PersonalSavings?
+  savingsGoals        SavingsGoal[]
+  notifications       Notification[]
+  sentInvitations     GroupInvitation[] @relation("SentInvitations")
   receivedInvitations GroupInvitation[] @relation("ReceivedInvitations")
-  wallet            Wallet?
-  contributions     Contribution[]
-  loanRequests      LoanRequest[]       @relation("UserLoanRequests")
-  loanVotes         LoanVote[]          @relation("UserLoanVotes")
+  wallet              Wallet?
+  contributions       Contribution[]
+  loanRequests        LoanRequest[]     @relation("UserLoanRequests")
+  loanVotes           LoanVote[]        @relation("UserLoanVotes")
 }
 
 model Group {
-  id                  String            @id @default(cuid())
-  name                String
-  description         String?
-  logo                String?
-  groupCode           String?
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  ownerId             String
-  owner               User              @relation("GroupOwner", fields: [ownerId], references: [id])
-  privacy             GroupPrivacy      @default(PRIVATE)
-  governanceType      GovernanceType    @default(ADMIN)
-  contributionAmount  Decimal           @default(0)
+  id                    String                @id @default(cuid())
+  name                  String
+  description           String?
+  logo                  String?
+  groupCode             String?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  ownerId               String
+  owner                 User                  @relation("GroupOwner", fields: [ownerId], references: [id])
+  privacy               GroupPrivacy          @default(PRIVATE)
+  governanceType        GovernanceType        @default(ADMIN)
+  contributionAmount    Decimal               @default(0)
   contributionFrequency ContributionFrequency @default(MONTHLY)
-  depositGoal         Decimal?
-  latePenaltyFee      Decimal           @default(0)
-  gracePeriod         Int               @default(3) // Days
-  interestRate        Decimal           @default(0)
-  allowEarlyWithdrawal Boolean          @default(false)
-  earlyWithdrawalFee  Decimal           @default(0)
-  requireApproval     Boolean           @default(true)
-  autoReminders       Boolean           @default(true)
-  votingThreshold     Int               @default(50) // Percentage
-  allowLateJoining    Boolean           @default(true)
-  groupDuration       Int?              // Duration in months
-  maxMembers          Int?
-  meetingFrequency    MeetingFrequency  @default(WEEKLY)
-  groupRules          String?           @db.Text
-  bylaws              String?           @db.Text
-  tags                String?
-  status              GroupStatus       @default(ACTIVE)
-  memberships         Membership[]
-  transactions        Transaction[]
-  meetings            Meeting[]
-  invitations         GroupInvitation[]
-  contributions       Contribution[]
-  loanRequests        LoanRequest[]     @relation("GroupLoanRequests")
+  depositGoal           Decimal?
+  latePenaltyFee        Decimal               @default(0)
+  gracePeriod           Int                   @default(3) // Days
+  interestRate          Decimal               @default(0)
+  allowEarlyWithdrawal  Boolean               @default(false)
+  earlyWithdrawalFee    Decimal               @default(0)
+  requireApproval       Boolean               @default(true)
+  autoReminders         Boolean               @default(true)
+  votingThreshold       Int                   @default(50) // Percentage
+  allowLateJoining      Boolean               @default(true)
+  groupDuration         Int? // Duration in months
+  maxMembers            Int?
+  meetingFrequency      MeetingFrequency      @default(WEEKLY)
+  groupRules            String?               @db.Text
+  bylaws                String?               @db.Text
+  tags                  String?
+  status                GroupStatus           @default(ACTIVE)
+  memberships           Membership[]
+  transactions          Transaction[]
+  meetings              Meeting[]
+  invitations           GroupInvitation[]
+  contributions         Contribution[]
+  loanRequests          LoanRequest[]         @relation("GroupLoanRequests")
 }
 
 model Membership {
-  id                String            @id @default(cuid())
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  groupId           String
-  group             Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  role              MembershipRole    @default(MEMBER)
-  joinedAt          DateTime          @default(now())
-  status            MembershipStatus  @default(ACTIVE)
-  balance           Decimal           @default(0)
-  totalContributed  Decimal           @default(0)
-  lastContribution  DateTime?
-  votes             Vote[]
-  meetingAttendees  MeetingAttendee[] // Added this relation
-  voteResults       VoteResult[]      // Added this relation
-  loanVotes         LoanVote[]        @relation("MembershipLoanVotes")
+  id               String            @id @default(cuid())
+  userId           String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId          String
+  group            Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  role             MembershipRole    @default(MEMBER)
+  joinedAt         DateTime          @default(now())
+  status           MembershipStatus  @default(ACTIVE)
+  balance          Decimal           @default(0)
+  totalContributed Decimal           @default(0)
+  lastContribution DateTime?
+  votes            Vote[]
+  meetingAttendees MeetingAttendee[] // Added this relation
+  voteResults      VoteResult[] // Added this relation
+  loanVotes        LoanVote[]        @relation("MembershipLoanVotes")
 
   @@unique([userId, groupId])
 }
 
 model Transaction {
-  id                String            @id @default(cuid())
-  amount            Decimal
-  type              TransactionType
-  status            TransactionStatus @default(PENDING)
-  description       String?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  userId            String
-  user              User              @relation(fields: [userId], references: [id])
-  groupId           String?
-  group             Group?            @relation(fields: [groupId], references: [id])
-  momoNumber        String?
-  reference         String?           @unique
-  feeAmount         Decimal?
-  walletId          String?
-  wallet            Wallet?           @relation(fields: [walletId], references: [id])
-  contribution      Contribution?
-  loanRequestId     String?
-  loanRequest       LoanRequest?      @relation(fields: [loanRequestId], references: [id])
+  id            String            @id @default(cuid())
+  amount        Decimal
+  type          TransactionType
+  status        TransactionStatus @default(PENDING)
+  description   String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  userId        String
+  user          User              @relation(fields: [userId], references: [id])
+  groupId       String?
+  group         Group?            @relation(fields: [groupId], references: [id])
+  momoNumber    String?
+  reference     String?           @unique
+  feeAmount     Decimal?
+  walletId      String?
+  wallet        Wallet?           @relation(fields: [walletId], references: [id])
+  contribution  Contribution?
+  loanRequestId String?
+  loanRequest   LoanRequest?      @relation(fields: [loanRequestId], references: [id])
 }
 
 model PersonalSavings {
-  id                String            @id @default(cuid())
-  userId            String            @unique
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  balance           Decimal           @default(0)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance   Decimal  @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SavingsGoal {
-  id                String            @id @default(cuid())
-  name              String
-  targetAmount      Decimal
-  currentAmount     Decimal           @default(0)
-  deadline          DateTime?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isCompleted       Boolean           @default(false)
-  transactions      SavingsTransaction[]
+  id            String               @id @default(cuid())
+  name          String
+  targetAmount  Decimal
+  currentAmount Decimal              @default(0)
+  deadline      DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  userId        String
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isCompleted   Boolean              @default(false)
+  transactions  SavingsTransaction[]
 }
 
 model SavingsTransaction {
   id            String   @id @default(cuid())
   savingsGoalId String
   amount        Float
-  type          String   // 'DEPOSIT' or 'WITHDRAWAL'
+  type          String // 'DEPOSIT' or 'WITHDRAWAL'
   description   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  savingsGoal   SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
+  savingsGoal SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
 
   @@index([savingsGoalId])
 }
 
 model Meeting {
-  id                String            @id @default(cuid())
-  title             String
-  description       String?
-  date              DateTime
-  location          String?
-  isVirtual         Boolean           @default(false)
-  meetingLink       String?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  groupId           String
-  group             Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  attendees         MeetingAttendee[]
+  id          String            @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  location    String?
+  isVirtual   Boolean           @default(false)
+  meetingLink String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  groupId     String
+  group       Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  attendees   MeetingAttendee[]
 }
 
 model MeetingAttendee {
-  id                String            @id @default(cuid())
-  meetingId         String
-  meeting           Meeting           @relation(fields: [meetingId], references: [id], onDelete: Cascade)
-  membershipId      String
-  membership        Membership        @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  status            AttendanceStatus  @default(PENDING)
-  
+  id           String           @id @default(cuid())
+  meetingId    String
+  meeting      Meeting          @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  membershipId String
+  membership   Membership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  status       AttendanceStatus @default(PENDING)
+
   @@unique([meetingId, membershipId])
 }
 
 model Vote {
-  id                String            @id @default(cuid())
-  title             String
-  description       String?
-  options           Json
-  startDate         DateTime
-  endDate           DateTime
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  membershipId      String
-  membership        Membership        @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  voteResults       VoteResult[]
+  id           String       @id @default(cuid())
+  title        String
+  description  String?
+  options      Json
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  membershipId String
+  membership   Membership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  voteResults  VoteResult[]
 }
 
 model VoteResult {
-  id                String            @id @default(cuid())
-  voteId            String
-  vote              Vote              @relation(fields: [voteId], references: [id], onDelete: Cascade)
-  membershipId      String
-  membership        Membership        @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  selectedOption    String
-  votedAt           DateTime          @default(now())
-  
+  id             String     @id @default(cuid())
+  voteId         String
+  vote           Vote       @relation(fields: [voteId], references: [id], onDelete: Cascade)
+  membershipId   String
+  membership     Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  selectedOption String
+  votedAt        DateTime   @default(now())
+
   @@unique([voteId, membershipId])
 }
 
 model Notification {
-  id                String            @id @default(cuid())
-  title             String
-  message           String
-  type              NotificationType
-  isRead            Boolean           @default(false)
-  createdAt         DateTime          @default(now())
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  relatedGroupId    String?
+  id                   String           @id @default(cuid())
+  title                String
+  message              String
+  type                 NotificationType
+  isRead               Boolean          @default(false)
+  createdAt            DateTime         @default(now())
+  userId               String
+  user                 User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  relatedGroupId       String?
   relatedTransactionId String?
   relatedLoanRequestId String?
 }
 
 model GroupInvitation {
-  id                String            @id @default(cuid())
-  groupId           String
-  group             Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  inviterId         String
-  inviter           User              @relation("SentInvitations", fields: [inviterId], references: [id])
-  inviteeId         String
-  invitee           User              @relation("ReceivedInvitations", fields: [inviteeId], references: [id])
-  status            InvitationStatus  @default(PENDING)
-  code              String            @unique
-  createdAt         DateTime          @default(now())
-  expiresAt         DateTime?
+  id        String           @id @default(cuid())
+  groupId   String
+  group     Group            @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  inviterId String
+  inviter   User             @relation("SentInvitations", fields: [inviterId], references: [id])
+  inviteeId String
+  invitee   User             @relation("ReceivedInvitations", fields: [inviteeId], references: [id])
+  status    InvitationStatus @default(PENDING)
+  code      String           @unique
+  createdAt DateTime         @default(now())
+  expiresAt DateTime?
 }
 
 model Wallet {
-  id                String            @id @default(cuid())
-  userId            String            @unique
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  balance           Decimal           @default(0)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  transactions      Transaction[]
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance      Decimal       @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
 }
 
 model Contribution {
-  id                String            @id @default(cuid())
-  amount            Decimal
-  status            TransactionStatus @default(PENDING)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  groupId           String
-  group             Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  transactionId     String?           @unique
-  transaction       Transaction?      @relation(fields: [transactionId], references: [id])
+  id            String            @id @default(cuid())
+  amount        Decimal
+  status        TransactionStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId       String
+  group         Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  transactionId String?           @unique
+  transaction   Transaction?      @relation(fields: [transactionId], references: [id])
 }
 
 model LoanRequest {
-  id                String            @id @default(cuid())
-  amount            Decimal
-  purpose           String            @db.Text
-  repaymentDate     DateTime
-  repaymentTerms    String            @db.Text
-  installments      Int               @default(1)
-  interestRate      Decimal           @default(0)
-  status            LoanStatus        @default(PENDING)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  userId            String
-  user              User              @relation("UserLoanRequests", fields: [userId], references: [id], onDelete: Cascade)
-  groupId           String
-  group             Group             @relation("GroupLoanRequests", fields: [groupId], references: [id], onDelete: Cascade)
-  transactions      Transaction[]
-  votes             LoanVote[]        @relation("LoanRequestVotes")
+  id             String        @id @default(cuid())
+  amount         Decimal
+  purpose        String        @db.Text
+  repaymentDate  DateTime
+  repaymentTerms String        @db.Text
+  installments   Int           @default(1)
+  interestRate   Decimal       @default(0)
+  status         LoanStatus    @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  userId         String
+  user           User          @relation("UserLoanRequests", fields: [userId], references: [id], onDelete: Cascade)
+  groupId        String
+  group          Group         @relation("GroupLoanRequests", fields: [groupId], references: [id], onDelete: Cascade)
+  transactions   Transaction[]
+  votes          LoanVote[]    @relation("LoanRequestVotes")
 }
 
 model LoanVote {
-  id                String            @id @default(cuid())
-  vote              Boolean           // true = approve, false = reject
-  comment           String?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  userId            String
-  user              User              @relation("UserLoanVotes", fields: [userId], references: [id], onDelete: Cascade)
-  loanRequestId     String
-  loanRequest       LoanRequest       @relation("LoanRequestVotes", fields: [loanRequestId], references: [id], onDelete: Cascade)
-  membershipId      String
-  membership        Membership        @relation("MembershipLoanVotes", fields: [membershipId], references: [id], onDelete: Cascade)
+  id            String      @id @default(cuid())
+  vote          Boolean // true = approve, false = reject
+  comment       String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        String
+  user          User        @relation("UserLoanVotes", fields: [userId], references: [id], onDelete: Cascade)
+  loanRequestId String
+  loanRequest   LoanRequest @relation("LoanRequestVotes", fields: [loanRequestId], references: [id], onDelete: Cascade)
+  membershipId  String
+  membership    Membership  @relation("MembershipLoanVotes", fields: [membershipId], references: [id], onDelete: Cascade)
 
   @@unique([userId, loanRequestId])
 }
