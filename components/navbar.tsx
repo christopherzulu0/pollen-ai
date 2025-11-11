@@ -234,11 +234,11 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-white dark:bg-gray-900 z-50 p-6 overflow-y-auto">
-          <nav className="flex flex-col space-y-6">
+        <div className="md:hidden fixed inset-0 top-20 bg-white dark:bg-gray-900 z-50 p-4 overflow-y-auto">
+          <nav className="flex flex-col space-y-2">
             <Link
               href="/"
-              className="text-lg font-medium p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
@@ -254,11 +254,11 @@ export default function Navbar() {
               Home
             </Link>
 
-            <div className="border-b border-gray-100 dark:border-gray-800 py-2"></div>
+            <div className="border-b border-gray-100 dark:border-gray-800 py-1"></div>
 
             <Link
               href="/about"
-              className="text-lg font-medium p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
@@ -280,7 +280,7 @@ export default function Navbar() {
 
             <Link
               href="/services"
-              className="text-lg font-medium p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
@@ -303,7 +303,7 @@ export default function Navbar() {
 
             <Link
               href="/blog"
-              className="text-lg font-medium p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
@@ -326,7 +326,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className="text-lg font-medium p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
@@ -343,7 +343,7 @@ export default function Navbar() {
               Contact
             </Link>
 
-            <div className="pt-6 space-y-3">
+            <div className="pt-4 space-y-2">
               <SignedOut>
                 <Button
                 onClick={handleGetStarted}
