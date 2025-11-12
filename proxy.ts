@@ -6,6 +6,10 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/uploadthing(.*)",
+  "/about",
+  "/services",
+  "/blog",
+  "/contact"
 ]);
 
 // Define routes that should be ignored

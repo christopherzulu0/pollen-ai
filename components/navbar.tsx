@@ -234,17 +234,17 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden fixed left-0 right-0 top-20 bg-white dark:bg-gray-900 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)]">
+        <div className="md:hidden fixed left-0 right-0 top-20 bg-gradient-to-br from-[#003366] to-[#002244] dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)]">
           <nav className="flex flex-col space-y-2">
             <Link
               href="/"
-              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#003366] dark:text-[#00CC66]"
+                  className="h-5 w-5 text-[#00CC66]"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -254,17 +254,17 @@ export default function Navbar() {
               Home
             </Link>
 
-            <div className="border-b border-gray-100 dark:border-gray-800 py-1"></div>
+            <div className="border-b border-white/10 py-1"></div>
 
             <Link
               href="/about"
-              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#003366] dark:text-[#00CC66]"
+                  className="h-5 w-5 text-[#00CC66]"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -280,13 +280,13 @@ export default function Navbar() {
 
             <Link
               href="/services"
-              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#003366] dark:text-[#00CC66]"
+                  className="h-5 w-5 text-[#00CC66]"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -303,13 +303,13 @@ export default function Navbar() {
 
             <Link
               href="/blog"
-              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#003366] dark:text-[#00CC66]"
+                  className="h-5 w-5 text-[#00CC66]"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -326,13 +326,13 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className="text-lg font-medium p-3 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl flex items-center"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-[#003366]/20 flex items-center justify-center mr-3">
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#003366] dark:text-[#00CC66]"
+                  className="h-5 w-5 text-[#00CC66]"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
