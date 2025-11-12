@@ -84,14 +84,14 @@ export default function ServicesPage() {
 
   // Calculate crypto loan details
   const calculateCryptoLoan = () => {
-    const cryptoPrices = {
+    const cryptoPrices: Record<string, number> = {
       BTC: 65000,
       ETH: 3500,
       USDC: 1,
     }
 
     const loanToValueRatio = 0.7 // 70% LTV
-    const price = cryptoPrices[cryptoType]
+    const price = cryptoPrices[cryptoType as keyof typeof cryptoPrices] || 1
     const collateralValue = cryptoAmount * price
     const maxLoanAmount = collateralValue * loanToValueRatio
 
@@ -156,8 +156,7 @@ export default function ServicesPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-[#003366] dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900"
+                  className="border-2 border-white text-white bg-transparent hover:bg-white/20 dark:border-white dark:text-white dark:hover:bg-white/20"
                 >
                   Book a Demo
                 </Button>
@@ -303,7 +302,7 @@ export default function ServicesPage() {
                         ].map((feature, index) => (
                           <li key={index} className="flex items-start">
                             <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
-                            <span className="dark:text-gray-300">{feature}</span>
+                            <span className="text-gray-800 dark:text-gray-300">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -570,7 +569,7 @@ export default function ServicesPage() {
                         ].map((feature, index) => (
                           <li key={index} className="flex items-start">
                             <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
-                            <span className="dark:text-gray-300">{feature}</span>
+                            <span className="text-gray-800 dark:text-gray-300">{feature}</span>
                           </li>
                         ))}
                       </ul>
