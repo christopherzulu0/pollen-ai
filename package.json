@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "copy-prisma-engine": "cp ./src/generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node ./src/generated/libquery_engine-rhel-openssl-3.0.x.so.node || true",
+    "vercel-build": "prisma generate && prisma migrate deploy && npm run copy-prisma-engine && next build"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.16.0",
