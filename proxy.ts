@@ -8,6 +8,8 @@ const isPublicRoute = createRouteMatcher([
   "/api/uploadthing(.*)",
   "/about",
   "/services",
+  "/api/services",
+  "/api/blog",
   "/blog",
   "/contact"
 ]);
