@@ -9,7 +9,8 @@ const isPublicRoute = createRouteMatcher([
   "/about",
   "/services",
   "/api/services",
-  "/api/blog",
+  "/api/blog-posts",
+"/api/blog",
   "/blog",
   "/contact"
 ]);
