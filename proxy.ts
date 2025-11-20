@@ -9,9 +9,9 @@ const isPublicRoute = createRouteMatcher([
   "/about",
   "/services",
   "/api/services",
-  "/api/blog-posts",
-"/api/blog",
-  "/blog",
+  "/api/blog-posts(.*)",  // Matches /api/blog-posts and /api/blog-posts/[id] and all sub-routes
+  "/api/blog(.*)",
+  "/blog(.*)",  // Matches /blog and /blog/[id] and any other blog routes
   "/contact"
 ]);
 

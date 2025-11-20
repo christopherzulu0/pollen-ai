@@ -316,22 +316,24 @@ function ServicesContent() {
 
   return (
     <Tabs defaultValue={defaultTab} className="w-full max-w-5xl mx-auto">
-      <TabsList className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-8 w-full">
-            {categories.map((category) => {
-          // Get the first service in this category to use its icon for the tab
-          const firstService = servicesByCategory[category]?.[0]
-          return (
-            <TabsTrigger
-              key={category}
-              value={categoryToSlug(category)}
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[#003366] data-[state=active]:text-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200"
-            >
-              <span className="mr-1 sm:mr-2">{getServiceIcon(category, firstService?.icon)}</span>
-              <span className="whitespace-nowrap">{category}</span>
-            </TabsTrigger>
-          )
-        })}
-      </TabsList>
+      <div className="mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide">
+        <TabsList className="inline-flex h-10 items-center justify-start sm:justify-center rounded-md bg-muted p-1 text-muted-foreground w-full min-w-max sm:min-w-0 sm:w-full">
+              {categories.map((category) => {
+            // Get the first service in this category to use its icon for the tab
+            const firstService = servicesByCategory[category]?.[0]
+            return (
+              <TabsTrigger
+                key={category}
+                value={categoryToSlug(category)}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[#003366] data-[state=active]:text-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200 flex-shrink-0"
+              >
+                <span className="mr-1 sm:mr-2 flex-shrink-0">{getServiceIcon(category, firstService?.icon)}</span>
+                <span className="whitespace-nowrap">{category}</span>
+              </TabsTrigger>
+            )
+          })}
+        </TabsList>
+      </div>
 
       <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
         {categories.map((category) => {

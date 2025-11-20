@@ -885,24 +885,42 @@ function BlogPostContent() {
   // Track views when page loads (only once per page load)
   const hasTrackedView = useRef(false)
   useEffect(() => {
-    if (post?.id && !hasTrackedView.current) {
+    if (post?.id && postId && !hasTrackedView.current) {
       hasTrackedView.current = true
       
       // Track view
       fetch(`/api/blog-posts/${postId}/views`, {
         method: 'POST',
-      }).then(() => {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+          throw new Error(errorData.error || `Failed to track view: ${response.status} ${response.statusText}`)
+        }
+        return response.json()
+      })
+      .then(() => {
         // After view is tracked, update engagement
         return fetch(`/api/blog-posts/${postId}/engagement`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'view' }),
         })
-      }).then(() => {
+      })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+          throw new Error(errorData.error || `Failed to update engagement: ${response.status} ${response.statusText}`)
+        }
         // Invalidate queries to refresh view count
         queryClient.invalidateQueries({ queryKey: ['blogPost', postId] })
-      }).catch(error => {
+      })
+      .catch(error => {
         console.error('Error tracking view/engagement:', error)
+        // Don't show toast for tracking errors as they're not critical for user experience
       })
     }
   }, [post?.id, postId, queryClient])
