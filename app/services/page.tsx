@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
   Coins,
@@ -28,6 +29,7 @@ import {
   Lightbulb,
   Lock,
 } from "lucide-react"
+import * as LucideIcons from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -35,17 +37,678 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge"
 import { Slider } from "@/components/ui/slider"
 import { Progress } from "@/components/ui/progress"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useTheme } from "next-themes"
+
+// Service interface
+interface Service {
+  id: string
+  name: string
+  nameKey?: string | null
+  description: string
+  category: string
+  status: "active" | "inactive"
+  icon?: string | null
+  image?: string | null
+  users?: number | null
+  revenue?: number | null
+  growth?: number | null
+  keyFeatures?: string[]
+  requirements?: string[]
+}
+
+// Fetch services from API
+async function fetchServices(): Promise<Service[]> {
+  const response = await fetch('/api/services')
+  if (!response.ok) {
+    throw new Error('Failed to fetch services')
+  }
+  const data = await response.json()
+  
+  // Debug: Log the raw API response to check if icon/image fields are present
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Raw API response:', data)
+    if (data.length > 0) {
+      console.log('First service from API:', data[0])
+      console.log('Icon field:', data[0].icon, 'Image field:', data[0].image)
+    }
+  }
+  
+  return data
+}
+
+// Skeleton loader components
+function ServicesTabsSkeleton() {
+  return (
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="space-y-4">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+          <div className="space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <Skeleton className="h-5 w-5 rounded" />
+                <Skeleton className="h-4 w-full" />
+              </div>
+            ))}
+          </div>
+          <Skeleton className="h-64 w-full rounded-lg" />
+        </div>
+        <Skeleton className="h-[400px] w-full rounded-lg" />
+      </div>
+    </div>
+  )
+}
+
+function ServiceCardsSkeleton() {
+  return (
+    <div className="overflow-x-auto pb-4 -mx-4 px-4 flex snap-x snap-mandatory gap-4 scrollbar-hide">
+      {[...Array(3)].map((_, index) => (
+        <div key={index} className="min-w-[280px] w-[85%] max-w-[340px] snap-center">
+          <Card className="h-full border-none shadow-lg dark:bg-gray-800">
+            <CardHeader>
+              <Skeleton className="h-6 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-full" />
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {[...Array(4)].map((_, i) => (
+                  <Skeleton key={i} className="h-4 w-full" />
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Skeleton className="h-10 w-full" />
+            </CardFooter>
+          </Card>
+                    </div>
+                  ))}
+                </div>
+  )
+}
+
+function ComparisonTableSkeleton() {
+  return (
+    <div className="overflow-x-auto -mx-4 sm:mx-0">
+      <div className="inline-block min-w-full align-middle p-4 sm:p-0">
+        <div className="overflow-hidden rounded-lg shadow-md">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+            <thead className="bg-[#003366] dark:bg-blue-900 text-white">
+              <tr>
+                {[...Array(5)].map((_, i) => (
+                  <th key={i} className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
+                    <Skeleton className="h-4 w-20 bg-white/20" />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {[...Array(3)].map((_, index) => (
+                <tr key={index}>
+                  {[...Array(5)].map((_, i) => (
+                    <td key={i} className="py-3 px-3 sm:px-6">
+                      <Skeleton className="h-4 w-full" />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+                  </div>
+                </div>
+              </div>
+  )
+}
+
+// Helper function to get icon by category or icon name
+function getServiceIcon(category: string, iconName?: string | null) {
+  // If icon name is provided, use it
+  if (iconName && iconName.trim()) {
+    const trimmedIconName = iconName.trim()
+    
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[getServiceIcon] Looking for icon: "${trimmedIconName}" for category: "${category}"`)
+      console.log(`[getServiceIcon] Bitcoin exists in LucideIcons:`, typeof (LucideIcons as any)['Bitcoin'])
+      console.log(`[getServiceIcon] Direct access:`, (LucideIcons as any)[trimmedIconName])
+    }
+    
+    // Try exact match first
+    let IconComponent = (LucideIcons as any)[trimmedIconName]
+    
+    if (process.env.NODE_ENV === 'development' && IconComponent) {
+      console.log(`[getServiceIcon] Found icon "${trimmedIconName}" directly, type:`, typeof IconComponent)
+    }
+    
+    // If not found, try checking all icon names (case-insensitive search)
+    if (!IconComponent) {
+      const iconNames = Object.keys(LucideIcons).filter(
+        (name) => 
+          name[0] === name[0].toUpperCase() &&
+          !name.startsWith('Icon') &&
+          !name.startsWith('Lucide') &&
+          (typeof (LucideIcons as any)[name] === 'function' || 
+           typeof (LucideIcons as any)[name] === 'object' ||
+           (LucideIcons as any)[name]?.$$typeof) // React component check
+      )
+      const matchedIcon = iconNames.find(
+        (name) => name.toLowerCase() === trimmedIconName.toLowerCase()
+      )
+      if (matchedIcon) {
+        IconComponent = (LucideIcons as any)[matchedIcon]
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`[getServiceIcon] Found icon "${trimmedIconName}" via case-insensitive match: "${matchedIcon}"`)
+        }
+      }
+    }
+    
+    // Check if IconComponent is valid (can be function, object, or React component)
+    if (IconComponent) {
+      // React components can be functions or objects with $$typeof
+      const isReactComponent = typeof IconComponent === 'function' || 
+                               typeof IconComponent === 'object' ||
+                               IconComponent?.$$typeof
+      
+      if (isReactComponent) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`[getServiceIcon] Rendering icon "${trimmedIconName}"`)
+        }
+        try {
+          return <IconComponent className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />
+        } catch (error) {
+          console.error(`[getServiceIcon] Error rendering icon "${iconName}":`, error)
+        }
+      } else {
+        console.warn(`[getServiceIcon] Icon "${iconName}" is not a valid React component, type:`, typeof IconComponent)
+      }
+    } else {
+      // Log when icon is not found for debugging
+      console.warn(`[getServiceIcon] Icon "${iconName}" not found in Lucide icons. Falling back to category icon.`)
+    }
+  }
+  
+  // Fallback to category-based icons
+  const icons: Record<string, React.ReactNode> = {
+    "Digital Loans": <Wallet className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
+    "Village Banking": <Users className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
+    "Crypto Loans": <Bitcoin className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
+    "Institution Banking": <Building className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
+  }
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[getServiceIcon] Using fallback category icon for: "${category}"`)
+  }
+  return icons[category] || <Wallet className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />
+}
+
+// Services Content Component
+function ServicesContent() {
+  const [loanAmount, setLoanAmount] = useState(5000)
+  const [loanTerm, setLoanTerm] = useState(12)
+  const [progress, setProgress] = useState(13)
+
+  const { data: services = [], isLoading, error } = useQuery<Service[]>({
+    queryKey: ['services'],
+    queryFn: fetchServices,
+    staleTime: 60000, // 1 minute
+  })
+
+  // Filter active services only
+  const activeServices = services.filter(s => s.status === "active")
+
+  useEffect(() => {
+    const timer = setTimeout(() => setProgress(66), 500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Calculate loan details
+  const calculateMonthlyPayment = () => {
+    const interestRate = 0.059 / 12 // 5.9% APR
+    const numberOfPayments = loanTerm
+    const principal = loanAmount
+    const monthlyPayment =
+      (principal * interestRate * Math.pow(1 + interestRate, numberOfPayments)) /
+      (Math.pow(1 + interestRate, numberOfPayments) - 1)
+    return monthlyPayment.toFixed(2)
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-600 mb-4">Error loading services: {error instanceof Error ? error.message : 'Unknown error'}</p>
+        <Button onClick={() => window.location.reload()}>Retry</Button>
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return <ServicesTabsSkeleton />
+  }
+
+  // Group services by category dynamically
+  const servicesByCategory = activeServices.reduce((acc, service) => {
+    const category = service.category || "Other"
+    if (!acc[category]) {
+      acc[category] = []
+    }
+    acc[category].push(service)
+    return acc
+  }, {} as Record<string, Service[]>)
+
+  const categories = Object.keys(servicesByCategory)
+  
+  // Create a slug from category name for tab values
+  const categoryToSlug = (category: string) => {
+    return category.toLowerCase().replace(/\s+/g, "-")
+  }
+
+  // Get default tab value
+  const defaultTab = categories.length > 0 ? categoryToSlug(categories[0]) : ""
+
+  if (categories.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600 dark:text-gray-300">No active services available at the moment.</p>
+      </div>
+    )
+  }
+
+  return (
+    <Tabs defaultValue={defaultTab} className="w-full max-w-5xl mx-auto">
+      <TabsList className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-8 w-full">
+            {categories.map((category) => {
+          // Get the first service in this category to use its icon for the tab
+          const firstService = servicesByCategory[category]?.[0]
+          return (
+            <TabsTrigger
+              key={category}
+              value={categoryToSlug(category)}
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[#003366] data-[state=active]:text-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200"
+            >
+              <span className="mr-1 sm:mr-2">{getServiceIcon(category, firstService?.icon)}</span>
+              <span className="whitespace-nowrap">{category}</span>
+            </TabsTrigger>
+          )
+        })}
+      </TabsList>
+
+      <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
+        {categories.map((category) => {
+          const categoryServices = servicesByCategory[category]
+          const isDigitalLoans = category.toLowerCase().includes("digital") || category.toLowerCase().includes("loan")
+          const isVillageBanking = category.toLowerCase().includes("village") || category.toLowerCase().includes("banking")
+          
+          return (
+            <TabsContent key={category} value={categoryToSlug(category)} className="mt-0">
+              <div className="space-y-8">
+                {categoryServices.map((service) => {
+                  // Debug: Log service data to check icon
+                  if (process.env.NODE_ENV === 'development') {
+                    console.log('Service:', service.name, 'Icon from DB:', service.icon, 'Category:', service.category)
+                  }
+                  return (
+                  <motion.div
+                  key={service.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+                  >
+                    <div>
+                      <div className="flex items-center mb-4">
+                        <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
+                        {getServiceIcon(service.category, service.icon)}
+                        </div>
+                      <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">{service.name}</h3>
+                      </div>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6">{service.description}</p>
+                    {service.keyFeatures && service.keyFeatures.length > 0 && (
+                      <ul className="space-y-3">
+                        {service.keyFeatures.map((feature, index) => (
+                          <li key={index} className="flex items-start">
+                            <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-800 dark:text-gray-300">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* Interactive Loan Calculator - only show for first service in Digital Loans category */}
+                    {isDigitalLoans && categoryServices[0]?.id === service.id && (
+                      <div className="mt-6 md:mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                        <h4 className="text-base md:text-lg font-semibold text-[#003366] dark:text-white mb-3 md:mb-4">
+                          Loan Calculator
+                        </h4>
+                        <div className="space-y-3 md:space-y-4">
+                          <div>
+                            <div className="flex justify-between items-center mb-1">
+                              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Loan Amount
+                              </label>
+                              <span className="text-sm font-semibold text-[#003366] dark:text-white">
+                                K{loanAmount.toLocaleString()}
+                              </span>
+                            </div>
+                            <Slider
+                              value={[loanAmount]}
+                              min={100}
+                              max={10000}
+                              step={100}
+                              onValueChange={(value) => setLoanAmount(value[0])}
+                              className="dark:bg-gray-700"
+                            />
+                            <div className="flex justify-between mt-1">
+                              <span className="text-xs text-gray-500 dark:text-gray-400">K100</span>
+                              <span className="text-xs text-gray-500 dark:text-gray-400">K10,000</span>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="flex justify-between items-center mb-1">
+                              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Loan Term
+                              </label>
+                              <span className="text-sm font-semibold text-[#003366] dark:text-white">
+                                {loanTerm} months
+                              </span>
+                            </div>
+                            <Slider
+                              value={[loanTerm]}
+                              min={3}
+                              max={36}
+                              step={1}
+                              onValueChange={(value) => setLoanTerm(value[0])}
+                              className="dark:bg-gray-700"
+                            />
+                            <div className="flex justify-between mt-1">
+                              <span className="text-xs text-gray-500 dark:text-gray-400">3 mo</span>
+                              <span className="text-xs text-gray-500 dark:text-gray-400">36 mo</span>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
+                            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">Monthly Payment</p>
+                              <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">
+                                K{calculateMonthlyPayment()}
+                              </p>
+                            </div>
+                            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">Interest Rate</p>
+                              <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">5.9% APR</p>
+                            </div>
+                          </div>
+                          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+                            Total repayment:{" "}
+                            <span className="font-medium">
+                              K{(parseFloat(calculateMonthlyPayment()) * loanTerm).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                      <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
+                        {isDigitalLoans ? "Apply Now" : isVillageBanking ? "Join a Group" : "Learn More"}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg">
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>
+                      <Image
+                        src={service.image || (isDigitalLoans ? "/digital.jpg" : isVillageBanking ? "/village.jpg" : "/placeholder.svg?height=800&width=600")}
+                        alt={service.name}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                        {isDigitalLoans ? (
+                          <>
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-white font-medium">Application Progress</span>
+                              <span className="text-white text-sm">{progress}%</span>
+                            </div>
+                            <Progress
+                              value={progress}
+                              className="h-2 bg-white/20"
+                              indicatorClassName="bg-[#00CC66] dark:bg-emerald-500"
+                            />
+                            <div className="flex justify-between mt-4">
+                              <div className="flex items-center">
+                                <Clock className="h-4 w-4 text-white mr-1" />
+                                <span className="text-white text-sm">5 min approval</span>
+                              </div>
+                              <div className="flex items-center">
+                                <Calendar className="h-4 w-4 text-white mr-1" />
+                                <span className="text-white text-sm">Same-day funding</span>
+                              </div>
+                            </div>
+                          </>
+                        ) : isVillageBanking ? (
+                          <>
+                            <h4 className="text-white font-semibold mb-2">Active Village Banking Groups</h4>
+                            <div className="grid grid-cols-2 gap-2 mb-4">
+                              {["Sunrise Savers", "Unity Circle", "Growth Collective", "Future Fund"].map(
+                                (group, index) => (
+                                  <div
+                                    key={index}
+                                    className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
+                                  >
+                                    <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
+                                      {index + 1}
+                                    </div>
+                                    <span className="text-white text-sm">{group}</span>
+                                  </div>
+                                ),
+                              )}
+                            </div>
+                            <div className="flex justify-between">
+                              <div className="flex items-center">
+                                <Users className="h-4 w-4 text-white mr-1" />
+                                <span className="text-white text-sm">Community-backed</span>
+                              </div>
+                              <div className="flex items-center">
+                                <Shield className="h-4 w-4 text-white mr-1" />
+                                <span className="text-white text-sm">Blockchain secured</span>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <div>
+                            <h4 className="text-white font-semibold mb-2">{service.name}</h4>
+                            <p className="text-white/80 text-sm">{service.description.substring(0, 100)}...</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                  )
+                })}
+              </div>
+            </TabsContent>
+          )
+        })}
+            </div>
+          </Tabs>
+  )
+}
+
+// Mobile Service Cards Component
+function MobileServiceCards() {
+  const { data: services = [], isLoading } = useQuery<Service[]>({
+    queryKey: ['services'],
+    queryFn: fetchServices,
+    staleTime: 60000,
+  })
+
+  const activeServices = services.filter(s => s.status === "active").slice(0, 3)
+
+  if (isLoading) {
+    return <ServiceCardsSkeleton />
+  }
+
+  return (
+          <div className="overflow-x-auto pb-4 -mx-4 px-4 flex snap-x snap-mandatory gap-4 scrollbar-hide">
+      {activeServices.length > 0 ? (
+        activeServices.map((service) => (
+          <div key={service.id} className="min-w-[280px] w-[85%] max-w-[340px] snap-center">
+                <Card className="h-full border-none shadow-lg dark:bg-gray-800">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                  <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
+                    {getServiceIcon(service.category, service.icon)}
+                    </div>
+                  <Badge className="bg-[#003366] dark:bg-blue-900">
+                    {service.growth ? `+${service.growth}% Growth` : service.category}
+                  </Badge>
+                </div>
+                <CardTitle className="text-[#003366] dark:text-white text-xl">{service.name}</CardTitle>
+                <CardDescription className="dark:text-gray-300 line-clamp-2">{service.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                {service.keyFeatures && service.keyFeatures.length > 0 ? (
+                    <ul className="space-y-2">
+                    {service.keyFeatures.slice(0, 4).map((feature, i) => (
+                        <li key={i} className="flex items-start">
+                        <Check className="h-4 w-4 text-[#00CC66] dark:text-emerald-400 mr-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                ) : (
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">No features listed</p>
+                )}
+                  </CardContent>
+                  <CardFooter>
+                    <Button className="w-full bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
+                  Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
+        ))
+      ) : (
+        <div className="text-center py-12 w-full">
+          <p className="text-gray-600 dark:text-gray-300">No services available at the moment.</p>
+          </div>
+      )}
+          </div>
+  )
+}
+
+// Comparison Table Component
+function ComparisonTable() {
+  const { data: services = [], isLoading } = useQuery<Service[]>({
+    queryKey: ['services'],
+    queryFn: fetchServices,
+    staleTime: 60000,
+  })
+
+  const activeServices = services.filter(s => s.status === "active")
+
+  if (isLoading) {
+    return <ComparisonTableSkeleton />
+  }
+
+  return (
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle p-4 sm:p-0">
+              <div className="overflow-hidden rounded-lg shadow-md">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                  <thead className="bg-[#003366] dark:bg-blue-900 text-white">
+                    <tr>
+                      <th scope="col" className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
+                        Service
+                      </th>
+                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                        Ideal For
+                      </th>
+                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                        Key Features
+                      </th>
+                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                        Requirements
+                      </th>
+                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {activeServices.length > 0 ? (
+                activeServices.map((service, index) => {
+                  // Debug: Log service data to check icon
+                  if (process.env.NODE_ENV === 'development') {
+                    console.log('Table Service:', service.name, 'Icon from DB:', service.icon, 'Category:', service.category)
+                  }
+                  return (
+                  <tr
+                    key={service.id}
+                        className={index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-700"}
+                      >
+                        <td className="py-3 px-3 sm:px-6 text-xs sm:text-sm border-b border-gray-100 dark:border-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-shrink-0">
+                              {getServiceIcon(service.category, service.icon)}
+                            </div>
+                            <span className="font-medium text-[#003366] dark:text-white">
+                              {service.name}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <p className="line-clamp-2">{service.description.substring(0, 80)}...</p>
+                        </td>
+                        <td className="py-3 px-3 sm:px-6">
+                          <ul className="text-xs sm:text-sm">
+                        {service.keyFeatures && service.keyFeatures.length > 0 ? (
+                          service.keyFeatures.slice(0, 3).map((feature, i) => (
+                              <li key={i} className="flex items-center justify-center mb-1">
+                                <Check className="h-3 w-3 sm:h-4 sm:w-4 text-[#00CC66] dark:text-emerald-400 mr-1 flex-shrink-0" />
+                              <span className="text-gray-700 dark:text-gray-300 line-clamp-1">{feature}</span>
+                              </li>
+                          ))
+                        ) : (
+                          <li className="text-gray-500 dark:text-gray-400">N/A</li>
+                        )}
+                          </ul>
+                        </td>
+                        <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      {service.requirements && service.requirements.length > 0 ? (
+                        <p className="line-clamp-2">{service.requirements.join(", ")}</p>
+                      ) : (
+                        <span className="text-gray-500 dark:text-gray-400">N/A</span>
+                      )}
+                        </td>
+                        <td className="py-3 px-3 sm:px-6 text-center">
+                          <Button
+                            size="sm"
+                            className="bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800 text-xs px-2 py-1 h-auto"
+                          >
+                        Learn More
+                          </Button>
+                        </td>
+                      </tr>
+                  )
+                })
+              ) : (
+                <tr>
+                  <td colSpan={5} className="py-12 text-center text-gray-600 dark:text-gray-300">
+                    No services available at the moment.
+                  </td>
+                </tr>
+              )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+  )
+}
 
 export default function ServicesPage() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const [loanAmount, setLoanAmount] = useState(5000)
-  const [loanTerm, setLoanTerm] = useState(12)
-  const [cryptoAmount, setCryptoAmount] = useState(1)
-  const [cryptoType, setCryptoType] = useState("BTC")
-  const [progress, setProgress] = useState(13)
-  const [activeServiceCard, setActiveServiceCard] = useState(0)
 
   // Animation variants
   const fadeIn = {
@@ -65,43 +728,7 @@ export default function ServicesPage() {
 
   useEffect(() => {
     setMounted(true)
-    const timer = setTimeout(() => setProgress(66), 500)
-    return () => clearTimeout(timer)
   }, [])
-
-  // Calculate loan details
-  const calculateMonthlyPayment = () => {
-    const interestRate = 0.059 / 12 // 5.9% APR
-    const numberOfPayments = loanTerm
-    const principal = loanAmount
-
-    const monthlyPayment =
-      (principal * interestRate * Math.pow(1 + interestRate, numberOfPayments)) /
-      (Math.pow(1 + interestRate, numberOfPayments) - 1)
-
-    return monthlyPayment.toFixed(2)
-  }
-
-  // Calculate crypto loan details
-  const calculateCryptoLoan = () => {
-    const cryptoPrices: Record<string, number> = {
-      BTC: 65000,
-      ETH: 3500,
-      USDC: 1,
-    }
-
-    const loanToValueRatio = 0.7 // 70% LTV
-    const price = cryptoPrices[cryptoType as keyof typeof cryptoPrices] || 1
-    const collateralValue = cryptoAmount * price
-    const maxLoanAmount = collateralValue * loanToValueRatio
-
-    return {
-      collateralValue: collateralValue.toFixed(2),
-      maxLoanAmount: maxLoanAmount.toFixed(2),
-    }
-  }
-
-  const cryptoLoanDetails = calculateCryptoLoan()
 
   if (!mounted) {
     return null
@@ -130,7 +757,7 @@ export default function ServicesPage() {
             ))}
           </div>
           <div className="absolute inset-0 bg-grid-white bg-grid-8 opacity-10"></div>
-        </div>
+            </div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -175,8 +802,8 @@ export default function ServicesPage() {
                         className="object-cover"
                       />
                     </div>
-                  ))}
-                </div>
+            ))}
+          </div>
                 <div>
                   <div className="flex items-center">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -253,517 +880,9 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-          <Tabs defaultValue="digital-loans" className="w-full max-w-5xl mx-auto">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger
-                value="digital-loans"
-                className="data-[state=active]:bg-[#003366] data-[state=active]:text-white dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200 px-2 py-2 text-xs sm:text-sm md:text-base"
-              >
-                <Coins className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
-                <span className="whitespace-nowrap">Digital Loans</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="village-banking"
-                className="data-[state=active]:bg-[#003366] data-[state=active]:text-white dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200 px-2 py-2 text-xs sm:text-sm md:text-base"
-              >
-                <Landmark className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
-                <span className="whitespace-nowrap">Village Banking</span>
-              </TabsTrigger>
-            </TabsList>
-
-            <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
-              <TabsContent value="digital-loans" className="mt-0">
-                <div className="space-y-8">
-                  {/* Normal Loans */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-                  >
-                    <div>
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
-                          <Wallet className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />
-                        </div>
-                        <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">Loans</h3>
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        Our AI-powered lending platform provides quick access to capital with flexible terms and
-                        competitive rates, no collateral required.
-                      </p>
-                      <ul className="space-y-3">
-                        {[
-                          "Non-collateralized borrowing enabled by AI credit scoring",
-                          "Flexible repayment terms tailored to your income",
-                          "Instant approval and disbursement",
-                          "No hidden fees or penalties",
-                          "Build your credit history with each repayment",
-                        ].map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-800 dark:text-gray-300">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Interactive Loan Calculator */}
-                      <div className="mt-6 md:mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-                        <h4 className="text-base md:text-lg font-semibold text-[#003366] dark:text-white mb-3 md:mb-4">
-                          Loan Calculator
-                        </h4>
-                        <div className="space-y-3 md:space-y-4">
-                          <div>
-                            <div className="flex justify-between items-center mb-1">
-                              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Loan Amount
-                              </label>
-                              <span className="text-sm font-semibold text-[#003366] dark:text-white">
-                                K{loanAmount.toLocaleString()}
-                              </span>
-                            </div>
-                            <Slider
-                              value={[loanAmount]}
-                              min={100}
-                              max={10000}
-                              step={100}
-                              onValueChange={(value) => setLoanAmount(value[0])}
-                              className="dark:bg-gray-700"
-                            />
-                            <div className="flex justify-between mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">K100</span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">K10,000</span>
-                            </div>
-                          </div>
-                          <div>
-                            <div className="flex justify-between items-center mb-1">
-                              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Loan Term
-                              </label>
-                              <span className="text-sm font-semibold text-[#003366] dark:text-white">
-                                {loanTerm} months
-                              </span>
-                            </div>
-                            <Slider
-                              value={[loanTerm]}
-                              min={3}
-                              max={36}
-                              step={1}
-                              onValueChange={(value) => setLoanTerm(value[0])}
-                              className="dark:bg-gray-700"
-                            />
-                            <div className="flex justify-between mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">3 mo</span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">36 mo</span>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
-                            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Monthly Payment</p>
-                              <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">
-                                K{calculateMonthlyPayment()}
-                              </p>
-                            </div>
-                            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Interest Rate</p>
-                              <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">5.9% APR</p>
-                            </div>
-                          </div>
-                          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-                            Total repayment:{" "}
-                            <span className="font-medium">
-                              K{(Number.parseFloat(calculateMonthlyPayment()) * loanTerm).toFixed(2)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
-                        Apply Now
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg">
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>
-                      <Image
-                                              src="/digital.jpg"
-                        alt="Normal Loans"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-white font-medium">Application Progress</span>
-                          <span className="text-white text-sm">{progress}%</span>
-                        </div>
-                        <Progress
-                          value={progress}
-                          className="h-2 bg-white/20"
-                          indicatorClassName="bg-[#00CC66] dark:bg-emerald-500"
-                        />
-                        <div className="flex justify-between mt-4">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">5 min approval</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">Same-day funding</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                                  {/* Divider */}
-                                  {/* Crypto Loans */}
-
-                  {/*<div className="border-t border-gray-200 dark:border-gray-700 my-12"></div>*/}
-
-                  
-                  {/*<motion.div*/}
-                  {/*  initial={{ opacity: 0 }}*/}
-                  {/*  animate={{ opacity: 1 }}*/}
-                  {/*  transition={{ duration: 0.5, delay: 0.2 }}*/}
-                  {/*  className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"*/}
-                  {/*>*/}
-                  {/*  <div className="md:order-2">*/}
-                  {/*    <div className="flex items-center mb-4">*/}
-                  {/*      <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">*/}
-                  {/*        <Bitcoin className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />*/}
-                  {/*      </div>*/}
-                  {/*      <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">Crypto Loans</h3>*/}
-                  {/*    </div>*/}
-                  {/*    <p className="text-gray-600 dark:text-gray-300 mb-6">*/}
-                  {/*      Leverage your cryptocurrency holdings to access instant liquidity without selling your assets,*/}
-                  {/*      with competitive rates and flexible terms.*/}
-                  {/*    </p>*/}
-                  {/*    <ul className="space-y-3">*/}
-                  {/*      {[*/}
-                  {/*        "Use your crypto as collateral for instant loans",*/}
-                  {/*        "No credit checks required - your crypto is your credit",*/}
-                  {/*        "Maintain ownership of your crypto assets",*/}
-                  {/*        "Benefit from potential crypto appreciation",*/}
-                  {/*        "Multiple cryptocurrency options supported",*/}
-                  {/*      ].map((feature, index) => (*/}
-                  {/*        <li key={index} className="flex items-start">*/}
-                  {/*          <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />*/}
-                  {/*          <span className="dark:text-gray-300">{feature}</span>*/}
-                  {/*        </li>*/}
-                  {/*      ))}*/}
-                  {/*    </ul>*/}
-
-                  {/*    */}{/* Interactive Crypto Loan Calculator */}
-                  {/*    <div className="mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">*/}
-                  {/*      <h4 className="text-lg font-semibold text-[#003366] dark:text-white mb-4">*/}
-                  {/*        Crypto Loan Calculator*/}
-                  {/*      </h4>*/}
-                  {/*      <div className="space-y-4">*/}
-                  {/*        <div className="flex items-center gap-4">*/}
-                  {/*          <div className="flex-1">*/}
-                  {/*            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">*/}
-                  {/*              Crypto Amount: {cryptoAmount} {cryptoType}*/}
-                  {/*            </label>*/}
-                  {/*            <Slider*/}
-                  {/*              value={[cryptoAmount]}*/}
-                  {/*              min={0.1}*/}
-                  {/*              max={10}*/}
-                  {/*              step={0.1}*/}
-                  {/*              onValueChange={(value) => setCryptoAmount(value[0])}*/}
-                  {/*              className="dark:bg-gray-700"*/}
-                  {/*            />*/}
-                  {/*          </div>*/}
-                  {/*          <div className="w-24">*/}
-                  {/*            <select*/}
-                  {/*              value={cryptoType}*/}
-                  {/*              onChange={(e) => setCryptoType(e.target.value)}*/}
-                  {/*              className="w-full h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3"*/}
-                  {/*            >*/}
-                  {/*              <option value="BTC">BTC</option>*/}
-                  {/*              <option value="ETH">ETH</option>*/}
-                  {/*              <option value="USDC">USDC</option>*/}
-                  {/*            </select>*/}
-                  {/*          </div>*/}
-                  {/*        </div>*/}
-                  {/*        <div className="grid grid-cols-2 gap-4 mt-4">*/}
-                  {/*          <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">*/}
-                  {/*            <p className="text-xs text-gray-500 dark:text-gray-400">Collateral Value</p>*/}
-                  {/*            <p className="text-xl font-bold text-[#003366] dark:text-white">*/}
-                  {/*              ${cryptoLoanDetails.collateralValue}*/}
-                  {/*            </p>*/}
-                  {/*          </div>*/}
-                  {/*          <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">*/}
-                  {/*            <p className="text-xs text-gray-500 dark:text-gray-400">Max Loan Amount (70% LTV)</p>*/}
-                  {/*            <p className="text-xl font-bold text-[#003366] dark:text-white">*/}
-                  {/*              ${cryptoLoanDetails.maxLoanAmount}*/}
-                  {/*            </p>*/}
-                  {/*          </div>*/}
-                  {/*        </div>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-
-                  {/*    <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">*/}
-                  {/*      Get Crypto Loan*/}
-                  {/*      <ArrowRight className="ml-2 h-4 w-4" />*/}
-                  {/*    </Button>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg md:order-1">*/}
-                  {/*    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>*/}
-                  {/*    <Image*/}
-                  {/*      src="/placeholder.svg?height=800&width=600"*/}
-                  {/*      alt="Crypto Loans"*/}
-                  {/*      fill*/}
-                  {/*      className="object-cover"*/}
-                  {/*    />*/}
-                  {/*    <div className="absolute bottom-0 left-0 right-0 p-6 z-20">*/}
-                  {/*      <div className="flex flex-wrap gap-2 mb-4">*/}
-                  {/*        {["Bitcoin", "Ethereum", "USDC", "Solana", "Polkadot"].map((crypto, index) => (*/}
-                  {/*          <Badge key={index} variant="outline" className="bg-white/10 text-white border-white/20">*/}
-                  {/*            {crypto}*/}
-                  {/*          </Badge>*/}
-                  {/*        ))}*/}
-                  {/*      </div>*/}
-                  {/*      <div className="flex justify-between">*/}
-                  {/*        <div className="flex items-center">*/}
-                  {/*          <Lock className="h-4 w-4 text-white mr-1" />*/}
-                  {/*          <span className="text-white text-sm">Secure custody</span>*/}
-                  {/*        </div>*/}
-                  {/*        <div className="flex items-center">*/}
-                  {/*          <Percent className="h-4 w-4 text-white mr-1" />*/}
-                  {/*          <span className="text-white text-sm">70% LTV ratio</span>*/}
-                  {/*        </div>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</motion.div>*/}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="village-banking" className="mt-0">
-                <div className="space-y-8">
-                  {/* Individual Loans */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-                  >
-                    <div>
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
-                          <Users className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />
-                        </div>
-                        <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">Individual Loans</h3>
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        Join a village banking group on our blockchain platform to access community-powered loans with
-                        social accountability and shared growth.
-                      </p>
-                      <ul className="space-y-3">
-                        {[
-                          "Join or create a village banking group",
-                          "Access loans backed by your community",
-                          "Build credit history through group participation",
-                          "Transparent terms recorded on blockchain",
-                          "Lower interest rates through group guarantees",
-                        ].map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-800 dark:text-gray-300">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Group Status Card */}
-                      <div className="mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-                        <h4 className="text-lg font-semibold text-[#003366] dark:text-white mb-4">
-                          Village Banking Group Status
-                        </h4>
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-600 dark:text-gray-300">Active Groups Near You</span>
-                            <Badge className="bg-[#00CC66] dark:bg-emerald-600">12 Groups</Badge>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-600 dark:text-gray-300">Average Group Size</span>
-                            <span className="font-medium text-[#003366] dark:text-white">15 members</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-600 dark:text-gray-300">Average Loan Size</span>
-                            <span className="font-medium text-[#003366] dark:text-white">K2,500</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-600 dark:text-gray-300">Next Group Formation</span>
-                            <span className="font-medium text-[#003366] dark:text-white">May 15, 2025</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
-                        Join a Group
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg">
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>
-                      <Image
-                        src="/village.jpg"
-                        alt="Individual Loans"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                        <h4 className="text-white font-semibold mb-2">Active Village Banking Groups</h4>
-                        <div className="grid grid-cols-2 gap-2 mb-4">
-                          {["Sunrise Savers", "Unity Circle", "Growth Collective", "Future Fund"].map(
-                            (group, index) => (
-                              <div
-                                key={index}
-                                className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
-                              >
-                                <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
-                                  {index + 1}
-                                </div>
-                                <span className="text-white text-sm">{group}</span>
-                              </div>
-                            ),
-                          )}
-                        </div>
-                        <div className="flex justify-between">
-                          <div className="flex items-center">
-                            <Users className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">Community-backed</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Shield className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">Blockchain secured</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                                  {/* Divider */}
-                                  {/* Institution Loans */}
-                  {/*<div className="border-t border-gray-200 dark:border-gray-700 my-12"></div>*/}
-
-                 
-                  {/*<motion.div*/}
-                  {/*  initial={{ opacity: 0 }}*/}
-                  {/*  animate={{ opacity: 1 }}*/}
-                  {/*  transition={{ duration: 0.5, delay: 0.2 }}*/}
-                  {/*  className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"*/}
-                  {/*>*/}
-                  {/*  <div className="md:order-2">*/}
-                  {/*    <div className="flex items-center mb-4">*/}
-                  {/*      <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">*/}
-                  {/*        <Building className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />*/}
-                  {/*      </div>*/}
-                  {/*      <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">Institution Loans</h3>*/}
-                  {/*    </div>*/}
-                  {/*    <p className="text-gray-600 dark:text-gray-300 mb-6">*/}
-                  {/*      Empower your organization with blockchain-based village banking solutions that scale community*/}
-                  {/*      finance for cooperatives, NGOs, and businesses.*/}
-                  {/*    </p>*/}
-                  {/*    <ul className="space-y-3">*/}
-                  {/*      {[*/}
-                  {/*        "Manage multiple village banking groups",*/}
-                  {/*        "Automated loan disbursement and collection",*/}
-                  {/*        "Real-time reporting and analytics",*/}
-                  {/*        "Customizable loan terms for your community",*/}
-                  {/*        "Integration with existing financial systems",*/}
-                  {/*      ].map((feature, index) => (*/}
-                  {/*        <li key={index} className="flex items-start">*/}
-                  {/*          <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />*/}
-                  {/*          <span className="dark:text-gray-300">{feature}</span>*/}
-                  {/*        </li>*/}
-                  {/*      ))}*/}
-                  {/*    </ul>*/}
-
-                  {/*    */}{/* Institution Features */}
-                  {/*    <div className="mt-8 grid grid-cols-2 gap-4">*/}
-                  {/*      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">*/}
-                  {/*        <div className="flex items-center mb-2">*/}
-                  {/*          <Globe className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2" />*/}
-                  {/*          <h5 className="font-medium text-[#003366] dark:text-white">Global Reach</h5>*/}
-                  {/*        </div>*/}
-                  {/*        <p className="text-sm text-gray-600 dark:text-gray-300">*/}
-                  {/*          Deploy village banking across multiple regions with localized configurations.*/}
-                  {/*        </p>*/}
-                  {/*      </div>*/}
-                  {/*      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">*/}
-                  {/*        <div className="flex items-center mb-2">*/}
-                  {/*          <LineChart className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2" />*/}
-                  {/*          <h5 className="font-medium text-[#003366] dark:text-white">Advanced Analytics</h5>*/}
-                  {/*        </div>*/}
-                  {/*        <p className="text-sm text-gray-600 dark:text-gray-300">*/}
-                  {/*          Track performance metrics and gain insights into community financial health.*/}
-                  {/*        </p>*/}
-                  {/*      </div>*/}
-                  {/*      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">*/}
-                  {/*        <div className="flex items-center mb-2">*/}
-                  {/*          <ShieldCheck className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2" />*/}
-                  {/*          <h5 className="font-medium text-[#003366] dark:text-white">Compliance Tools</h5>*/}
-                  {/*        </div>*/}
-                  {/*        <p className="text-sm text-gray-600 dark:text-gray-300">*/}
-                  {/*          Built-in regulatory compliance features for different jurisdictions.*/}
-                  {/*        </p>*/}
-                  {/*      </div>*/}
-                  {/*      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">*/}
-                  {/*        <div className="flex items-center mb-2">*/}
-                  {/*          <Sparkles className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2" />*/}
-                  {/*          <h5 className="font-medium text-[#003366] dark:text-white">Custom Branding</h5>*/}
-                  {/*        </div>*/}
-                  {/*        <p className="text-sm text-gray-600 dark:text-gray-300">*/}
-                  {/*          White-label solutions with your organization's branding and identity.*/}
-                  {/*        </p>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-
-                  {/*    <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">*/}
-                  {/*      Partner With Us*/}
-                  {/*      <ArrowRight className="ml-2 h-4 w-4" />*/}
-                  {/*    </Button>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg md:order-1">*/}
-                  {/*    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>*/}
-                  {/*    <Image*/}
-                  {/*      src="/placeholder.svg?height=800&width=600"*/}
-                  {/*      alt="Institution Loans"*/}
-                  {/*      fill*/}
-                  {/*      className="object-cover"*/}
-                  {/*    />*/}
-                  {/*    <div className="absolute bottom-0 left-0 right-0 p-6 z-20">*/}
-                  {/*      <h4 className="text-white font-semibold mb-2">Partner Organizations</h4>*/}
-                  {/*      <div className="grid grid-cols-3 gap-2 mb-4">*/}
-                  {/*        {[1, 2, 3, 4, 5, 6].map((org) => (*/}
-                  {/*          <div*/}
-                  {/*            key={org}*/}
-                  {/*            className="bg-white/20 backdrop-blur-sm rounded-md p-2 flex items-center justify-center"*/}
-                  {/*          >*/}
-                  {/*            <div className="w-8 h-8 rounded-full bg-white/80 flex items-center justify-center">*/}
-                  {/*              <Building className="h-4 w-4 text-[#003366]" />*/}
-                  {/*            </div>*/}
-                  {/*          </div>*/}
-                  {/*        ))}*/}
-                  {/*      </div>*/}
-                  {/*      <div className="flex justify-between">*/}
-                  {/*        <div className="flex items-center">*/}
-                  {/*          <Lightbulb className="h-4 w-4 text-white mr-1" />*/}
-                  {/*          <span className="text-white text-sm">Custom solutions</span>*/}
-                  {/*        </div>*/}
-                  {/*        <div className="flex items-center">*/}
-                  {/*          <DollarSign className="h-4 w-4 text-white mr-1" />*/}
-                  {/*          <span className="text-white text-sm">Scale with confidence</span>*/}
-                  {/*        </div>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</motion.div>*/}
-                </div>
-              </TabsContent>
-            </div>
-          </Tabs>
+          <Suspense fallback={<ServicesTabsSkeleton />}>
+            <ServicesContent />
+          </Suspense>
         </div>
       </section>
 
@@ -788,79 +907,9 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-          <div className="overflow-x-auto pb-4 -mx-4 px-4 flex snap-x snap-mandatory gap-4 scrollbar-hide">
-            {[
-              {
-                title: "Loans",
-                icon: <Wallet className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
-                description: "Quick access to capital with AI-powered credit scoring and no collateral required.",
-                features: ["Non-collateralized", "Flexible terms", "Instant approval", "No hidden fees"],
-                cta: "Apply Now",
-                highlight: "From 5.9% APR",
-              },
-              //{
-              //  title: "Crypto Loans",
-              //  icon: <Bitcoin className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
-              //  description: "Use your cryptocurrency as collateral without selling your digital assets.",
-              //  features: ["No credit checks", "Keep your crypto", "Multiple coins supported", "Low interest rates"],
-              //  cta: "Get Crypto Loan",
-              //  highlight: "Up to 70% LTV",
-              //},
-              {
-                title: "Village Banking",
-                icon: <Users className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
-                description: "Join a community-powered banking group with social accountability and shared growth.",
-                features: ["Community support", "Lower rates", "Build credit history", "Transparent terms"],
-                cta: "Join a Group",
-                highlight: "4.5% APR",
-              },
-              //{
-              //  title: "Institution Banking",
-              //  icon: <Building className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
-              //  description: "Empower your organization with blockchain-based village banking solutions.",
-              //  features: ["Manage multiple groups", "Automated processes", "Real-time analytics", "Custom terms"],
-              //  cta: "Partner With Us",
-              //  highlight: "500+ Organizations",
-              //},
-            ].map((service, index) => (
-              <div key={index} className="min-w-[280px] w-[85%] max-w-[340px] snap-center">
-                <Card className="h-full border-none shadow-lg dark:bg-gray-800">
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">{service.icon}</div>
-                      <Badge className="bg-[#003366] dark:bg-blue-900">{service.highlight}</Badge>
-                    </div>
-                    <CardTitle className="text-[#003366] dark:text-white text-xl">{service.title}</CardTitle>
-                    <CardDescription className="dark:text-gray-300">{service.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-start">
-                          <Check className="h-4 w-4 text-[#00CC66] dark:text-emerald-400 mr-2 mt-0.5" />
-                          <span className="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button className="w-full bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
-                      {service.cta}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center mt-4 space-x-1">
-            {[0, 1, 2, 3].map((dot) => (
-              <div
-                key={dot}
-                className={`h-1.5 rounded-full ${dot === activeServiceCard ? "w-6 bg-[#00CC66] dark:bg-emerald-500" : "w-1.5 bg-gray-300 dark:bg-gray-700"}`}
-              ></div>
-            ))}
-          </div>
+          <Suspense fallback={<ServiceCardsSkeleton />}>
+            <MobileServiceCards />
+          </Suspense>
         </div>
       </section>
 
@@ -885,107 +934,9 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-          <div className="overflow-x-auto -mx-4 sm:mx-0">
-            <div className="inline-block min-w-full align-middle p-4 sm:p-0">
-              <div className="overflow-hidden rounded-lg shadow-md">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                  <thead className="bg-[#003366] dark:bg-blue-900 text-white">
-                    <tr>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
-                        Service
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Ideal For
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Key Features
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Requirements
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {[
-                      {
-                        service: "Normal Loans",
-                        icon: <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-[#00CC66] dark:text-emerald-400" />,
-                        idealFor: "Individuals and small businesses needing quick capital",
-                        features: ["AI credit scoring", "Flexible terms", "No collateral needed"],
-                        requirements: "Valid ID, 3+ months of transaction history",
-                        action: "Apply Now",
-                      },
-                      {
-                        service: "Crypto Loans",
-                        icon: <Bitcoin className="h-4 w-4 sm:h-5 sm:w-5 text-[#00CC66] dark:text-emerald-400" />,
-                        idealFor: "Crypto holders who need liquidity without selling assets",
-                        features: ["Use crypto as collateral", "No credit checks", "Keep ownership of assets"],
-                        requirements: "Cryptocurrency holdings, wallet connection",
-                        action: "Get Loan",
-                      },
-                      //{
-                      //  service: "Individual Village Banking",
-                      //  icon: <Users className="h-4 w-4 sm:h-5 sm:w-5 text-[#00CC66] dark:text-emerald-400" />,
-                      //  idealFor: "Community members seeking group-backed financing",
-                      //  features: ["Community support", "Lower rates", "Social accountability"],
-                      //  requirements: "Join a group or form a new group of 5-20 members",
-                      //  action: "Join Group",
-                      //},
-                      {
-                        service: "Institution Village Banking",
-                        icon: <Building className="h-4 w-4 sm:h-5 sm:w-5 text-[#00CC66] dark:text-emerald-400" />,
-                        idealFor: "Organizations managing community finance programs",
-                        features: ["Manage multiple groups", "Automated processes", "Custom reporting"],
-                        requirements: "Registered organization, implementation meeting",
-                        action: "Partner",
-                      },
-                    ].map((item, index) => (
-                      <tr
-                        key={index}
-                        className={index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-700"}
-                      >
-                        <td className="py-3 px-3 sm:px-6 text-xs sm:text-sm border-b border-gray-100 dark:border-gray-600">
-                          <div className="flex items-center">
-                            {item.icon}
-                            <span className="ml-1 sm:ml-2 font-medium text-[#003366] dark:text-white">
-                              {item.service}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                          {item.idealFor}
-                        </td>
-                        <td className="py-3 px-3 sm:px-6">
-                          <ul className="text-xs sm:text-sm">
-                            {item.features.map((feature, i) => (
-                              <li key={i} className="flex items-center justify-center mb-1">
-                                <Check className="h-3 w-3 sm:h-4 sm:w-4 text-[#00CC66] dark:text-emerald-400 mr-1 flex-shrink-0" />
-                                <span className="text-gray-700 dark:text-gray-300">{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </td>
-                        <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                          {item.requirements}
-                        </td>
-                        <td className="py-3 px-3 sm:px-6 text-center">
-                          <Button
-                            size="sm"
-                            className="bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800 text-xs px-2 py-1 h-auto"
-                          >
-                            {item.action}
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <Suspense fallback={<ComparisonTableSkeleton />}>
+            <ComparisonTable />
+          </Suspense>
         </div>
       </section>
 

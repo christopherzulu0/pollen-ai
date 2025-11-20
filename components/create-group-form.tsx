@@ -34,13 +34,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useToast } from "@/hooks/use-toast"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useAuth } from "@clerk/nextjs"
-import { prisma } from "@/lib/prisma"
 
 import { UploadDropzone } from "@uploadthing/react"
-import { UploadRouter } from "@/app/api/uploadthing/core"
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
-import { useUploadThing } from "@/lib/uploadthing"
+import { useUploadThing } from "@/lib/uploadthing-react"
 
 // Form schema
 const formSchema = z.object({

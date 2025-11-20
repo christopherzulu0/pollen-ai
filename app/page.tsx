@@ -201,50 +201,114 @@ export default function HomePage() {
       </AnimatePresence> */}
 
       {/* Hero Section */}
-      {/**
-        className="relative w-full py-20 md:py-32 overflow-hidden bg-gradient-to-br from-[##FFC000] via-[#003366] to-[#004488]
-       
-       **/}
       <section
         ref={heroRef}
-        className="relative w-full py-20 md:py-32 -mt-20 overflow-hidden bg-[rgb(7,8,6)]"
+        className="relative w-full py-20 md:py-32 -mt-20 overflow-hidden bg-gradient-to-br from-[#001122] via-[#003366] to-[#002244]"
       >
         <div className="absolute inset-0 overflow-hidden">
+          {/* Enhanced animated gradient orbs with vibrant colors */}
           <motion.div
             animate={{
-              scale: [1, 1.05, 1],
-              opacity: [0.1, 0.15, 0.1],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Number.POSITIVE_INFINITY,
-              repeatType: "reverse",
-            }}
-            className="absolute -top-[40%] -right-[10%] w-[70%] h-[140%] bg-[#4C4EFB]/10 rounded-full blur-3xl"
-          />
-          <motion.div
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.1, 0.2, 0.1],
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.35, 0.2],
+              x: [0, 30, 0],
+              y: [0, -20, 0],
             }}
             transition={{
               duration: 10,
               repeat: Number.POSITIVE_INFINITY,
               repeatType: "reverse",
-              delay: 1,
             }}
-            className="absolute -bottom-[40%] -left-[10%] w-[70%] h-[140%] bg-[#4C4EFB]/10 rounded-full blur-3xl"
+            className="absolute -top-[30%] -right-[5%] w-[80%] h-[150%] bg-gradient-to-br from-[#4C4EFB]/30 via-[#00CC66]/20 to-[#4C4EFB]/15 rounded-full blur-3xl"
           />
-          <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-8 [mask-image:radial-gradient(white,transparent_85%)]"></div>
+          <motion.div
+            animate={{
+              scale: [1, 1.4, 1],
+              opacity: [0.15, 0.3, 0.15],
+              x: [0, -25, 0],
+              y: [0, 30, 0],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+              delay: 1.5,
+            }}
+            className="absolute -bottom-[30%] -left-[5%] w-[80%] h-[150%] bg-gradient-to-tr from-[#FFC000]/25 via-[#4C4EFB]/20 to-[#00CC66]/15 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.25, 1],
+              opacity: [0.1, 0.2, 0.1],
+              rotate: [0, 180, 360],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-gradient-to-r from-[#00CC66]/15 via-[#4C4EFB]/20 to-[#FFC000]/10 rounded-full blur-3xl"
+          />
+          {/* Additional accent orbs */}
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+              delay: 0.5,
+            }}
+            className="absolute top-[20%] right-[20%] w-[40%] h-[40%] bg-gradient-to-br from-[#FFC000]/20 to-[#00CC66]/10 rounded-full blur-2xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.08, 0.18, 0.08],
+            }}
+            transition={{
+              duration: 9,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+              delay: 2.5,
+            }}
+            className="absolute bottom-[25%] left-[25%] w-[35%] h-[35%] bg-gradient-to-tl from-[#4C4EFB]/15 to-[#FFC000]/10 rounded-full blur-2xl"
+          />
+          {/* Enhanced grid pattern overlay */}
+          <div className="absolute inset-0 bg-grid-white/[0.1] bg-grid-8 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
+          {/* Radial gradient overlay for depth */}
+          <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_0%,rgba(0,51,102,0.1)_50%,rgba(0,17,34,0.3)_100%)]"></div>
+          {/* Shimmer effect */}
+          <motion.div
+            animate={{
+              x: ['-100%', '200%'],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent w-1/3 skew-x-12"
+          />
         </div>
 
+        {/* Smooth transition wave - using brand colors instead of gray */}
         <motion.div style={{ opacity }} className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg className="w-full" viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M0 50L48 45.7C96 41.3 192 32.7 288 29.2C384 25.7 480 27.3 576 35.8C672 44.3 768 59.7 864 64.2C960 68.7 1056 62.3 1152 55.8C1248 49.3 1344 42.7 1392 39.3L1440 36V100H1392C1344 100 1248 100 1152 100C1056 100 960 100 864 100C768 100 672 100 576 100C480 100 384 100 288 100C192 100 96 100 48 100H0V50Z"
-              fill="white"
-              fillOpacity="0.05"
+              fill="url(#heroGradient)"
+              fillOpacity="0.3"
             />
+            <defs>
+              <linearGradient id="heroGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#003366" />
+                <stop offset="50%" stopColor="#002244" />
+                <stop offset="100%" stopColor="#001122" />
+              </linearGradient>
+            </defs>
           </svg>
         </motion.div>
 
@@ -409,8 +473,6 @@ export default function HomePage() {
               </motion.div> */}
             </motion.div>
           </div>
-
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#070806] to-transparent"></div>
         </div>
       </section>
 

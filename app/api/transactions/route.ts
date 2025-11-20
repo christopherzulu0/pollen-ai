@@ -7,7 +7,7 @@ export async function GET(req: Request) {
     try {
         const { userId } = await auth()
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 })
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
         // Get the user
@@ -26,7 +26,8 @@ export async function GET(req: Request) {
         })
 
         if (!user) {
-            return new NextResponse("User not found", { status: 404 })
+            // Return empty array if user not found (user might not be set up yet)
+            return NextResponse.json([])
         }
 
         // Fetch all transactions for the user
@@ -35,18 +36,49 @@ export async function GET(req: Request) {
                 userId: user.id
             },
             include: {
-                group: true,
-                wallet: true
+                group: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                wallet: {
+                    select: {
+                        id: true
+                    }
+                }
             },
             orderBy: {
                 createdAt: 'desc'
             }
         })
 
-        return NextResponse.json(transactions)
+        // Transform transactions to match component's expected format
+        const transformedTransactions = transactions.map(transaction => ({
+            id: transaction.id,
+            amount: Number(transaction.amount),
+            type: transaction.type as "DEPOSIT" | "WITHDRAWAL",
+            status: transaction.status as "PENDING" | "COMPLETED" | "FAILED",
+            createdAt: transaction.createdAt.toISOString(),
+            momoNumber: transaction.momoNumber || "",
+            reference: transaction.reference || undefined,
+            group: transaction.group ? {
+                id: transaction.group.id,
+                name: transaction.group.name
+            } : undefined,
+            wallet: transaction.wallet ? {
+                id: transaction.wallet.id,
+                name: undefined // Wallet doesn't have a name field in schema
+            } : undefined
+        }))
+
+        return NextResponse.json(transformedTransactions)
     } catch (error) {
         console.error("[TRANSACTIONS_GET_ERROR]", error)
-        return new NextResponse("Internal Error", { status: 500 })
+        return NextResponse.json(
+            { error: "Failed to fetch transactions" },
+            { status: 500 }
+        )
     }
 }
 

@@ -10,9 +10,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -37,6 +36,103 @@ model User {
   contributions       Contribution[]
   loanRequests        LoanRequest[]     @relation("UserLoanRequests")
   loanVotes           LoanVote[]        @relation("UserLoanVotes")
+}
+
+model BlogPost {
+  id              String         @id @default(cuid())
+  title           String
+  Description     String
+  author          String
+  author_Position String
+  category        String?
+  status          String?        @default("draft")
+  Blog_image      String
+  blog_tags       String[]
+  read_time       String
+  likes           Int            @default(0)
+  views           Int            @default(0)
+  engagement      Float          @default(0)
+  posted_at       DateTime       @default(now())
+  updated_at_Date DateTime       @default(now())
+  blog_comments   BlogComment[]
+  blog_bookmarks  BlogBookmark[]
+  blog_likes      BlogLike[]
+}
+
+model BlogCategory {
+  id          String @id @default(cuid())
+  name        String
+  description String
+}
+
+model BlogComment {
+  id            String        @id @default(cuid())
+  comment       String
+  comment_by    String
+  comment_at    DateTime      @default(now())
+  comment_likes Int           @default(0)
+  blog_post_id  String
+  blog_post     BlogPost      @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  parent_id     String?
+  parent        BlogComment?  @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
+  replies       BlogComment[] @relation("CommentReplies")
+  audio_url     String?
+}
+
+model BlogBookmark {
+  id           String   @id @default(cuid())
+  user_id      String // Clerk user ID
+  blog_post_id String
+  blog_post    BlogPost @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  created_at   DateTime @default(now())
+
+  @@unique([user_id, blog_post_id])
+  @@index([user_id])
+  @@index([blog_post_id])
+}
+
+model BlogLike {
+  id           String   @id @default(cuid())
+  user_id      String // Clerk user ID
+  blog_post_id String
+  blog_post    BlogPost @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  created_at   DateTime @default(now())
+
+  @@unique([user_id, blog_post_id])
+  @@index([user_id])
+  @@index([blog_post_id])
+}
+
+model UserFollow {
+  id          String   @id @default(cuid())
+  follower_id String // Clerk user ID of the follower
+  author_name String // Name of the author being followed
+  created_at  DateTime @default(now())
+
+  @@unique([follower_id, author_name])
+  @@index([follower_id])
+  @@index([author_name])
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  name         String
+  nameKey      String?
+  description  String
+  category     String
+  status       String   @default("active") // "active" | "inactive"
+  icon         String? // Lucide React icon name (e.g., "Wallet", "Users")
+  image        String? // Image URL
+  users        Int?     @default(0)
+  revenue      Int?     @default(0)
+  growth       Float?   @default(0)
+  keyFeatures  String[]
+  requirements String[]
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
 }
 
 model Group {
@@ -107,17 +203,17 @@ model Transaction {
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   userId        String
-  user          User              @relation(fields: [userId], references: [id])
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   groupId       String?
-  group         Group?            @relation(fields: [groupId], references: [id])
+  group         Group?            @relation(fields: [groupId], references: [id], onDelete: Cascade)
   momoNumber    String?
   reference     String?           @unique
   feeAmount     Decimal?
   walletId      String?
-  wallet        Wallet?           @relation(fields: [walletId], references: [id])
+  wallet        Wallet?           @relation(fields: [walletId], references: [id], onDelete: Cascade)
   contribution  Contribution?
   loanRequestId String?
-  loanRequest   LoanRequest?      @relation(fields: [loanRequestId], references: [id])
+  loanRequest   LoanRequest?      @relation(fields: [loanRequestId], references: [id], onDelete: Cascade)
 }
 
 model PersonalSavings {
@@ -258,7 +354,7 @@ model Contribution {
   groupId       String
   group         Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
   transactionId String?           @unique
-  transaction   Transaction?      @relation(fields: [transactionId], references: [id])
+  transaction   Transaction?      @relation(fields: [transactionId], references: [id], onDelete: Cascade)
 }
 
 model LoanRequest {
