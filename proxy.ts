@@ -11,6 +11,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/services",
   "/api/blog-posts(.*)",  // Matches /api/blog-posts and /api/blog-posts/[id] and all sub-routes
   "/api/blog(.*)",
+  "/api/translate", // Allow public access to translation API
   "/blog(.*)",  // Matches /blog and /blog/[id] and any other blog routes
   "/contact"
 ]);

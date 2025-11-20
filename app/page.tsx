@@ -22,6 +22,9 @@ import {
   FileText,
   Wifi,
   BookOpen,
+  Check,
+  ChevronDown,
+  Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -29,6 +32,15 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
 import AnimatedCounter from "@/components/animated-counter"
 import FeatureCard from "@/components/feature-card"
 import LoanCalculator from "@/components/loan-calculator"
@@ -54,8 +66,174 @@ import BudgetPlanner from "@/components/budget-planner"
 import TeamSection from "@/components/team-section"
 import StatisticsSection from "@/components/statistics-section"
 import BlogSection from "@/components/blog-section"
+import { useQuery } from "@tanstack/react-query"
+import { DEFAULT_TRANSLATIONS } from "@/lib/translations"
+import { toast } from "sonner"
+
+type Language = "en" | "bem" | "nya" | "to" | "loz" | "kqn" | "lun"
+
+async function fetchTranslation(targetLanguage: Language) {
+  if (targetLanguage === "en") {
+    return DEFAULT_TRANSLATIONS.en
+  }
+
+  console.log(`[fetchTranslation] Starting translation to ${targetLanguage}`)
+  
+  try {
+    const response = await fetch("/api/translate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: DEFAULT_TRANSLATIONS.en,
+        targetLanguage,
+      }),
+    })
+
+    console.log(`[fetchTranslation] Response status: ${response.status}`)
+
+    const data = await response.json()
+    console.log(`[fetchTranslation] Response data:`, data)
+
+    if (data.warning) {
+      console.warn("[fetchTranslation] Warning:", data.warning)
+      toast.warning(data.warning)
+      return DEFAULT_TRANSLATIONS.en
+    }
+
+    if (!response.ok || data.error) {
+      console.error("[fetchTranslation] Error:", data.error, "Details:", data.details)
+      const errorMessage = data.error || "Translation failed"
+      const errorDetails = data.details ? ` ${data.details}` : ""
+      throw new Error(`${errorMessage}${errorDetails}`)
+    }
+
+    if (data.translation) {
+      console.log(`[fetchTranslation] Translation successful for ${targetLanguage}`)
+      return data.translation
+    }
+
+    throw new Error("No translation data received")
+  } catch (error: any) {
+    console.error("[fetchTranslation] Translation error:", error)
+    toast.error(error.message || "Failed to translate content. Using English.")
+    // Fallback to English if translation fails
+    return DEFAULT_TRANSLATIONS.en
+  }
+}
 
 export default function HomePage() {
+  const [language, setLanguage] = useState<Language>("en")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  
+  const [isTranslatingState, setIsTranslatingState] = useState(false)
+  
+  const { data: t, isLoading, isFetching, error: translationError, refetch } = useQuery({
+    queryKey: ["translation", language],
+    queryFn: () => {
+      console.log("Fetching translation for language:", language)
+      setIsTranslatingState(true)
+      return fetchTranslation(language)
+    },
+    initialData: DEFAULT_TRANSLATIONS.en,
+    staleTime: 0, // Always refetch when language changes
+    gcTime: 5 * 60 * 1000, // Cache for 5 minutes (garbage collection time in React Query v5)
+    enabled: true, // Ensure query is enabled
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  })
+
+  // Combine isLoading and isFetching, and use local state
+  const isTranslating = (isLoading || isFetching || isTranslatingState) && language !== "en"
+
+  // Update local state when fetch completes
+  useEffect(() => {
+    if (!isFetching && !isLoading && language !== "en") {
+      // Small delay to ensure smooth transition
+      const timer = setTimeout(() => {
+        setIsTranslatingState(false)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [isFetching, isLoading, language])
+
+  const languages = [
+    { code: "en" as const, name: "English" },
+    { code: "bem" as const, name: "Bemba" },
+    { code: "nya" as const, name: "Nyanja" },
+    { code: "to" as const, name: "Tonga" },
+    { code: "loz" as const, name: "Lozi" },
+    { code: "kqn" as const, name: "Kaonde" },
+    { code: "lun" as const, name: "Lunda" },
+  ]
+
+  // Show translation loader toast
+  const toastIdRef = useRef<string | number | null>(null)
+  const hasShownSuccessRef = useRef(false)
+
+  useEffect(() => {
+    if (isTranslating && !toastIdRef.current) {
+      // Show loading toast when translation starts (only if not already showing)
+      hasShownSuccessRef.current = false
+      const languageName = languages.find(l => l.code === language)?.name || language
+      const toastId = toast.loading("Translating content...", {
+        description: `Translating to ${languageName}`,
+        duration: Infinity, // Keep it visible until we dismiss it
+      })
+      toastIdRef.current = toastId
+    } else if (!isTranslating && toastIdRef.current) {
+      // Dismiss loading toast when translation completes
+      toast.dismiss(toastIdRef.current)
+      toastIdRef.current = null
+      
+      // Show success toast only if translation was successful and we haven't shown it yet
+      if (language !== "en" && t && !translationError && !hasShownSuccessRef.current) {
+        hasShownSuccessRef.current = true
+        const languageName = languages.find(l => l.code === language)?.name || language
+        toast.success("Translation complete!", {
+          description: `Content has been translated to ${languageName}`,
+          duration: 3000,
+        })
+      }
+    }
+    
+    // Reset success ref when language changes
+    if (language === "en") {
+      hasShownSuccessRef.current = false
+    }
+  }, [isTranslating, language, t, translationError])
+
+  // Debug: Log language changes and translation state
+  useEffect(() => {
+    console.log("Language changed to:", language)
+    console.log("Translation data:", t)
+    console.log("Is translating:", isTranslating)
+    console.log("Is loading:", isLoading)
+    console.log("Is fetching:", isFetching)
+    console.log("Is translating state:", isTranslatingState)
+    if (translationError) {
+      console.error("Translation error:", translationError)
+    }
+  }, [language, t, isTranslating, isLoading, isFetching, isTranslatingState, translationError])
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    console.log("Changing language from", language, "to", newLanguage)
+    if (newLanguage !== language) {
+      // Reset translation state
+      setIsTranslatingState(false)
+      setIsDropdownOpen(false)
+      
+      // Set loading state immediately when switching to a non-English language
+      if (newLanguage !== "en") {
+        setIsTranslatingState(true)
+      }
+      
+      // Update language - this will trigger React Query refetch
+      setLanguage(newLanguage)
+    }
+  }
+
   const [showNotification, setShowNotification] = useState(false)
   const [showFab, setShowFab] = useState(false)
   const heroRef = useRef(null)
@@ -87,6 +265,170 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen" >
+      {/* Language Switcher - Floating Top Right */}
+      <div className="fixed top-4 right-4 z-50">
+        <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 rounded-full px-3 md:px-4 pointer-events-auto"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                console.log("Button clicked, opening dropdown")
+              }}
+            >
+              <Globe className="h-4 w-4 mr-2" />
+              <span className="hidden md:inline">{languages.find(l => l.code === language)?.name}</span>
+              {isTranslating ? (
+                <Loader2 className="h-3 w-3 ml-1 md:ml-2 animate-spin" />
+              ) : (
+                <ChevronDown className="h-3 w-3 ml-1 md:ml-2 opacity-70" />
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="end" 
+            className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-[100] min-w-[180px]"
+            onCloseAutoFocus={(e) => e.preventDefault()}
+            onInteractOutside={(e) => {
+              // Allow closing on outside click
+            }}
+          >
+            {/* English Option */}
+            {languages.filter(lang => lang.code === "en").map((lang) => (
+              <DropdownMenuItem 
+                key={lang.code}
+                className="cursor-pointer flex items-center justify-between hover:bg-accent"
+                onSelect={(e) => {
+                  e.preventDefault()
+                  console.log("Selecting language:", lang.code)
+                  handleLanguageChange(lang.code as Language)
+                }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  console.log("Click handler triggered for:", lang.code)
+                  handleLanguageChange(lang.code as Language)
+                }}
+              >
+                <span className="flex-1">{lang.name}</span>
+                {language === lang.code && <Check className="h-3 w-3 text-green-500 ml-2" />}
+              </DropdownMenuItem>
+            ))}
+            
+            <DropdownMenuSeparator />
+            
+            {/* Zambian Languages Section */}
+            <DropdownMenuLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-2 py-1.5">
+              Zambian Languages Available
+            </DropdownMenuLabel>
+            
+            {languages.filter(lang => lang.code !== "en").map((lang) => (
+              <DropdownMenuItem 
+                key={lang.code}
+                className="cursor-pointer flex items-center justify-between hover:bg-accent"
+                onSelect={(e) => {
+                  e.preventDefault()
+                  console.log("Selecting language:", lang.code)
+                  handleLanguageChange(lang.code as Language)
+                }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  console.log("Click handler triggered for:", lang.code)
+                  handleLanguageChange(lang.code as Language)
+                }}
+              >
+                <span className="flex-1">{lang.name}</span>
+                {language === lang.code && <Check className="h-3 w-3 text-green-500 ml-2" />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Translation Loading Overlay */}
+      <AnimatePresence>
+        {isTranslating && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-[9999] flex items-center justify-center"
+          >
+            <div className="w-full h-full flex flex-col items-center justify-center relative">
+              {/* Loading Indicator - Centered */}
+              <div className="flex flex-col items-center justify-center space-y-6 z-10">
+                <Loader2 className="h-12 w-12 animate-spin text-[#4C4EFB]" />
+                <div className="text-center space-y-2">
+                  <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                    Translating content...
+                  </p>
+                  <p className="text-base text-gray-600 dark:text-gray-400">
+                    Translating to {languages.find(l => l.code === language)?.name || language}
+                  </p>
+                </div>
+              </div>
+
+              {/* Background Skeletons - Subtle */}
+              <div className="absolute inset-0 opacity-20 pointer-events-none">
+                <div className="max-w-4xl w-full mx-auto px-4 py-8 space-y-8">
+                  {/* Hero Section Skeleton */}
+                  <div className="space-y-4">
+                    <Skeleton className="h-4 w-32 mx-auto" />
+                    <Skeleton className="h-12 w-3/4 mx-auto" />
+                    <Skeleton className="h-12 w-2/3 mx-auto" />
+                    <Skeleton className="h-6 w-1/2 mx-auto" />
+                    <div className="flex justify-center gap-4 mt-6">
+                      <Skeleton className="h-10 w-32" />
+                      <Skeleton className="h-10 w-32" />
+                    </div>
+                  </div>
+
+                  {/* Features Section Skeleton */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                    {[1, 2, 3].map((i) => (
+                      <Card key={i} className="border-none shadow-lg">
+                        <CardContent className="p-6 space-y-4">
+                          <Skeleton className="h-12 w-12 rounded-full" />
+                          <Skeleton className="h-6 w-3/4" />
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-5/6" />
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  {/* Content Section Skeleton */}
+                  <div className="space-y-6 mt-12">
+                    <Skeleton className="h-8 w-1/3" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-4/5" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                      {[1, 2].map((i) => (
+                        <Card key={i} className="border-none shadow-lg">
+                          <CardContent className="p-6 space-y-4">
+                            <Skeleton className="h-6 w-2/3" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-5/6" />
+                            <div className="flex gap-2 mt-4">
+                              <Skeleton className="h-5 w-16" />
+                              <Skeleton className="h-5 w-16" />
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Notification */}
       {/* <AnimatePresence>
         {showNotification && (
@@ -327,7 +669,7 @@ export default function HomePage() {
                 className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium"
               >
                 <span className="flex h-2 w-2 rounded-full bg-[#4C4EFB] mr-2"></span>
-                <span className="animate-pulse">Empowering Financial Inclusion</span>
+                <span className="animate-pulse">{t.hero.badge}</span>
               </motion.div>
               <motion.h1
                 initial={{ opacity: 0 }}
@@ -335,9 +677,9 @@ export default function HomePage() {
                 transition={{ delay: 0.5, duration: 0.8 }}
                 className="text-4xl md:text-6xl font-bold tracking-tighter text-white leading-tight"
               >
-                AI & Blockchain for{" "}
+                {t.hero.title_prefix}{" "}
                 <span className="text-[#4C4EFB] relative">
-                  Financial Freedom
+                  {t.hero.title_highlight}
                   <motion.svg
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -362,8 +704,7 @@ export default function HomePage() {
                 transition={{ delay: 0.7, duration: 0.8 }}
                 className="text-white/80 text-lg md:text-xl max-w-[600px]"
               >
-                Providing accessible financial services to underserved communities through innovative technology
-                solutions.
+                {t.hero.description}
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -375,7 +716,7 @@ export default function HomePage() {
                   size="lg"
                   className="bg-[#4C4EFB] hover:bg-[#FFC000] text-white rounded-full group transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#4C4EFB]/20"
                 >
-                  Get Started Today
+                  {t.hero.cta_primary}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
                 <Button
@@ -383,7 +724,7 @@ export default function HomePage() {
                   className="text-white border border-white/30 bg-transparent hover:bg-white/10 rounded-full backdrop-blur-sm"
                 >
                   <Play className="mr-2 h-4 w-4" />
-                  Watch Demo
+                  {t.hero.cta_secondary}
                 </Button>
               </motion.div>
             </motion.div>
@@ -408,8 +749,8 @@ export default function HomePage() {
                 />
                 <div className="absolute inset-0 "></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <p className="font-bold text-xl">Empowering Communities</p>
-                  <p className="text-white/80">Through financial technology</p>
+                  <p className="font-bold text-xl">{t.hero.image_caption_title}</p>
+                  <p className="text-white/80">{t.hero.image_caption_text}</p>
                 </div>
               </motion.div>
               <motion.div
@@ -517,12 +858,12 @@ export default function HomePage() {
           >
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
               <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
-              Our Mission
+              {t.mission.badge}
             </div>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
-              Revolutionizing Access to{" "}
+              {t.mission.title_prefix}{" "}
               <span className="relative inline-block text-[#4C4EFB]">
-                Financial Services
+                {t.mission.title_highlight}
                 {/* <motion.svg
                   initial={{ pathLength: 0 }}
                   whileInView={{ pathLength: 1 }}
@@ -538,8 +879,7 @@ export default function HomePage() {
               </span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
-              Pollen combines artificial intelligence and blockchain technology to create innovative financial
-              solutions for the 70% of Zambians who lack access to traditional banking services.
+              {t.mission.description}
             </p>
           </motion.div>
 
@@ -547,22 +887,22 @@ export default function HomePage() {
             {[
               {
                 icon: <Zap className="h-10 w-10 text-white" />,
-                title: "Digital Loans",
-                description: "Low-interest loans backed by stablecoins with AI-powered credit scoring.",
+                title: t.features.loans.title,
+                description: t.features.loans.description,
                 iconBg: "bg-gradient-to-br from-[#4C4EFB] to-[#00AA44]",
                 delay: 0,
               },
               {
                 icon: <Shield className="h-10 w-10 text-white" />,
-                title: "Village bank",
-                description: "Decentralised village banking protocols enables users  to pool funds together and conduct peer to peer lending",
+                title: t.features.village_bank.title,
+                description: t.features.village_bank.description,
                 iconBg: "bg-gradient-to-br from-[#003366] to-[#002244]",
                 delay: 0.2,
               },
               {
                 icon: <BarChart3 className="h-10 w-10 text-white" />,
-                title: "AI Credit Scoring",
-                description: "AI powered credit scoring helps to assess a borrower's creditworthiness by analysing financial, behavioural, and alternative data",
+                title: t.features.credit_scoring.title,
+                description: t.features.credit_scoring.description,
                 iconBg: "bg-gradient-to-br from-[#4C4EFB] to-[#00AA44]",
                 delay: 0.4,
               },
@@ -601,79 +941,18 @@ export default function HomePage() {
           >
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
               <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
-              Current Challenges
+              {t.challenges.badge}
             </div>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
-              Shortfalls of Existing <span className="text-[#4C4EFB]">Banking Services</span>
+              {t.challenges.title_prefix} <span className="text-[#4C4EFB]">{t.challenges.title_highlight}</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
-              Understanding the limitations of traditional banking services in Zambia
+              {t.challenges.description}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Limited Physical Access",
-                description: "Many rural areas lack physical bank branches, making it difficult for residents to access basic banking services.",
-                icon: <MapPin className="h-6 w-6 text-[#4C4EFB]" />,
-                listItems: [
-                  "Remote locations without bank branches",
-                  "Long travel distances to nearest bank",
-                  "Limited banking hours in rural areas"
-                ]
-              },
-              {
-                title: "High Transaction Costs",
-                description: "Traditional banks often charge high fees for basic transactions, making banking unaffordable for many.",
-                icon: <DollarSign className="h-6 w-6 text-[#4C4EFB]" />,
-                listItems: [
-                  "High account maintenance fees",
-                  "Expensive transfer charges",
-                  "Minimum balance requirements"
-                ]
-              },
-              {
-                title: "Stringent Requirements",
-                description: "Complex documentation and strict eligibility criteria prevent many from opening accounts.",
-                icon: <FileText className="h-6 w-6 text-[#4C4EFB]" />,
-                listItems: [
-                  "Complex KYC procedures",
-                  "Multiple document requirements",
-                  "Strict eligibility criteria"
-                ]
-              },
-              {
-                title: "Limited Credit Access",
-                description: "Small businesses and individuals struggle to access credit due to traditional credit scoring methods.",
-                icon: <CreditCard className="h-6 w-6 text-[#4C4EFB]" />,
-                listItems: [
-                  "Traditional credit scoring limitations",
-                  "High interest rates",
-                  "Collateral requirements"
-                ]
-              },
-              {
-                title: "Poor Digital Infrastructure",
-                description: "Insufficient digital banking infrastructure limits access to online financial services.",
-                icon: <Wifi className="h-6 w-6 text-[#4C4EFB]" />,
-                listItems: [
-                  "Limited internet connectivity",
-                  "Unreliable mobile networks",
-                  "Basic digital literacy challenges"
-                ]
-              },
-              {
-                title: "Financial Literacy Gap",
-                description: "Limited financial education prevents many from understanding and utilizing banking services effectively.",
-                icon: <BookOpen className="h-6 w-6 text-[#4C4EFB]" />,
-                listItems: [
-                  "Lack of financial education",
-                  "Limited understanding of banking services",
-                  "Cultural barriers to banking"
-                ]
-              },
-            ].map((item, index) => (
+            {t.challenges.items.map((item: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -683,12 +962,19 @@ export default function HomePage() {
                 className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
               >
                 <div className="w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mb-4">
-                  {item.icon}
+                  {[
+                     <MapPin key="map" className="h-6 w-6 text-[#4C4EFB]" />,
+                     <DollarSign key="dollar" className="h-6 w-6 text-[#4C4EFB]" />,
+                     <FileText key="file" className="h-6 w-6 text-[#4C4EFB]" />,
+                     <CreditCard key="card" className="h-6 w-6 text-[#4C4EFB]" />,
+                     <Wifi key="wifi" className="h-6 w-6 text-[#4C4EFB]" />,
+                     <BookOpen key="book" className="h-6 w-6 text-[#4C4EFB]" />
+                  ][index] || <Zap className="h-6 w-6 text-[#4C4EFB]" />}
                 </div>
                 <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">{item.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{item.description}</p>
                 <ul className="space-y-2">
-                  {item.listItems.map((listItem, idx) => (
+                  {item.list.map((listItem: string, idx: number) => (
                     <li key={idx} className="flex items-start text-sm text-gray-600 dark:text-gray-300">
                       <span className="text-[#4C4EFB] mr-2">•</span>
                       {listItem}
