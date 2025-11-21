@@ -307,10 +307,10 @@ function ServicesContent() {
   const defaultTab = categories.length > 0 ? categoryToSlug(categories[0]) : ""
 
   if (categories.length === 0) {
-    return (
+  return (
       <div className="text-center py-12">
         <p className="text-gray-600 dark:text-gray-300">No active services available at the moment.</p>
-      </div>
+          </div>
     )
   }
 
@@ -332,10 +332,10 @@ function ServicesContent() {
               </TabsTrigger>
             )
           })}
-        </TabsList>
+            </TabsList>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
+            <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
         {categories.map((category) => {
           const categoryServices = servicesByCategory[category]
           const isDigitalLoans = category.toLowerCase().includes("digital") || category.toLowerCase().includes("loan")
@@ -343,7 +343,7 @@ function ServicesContent() {
           
           return (
             <TabsContent key={category} value={categoryToSlug(category)} className="mt-0">
-              <div className="space-y-8">
+                <div className="space-y-8">
                 {categoryServices.map((service) => {
                   // Debug: Log service data to check icon
                   if (process.env.NODE_ENV === 'development') {
@@ -465,54 +465,54 @@ function ServicesContent() {
                       <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
                         {isDigitalLoans ? (
                           <>
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-white font-medium">Application Progress</span>
-                              <span className="text-white text-sm">{progress}%</span>
-                            </div>
-                            <Progress
-                              value={progress}
-                              className="h-2 bg-white/20"
-                              indicatorClassName="bg-[#00CC66] dark:bg-emerald-500"
-                            />
-                            <div className="flex justify-between mt-4">
-                              <div className="flex items-center">
-                                <Clock className="h-4 w-4 text-white mr-1" />
-                                <span className="text-white text-sm">5 min approval</span>
-                              </div>
-                              <div className="flex items-center">
-                                <Calendar className="h-4 w-4 text-white mr-1" />
-                                <span className="text-white text-sm">Same-day funding</span>
-                              </div>
-                            </div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-white font-medium">Application Progress</span>
+                          <span className="text-white text-sm">{progress}%</span>
+                        </div>
+                        <Progress
+                          value={progress}
+                          className="h-2 bg-white/20"
+                          indicatorClassName="bg-[#00CC66] dark:bg-emerald-500"
+                        />
+                        <div className="flex justify-between mt-4">
+                          <div className="flex items-center">
+                            <Clock className="h-4 w-4 text-white mr-1" />
+                            <span className="text-white text-sm">5 min approval</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Calendar className="h-4 w-4 text-white mr-1" />
+                            <span className="text-white text-sm">Same-day funding</span>
+                          </div>
+                        </div>
                           </>
                         ) : isVillageBanking ? (
                           <>
-                            <h4 className="text-white font-semibold mb-2">Active Village Banking Groups</h4>
-                            <div className="grid grid-cols-2 gap-2 mb-4">
-                              {["Sunrise Savers", "Unity Circle", "Growth Collective", "Future Fund"].map(
-                                (group, index) => (
-                                  <div
-                                    key={index}
-                                    className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
-                                  >
-                                    <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
-                                      {index + 1}
-                                    </div>
-                                    <span className="text-white text-sm">{group}</span>
-                                  </div>
-                                ),
-                              )}
-                            </div>
-                            <div className="flex justify-between">
-                              <div className="flex items-center">
-                                <Users className="h-4 w-4 text-white mr-1" />
-                                <span className="text-white text-sm">Community-backed</span>
+                        <h4 className="text-white font-semibold mb-2">Active Village Banking Groups</h4>
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                          {["Sunrise Savers", "Unity Circle", "Growth Collective", "Future Fund"].map(
+                            (group, index) => (
+                              <div
+                                key={index}
+                                className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
+                              >
+                                <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
+                                  {index + 1}
+                                </div>
+                                <span className="text-white text-sm">{group}</span>
                               </div>
-                              <div className="flex items-center">
-                                <Shield className="h-4 w-4 text-white mr-1" />
-                                <span className="text-white text-sm">Blockchain secured</span>
-                              </div>
-                            </div>
+                            ),
+                          )}
+                        </div>
+                        <div className="flex justify-between">
+                          <div className="flex items-center">
+                            <Users className="h-4 w-4 text-white mr-1" />
+                            <span className="text-white text-sm">Community-backed</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Shield className="h-4 w-4 text-white mr-1" />
+                            <span className="text-white text-sm">Blockchain secured</span>
+                          </div>
+                        </div>
                           </>
                         ) : (
                           <div>
@@ -525,8 +525,8 @@ function ServicesContent() {
                   </motion.div>
                   )
                 })}
-              </div>
-            </TabsContent>
+                </div>
+              </TabsContent>
           )
         })}
             </div>
@@ -644,7 +644,7 @@ function ComparisonTable() {
                     console.log('Table Service:', service.name, 'Icon from DB:', service.icon, 'Category:', service.category)
                   }
                   return (
-                  <tr
+                      <tr
                     key={service.id}
                         className={index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-700"}
                       >

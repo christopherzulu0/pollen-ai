@@ -266,24 +266,26 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen" >
       {/* Language Switcher - Floating Top Right */}
-      <div className="fixed top-4 right-4 z-50">
+      {/* Mobile: Below navbar (top-24 = 96px), Desktop: Near top, offset to avoid navbar buttons */}
+      <div className="fixed top-24 left-4 md:top-6 md:left-auto md:right-[180px] lg:right-[200px] z-[100]">
         <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
-              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 rounded-full px-3 md:px-4 pointer-events-auto"
+              className="bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white border-[#4C4EFB] dark:bg-[#4C4EFB] dark:hover:bg-[#4C4EFB]/90 dark:text-white dark:border-[#4C4EFB] backdrop-blur-md rounded-full px-3 md:px-4 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
                 console.log("Button clicked, opening dropdown")
               }}
             >
-              <Globe className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">{languages.find(l => l.code === language)?.name}</span>
+              <Globe className="h-4 w-4 mr-2 text-white" />
+              <span className="hidden md:inline font-medium">{languages.find(l => l.code === language)?.name}</span>
+              <span className="md:hidden font-medium">{languages.find(l => l.code === language)?.name.substring(0, 3)}</span>
               {isTranslating ? (
-                <Loader2 className="h-3 w-3 ml-1 md:ml-2 animate-spin" />
+                <Loader2 className="h-3 w-3 ml-1 md:ml-2 animate-spin text-white" />
               ) : (
-                <ChevronDown className="h-3 w-3 ml-1 md:ml-2 opacity-70" />
+                <ChevronDown className="h-3 w-3 ml-1 md:ml-2 opacity-90 text-white" />
               )}
             </Button>
           </DropdownMenuTrigger>
@@ -348,80 +350,122 @@ export default function HomePage() {
         </DropdownMenu>
       </div>
 
-      {/* Translation Loading Overlay */}
+      {/* Translation Loading Overlay with Enhanced Skeleton */}
       <AnimatePresence>
         {isTranslating && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-[9999] flex items-center justify-center"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-[9999] flex items-center justify-center overflow-hidden"
           >
-            <div className="w-full h-full flex flex-col items-center justify-center relative">
-              {/* Loading Indicator - Centered */}
-              <div className="flex flex-col items-center justify-center space-y-6 z-10">
-                <Loader2 className="h-12 w-12 animate-spin text-[#4C4EFB]" />
-                <div className="text-center space-y-2">
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    Translating content...
-                  </p>
-                  <p className="text-base text-gray-600 dark:text-gray-400">
-                    Translating to {languages.find(l => l.code === language)?.name || language}
-                  </p>
+            {/* Animated Background Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4C4EFB]/5 via-transparent to-[#00CC66]/5 dark:from-[#4C4EFB]/10 dark:via-transparent dark:to-[#00CC66]/10 animate-pulse" />
+            
+            <div className="w-full h-full flex flex-col items-center justify-center relative px-4 py-8">
+              {/* Main Loading Indicator - Prominent */}
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-col items-center justify-center space-y-6 z-20 mb-8"
+              >
+                <div className="relative">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  >
+                    <div className="h-16 w-16 rounded-full border-4 border-[#4C4EFB]/20 dark:border-[#4C4EFB]/30" />
+                  </motion.div>
+                  <Loader2 className="h-12 w-12 animate-spin text-[#4C4EFB] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                 </div>
-              </div>
+                <div className="text-center space-y-3">
+                  <motion.p 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#4C4EFB] to-[#00CC66] bg-clip-text text-transparent"
+                  >
+                    Translating content...
+                  </motion.p>
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-base md:text-lg text-gray-600 dark:text-gray-300 font-medium"
+                  >
+                    Translating to {languages.find(l => l.code === language)?.name || language}
+                  </motion.p>
+                </div>
+              </motion.div>
 
-              {/* Background Skeletons - Subtle */}
-              <div className="absolute inset-0 opacity-20 pointer-events-none">
-                <div className="max-w-4xl w-full mx-auto px-4 py-8 space-y-8">
+              {/* Enhanced Skeleton Loaders - More Visible */}
+              <div className="absolute inset-0 opacity-30 dark:opacity-20 pointer-events-none overflow-y-auto">
+                <div className="max-w-4xl w-full mx-auto px-4 py-8 space-y-8 mt-20 md:mt-32">
                   {/* Hero Section Skeleton */}
-                  <div className="space-y-4">
-                    <Skeleton className="h-4 w-32 mx-auto" />
-                    <Skeleton className="h-12 w-3/4 mx-auto" />
-                    <Skeleton className="h-12 w-2/3 mx-auto" />
-                    <Skeleton className="h-6 w-1/2 mx-auto" />
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="space-y-4"
+                  >
+                    <Skeleton className="h-4 w-32 mx-auto bg-[#4C4EFB]/20 dark:bg-[#4C4EFB]/30" />
+                    <Skeleton className="h-12 md:h-16 w-3/4 mx-auto bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700" />
+                    <Skeleton className="h-12 md:h-16 w-2/3 mx-auto bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700" />
+                    <Skeleton className="h-6 md:h-8 w-1/2 mx-auto bg-gray-200/80 dark:bg-gray-700/80" />
                     <div className="flex justify-center gap-4 mt-6">
-                      <Skeleton className="h-10 w-32" />
-                      <Skeleton className="h-10 w-32" />
+                      <Skeleton className="h-10 md:h-12 w-28 md:w-32 bg-[#00CC66]/20 dark:bg-[#00CC66]/30" />
+                      <Skeleton className="h-10 md:h-12 w-28 md:w-32 bg-gray-200/80 dark:bg-gray-700/80" />
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Features Section Skeleton */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12"
+                  >
                     {[1, 2, 3].map((i) => (
-                      <Card key={i} className="border-none shadow-lg">
-                        <CardContent className="p-6 space-y-4">
-                          <Skeleton className="h-12 w-12 rounded-full" />
-                          <Skeleton className="h-6 w-3/4" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-5/6" />
+                      <Card key={i} className="border-none shadow-xl bg-white/50 dark:bg-gray-800/50">
+                        <CardContent className="p-4 md:p-6 space-y-3 md:space-y-4">
+                          <Skeleton className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-[#4C4EFB]/20 dark:bg-[#4C4EFB]/30" />
+                          <Skeleton className="h-5 md:h-6 w-3/4 bg-gray-200 dark:bg-gray-700" />
+                          <Skeleton className="h-4 w-full bg-gray-200/80 dark:bg-gray-700/80" />
+                          <Skeleton className="h-4 w-5/6 bg-gray-200/60 dark:bg-gray-700/60" />
                         </CardContent>
                       </Card>
                     ))}
-                  </div>
+                  </motion.div>
 
                   {/* Content Section Skeleton */}
-                  <div className="space-y-6 mt-12">
-                    <Skeleton className="h-8 w-1/3" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-4/5" />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                    className="space-y-4 md:space-y-6 mt-8 md:mt-12"
+                  >
+                    <Skeleton className="h-6 md:h-8 w-1/3 bg-[#4C4EFB]/20 dark:bg-[#4C4EFB]/30" />
+                    <Skeleton className="h-4 w-full bg-gray-200 dark:bg-gray-700" />
+                    <Skeleton className="h-4 w-full bg-gray-200/80 dark:bg-gray-700/80" />
+                    <Skeleton className="h-4 w-4/5 bg-gray-200/60 dark:bg-gray-700/60" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6 md:mt-8">
                       {[1, 2].map((i) => (
-                        <Card key={i} className="border-none shadow-lg">
-                          <CardContent className="p-6 space-y-4">
-                            <Skeleton className="h-6 w-2/3" />
-                            <Skeleton className="h-4 w-full" />
-                            <Skeleton className="h-4 w-5/6" />
-                            <div className="flex gap-2 mt-4">
-                              <Skeleton className="h-5 w-16" />
-                              <Skeleton className="h-5 w-16" />
+                        <Card key={i} className="border-none shadow-xl bg-white/50 dark:bg-gray-800/50">
+                          <CardContent className="p-4 md:p-6 space-y-3 md:space-y-4">
+                            <Skeleton className="h-5 md:h-6 w-2/3 bg-gray-200 dark:bg-gray-700" />
+                            <Skeleton className="h-4 w-full bg-gray-200/80 dark:bg-gray-700/80" />
+                            <Skeleton className="h-4 w-5/6 bg-gray-200/60 dark:bg-gray-700/60" />
+                            <div className="flex gap-2 mt-3 md:mt-4">
+                              <Skeleton className="h-4 md:h-5 w-12 md:w-16 bg-[#00CC66]/20 dark:bg-[#00CC66]/30" />
+                              <Skeleton className="h-4 md:h-5 w-12 md:w-16 bg-gray-200/80 dark:bg-gray-700/80" />
                             </div>
                           </CardContent>
                         </Card>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
