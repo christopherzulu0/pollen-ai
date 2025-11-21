@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { DEFAULT_TRANSLATIONS } from "@/lib/translations"
 
+// Increase timeout for Vercel (max 60s on Pro, 10s on Hobby)
+export const maxDuration = 60
+export const runtime = 'nodejs'
+
 export async function POST(req: Request) {
   try {
     const body = await req.json()
@@ -14,8 +18,9 @@ export async function POST(req: Request) {
 
     // Validate payload size (OpenAI has limits)
     const payloadSize = JSON.stringify(text).length
-    if (payloadSize > 100000) { // ~100KB limit
+    if (payloadSize > 50000) { // ~50KB limit to reduce processing time
       console.warn(`[Translate API] Large payload detected: ${payloadSize} bytes`)
+      // For large payloads, we'll optimize the request
     }
 
     // If requesting English, return default English translations
@@ -50,36 +55,43 @@ export async function POST(req: Request) {
     const targetLanguageName = languageNames[targetLanguage] || targetLanguage
     console.log(`Translating to ${targetLanguageName} (${targetLanguage})...`)
 
-    // Call OpenAI API
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini", // Efficient model for translation
-        messages: [
-          {
-            role: "system",
-            content: `You are a professional translator for a financial technology application called 'Pollen'. 
-            Translate the provided JSON content into ${targetLanguageName} (language code: ${targetLanguage}).
-            Maintain the exact JSON structure and keys - do not change any key names.
-            Keep technical terms like 'AI', 'Blockchain', 'Digital Loans' if they are commonly used in the target language, otherwise translate them appropriately.
-            Ensure the tone is professional, empowering, and clear.
-            Return only valid JSON with the same structure as the input.`
-          },
-          {
-            role: "user",
-            content: JSON.stringify(text)
-          }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.3,
-      }),
-    })
+    // Optimize system prompt for faster processing
+    const systemPrompt = `Translate JSON to ${targetLanguageName}. Keep structure and keys identical. Translate values only. Keep technical terms (AI, Blockchain, Digital Loans) if common in ${targetLanguageName}. Professional tone. Return valid JSON only.`
 
-    if (!response.ok) {
+    // Create a timeout controller for the fetch request
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 55000) // 55s timeout (5s buffer before Vercel's 60s limit)
+
+    try {
+      // Call OpenAI API with timeout
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+        },
+        signal: controller.signal, // Add abort signal for timeout
+        body: JSON.stringify({
+          model: "gpt-4o-mini", // Efficient model for translation
+          messages: [
+            {
+              role: "system",
+              content: systemPrompt
+            },
+            {
+              role: "user",
+              content: JSON.stringify(text)
+            }
+          ],
+          response_format: { type: "json_object" },
+          temperature: 0.2, // Lower temperature for faster, more consistent responses
+          max_tokens: 4000, // Limit tokens to speed up response
+        }),
+      })
+
+      clearTimeout(timeoutId) // Clear timeout if request completes
+
+      if (!response.ok) {
       let errorMessage = "Translation failed"
       let errorDetails = "Failed to translate content. Please check your OpenAI API key and try again."
       
@@ -105,32 +117,51 @@ export async function POST(req: Request) {
         errorMessage = `OpenAI API error: ${response.status} ${response.statusText}`
       }
       
-      return NextResponse.json({ 
-        error: errorMessage,
-        details: errorDetails
-      }, { status: 500 })
-    }
+        return NextResponse.json({ 
+          error: errorMessage,
+          details: errorDetails
+        }, { status: 500 })
+      }
 
-    const data = await response.json()
-    
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error("Invalid OpenAI response structure:", data)
-      return NextResponse.json({ 
-        error: "Invalid response from OpenAI",
-        details: "The translation service returned an unexpected response format."
-      }, { status: 500 })
-    }
+      const data = await response.json()
+      
+      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+        console.error("Invalid OpenAI response structure:", data)
+        return NextResponse.json({ 
+          error: "Invalid response from OpenAI",
+          details: "The translation service returned an unexpected response format."
+        }, { status: 500 })
+      }
 
-    try {
-      const translatedContent = JSON.parse(data.choices[0].message.content)
-      console.log("Translation successful for", targetLanguage)
-      return NextResponse.json({ translation: translatedContent })
-    } catch (parseError) {
-      console.error("JSON parse error:", parseError)
-      console.error("Response content:", data.choices[0].message.content)
+      try {
+        const translatedContent = JSON.parse(data.choices[0].message.content)
+        console.log("Translation successful for", targetLanguage)
+        return NextResponse.json({ translation: translatedContent })
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError)
+        console.error("Response content:", data.choices[0].message.content)
+        return NextResponse.json({ 
+          error: "Failed to parse translation response",
+          details: "The translation service returned invalid JSON."
+        }, { status: 500 })
+      }
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId)
+      
+      // Handle timeout or abort errors
+      if (fetchError.name === 'AbortError' || fetchError.message?.includes('timeout')) {
+        console.error("Translation timeout:", fetchError)
+        return NextResponse.json({ 
+          error: "Translation timeout",
+          details: "The translation request took too long. Please try again or contact support if the issue persists."
+        }, { status: 504 }) // Gateway Timeout
+      }
+      
+      // Handle other fetch errors
+      console.error("Translation fetch error:", fetchError)
       return NextResponse.json({ 
-        error: "Failed to parse translation response",
-        details: "The translation service returned invalid JSON."
+        error: fetchError.message || "Failed to connect to translation service",
+        details: "Unable to reach the translation service. Please try again later."
       }, { status: 500 })
     }
   } catch (error: any) {
