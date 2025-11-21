@@ -126,8 +126,14 @@ async function fetchTranslation(targetLanguage: Language) {
 export default function HomePage() {
   const [language, setLanguage] = useState<Language>("en")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   
   const [isTranslatingState, setIsTranslatingState] = useState(false)
+
+  // Only render DropdownMenu after mount to avoid hydration mismatch
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
   
   const { data: t, isLoading, isFetching, error: translationError, refetch } = useQuery({
     queryKey: ["translation", language],
@@ -267,8 +273,9 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen" >
       {/* Language Switcher - Floating Top Right */}
       {/* Mobile: Below navbar (top-24 = 96px), Desktop: Near top, offset to avoid navbar buttons */}
-      <div className="fixed top-24 left-4 md:top-6 md:left-auto md:right-[180px] lg:right-[200px] z-[100]">
-        <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+      {isMounted && (
+        <div className="fixed top-24 left-4 md:top-6 md:left-auto md:right-[180px] lg:right-[200px] z-[100]">
+          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
@@ -349,6 +356,7 @@ export default function HomePage() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      )}
 
       {/* Translation Loading Overlay with Enhanced Skeleton */}
       <AnimatePresence>

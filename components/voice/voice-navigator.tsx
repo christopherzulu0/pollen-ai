@@ -173,23 +173,54 @@ export function VoiceNavigator() {
     async (text: string) => {
       setIsProcessing(true)
       try {
+        // Add timeout for the entire request (20 seconds)
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 20000)
+
         const response = await fetch("/api/voice-commands", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ text, pathname }),
+          signal: controller.signal,
         })
 
+        clearTimeout(timeoutId)
+
         if (!response.ok) {
-          throw new Error("Failed to interpret command")
+          const errorData = await response.json().catch(() => ({}))
+          console.error("Voice command API error:", errorData)
+          
+          // Show specific error message if available
+          if (errorData.message) {
+            toast.error(errorData.message)
+          } else {
+            toast.error("Failed to interpret command. Please try again.")
+          }
+          return
         }
 
         const data: CommandResponse = await response.json()
+        
+        // Check if the response indicates an unknown command
+        if (data.action === "unknown") {
+          toast.warning(data.message || "I couldn't understand that command. Try: 'Go to dashboard'")
+          return
+        }
+        
         handleAction(data)
       } catch (error: any) {
         console.error("Voice command failed:", error)
-        toast.error("Sorry, I couldn't process that command.")
+        
+        // Handle different types of errors
+        if (error.name === 'AbortError') {
+          toast.error("Command took too long. Please try a simpler phrase.")
+        } else if (error.message?.includes('fetch')) {
+          toast.error("Network error. Please check your connection.")
+        } else {
+          toast.error("Sorry, I couldn't process that command.")
+        }
       } finally {
         setIsProcessing(false)
         setTranscript(null)
