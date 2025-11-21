@@ -7,6 +7,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Providers } from "@/lib/providers"
 import LayoutClient from "@/components/layout-client"
 import Widget from "@/components/voice/Widget"
+import { VoiceNavigator } from "@/components/voice/voice-navigator"
 import UserSync from "@/components/UserSync"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -34,6 +35,7 @@ export default function RootLayout({
               </LayoutClient>
               <UserSync/>
               <Widget />
+              <VoiceNavigator />
             </Providers>
           </SettingsProvider>
         </body>

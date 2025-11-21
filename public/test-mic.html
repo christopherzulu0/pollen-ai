@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microphone Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            color: white;
+        }
+        #startBtn { background: #4C4EFB; }
+        #startBtn:disabled { background: #ccc; cursor: not-allowed; }
+        #stopBtn { background: #f44336; }
+        #stopBtn:disabled { background: #ccc; cursor: not-allowed; }
+        #status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .listening { background: #ffeb3b !important; }
+        .success { background: #4caf50 !important; color: white; }
+        .error { background: #f44336 !important; color: white; }
+        .tips {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .tips h3 { margin-top: 0; color: #1976d2; }
+        .tips ul { margin: 5px 0; }
+        #log {
+            background: #f5f5f5;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎤 Microphone Test</h1>
+    <p>This test will help you verify your microphone is working with speech recognition.</p>
+    
+    <div class="tips">
+        <h3>💡 Tips for Better Recognition:</h3>
+        <ul>
+            <li><strong>Speak LOUDLY and CLEARLY</strong> - Don't whisper!</li>
+            <li><strong>Get close to your microphone</strong> - Within 6 inches is best</li>
+            <li><strong>Reduce background noise</strong> - Turn off music, close windows</li>
+            <li><strong>Start speaking immediately</strong> - Don't wait after clicking Start</li>
+            <li><strong>Use simple commands</strong> - Try: "Hello test", "Go to dashboard", "Scroll down"</li>
+        </ul>
+    </div>
+    
+    <div>
+        <button id="startBtn">🎤 Start Voice Test</button>
+        <button id="stopBtn" disabled>⏹️ Stop</button>
+    </div>
+    
+    <div id="status">Ready to test...</div>
+    <div id="transcript"></div>
+    
+    <h3>Debug Log:</h3>
+    <pre id="log"></pre>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const transcriptDiv = document.getElementById('transcript');
+        const logDiv = document.getElementById('log');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        
+        let recognition = null;
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        // Check browser support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            statusDiv.textContent = '❌ Speech Recognition is not supported in this browser. Try Chrome.';
+            statusDiv.className = 'error';
+            log('ERROR: Speech Recognition API not available');
+            startBtn.disabled = true;
+        } else {
+            log('✅ Speech Recognition API is available');
+            log('ℹ️ Click Start and speak LOUDLY: "Hello test" or "Go to dashboard"');
+        }
+        
+        startBtn.onclick = () => {
+            if (!SpeechRecognition) return;
+            
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = false;
+            recognition.interimResults = true; // Show interim results
+            recognition.maxAlternatives = 3;
+            
+            recognition.onstart = () => {
+                log('🎤 Recognition started - SPEAK NOW LOUDLY!');
+                statusDiv.textContent = '🎤 Listening... SPEAK LOUD AND CLEAR!';
+                statusDiv.className = 'listening';
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+            };
+            
+            recognition.onaudiostart = () => {
+                log('🔊 Audio capture started (microphone is active)');
+                statusDiv.textContent = '🔊 Microphone active - NOW SPEAK!';
+            };
+            
+            recognition.onsoundstart = () => {
+                log('🔉 Sound detected by microphone');
+            };
+            
+            recognition.onspeechstart = () => {
+                log('🗣️ Speech detected! Recognizing...');
+                statusDiv.textContent = '🗣️ Speech detected! Keep talking...';
+            };
+            
+            recognition.onspeechend = () => {
+                log('🤐 Speech ended');
+            };
+            
+            recognition.onresult = (event) => {
+                const resultIndex = event.resultIndex;
+                const result = event.results[resultIndex];
+                const text = result[0].transcript;
+                const confidence = result[0].confidence;
+                const isFinal = result.isFinal;
+                
+                if (isFinal) {
+                    log(`✅ FINAL: "${text}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
+                    statusDiv.textContent = `✅ Success! Heard: "${text}"`;
+                    statusDiv.className = 'success';
+                    transcriptDiv.innerHTML = `<h3>✅ You said: "${text}"</h3><p>Confidence: ${(confidence * 100).toFixed(1)}%</p>`;
+                } else {
+                    log(`⏳ Interim: "${text}"`);
+                    transcriptDiv.innerHTML = `<p style="color: #666;">Recognizing: "${text}"...</p>`;
+                }
+            };
+            
+            recognition.onerror = (event) => {
+                const errorType = event.error;
+                log(`❌ Error: ${errorType}`);
+                
+                let errorMessage = '';
+                switch (errorType) {
+                    case 'no-speech':
+                        errorMessage = '❌ No speech detected. Try speaking LOUDER and CLOSER to the mic!';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = '❌ Microphone access denied. Enable it in browser settings!';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = '❌ No microphone found. Connect a microphone!';
+                        break;
+                    case 'network':
+                        errorMessage = '❌ Network error. Check your internet connection!';
+                        break;
+                    default:
+                        errorMessage = `❌ Error: ${errorType}`;
+                }
+                
+                statusDiv.textContent = errorMessage;
+                statusDiv.className = 'error';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            };
+            
+            recognition.onend = () => {
+                log('🛑 Recognition ended');
+                if (statusDiv.className !== 'success' && statusDiv.className !== 'error') {
+                    statusDiv.textContent = 'Ready to test again...';
+                    statusDiv.className = '';
+                }
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            };
+            
+            try {
+                recognition.start();
+                log('📞 Starting recognition...');
+            } catch (error) {
+                log(`❌ Failed to start: ${error.message}`);
+                statusDiv.textContent = `❌ Failed to start: ${error.message}`;
+                statusDiv.className = 'error';
+            }
+        };
+        
+        stopBtn.onclick = () => {
+            if (recognition) {
+                recognition.stop();
+                log('⏹️ Manually stopped');
+            }
+        };
+    </script>
+</body>
+</html>
