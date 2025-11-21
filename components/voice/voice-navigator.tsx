@@ -2,17 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { Mic, MicOff, Loader2, Volume2, ArrowUp, ArrowDown } from "lucide-react"
+import { Mic, MicOff, Loader2, Volume2, X, Info } from "lucide-react"
 import { toast } from "sonner"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { motion, AnimatePresence } from "framer-motion"
 
 type CommandResponse = {
   action: string
@@ -98,12 +93,32 @@ export function VoiceNavigator() {
   const [hasSupport, setHasSupport] = useState(true)
   const [audioDetected, setAudioDetected] = useState(false)
   const [speechDetected, setSpeechDetected] = useState(false)
+  const [showBanner, setShowBanner] = useState(false)
+  const [bannerDismissed, setBannerDismissed] = useState(false)
 
   useEffect(() => {
     if (!SpeechRecognition) {
       setHasSupport(false)
     }
+    
+    // Check if user has dismissed the banner in this session
+    const dismissed = sessionStorage.getItem('voice-banner-dismissed')
+    if (!dismissed) {
+      // Show banner after 10 seconds
+      const timer = setTimeout(() => {
+        setShowBanner(true)
+      }, 10000)
+      return () => clearTimeout(timer)
+    } else {
+      setBannerDismissed(true)
+    }
   }, [])
+
+  const handleDismissBanner = () => {
+    setShowBanner(false)
+    setBannerDismissed(true)
+    sessionStorage.setItem('voice-banner-dismissed', 'true')
+  }
 
   const stopRecognition = useCallback(() => {
     recognitionRef.current?.stop()
@@ -366,74 +381,108 @@ export function VoiceNavigator() {
   }, [hasSupport, isListening, isProcessing, transcript, audioDetected, speechDetected])
 
   return (
-    <TooltipProvider>
-      <div className="fixed bottom-6 left-6 md:left-auto md:right-28 lg:right-32 z-50">
-        <Tooltip delayDuration={300}>
-          <TooltipTrigger asChild>
-            <Button
-              disabled={!hasSupport}
-              onClick={isListening ? stopRecognition : startRecognition}
-              className={cn(
-                "rounded-full h-14 w-14 shadow-lg hover:shadow-xl transition-all duration-200",
-                isListening ? "bg-red-500 hover:bg-red-600" : "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90",
-                !hasSupport && "opacity-60 cursor-not-allowed",
-                isProcessing && "animate-pulse"
-              )}
-              aria-pressed={isListening}
-              aria-label={isListening ? "Stop listening" : "Start voice navigation"}
-            >
-              {isProcessing ? (
-                <Loader2 className="h-6 w-6 animate-spin text-white" />
-              ) : isListening ? (
-                <MicOff className="h-6 w-6 text-white" />
-              ) : (
-                <Mic className="h-6 w-6 text-white" />
-              )}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent 
-            side="right" 
-            align="center"
-            className="max-w-xs md:max-w-sm p-4 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
-            sideOffset={10}
+    <>
+      {/* Voice Command Banner */}
+      <AnimatePresence>
+        {showBanner && !bannerDismissed && hasSupport && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[60] md:w-[90%] md:max-w-2xl"
+            style={{ top: '130px' }}
+          
           >
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 font-semibold text-base">
-                <Volume2 className="h-4 w-4 text-[#4C4EFB]" />
-                <span>Voice Assistant</span>
-              </div>
-              
-              <div className={cn(
-                "text-sm font-medium",
-                !hasSupport && "text-red-600 dark:text-red-400",
-                isListening && speechDetected && "text-green-600 dark:text-green-400",
-                isListening && !speechDetected && "text-yellow-600 dark:text-yellow-400"
-              )}>
-                {statusLabel}
-              </div>
-              
-              {hasSupport && !isListening && (
-                <div className="text-xs text-muted-foreground space-y-1 pt-2 border-t border-slate-200 dark:border-slate-700">
-                  <p className="font-medium">Try saying:</p>
-                  <ul className="list-disc list-inside space-y-0.5 text-[11px]">
-                    <li>"Go to dashboard"</li>
-                    <li>"Open services"</li>
-                    <li>"Scroll down"</li>
-                    <li>"Toggle dark mode"</li>
-                  </ul>
+            <div className="bg-gradient-to-r from-[#4C4EFB] to-[#6366F1] text-white rounded-lg md:rounded-xl shadow-2xl border border-white/20 backdrop-blur-md">
+              <div className="p-3 md:p-5">
+                <div className="flex items-start gap-2 md:gap-3">
+                  {/* Icon - Hidden on mobile, shown on desktop */}
+                  <div className="hidden md:block flex-shrink-0 mt-0.5">
+                    <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
+                      <Mic className="h-5 w-5 text-white" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+                      <Mic className="h-4 w-4 md:hidden flex-shrink-0 text-white" />
+                      <h3 className="text-sm md:text-lg font-bold">Voice Commands Available!</h3>
+                    </div>
+                    
+                    <p className="text-xs md:text-sm text-white/90 mb-2 md:mb-3">
+                      Click the mic button and speak commands to navigate hands-free.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px] md:text-xs">
+                      <div className="space-y-0.5 md:space-y-1">
+                        <p className="font-semibold text-white/80">📍 Navigation:</p>
+                        <ul className="space-y-0.5 text-white/70 pl-2">
+                          <li>• "Go to dashboard"</li>
+                          <li>• "Open services"</li>
+                          <li>• "Open Blog"</li>
+                          <li>• "Open Contact"</li>
+                          <li>• "Go Home"</li>
+                          <li className="hidden md:block">• "Show blog"</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-0.5 md:space-y-1">
+                        <p className="font-semibold text-white/80">⚡ Actions:</p>
+                        <ul className="space-y-0.5 text-white/70 pl-2">
+                          <li>• "Scroll down"</li>
+                          <li>• "Go back"</li>
+                          <li className="hidden md:block">• "Toggle dark mode"</li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-white/20 flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-white/80">
+                      <Info className="h-3 w-3 md:h-3.5 md:w-3.5 flex-shrink-0" />
+                      <span className="line-clamp-1">Speak clearly and loudly for best results</span>
+                    </div>
+                  </div>
+                  
+                  {/* Close Button */}
+                  <button
+                    onClick={handleDismissBanner}
+                    className="flex-shrink-0 h-6 w-6 md:h-8 md:w-8 rounded-full hover:bg-white/20 active:bg-white/30 transition-colors flex items-center justify-center group"
+                    aria-label="Dismiss banner"
+                  >
+                    <X className="h-3.5 w-3.5 md:h-4 md:w-4 text-white/70 group-hover:text-white" />
+                  </button>
                 </div>
-              )}
-              
-              {hasSupport && isListening && (
-                <div className="text-xs text-muted-foreground pt-2 border-t border-slate-200 dark:border-slate-700">
-                  💡 Speak LOUD and CLEAR for best results
-                </div>
-              )}
+              </div>
             </div>
-          </TooltipContent>
-        </Tooltip>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Voice Navigator Button */}
+      <div className="fixed bottom-6 left-6 md:left-auto md:right-28 lg:right-32 z-50">
+        <Button
+          disabled={!hasSupport}
+          onClick={isListening ? stopRecognition : startRecognition}
+          className={cn(
+            "rounded-full h-14 w-14 shadow-lg hover:shadow-xl transition-all duration-200",
+            isListening ? "bg-red-500 hover:bg-red-600" : "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90",
+            !hasSupport && "opacity-60 cursor-not-allowed",
+            isProcessing && "animate-pulse"
+          )}
+          aria-pressed={isListening}
+          aria-label={isListening ? "Stop listening" : "Start voice navigation"}
+          title={statusLabel}
+        >
+          {isProcessing ? (
+            <Loader2 className="h-6 w-6 animate-spin text-white" />
+          ) : isListening ? (
+            <MicOff className="h-6 w-6 text-white" />
+          ) : (
+            <Mic className="h-6 w-6 text-white" />
+          )}
+        </Button>
       </div>
-    </TooltipProvider>
+    </>
   )
 }
 
