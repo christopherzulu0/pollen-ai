@@ -2,11 +2,13 @@ import React,{useState, useEffect} from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Label } from './ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { ArrowDownRight, ArrowUpRight, DollarSign, Loader2 } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
+import { ArrowDownRight, ArrowUpRight, DollarSign, Loader2, Wallet } from 'lucide-react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { toast } from '@/hooks/use-toast'
+import CeloDeposit from './celo/celo-deposit'
 
 interface Group {
   id: string
@@ -263,11 +265,26 @@ export default function DepositWithdraw() {
                     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                       <div>
                         <h1 className="text-2xl font-bold tracking-tight">Deposit & Withdraw</h1>
-                        <p className="text-muted-foreground">Manage your funds with Mobile Money (MOMO)</p>
+                        <p className="text-muted-foreground">Manage your funds via Mobile Money or Celo Blockchain</p>
                       </div>
                     </div>
 
-                    <div className="mt-6 grid gap-6 md:grid-cols-2">
+                    {/* Tabs for Mobile Money and Celo */}
+                    <Tabs defaultValue="mobile-money" className="mt-6">
+                      <TabsList className="grid w-full max-w-md grid-cols-2">
+                        <TabsTrigger value="mobile-money">
+                          <DollarSign className="h-4 w-4 mr-2" />
+                          Mobile Money
+                        </TabsTrigger>
+                        <TabsTrigger value="celo">
+                          <Wallet className="h-4 w-4 mr-2" />
+                          Celo Wallet
+                        </TabsTrigger>
+                      </TabsList>
+
+                      {/* Mobile Money Tab */}
+                      <TabsContent value="mobile-money" className="space-y-6">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <Card className="overflow-hidden">
                         <CardHeader className="bg-gradient-to-r from-teal-500 to-emerald-600 pb-6 text-white">
                           <CardTitle>Deposit Funds</CardTitle>
@@ -482,6 +499,13 @@ export default function DepositWithdraw() {
                         </div>
                       </CardContent>
                     </Card>
+                      </TabsContent>
+
+                      {/* Celo Wallet Tab */}
+                      <TabsContent value="celo" className="space-y-6">
+                        <CeloDeposit />
+                      </TabsContent>
+                    </Tabs>
                   </div>
   )
 }

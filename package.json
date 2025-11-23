@@ -12,6 +12,8 @@
     "vercel-build": "prisma generate && prisma migrate deploy && npm run copy-prisma-engine && next build"
   },
   "dependencies": {
+    "@celo-tools/use-contractkit": "^3.1.0",
+    "@celo/contractkit": "^10.0.2",
     "@clerk/nextjs": "^6.16.0",
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "^3.9.1",
@@ -59,6 +61,7 @@
     "date-fns": "4.1.0",
     "dotenv": "^17.2.3",
     "embla-carousel-react": "8.5.1",
+    "ethers": "^5.7.0",
     "framer-motion": "latest",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",

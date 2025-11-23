@@ -85,6 +85,7 @@ import DepositWithdraw from "./DepositWithdraw"
 import Payments from "./Payments"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import { UserButton } from "@clerk/nextjs"
+import WalletConnectButton from "./celo/wallet-connect-button"
 
 // Define Group type
 interface Group {
@@ -228,6 +229,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">
+        {/* Celo Wallet Connect Button */}
+        <WalletConnectButton />
+
         {/* Search Button - Hidden on very small screens */}
         <div className="hidden xs:block">
           <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>

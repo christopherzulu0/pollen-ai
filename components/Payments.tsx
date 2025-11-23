@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,7 +23,7 @@ import {
   RefreshCw,
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+
 import { useToast } from "@/components/ui/use-toast"
 import { format, subDays, isAfter, isBefore } from "date-fns"
 import { Input } from "@/components/ui/input"
@@ -35,6 +36,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import type { DateRange } from "react-day-picker"
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useCeloWallet } from "@/lib/celo/context"
+import { Coins, ExternalLink } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 
 interface Transaction {
   id: string
@@ -52,6 +56,15 @@ interface Transaction {
     id: string
     name?: string
   }
+  // Celo blockchain transaction fields
+  hash?: string
+  currency?: "CELO" | "cUSD" | "cEUR" | "ZMW"
+  from?: string
+  to?: string
+  blockNumber?: number | null
+  gasUsed?: string | null
+  explorerUrl?: string | null
+  isBlockchain?: boolean
 }
 
 export default function Payments() {
@@ -74,7 +87,9 @@ export default function Payments() {
 
   const { toast } = useToast()
   const itemsPerPage = 8
+  const { isConnected, address } = useCeloWallet()
 
+  // Fetch regular transactions
   useEffect(() => {
     fetchTransactions()
   }, [filter, statusFilter])
@@ -99,6 +114,55 @@ export default function Payments() {
       setIsLoading(false)
     }
   }
+
+  // Fetch Celo blockchain transactions
+  const { data: celoTransactionsData, isLoading: isLoadingCelo } = useQuery({
+    queryKey: ['celo-transactions', address],
+    queryFn: async () => {
+      const response = await fetch("/api/celo/transactions")
+      if (!response.ok) {
+        throw new Error("Failed to fetch Celo transactions")
+      }
+      const data = await response.json()
+      return data
+    },
+    enabled: isConnected && !!address,
+    refetchInterval: 30000, // Refetch every 30 seconds
+  })
+
+  // Merge regular and Celo transactions
+  useEffect(() => {
+    if (celoTransactionsData?.transactions) {
+      const celoTxs = celoTransactionsData.transactions.map((tx: any) => ({
+        id: tx.id || tx.hash,
+        hash: tx.hash,
+        amount: parseFloat(tx.amount),
+        type: "DEPOSIT" as const, // Celo transactions are typically deposits
+        status: tx.status === "confirmed" ? "COMPLETED" as const : 
+                tx.status === "pending" ? "PENDING" as const : 
+                "FAILED" as const,
+        createdAt: tx.timestamp,
+        momoNumber: tx.from || "",
+        reference: tx.hash,
+        currency: tx.currency || "CELO",
+        from: tx.from,
+        to: tx.to,
+        blockNumber: tx.blockNumber,
+        gasUsed: tx.gasUsed,
+        explorerUrl: tx.explorerUrl,
+        isBlockchain: true,
+      }))
+      
+      // Merge with existing transactions, avoiding duplicates
+      setTransactions((prev) => {
+        const existingIds = new Set(prev.map(t => t.id))
+        const newCeloTxs = celoTxs.filter((tx: Transaction) => !existingIds.has(tx.id))
+        return [...prev, ...newCeloTxs].sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+      })
+    }
+  }, [celoTransactionsData])
 
   // Apply filters, search, and date range
   const filteredTransactions = useMemo(() => {
@@ -270,8 +334,11 @@ export default function Payments() {
   }
 
   // Get transaction type icon
-  const getTypeIcon = (type: string) => {
-    switch (type) {
+  const getTypeIcon = (transaction: Transaction) => {
+    if (transaction.isBlockchain) {
+      return <Coins className="h-4 w-4 text-orange-500" />
+    }
+    switch (transaction.type) {
       case "DEPOSIT":
         return <ArrowDownCircle className="h-4 w-4 text-emerald-500" />
       case "WITHDRAWAL":
@@ -279,6 +346,16 @@ export default function Payments() {
       default:
         return null
     }
+  }
+
+  // Get transaction description with blockchain indicator
+  const getTransactionDescriptionWithBlockchain = (transaction: Transaction) => {
+    const baseDescription = getTransactionDescription(transaction)
+    if (transaction.isBlockchain) {
+      const currency = transaction.currency || "CELO"
+      return `${baseDescription} (${currency})`
+    }
+    return baseDescription
   }
 
   // Render loading skeletons
@@ -720,16 +797,33 @@ export default function Payments() {
                       <div className="flex items-center gap-2">
                         <div
                           className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                            transaction.type === "DEPOSIT"
-                              ? "bg-emerald-100 dark:bg-emerald-900/30"
-                              : "bg-red-100 dark:bg-red-900/30"
+                            transaction.isBlockchain
+                              ? "bg-orange-100 dark:bg-orange-900/30"
+                              : transaction.type === "DEPOSIT"
+                                ? "bg-emerald-100 dark:bg-emerald-900/30"
+                                : "bg-red-100 dark:bg-red-900/30"
                           }`}
                         >
-                          {getTypeIcon(transaction.type)}
+                          {getTypeIcon(transaction)}
                         </div>
                         <div>
-                          <div className="text-sm font-medium">{getTransactionDescription(transaction)}</div>
-                          <div className="text-xs text-muted-foreground">{transaction.momoNumber}</div>
+                          <div className="text-sm font-medium">{getTransactionDescriptionWithBlockchain(transaction)}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {transaction.isBlockchain 
+                              ? `${transaction.from?.substring(0, 6)}...${transaction.from?.substring(38)}` 
+                              : transaction.momoNumber}
+                          </div>
+                          {transaction.isBlockchain && transaction.explorerUrl && (
+                            <a 
+                              href={transaction.explorerUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] text-orange-500 hover:underline flex items-center gap-1"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              View on Explorer <ExternalLink className="h-2 w-2" />
+                            </a>
+                          )}
                         </div>
                       </div>
                     </TableCell>
@@ -746,13 +840,18 @@ export default function Payments() {
                     <TableCell className="text-xs">{format(new Date(transaction.createdAt), "MMM d, yyyy")}</TableCell>
                     <TableCell
                       className={`text-right text-sm font-medium ${
-                        transaction.type === "DEPOSIT"
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-red-600 dark:text-red-400"
+                        transaction.isBlockchain
+                          ? "text-orange-600 dark:text-orange-400"
+                          : transaction.type === "DEPOSIT"
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-red-600 dark:text-red-400"
                       }`}
                     >
                       {transaction.type === "DEPOSIT" ? "+" : "-"}
-                      {formatAmount(transaction.amount)}
+                      {transaction.isBlockchain && transaction.currency && transaction.currency !== "ZMW" 
+                        ? `${transaction.amount.toFixed(4)} ${transaction.currency}`
+                        : formatAmount(transaction.amount)
+                      }
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
@@ -760,15 +859,17 @@ export default function Payments() {
                         <Badge
                           variant="outline"
                           className={`text-xs px-1.5 py-0 ${
-                            transaction.status === "COMPLETED"
-                              ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-400"
-                              : transaction.status === "PENDING"
-                                ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-400"
-                                : "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-900/20 dark:text-red-400"
+                            transaction.isBlockchain
+                              ? "border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-900 dark:bg-orange-900/20 dark:text-orange-400"
+                              : transaction.status === "COMPLETED"
+                                ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-400"
+                                : transaction.status === "PENDING"
+                                  ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-400"
+                                  : "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-900/20 dark:text-red-400"
                           }
                         `}
                         >
-                          {transaction.status}
+                          {transaction.isBlockchain ? "BLOCKCHAIN" : transaction.status}
                         </Badge>
                       </div>
                     </TableCell>

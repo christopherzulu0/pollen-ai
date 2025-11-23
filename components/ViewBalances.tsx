@@ -2,12 +2,14 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Button } from './ui/button'
-import { ArrowUpRight, Badge, Calendar, ChevronRight, DollarSign, Download, Users, Wallet } from 'lucide-react'
+import { ArrowUpRight, Badge, Calendar, ChevronRight, DollarSign, Download, Users, Wallet, Coins, RefreshCw } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { Input } from './ui/input'
+import { useCeloWallet } from '@/lib/celo/context'
+import { Skeleton } from './ui/skeleton'
 
 interface Group {
   id: string
@@ -27,10 +29,20 @@ interface BalanceData {
   groups: Group[]
 }
 
+
 export default function ViewBalances() {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
   const [contributionAmount, setContributionAmount] = useState('')
   const queryClient = useQueryClient()
+  const { 
+    isConnected, 
+    address, 
+    network, 
+    formattedBalance: celoFormattedBalance,
+    balance: celoBalanceRaw,
+    refreshBalance: refreshCeloBalance,
+    isLoading: isCeloLoading
+  } = useCeloWallet()
 
   const { data: balanceData, isLoading } = useQuery<BalanceData>({
     queryKey: ['balances'],
@@ -58,6 +70,29 @@ export default function ViewBalances() {
       return data
     }
   })
+
+  // Use balance from wallet context (fetched client-side via MetaMask)
+  // This is more reliable than server-side RPC calls which get rate-limited
+  const celoBalance = useMemo(() => {
+    if (!isConnected || !celoFormattedBalance) {
+      return null
+    }
+    
+    return {
+      celoFormatted: celoFormattedBalance.celo || '0',
+      cusdFormatted: celoFormattedBalance.cusd || '0',
+      ceurFormatted: celoFormattedBalance.ceur || '0',
+      network: network || 'alfajores',
+    }
+  }, [isConnected, celoFormattedBalance, network])
+  
+  // Refresh balance when component mounts or when address changes
+  useEffect(() => {
+    if (isConnected && address) {
+      // Initial balance fetch
+      refreshCeloBalance()
+    }
+  }, [isConnected, address, refreshCeloBalance])
 
   useEffect(() => {
     if (balanceData?.groups && balanceData.groups.length > 0 && !selectedGroup) {
@@ -170,7 +205,7 @@ export default function ViewBalances() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
+        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Main Balance Cards */}
           <Card className="overflow-hidden bg-gradient-to-br from-teal-500 to-emerald-600 text-white shadow-lg transition-all hover:shadow-xl">
             <CardContent className="p-6">
@@ -232,6 +267,102 @@ export default function ViewBalances() {
               <div className="mt-4">
                 <Button size="sm" variant="secondary" className="bg-white/20 text-white hover:bg-white/30">
                   View Groups
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Celo Blockchain Balance */}
+          <Card className="overflow-hidden bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-lg transition-all hover:shadow-xl">
+            <CardContent className="p-6">
+              <div className="mb-1 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Coins className="h-5 w-5 text-orange-100" />
+                  <h3 className="text-sm font-medium text-orange-100">Celo Wallet</h3>
+                </div>
+                {isConnected && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-6 w-6 p-0 text-white hover:bg-white/20"
+                    onClick={() => refreshCeloBalance()}
+                    disabled={isCeloLoading}
+                    title="Refresh balance"
+                  >
+                    <RefreshCw className={`h-3 w-3 ${isCeloLoading ? 'animate-spin' : ''}`} />
+                  </Button>
+                )}
+              </div>
+              {!isConnected ? (
+                <div className="space-y-2">
+                  <p className="text-lg font-semibold text-orange-100">Not Connected</p>
+                  <p className="text-xs text-orange-200">Connect your Celo wallet to view balances</p>
+                </div>
+              ) : isCeloLoading ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-8 w-24 bg-white/20" />
+                  <Skeleton className="h-4 w-32 bg-white/20" />
+                </div>
+              ) : celoBalance ? (
+                <>
+                  <p className="text-2xl font-bold tracking-tight">
+                    {parseFloat(celoBalance.celoFormatted || '0').toFixed(4)} CELO
+                  </p>
+                  <div className="mt-2 space-y-1 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-orange-200">cUSD:</span>
+                      <span className="font-medium">{parseFloat(celoBalance.cusdFormatted || '0').toFixed(2)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-orange-200">cEUR:</span>
+                      <span className="font-medium">{parseFloat(celoBalance.ceurFormatted || '0').toFixed(2)}</span>
+                    </div>
+                  </div>
+                  {network && (
+                    <div className="mt-2">
+                      <Badge className="bg-white/20 text-white text-[10px]">
+                        {network.toUpperCase()}
+                      </Badge>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-lg font-semibold text-orange-100">No Balance</p>
+                  <p className="text-xs text-orange-200">Unable to fetch balance from wallet</p>
+                </div>
+              )}
+              <div className="mt-4">
+                <Button 
+                  size="sm" 
+                  variant="secondary" 
+                  className="bg-white/20 text-white hover:bg-white/30"
+                  onClick={() => {
+                    if (!isConnected) {
+                      toast.info('Please connect your Celo wallet first')
+                    } else {
+                      refreshCeloBalance()
+                    }
+                  }}
+                  disabled={isCeloLoading}
+                >
+                  {isCeloLoading ? (
+                    <>
+                      <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                      Refreshing...
+                    </>
+                  ) : (
+                    <>
+                      {isConnected ? (
+                        <>
+                          <RefreshCw className="h-3 w-3 mr-1" />
+                          Refresh
+                        </>
+                      ) : (
+                        'Connect Wallet'
+                      )}
+                    </>
+                  )}
                 </Button>
               </div>
             </CardContent>

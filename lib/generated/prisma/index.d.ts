@@ -26990,6 +26990,13 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     balance: Decimal | null
+    celoAddress: string | null
+    celoBalance: string | null
+    cusdBalance: string | null
+    ceurBalance: string | null
+    network: string | null
+    isConnected: boolean | null
+    connectedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -26998,6 +27005,13 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     balance: Decimal | null
+    celoAddress: string | null
+    celoBalance: string | null
+    cusdBalance: string | null
+    ceurBalance: string | null
+    network: string | null
+    isConnected: boolean | null
+    connectedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27006,6 +27020,13 @@ export namespace Prisma {
     id: number
     userId: number
     balance: number
+    celoAddress: number
+    celoBalance: number
+    cusdBalance: number
+    ceurBalance: number
+    network: number
+    isConnected: number
+    connectedAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -27024,6 +27045,13 @@ export namespace Prisma {
     id?: true
     userId?: true
     balance?: true
+    celoAddress?: true
+    celoBalance?: true
+    cusdBalance?: true
+    ceurBalance?: true
+    network?: true
+    isConnected?: true
+    connectedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27032,6 +27060,13 @@ export namespace Prisma {
     id?: true
     userId?: true
     balance?: true
+    celoAddress?: true
+    celoBalance?: true
+    cusdBalance?: true
+    ceurBalance?: true
+    network?: true
+    isConnected?: true
+    connectedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27040,6 +27075,13 @@ export namespace Prisma {
     id?: true
     userId?: true
     balance?: true
+    celoAddress?: true
+    celoBalance?: true
+    cusdBalance?: true
+    ceurBalance?: true
+    network?: true
+    isConnected?: true
+    connectedAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -27135,6 +27177,13 @@ export namespace Prisma {
     id: string
     userId: string
     balance: Decimal
+    celoAddress: string | null
+    celoBalance: string | null
+    cusdBalance: string | null
+    ceurBalance: string | null
+    network: string | null
+    isConnected: boolean
+    connectedAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: WalletCountAggregateOutputType | null
@@ -27162,6 +27211,13 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     balance?: boolean
+    celoAddress?: boolean
+    celoBalance?: boolean
+    cusdBalance?: boolean
+    ceurBalance?: boolean
+    network?: boolean
+    isConnected?: boolean
+    connectedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27173,6 +27229,13 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     balance?: boolean
+    celoAddress?: boolean
+    celoBalance?: boolean
+    cusdBalance?: boolean
+    ceurBalance?: boolean
+    network?: boolean
+    isConnected?: boolean
+    connectedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27182,6 +27245,13 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     balance?: boolean
+    celoAddress?: boolean
+    celoBalance?: boolean
+    cusdBalance?: boolean
+    ceurBalance?: boolean
+    network?: boolean
+    isConnected?: boolean
+    connectedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27191,11 +27261,18 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     balance?: boolean
+    celoAddress?: boolean
+    celoBalance?: boolean
+    cusdBalance?: boolean
+    ceurBalance?: boolean
+    network?: boolean
+    isConnected?: boolean
+    connectedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "balance" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
+  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "balance" | "celoAddress" | "celoBalance" | "cusdBalance" | "ceurBalance" | "network" | "isConnected" | "connectedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
   export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | Wallet$transactionsArgs<ExtArgs>
@@ -27218,6 +27295,13 @@ export namespace Prisma {
       id: string
       userId: string
       balance: Prisma.Decimal
+      celoAddress: string | null
+      celoBalance: string | null
+      cusdBalance: string | null
+      ceurBalance: string | null
+      network: string | null
+      isConnected: boolean
+      connectedAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["wallet"]>
@@ -27648,6 +27732,13 @@ export namespace Prisma {
     readonly id: FieldRef<"Wallet", 'String'>
     readonly userId: FieldRef<"Wallet", 'String'>
     readonly balance: FieldRef<"Wallet", 'Decimal'>
+    readonly celoAddress: FieldRef<"Wallet", 'String'>
+    readonly celoBalance: FieldRef<"Wallet", 'String'>
+    readonly cusdBalance: FieldRef<"Wallet", 'String'>
+    readonly ceurBalance: FieldRef<"Wallet", 'String'>
+    readonly network: FieldRef<"Wallet", 'String'>
+    readonly isConnected: FieldRef<"Wallet", 'Boolean'>
+    readonly connectedAt: FieldRef<"Wallet", 'DateTime'>
     readonly createdAt: FieldRef<"Wallet", 'DateTime'>
     readonly updatedAt: FieldRef<"Wallet", 'DateTime'>
   }
@@ -31943,6 +32034,13 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     balance: 'balance',
+    celoAddress: 'celoAddress',
+    celoBalance: 'celoBalance',
+    cusdBalance: 'cusdBalance',
+    ceurBalance: 'ceurBalance',
+    network: 'network',
+    isConnected: 'isConnected',
+    connectedAt: 'connectedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -33955,6 +34053,13 @@ export namespace Prisma {
     id?: StringFilter<"Wallet"> | string
     userId?: StringFilter<"Wallet"> | string
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    celoAddress?: StringNullableFilter<"Wallet"> | string | null
+    celoBalance?: StringNullableFilter<"Wallet"> | string | null
+    cusdBalance?: StringNullableFilter<"Wallet"> | string | null
+    ceurBalance?: StringNullableFilter<"Wallet"> | string | null
+    network?: StringNullableFilter<"Wallet"> | string | null
+    isConnected?: BoolFilter<"Wallet"> | boolean
+    connectedAt?: DateTimeNullableFilter<"Wallet"> | Date | string | null
     createdAt?: DateTimeFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeFilter<"Wallet"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -33965,6 +34070,13 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     balance?: SortOrder
+    celoAddress?: SortOrderInput | SortOrder
+    celoBalance?: SortOrderInput | SortOrder
+    cusdBalance?: SortOrderInput | SortOrder
+    ceurBalance?: SortOrderInput | SortOrder
+    network?: SortOrderInput | SortOrder
+    isConnected?: SortOrder
+    connectedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -33974,20 +34086,34 @@ export namespace Prisma {
   export type WalletWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     userId?: string
+    celoAddress?: string
     AND?: WalletWhereInput | WalletWhereInput[]
     OR?: WalletWhereInput[]
     NOT?: WalletWhereInput | WalletWhereInput[]
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    celoBalance?: StringNullableFilter<"Wallet"> | string | null
+    cusdBalance?: StringNullableFilter<"Wallet"> | string | null
+    ceurBalance?: StringNullableFilter<"Wallet"> | string | null
+    network?: StringNullableFilter<"Wallet"> | string | null
+    isConnected?: BoolFilter<"Wallet"> | boolean
+    connectedAt?: DateTimeNullableFilter<"Wallet"> | Date | string | null
     createdAt?: DateTimeFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeFilter<"Wallet"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     transactions?: TransactionListRelationFilter
-  }, "id" | "userId">
+  }, "id" | "userId" | "celoAddress">
 
   export type WalletOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     balance?: SortOrder
+    celoAddress?: SortOrderInput | SortOrder
+    celoBalance?: SortOrderInput | SortOrder
+    cusdBalance?: SortOrderInput | SortOrder
+    ceurBalance?: SortOrderInput | SortOrder
+    network?: SortOrderInput | SortOrder
+    isConnected?: SortOrder
+    connectedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: WalletCountOrderByAggregateInput
@@ -34004,6 +34130,13 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Wallet"> | string
     userId?: StringWithAggregatesFilter<"Wallet"> | string
     balance?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    celoAddress?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
+    celoBalance?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
+    cusdBalance?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
+    ceurBalance?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
+    network?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
+    isConnected?: BoolWithAggregatesFilter<"Wallet"> | boolean
+    connectedAt?: DateTimeNullableWithAggregatesFilter<"Wallet"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
   }
@@ -36050,6 +36183,13 @@ export namespace Prisma {
   export type WalletCreateInput = {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWalletInput
@@ -36060,6 +36200,13 @@ export namespace Prisma {
     id?: string
     userId: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: TransactionUncheckedCreateNestedManyWithoutWalletInput
@@ -36068,6 +36215,13 @@ export namespace Prisma {
   export type WalletUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
@@ -36078,6 +36232,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUncheckedUpdateManyWithoutWalletNestedInput
@@ -36087,6 +36248,13 @@ export namespace Prisma {
     id?: string
     userId: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -36094,6 +36262,13 @@ export namespace Prisma {
   export type WalletUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36102,6 +36277,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38008,6 +38190,13 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     balance?: SortOrder
+    celoAddress?: SortOrder
+    celoBalance?: SortOrder
+    cusdBalance?: SortOrder
+    ceurBalance?: SortOrder
+    network?: SortOrder
+    isConnected?: SortOrder
+    connectedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -38020,6 +38209,13 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     balance?: SortOrder
+    celoAddress?: SortOrder
+    celoBalance?: SortOrder
+    cusdBalance?: SortOrder
+    ceurBalance?: SortOrder
+    network?: SortOrder
+    isConnected?: SortOrder
+    connectedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -38028,6 +38224,13 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     balance?: SortOrder
+    celoAddress?: SortOrder
+    celoBalance?: SortOrder
+    cusdBalance?: SortOrder
+    ceurBalance?: SortOrder
+    network?: SortOrder
+    isConnected?: SortOrder
+    connectedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41023,6 +41226,13 @@ export namespace Prisma {
   export type WalletCreateWithoutUserInput = {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: TransactionCreateNestedManyWithoutWalletInput
@@ -41031,6 +41241,13 @@ export namespace Prisma {
   export type WalletUncheckedCreateWithoutUserInput = {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: TransactionUncheckedCreateNestedManyWithoutWalletInput
@@ -41409,6 +41626,13 @@ export namespace Prisma {
   export type WalletUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUpdateManyWithoutWalletNestedInput
@@ -41417,6 +41641,13 @@ export namespace Prisma {
   export type WalletUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUncheckedUpdateManyWithoutWalletNestedInput
@@ -43127,6 +43358,13 @@ export namespace Prisma {
   export type WalletCreateWithoutTransactionsInput = {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWalletInput
@@ -43136,6 +43374,13 @@ export namespace Prisma {
     id?: string
     userId: string
     balance?: Decimal | DecimalJsLike | number | string
+    celoAddress?: string | null
+    celoBalance?: string | null
+    cusdBalance?: string | null
+    ceurBalance?: string | null
+    network?: string | null
+    isConnected?: boolean
+    connectedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -43363,6 +43608,13 @@ export namespace Prisma {
   export type WalletUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
@@ -43372,6 +43624,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
+    network?: NullableStringFieldUpdateOperationsInput | string | null
+    isConnected?: BoolFieldUpdateOperationsInput | boolean
+    connectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -5,6 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Dashboard from "@/components/dashboard"
 import ProtectedDashboard from "@/components/dashboard-protected"
+import { CeloWalletProvider } from "@/lib/celo/context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,9 +22,11 @@ export default function DashboardLayout({
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <ProtectedDashboard>
-        <Dashboard>
-          {children}
-        </Dashboard>
+        <CeloWalletProvider>
+          <Dashboard>
+            {children}
+          </Dashboard>
+        </CeloWalletProvider>
       </ProtectedDashboard>
     </ThemeProvider>
   )
