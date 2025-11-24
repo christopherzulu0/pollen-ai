@@ -64,7 +64,7 @@ async function fetchServices(): Promise<Service[]> {
     throw new Error('Failed to fetch services')
   }
   const data = await response.json()
-  
+
   // Debug: Log the raw API response to check if icon/image fields are present
   if (process.env.NODE_ENV === 'development') {
     console.log('Raw API response:', data)
@@ -73,7 +73,7 @@ async function fetchServices(): Promise<Service[]> {
       console.log('Icon field:', data[0].icon, 'Image field:', data[0].image)
     }
   }
-  
+
   return data
 }
 
@@ -123,9 +123,9 @@ function ServiceCardsSkeleton() {
               <Skeleton className="h-10 w-full" />
             </CardFooter>
           </Card>
-                    </div>
-                  ))}
-                </div>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -156,9 +156,9 @@ function ComparisonTableSkeleton() {
               ))}
             </tbody>
           </table>
-                  </div>
-                </div>
-              </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -167,31 +167,31 @@ function getServiceIcon(category: string, iconName?: string | null) {
   // If icon name is provided, use it
   if (iconName && iconName.trim()) {
     const trimmedIconName = iconName.trim()
-    
+
     // Debug logging
     if (process.env.NODE_ENV === 'development') {
       console.log(`[getServiceIcon] Looking for icon: "${trimmedIconName}" for category: "${category}"`)
       console.log(`[getServiceIcon] Bitcoin exists in LucideIcons:`, typeof (LucideIcons as any)['Bitcoin'])
       console.log(`[getServiceIcon] Direct access:`, (LucideIcons as any)[trimmedIconName])
     }
-    
+
     // Try exact match first
     let IconComponent = (LucideIcons as any)[trimmedIconName]
-    
+
     if (process.env.NODE_ENV === 'development' && IconComponent) {
       console.log(`[getServiceIcon] Found icon "${trimmedIconName}" directly, type:`, typeof IconComponent)
     }
-    
+
     // If not found, try checking all icon names (case-insensitive search)
     if (!IconComponent) {
       const iconNames = Object.keys(LucideIcons).filter(
-        (name) => 
+        (name) =>
           name[0] === name[0].toUpperCase() &&
           !name.startsWith('Icon') &&
           !name.startsWith('Lucide') &&
-          (typeof (LucideIcons as any)[name] === 'function' || 
-           typeof (LucideIcons as any)[name] === 'object' ||
-           (LucideIcons as any)[name]?.$$typeof) // React component check
+          (typeof (LucideIcons as any)[name] === 'function' ||
+            typeof (LucideIcons as any)[name] === 'object' ||
+            (LucideIcons as any)[name]?.$$typeof) // React component check
       )
       const matchedIcon = iconNames.find(
         (name) => name.toLowerCase() === trimmedIconName.toLowerCase()
@@ -203,14 +203,14 @@ function getServiceIcon(category: string, iconName?: string | null) {
         }
       }
     }
-    
+
     // Check if IconComponent is valid (can be function, object, or React component)
     if (IconComponent) {
       // React components can be functions or objects with $$typeof
-      const isReactComponent = typeof IconComponent === 'function' || 
-                               typeof IconComponent === 'object' ||
-                               IconComponent?.$$typeof
-      
+      const isReactComponent = typeof IconComponent === 'function' ||
+        typeof IconComponent === 'object' ||
+        IconComponent?.$$typeof
+
       if (isReactComponent) {
         if (process.env.NODE_ENV === 'development') {
           console.log(`[getServiceIcon] Rendering icon "${trimmedIconName}"`)
@@ -228,7 +228,7 @@ function getServiceIcon(category: string, iconName?: string | null) {
       console.warn(`[getServiceIcon] Icon "${iconName}" not found in Lucide icons. Falling back to category icon.`)
     }
   }
-  
+
   // Fallback to category-based icons
   const icons: Record<string, React.ReactNode> = {
     "Digital Loans": <Wallet className="h-6 w-6 text-[#00CC66] dark:text-emerald-400" />,
@@ -297,7 +297,7 @@ function ServicesContent() {
   }, {} as Record<string, Service[]>)
 
   const categories = Object.keys(servicesByCategory)
-  
+
   // Create a slug from category name for tab values
   const categoryToSlug = (category: string) => {
     return category.toLowerCase().replace(/\s+/g, "-")
@@ -307,10 +307,10 @@ function ServicesContent() {
   const defaultTab = categories.length > 0 ? categoryToSlug(categories[0]) : ""
 
   if (categories.length === 0) {
-  return (
+    return (
       <div className="text-center py-12">
         <p className="text-gray-600 dark:text-gray-300">No active services available at the moment.</p>
-          </div>
+      </div>
     )
   }
 
@@ -318,7 +318,7 @@ function ServicesContent() {
     <Tabs defaultValue={defaultTab} className="w-full max-w-5xl mx-auto">
       <div className="mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide">
         <TabsList className="inline-flex h-10 items-center justify-start sm:justify-center rounded-md bg-muted p-1 text-muted-foreground w-full min-w-max sm:min-w-0 sm:w-full">
-              {categories.map((category) => {
+          {categories.map((category) => {
             // Get the first service in this category to use its icon for the tab
             const firstService = servicesByCategory[category]?.[0]
             return (
@@ -332,205 +332,207 @@ function ServicesContent() {
               </TabsTrigger>
             )
           })}
-            </TabsList>
+        </TabsList>
       </div>
 
-            <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
+      <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
         {categories.map((category) => {
           const categoryServices = servicesByCategory[category]
           const isDigitalLoans = category.toLowerCase().includes("digital") || category.toLowerCase().includes("loan")
           const isVillageBanking = category.toLowerCase().includes("village") || category.toLowerCase().includes("banking")
-          
+
           return (
             <TabsContent key={category} value={categoryToSlug(category)} className="mt-0">
-                <div className="space-y-8">
+              <div className="space-y-8">
                 {categoryServices.map((service) => {
                   // Debug: Log service data to check icon
                   if (process.env.NODE_ENV === 'development') {
                     console.log('Service:', service.name, 'Icon from DB:', service.icon, 'Category:', service.category)
                   }
                   return (
-                  <motion.div
-                  key={service.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-                  >
-                    <div>
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
-                        {getServiceIcon(service.category, service.icon)}
+                    <motion.div
+                      key={service.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+                    >
+                      <div>
+                        <div className="flex items-center mb-4">
+                          <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
+                            {getServiceIcon(service.category, service.icon)}
+                          </div>
+                          <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">{service.name}</h3>
                         </div>
-                      <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">{service.name}</h3>
-                      </div>
-                    <p className="text-gray-600 dark:text-gray-300 mb-6">{service.description}</p>
-                    {service.keyFeatures && service.keyFeatures.length > 0 && (
-                      <ul className="space-y-3">
-                        {service.keyFeatures.map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-800 dark:text-gray-300">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                        <p className="text-gray-600 dark:text-gray-300 mb-6">{service.description}</p>
+                        {service.keyFeatures && service.keyFeatures.length > 0 && (
+                          <ul className="space-y-3">
+                            {service.keyFeatures.map((feature, index) => (
+                              <li key={index} className="flex items-start">
+                                <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
+                                <span className="text-gray-800 dark:text-gray-300">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
 
-                    {/* Interactive Loan Calculator - only show for first service in Digital Loans category */}
-                    {isDigitalLoans && categoryServices[0]?.id === service.id && (
-                      <div className="mt-6 md:mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-                        <h4 className="text-base md:text-lg font-semibold text-[#003366] dark:text-white mb-3 md:mb-4">
-                          Loan Calculator
-                        </h4>
-                        <div className="space-y-3 md:space-y-4">
-                          <div>
-                            <div className="flex justify-between items-center mb-1">
-                              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Loan Amount
-                              </label>
-                              <span className="text-sm font-semibold text-[#003366] dark:text-white">
-                                K{loanAmount.toLocaleString()}
-                              </span>
-                            </div>
-                            <Slider
-                              value={[loanAmount]}
-                              min={100}
-                              max={10000}
-                              step={100}
-                              onValueChange={(value) => setLoanAmount(value[0])}
-                              className="dark:bg-gray-700"
-                            />
-                            <div className="flex justify-between mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">K100</span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">K10,000</span>
-                            </div>
-                          </div>
-                          <div>
-                            <div className="flex justify-between items-center mb-1">
-                              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Loan Term
-                              </label>
-                              <span className="text-sm font-semibold text-[#003366] dark:text-white">
-                                {loanTerm} months
-                              </span>
-                            </div>
-                            <Slider
-                              value={[loanTerm]}
-                              min={3}
-                              max={36}
-                              step={1}
-                              onValueChange={(value) => setLoanTerm(value[0])}
-                              className="dark:bg-gray-700"
-                            />
-                            <div className="flex justify-between mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">3 mo</span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">36 mo</span>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
-                            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Monthly Payment</p>
-                              <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">
-                                K{calculateMonthlyPayment()}
-                              </p>
-                            </div>
-                            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Interest Rate</p>
-                              <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">5.9% APR</p>
-                            </div>
-                          </div>
-                          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-                            Total repayment:{" "}
-                            <span className="font-medium">
-                              K{(parseFloat(calculateMonthlyPayment()) * loanTerm).toFixed(2)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                      <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
-                        {isDigitalLoans ? "Apply Now" : isVillageBanking ? "Join a Group" : "Learn More"}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg">
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>
-                      <Image
-                        src={service.image || (isDigitalLoans ? "/digital.jpg" : isVillageBanking ? "/village.jpg" : "/placeholder.svg?height=800&width=600")}
-                        alt={service.name}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                        {isDigitalLoans ? (
-                          <>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-white font-medium">Application Progress</span>
-                          <span className="text-white text-sm">{progress}%</span>
-                        </div>
-                        <Progress
-                          value={progress}
-                          className="h-2 bg-white/20"
-                          indicatorClassName="bg-[#00CC66] dark:bg-emerald-500"
-                        />
-                        <div className="flex justify-between mt-4">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">5 min approval</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">Same-day funding</span>
-                          </div>
-                        </div>
-                          </>
-                        ) : isVillageBanking ? (
-                          <>
-                        <h4 className="text-white font-semibold mb-2">Active Village Banking Groups</h4>
-                        <div className="grid grid-cols-2 gap-2 mb-4">
-                          {["Sunrise Savers", "Unity Circle", "Growth Collective", "Future Fund"].map(
-                            (group, index) => (
-                              <div
-                                key={index}
-                                className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
-                              >
-                                <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
-                                  {index + 1}
+                        {/* Interactive Loan Calculator - only show for first service in Digital Loans category */}
+                        {isDigitalLoans && categoryServices[0]?.id === service.id && (
+                          <div className="mt-6 md:mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                            <h4 className="text-base md:text-lg font-semibold text-[#003366] dark:text-white mb-3 md:mb-4">
+                              Loan Calculator
+                            </h4>
+                            <div className="space-y-3 md:space-y-4">
+                              <div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Loan Amount
+                                  </label>
+                                  <span className="text-sm font-semibold text-[#003366] dark:text-white">
+                                    K{loanAmount.toLocaleString()}
+                                  </span>
                                 </div>
-                                <span className="text-white text-sm">{group}</span>
+                                <Slider
+                                  value={[loanAmount]}
+                                  min={100}
+                                  max={10000}
+                                  step={100}
+                                  onValueChange={(value) => setLoanAmount(value[0])}
+                                  className="dark:bg-gray-700"
+                                />
+                                <div className="flex justify-between mt-1">
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">K100</span>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">K10,000</span>
+                                </div>
                               </div>
-                            ),
-                          )}
-                        </div>
-                        <div className="flex justify-between">
-                          <div className="flex items-center">
-                            <Users className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">Community-backed</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Shield className="h-4 w-4 text-white mr-1" />
-                            <span className="text-white text-sm">Blockchain secured</span>
-                          </div>
-                        </div>
-                          </>
-                        ) : (
-                          <div>
-                            <h4 className="text-white font-semibold mb-2">{service.name}</h4>
-                            <p className="text-white/80 text-sm">{service.description.substring(0, 100)}...</p>
+                              <div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Loan Term
+                                  </label>
+                                  <span className="text-sm font-semibold text-[#003366] dark:text-white">
+                                    {loanTerm} months
+                                  </span>
+                                </div>
+                                <Slider
+                                  value={[loanTerm]}
+                                  min={3}
+                                  max={36}
+                                  step={1}
+                                  onValueChange={(value) => setLoanTerm(value[0])}
+                                  className="dark:bg-gray-700"
+                                />
+                                <div className="flex justify-between mt-1">
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">3 mo</span>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">36 mo</span>
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
+                                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">Monthly Payment</p>
+                                  <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">
+                                    K{calculateMonthlyPayment()}
+                                  </p>
+                                </div>
+                                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">Interest Rate</p>
+                                  <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">5.9% APR</p>
+                                </div>
+                              </div>
+                              <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+                                Total repayment:{" "}
+                                <span className="font-medium">
+                                  K{(parseFloat(calculateMonthlyPayment()) * loanTerm).toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         )}
+
+                        <Link href={`/services/apply?serviceId=${service.id}`}>
+                          <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
+                            {isDigitalLoans ? "Apply Now" : isVillageBanking ? "Join a Group" : "Learn More"}
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
                       </div>
-                    </div>
-                  </motion.div>
+                      <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg">
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>
+                        <Image
+                          src={service.image || (isDigitalLoans ? "/digital.jpg" : isVillageBanking ? "/village.jpg" : "/placeholder.svg?height=800&width=600")}
+                          alt={service.name}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                          {isDigitalLoans ? (
+                            <>
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-white font-medium">Application Progress</span>
+                                <span className="text-white text-sm">{progress}%</span>
+                              </div>
+                              <Progress
+                                value={progress}
+                                className="h-2 bg-white/20"
+                                indicatorClassName="bg-[#00CC66] dark:bg-emerald-500"
+                              />
+                              <div className="flex justify-between mt-4">
+                                <div className="flex items-center">
+                                  <Clock className="h-4 w-4 text-white mr-1" />
+                                  <span className="text-white text-sm">5 min approval</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <Calendar className="h-4 w-4 text-white mr-1" />
+                                  <span className="text-white text-sm">Same-day funding</span>
+                                </div>
+                              </div>
+                            </>
+                          ) : isVillageBanking ? (
+                            <>
+                              <h4 className="text-white font-semibold mb-2">Active Village Banking Groups</h4>
+                              <div className="grid grid-cols-2 gap-2 mb-4">
+                                {["Sunrise Savers", "Unity Circle", "Growth Collective", "Future Fund"].map(
+                                  (group, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
+                                    >
+                                      <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
+                                        {index + 1}
+                                      </div>
+                                      <span className="text-white text-sm">{group}</span>
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                              <div className="flex justify-between">
+                                <div className="flex items-center">
+                                  <Users className="h-4 w-4 text-white mr-1" />
+                                  <span className="text-white text-sm">Community-backed</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <Shield className="h-4 w-4 text-white mr-1" />
+                                  <span className="text-white text-sm">Blockchain secured</span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <div>
+                              <h4 className="text-white font-semibold mb-2">{service.name}</h4>
+                              <p className="text-white/80 text-sm">{service.description.substring(0, 100)}...</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
                   )
                 })}
-                </div>
-              </TabsContent>
+              </div>
+            </TabsContent>
           )
         })}
-            </div>
-          </Tabs>
+      </div>
+    </Tabs>
   )
 }
 
@@ -549,52 +551,54 @@ function MobileServiceCards() {
   }
 
   return (
-          <div className="overflow-x-auto pb-4 -mx-4 px-4 flex snap-x snap-mandatory gap-4 scrollbar-hide">
+    <div className="overflow-x-auto pb-4 -mx-4 px-4 flex snap-x snap-mandatory gap-4 scrollbar-hide">
       {activeServices.length > 0 ? (
         activeServices.map((service) => (
           <div key={service.id} className="min-w-[280px] w-[85%] max-w-[340px] snap-center">
-                <Card className="h-full border-none shadow-lg dark:bg-gray-800">
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
+            <Card className="h-full border-none shadow-lg dark:bg-gray-800">
+              <CardHeader>
+                <div className="flex items-center justify-between mb-2">
                   <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
                     {getServiceIcon(service.category, service.icon)}
-                    </div>
+                  </div>
                   <Badge className="bg-[#003366] dark:bg-blue-900">
                     {service.growth ? `+${service.growth}% Growth` : service.category}
                   </Badge>
                 </div>
                 <CardTitle className="text-[#003366] dark:text-white text-xl">{service.name}</CardTitle>
                 <CardDescription className="dark:text-gray-300 line-clamp-2">{service.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
+              </CardHeader>
+              <CardContent>
                 {service.keyFeatures && service.keyFeatures.length > 0 ? (
-                    <ul className="space-y-2">
+                  <ul className="space-y-2">
                     {service.keyFeatures.slice(0, 4).map((feature, i) => (
-                        <li key={i} className="flex items-start">
+                      <li key={i} className="flex items-start">
                         <Check className="h-4 w-4 text-[#00CC66] dark:text-emerald-400 mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                        <span className="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 ) : (
                   <p className="text-gray-500 dark:text-gray-400 text-sm">No features listed</p>
                 )}
-                  </CardContent>
-                  <CardFooter>
-                    <Button className="w-full bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
-                  Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </div>
+              </CardContent>
+              <CardFooter>
+                <Link href={`/services/apply?serviceId=${service.id}`} className="w-full">
+                  <Button className="w-full bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
+                    Apply Now
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          </div>
         ))
       ) : (
         <div className="text-center py-12 w-full">
           <p className="text-gray-600 dark:text-gray-300">No services available at the moment.</p>
-          </div>
+        </div>
       )}
-          </div>
+    </div>
   )
 }
 
@@ -613,30 +617,30 @@ function ComparisonTable() {
   }
 
   return (
-          <div className="overflow-x-auto -mx-4 sm:mx-0">
-            <div className="inline-block min-w-full align-middle p-4 sm:p-0">
-              <div className="overflow-hidden rounded-lg shadow-md">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                  <thead className="bg-[#003366] dark:bg-blue-900 text-white">
-                    <tr>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
-                        Service
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Ideal For
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Key Features
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Requirements
-                      </th>
-                      <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div className="overflow-x-auto -mx-4 sm:mx-0">
+      <div className="inline-block min-w-full align-middle p-4 sm:p-0">
+        <div className="overflow-hidden rounded-lg shadow-md">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+            <thead className="bg-[#003366] dark:bg-blue-900 text-white">
+              <tr>
+                <th scope="col" className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
+                  Service
+                </th>
+                <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                  Ideal For
+                </th>
+                <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                  Key Features
+                </th>
+                <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                  Requirements
+                </th>
+                <th scope="col" className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm font-medium">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {activeServices.length > 0 ? (
                 activeServices.map((service, index) => {
                   // Debug: Log service data to check icon
@@ -644,53 +648,55 @@ function ComparisonTable() {
                     console.log('Table Service:', service.name, 'Icon from DB:', service.icon, 'Category:', service.category)
                   }
                   return (
-                      <tr
-                    key={service.id}
-                        className={index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-700"}
-                      >
-                        <td className="py-3 px-3 sm:px-6 text-xs sm:text-sm border-b border-gray-100 dark:border-gray-600">
-                          <div className="flex items-center gap-2">
-                            <div className="flex-shrink-0">
-                              {getServiceIcon(service.category, service.icon)}
-                            </div>
-                            <span className="font-medium text-[#003366] dark:text-white">
-                              {service.name}
-                            </span>
+                    <tr
+                      key={service.id}
+                      className={index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-700"}
+                    >
+                      <td className="py-3 px-3 sm:px-6 text-xs sm:text-sm border-b border-gray-100 dark:border-gray-600">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-shrink-0">
+                            {getServiceIcon(service.category, service.icon)}
                           </div>
-                        </td>
-                        <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                      <p className="line-clamp-2">{service.description.substring(0, 80)}...</p>
-                        </td>
-                        <td className="py-3 px-3 sm:px-6">
-                          <ul className="text-xs sm:text-sm">
-                        {service.keyFeatures && service.keyFeatures.length > 0 ? (
-                          service.keyFeatures.slice(0, 3).map((feature, i) => (
+                          <span className="font-medium text-[#003366] dark:text-white">
+                            {service.name}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                        <p className="line-clamp-2">{service.description.substring(0, 80)}...</p>
+                      </td>
+                      <td className="py-3 px-3 sm:px-6">
+                        <ul className="text-xs sm:text-sm">
+                          {service.keyFeatures && service.keyFeatures.length > 0 ? (
+                            service.keyFeatures.slice(0, 3).map((feature, i) => (
                               <li key={i} className="flex items-center justify-center mb-1">
                                 <Check className="h-3 w-3 sm:h-4 sm:w-4 text-[#00CC66] dark:text-emerald-400 mr-1 flex-shrink-0" />
-                              <span className="text-gray-700 dark:text-gray-300 line-clamp-1">{feature}</span>
+                                <span className="text-gray-700 dark:text-gray-300 line-clamp-1">{feature}</span>
                               </li>
-                          ))
+                            ))
+                          ) : (
+                            <li className="text-gray-500 dark:text-gray-400">N/A</li>
+                          )}
+                        </ul>
+                      </td>
+                      <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                        {service.requirements && service.requirements.length > 0 ? (
+                          <p className="line-clamp-2">{service.requirements.join(", ")}</p>
                         ) : (
-                          <li className="text-gray-500 dark:text-gray-400">N/A</li>
+                          <span className="text-gray-500 dark:text-gray-400">N/A</span>
                         )}
-                          </ul>
-                        </td>
-                        <td className="py-3 px-3 sm:px-6 text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                      {service.requirements && service.requirements.length > 0 ? (
-                        <p className="line-clamp-2">{service.requirements.join(", ")}</p>
-                      ) : (
-                        <span className="text-gray-500 dark:text-gray-400">N/A</span>
-                      )}
-                        </td>
-                        <td className="py-3 px-3 sm:px-6 text-center">
+                      </td>
+                      <td className="py-3 px-3 sm:px-6 text-center">
+                        <Link href={`/services/apply?serviceId=${service.id}`}>
                           <Button
                             size="sm"
                             className="bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800 text-xs px-2 py-1 h-auto"
                           >
-                        Learn More
+                            Apply Now
                           </Button>
-                        </td>
-                      </tr>
+                        </Link>
+                      </td>
+                    </tr>
                   )
                 })
               ) : (
@@ -700,11 +706,11 @@ function ComparisonTable() {
                   </td>
                 </tr>
               )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -759,7 +765,7 @@ export default function ServicesPage() {
             ))}
           </div>
           <div className="absolute inset-0 bg-grid-white bg-grid-8 opacity-10"></div>
-            </div>
+        </div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -780,10 +786,12 @@ export default function ServicesPage() {
                 opportunity to everyone.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button className="bg-[#00CC66] hover:bg-[#00CC66]/80 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700">
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/services">
+                  <Button className="bg-[#00CC66] hover:bg-[#00CC66]/80 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700">
+                    Get Started
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
                 <Button
                   className="border-2 border-white text-white bg-transparent hover:bg-white/20 dark:border-white dark:text-white dark:hover:bg-white/20"
                 >
@@ -804,8 +812,8 @@ export default function ServicesPage() {
                         className="object-cover"
                       />
                     </div>
-            ))}
-          </div>
+                  ))}
+                </div>
                 <div>
                   <div className="flex items-center">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -1271,10 +1279,12 @@ export default function ServicesPage() {
                 innovative blockchain-powered solutions.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button className="bg-[#00CC66] hover:bg-[#00CC66]/80 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700">
-                  Get Started Now
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/services">
+                  <Button className="bg-[#00CC66] hover:bg-[#00CC66]/80 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700">
+                    Get Started Now
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
                 <Button
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-[#003366] dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900"

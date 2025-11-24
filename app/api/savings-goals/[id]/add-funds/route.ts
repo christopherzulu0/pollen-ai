@@ -4,13 +4,16 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId: clerkUserId } = await auth();
     if (!clerkUserId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    // Await params to unwrap the Promise (Next.js 15+)
+    const { id } = await params;
 
     const data = await req.json();
     const { amount } = data;
@@ -25,7 +28,7 @@ export async function POST(
     // Get the user's savings goal
     const goal = await prisma.savingsGoal.findFirst({
       where: {
-        id: params.id,
+        id: id,
         user: {
           clerkUserId
         }
@@ -63,7 +66,7 @@ export async function POST(
       // Update the goal's current amount
       prisma.savingsGoal.update({
         where: {
-          id: params.id
+          id: id
         },
         data: {
           currentAmount: {

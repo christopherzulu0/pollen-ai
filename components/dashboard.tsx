@@ -74,7 +74,7 @@ import { useTheme } from "next-themes"
 import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -119,8 +119,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   }, [])
 
   // Fetch groups data with React Query
-  const { 
-    data: groups = [] as Group[], 
+  const {
+    data: groups = [] as Group[],
     isLoading: isLoadingGroups,
     error: groupsError,
     refetch: refetchGroups,
@@ -194,31 +194,132 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[240px] p-0">
-            <div>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <Link href="/dashboard" passHref>
-                    <SidebarMenuButton
-                      isActive={pathname === "/dashboard"}
-                    >
-                      <Home className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-white" />
-                      <span className="text-sm">Dashboard</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <Link href="/dashboard/groups" passHref>
-                    <SidebarMenuButton
-                      isActive={pathname === "/dashboard/groups"}
-                    >
-                      <Users className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-white" />
-                      <span className="text-sm">Groups</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-              </SidebarMenu>
+          <SheetContent side="left" className="w-[280px] p-0">
+            <div className="p-4 border-b">
+              <SheetTitle>Menu</SheetTitle>
             </div>
+            <ScrollArea className="h-[calc(100vh-80px)]">
+              <div className="flex flex-col gap-1 p-2">
+                {/* Overview Section */}
+                <div className="px-2 py-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Overview</p>
+                </div>
+                <Link href="/dashboard" passHref>
+                  <Button
+                    variant={pathname === "/dashboard" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Home className="h-4 w-4" />
+                    <span>Dashboard</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/notifications" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/notifications" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Bell className="h-4 w-4" />
+                    <span>Notifications</span>
+                  </Button>
+                </Link>
+
+                {/* Finances Section */}
+                <div className="px-2 py-2 mt-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Finances</p>
+                </div>
+                <Link href="/dashboard/personal-savings" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/personal-savings" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Wallet className="h-4 w-4" />
+                    <span>Personal Savings</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/view-balances" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/view-balances" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    <span>View Balances</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/payments" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/payments" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Calendar className="h-4 w-4" />
+                    <span>Payments</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/deposit-withdraw" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/deposit-withdraw" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <DollarSign className="h-4 w-4" />
+                    <span>Deposit/Withdraw</span>
+                  </Button>
+                </Link>
+
+                {/* Groups Section */}
+                <div className="px-2 py-2 mt-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Groups</p>
+                </div>
+                <Link href="/dashboard/groups" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/groups" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Users className="h-4 w-4" />
+                    <span>My Groups</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/groups/create" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/groups/create" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>Create Group</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/groups/join" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/groups/join" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span>Join Group</span>
+                  </Button>
+                </Link>
+
+                {/* Settings Section */}
+                <div className="px-2 py-2 mt-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">More</p>
+                </div>
+                <Link href="/dashboard/settings" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/settings" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Settings className="h-4 w-4" />
+                    <span>Settings</span>
+                  </Button>
+                </Link>
+                <Link href="/dashboard/help" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/help" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                    <span>Help & Support</span>
+                  </Button>
+                </Link>
+              </div>
+            </ScrollArea>
           </SheetContent>
         </Sheet>
       )}
@@ -571,7 +672,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               </SidebarMenu>
 
               <div className="mt-4 px-2">
-                <UserButton/>
+                <UserButton />
               </div>
             </SidebarFooter>
 

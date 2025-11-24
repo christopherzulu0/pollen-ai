@@ -112,7 +112,28 @@ export async function POST(req: Request) {
         })
 
         if (!user) {
-            return new NextResponse("User not found", { status: 404 })
+            return NextResponse.json({ error: "User not found" }, { status: 404 })
+        }
+
+        // Auto-create wallet and personal savings if they don't exist
+        if (!user.wallet) {
+            console.log("[TRANSACTIONS] Creating wallet for user:", user.id)
+            user.wallet = await prisma.wallet.create({
+                data: {
+                    userId: user.id,
+                    balance: 0
+                }
+            })
+        }
+
+        if (!user.personalSavings) {
+            console.log("[TRANSACTIONS] Creating personal savings for user:", user.id)
+            user.personalSavings = await prisma.personalSavings.create({
+                data: {
+                    userId: user.id,
+                    balance: 0
+                }
+            })
         }
 
         // Create the transaction
@@ -225,7 +246,7 @@ export async function POST(req: Request) {
             // Handle wallet transaction
             await prisma.wallet.update({
                 where: {
-                    id: user.wallet?.id
+                    userId: user.id  // Use userId instead of wallet.id since it's a unique field
                 },
                 data: {
                     balance: {
@@ -244,6 +265,7 @@ export async function POST(req: Request) {
         }
     } catch (error) {
         console.error("[TRANSACTIONS_ERROR]", error)
-        return new NextResponse("Internal Error", { status: 500 })
+        const errorMessage = error instanceof Error ? error.message : "Internal Error"
+        return NextResponse.json({ error: errorMessage }, { status: 500 })
     }
 } 

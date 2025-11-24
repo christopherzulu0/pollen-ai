@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/hooks/use-toast"
 import { LogIn, Plus, ChevronRight, FileText, Clock } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import LoanRequestForm from "@/components/loans/loan-request-form"
 
 // Define Group type
 interface Group {
@@ -23,10 +25,11 @@ interface Group {
 
 export default function GroupsPage() {
   const { toast } = useToast()
+  const [isLoanDialogOpen, setIsLoanDialogOpen] = useState(false)
 
   // Fetch groups data with React Query
-  const { 
-    data: groups = [] as Group[], 
+  const {
+    data: groups = [] as Group[],
     isLoading: isLoadingGroups,
     error: groupsError,
     refetch: refetchGroups,
@@ -38,17 +41,17 @@ export default function GroupsPage() {
       try {
         const response = await fetch('/api/groups');
         console.log('Groups API response status:', response.status);
-        
+
         // Handle HTTP error statuses
         if (response.status === 401) {
           throw new Error('Authentication required. Please sign in again.');
         }
-        
+
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.error || 'Failed to fetch groups');
         }
-        
+
         const data = await response.json();
         console.log('Groups data:', data);
         return data;
@@ -81,7 +84,7 @@ export default function GroupsPage() {
           <h1 className="text-2xl font-bold tracking-tight">Savings Groups</h1>
           <p className="text-muted-foreground">Manage your cooperative savings groups</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Link href="/dashboard/groups/join" passHref>
             <Button>
               <LogIn className="mr-2 h-4 w-4" />
@@ -94,6 +97,10 @@ export default function GroupsPage() {
               Create Group
             </Button>
           </Link>
+          <Button onClick={() => setIsLoanDialogOpen(true)} variant="outline">
+            <FileText className="mr-2 h-4 w-4" />
+            Create Loan Request
+          </Button>
         </div>
       </div>
 
@@ -203,6 +210,21 @@ export default function GroupsPage() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Loan Request Dialog */}
+      <Dialog open={isLoanDialogOpen} onOpenChange={setIsLoanDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create Loan Request</DialogTitle>
+            <DialogDescription>
+              Submit a new loan request to your savings group for approval.
+            </DialogDescription>
+          </DialogHeader>
+          <LoanRequestForm
+            onSuccess={() => setIsLoanDialogOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

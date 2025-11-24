@@ -64,7 +64,7 @@ export default function LoanStatistics() {
   const [isClient, setIsClient] = useState(false)
   const [viewMode, setViewMode] = useState<"chart" | "table">("chart")
 
-    {/** Set isClient to true when component mounts (for SSR compatibility) */}
+  {/** Set isClient to true when component mounts (for SSR compatibility) */ }
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -454,17 +454,17 @@ export default function LoanStatistics() {
 
           {/* Loan Status Tab */}
           <TabsContent value="status" className="mt-0 pt-4">
-           <LoanStatusTab/>
+            <LoanStatusTab />
           </TabsContent>
 
           {/* Loan Purpose Tab */}
           <TabsContent value="purpose" className="mt-0 pt-4">
-           <LoanPurposeTab/>
+            <LoanPurposeTab />
           </TabsContent>
 
           {/* Top Contributors Tab */}
           <TabsContent value="contributions" className="mt-0 pt-4">
-         <TopContributorsTab/>
+            <TopContributorsTab />
           </TabsContent>
         </Tabs>
       </CardContent>

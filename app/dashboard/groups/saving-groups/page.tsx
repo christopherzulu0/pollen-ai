@@ -1,9 +1,10 @@
 'use client'
 
-import {Suspense, useEffect, useState} from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import type { Metadata } from "next"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import LoanRequestForm from "@/components/loans/loan-request-form"
 import PendingLoanRequests from "@/components/loans/pending-loan-requests"
 import MyLoanRequests from "@/components/loans/my-loan-requests"
@@ -29,18 +30,17 @@ import { Plus } from "lucide-react"
 //     viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 // }
 
-export default function LoansPage() {
+function LoansPageContent() {
     const searchParams = useSearchParams()
-    const [isClient,setIsClient] = useState(false)
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const groupId = searchParams.get('groupId')
 
-    useEffect(()=>{
-        setIsClient(true);
-    },[])
-
-    if(!isClient){
-        return null;
-    }
+    // Auto-open dialog if groupId is present
+    useEffect(() => {
+        if (groupId) {
+            setIsDialogOpen(true)
+        }
+    }, [groupId])
 
     return (
         <div className="flex min-h-screen flex-col  ">
@@ -77,7 +77,7 @@ export default function LoansPage() {
                         </div>
 
                         <div className="mt-6 md:mt-8">
-                            <Tabs defaultValue={groupId ? "new-request" : "pending"} className="w-full">
+                            <Tabs defaultValue="pending" className="w-full">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-4 sm:gap-0">
                                     <ScrollArea className="w-full max-w-full sm:max-w-3xl whitespace-nowrap pb-3 sm:pb-0">
                                         <TabsList className="inline-flex h-auto p-1 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -105,20 +105,18 @@ export default function LoansPage() {
                                             >
                                                 Group Members
                                             </TabsTrigger>
-                                            <TabsTrigger
-                                                value="new-request"
-                                                className="flex-1 md:flex-none py-2 px-3 h-auto rounded-full text-xs sm:text-sm data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-slate-100 dark:data-[state=active]:text-slate-900"
-                                            >
-                                                New Request
-                                            </TabsTrigger>
                                         </TabsList>
                                     </ScrollArea>
                                     <Button
                                         size="sm"
-                                        className="rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white hidden md:flex"
+                                        onClick={() => {
+                                            console.log('Button clicked, setting dialog open')
+                                            setIsDialogOpen(true)
+                                        }}
+                                        className="rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white w-full sm:w-auto"
                                     >
                                         <Plus className="h-4 w-4 mr-2" />
-                                        New Request
+                                        Create Loan Request
                                     </Button>
                                 </div>
 
@@ -145,17 +143,38 @@ export default function LoansPage() {
                                         <GroupMembers />
                                     </Suspense>
                                 </TabsContent>
-
-                                <TabsContent value="new-request" className="space-y-4 mt-0">
-                                    <LoanRequestForm preSelectedGroupId={groupId || undefined} />
-                                </TabsContent>
                             </Tabs>
                         </div>
                     </div>
                 </main>
             </div>
+
+            {/* Loan Request Dialog */}
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                        <DialogTitle>Create Loan Request</DialogTitle>
+                        <DialogDescription>
+                            Submit a new loan request to your savings group for approval.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <LoanRequestForm
+                        preSelectedGroupId={groupId || undefined}
+                        onSuccess={() => setIsDialogOpen(false)}
+                    />
+                </DialogContent>
+            </Dialog>
+
             <AIAssistant />
             <Toaster />
         </div>
+    )
+}
+
+export default function LoansPage() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><Skeleton className="h-[600px] w-full max-w-7xl" /></div>}>
+            <LoansPageContent />
+        </Suspense>
     )
 }

@@ -34,10 +34,10 @@ export default function ViewBalances() {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
   const [contributionAmount, setContributionAmount] = useState('')
   const queryClient = useQueryClient()
-  const { 
-    isConnected, 
-    address, 
-    network, 
+  const {
+    isConnected,
+    address,
+    network,
     formattedBalance: celoFormattedBalance,
     balance: celoBalanceRaw,
     refreshBalance: refreshCeloBalance,
@@ -77,7 +77,7 @@ export default function ViewBalances() {
     if (!isConnected || !celoFormattedBalance) {
       return null
     }
-    
+
     return {
       celoFormatted: celoFormattedBalance.celo || '0',
       cusdFormatted: celoFormattedBalance.cusd || '0',
@@ -85,7 +85,7 @@ export default function ViewBalances() {
       network: network || 'alfajores',
     }
   }, [isConnected, celoFormattedBalance, network])
-  
+
   // Refresh balance when component mounts or when address changes
   useEffect(() => {
     if (isConnected && address) {
@@ -176,7 +176,82 @@ export default function ViewBalances() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <>
+        <div className="mx-auto max-w-5xl">
+          {/* Header Skeleton */}
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+              <Skeleton className="h-8 w-48 mb-2" />
+              <Skeleton className="h-5 w-64" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-10 w-[180px]" />
+              <Skeleton className="h-10 w-24" />
+            </div>
+          </div>
+
+          {/* Balance Cards Skeleton */}
+          <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="mb-1 flex items-center gap-2">
+                    <Skeleton className="h-5 w-5 rounded-full" />
+                    <Skeleton className="h-4 w-28" />
+                  </div>
+                  <Skeleton className="h-9 w-32 mb-3" />
+                  <div className="flex items-center gap-1 mb-4">
+                    <Skeleton className="h-3 w-3" />
+                    <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-3 w-16" />
+                  </div>
+                  <Skeleton className="h-8 w-28 rounded" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Groups Section Skeleton */}
+          <div className="mt-8">
+            <div className="mb-4 flex items-center justify-between">
+              <Skeleton className="h-7 w-32" />
+              <Skeleton className="h-9 w-32" />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {[1, 2].map((i) => (
+                <Card key={i}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-6 w-40" />
+                      <Skeleton className="h-5 w-16 rounded-full" />
+                    </div>
+                    <Skeleton className="h-4 w-full mt-2" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-4 w-20" />
+                      </div>
+                      <div className="flex justify-between">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-4 w-24" />
+                      </div>
+                      <div className="flex justify-between">
+                        <Skeleton className="h-4 w-28" />
+                        <Skeleton className="h-4 w-20" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-9 w-full mt-4 rounded" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (
@@ -333,9 +408,9 @@ export default function ViewBalances() {
                 </div>
               )}
               <div className="mt-4">
-                <Button 
-                  size="sm" 
-                  variant="secondary" 
+                <Button
+                  size="sm"
+                  variant="secondary"
                   className="bg-white/20 text-white hover:bg-white/30"
                   onClick={() => {
                     if (!isConnected) {
@@ -382,11 +457,10 @@ export default function ViewBalances() {
                     <Button
                       key={group.id}
                       variant="outline"
-                      className={`w-full justify-between ${
-                        selectedGroup?.id === group.id
+                      className={`w-full justify-between ${selectedGroup?.id === group.id
                           ? 'border-2 border-teal-500 bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-300 dark:hover:bg-teal-900'
                           : 'hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950'
-                      }`}
+                        }`}
                       onClick={() => setSelectedGroup(group)}
                     >
                       <div className="flex items-center gap-2">
@@ -521,7 +595,7 @@ export default function ViewBalances() {
                           onChange={(e) => setContributionAmount(e.target.value)}
                           className="max-w-[200px]"
                         />
-                        <Button 
+                        <Button
                           onClick={handleContribution}
                           disabled={makeContribution.isPending || !contributionAmount}
                           className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700"

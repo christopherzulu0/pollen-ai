@@ -109,6 +109,16 @@ export type VoteResult = $Result.DefaultSelection<Prisma.$VoteResultPayload>
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
 /**
+ * Model PersonalLoanDocuments
+ * 
+ */
+export type PersonalLoanDocuments = $Result.DefaultSelection<Prisma.$PersonalLoanDocumentsPayload>
+/**
+ * Model SolarLoanDocuments
+ * 
+ */
+export type SolarLoanDocuments = $Result.DefaultSelection<Prisma.$SolarLoanDocumentsPayload>
+/**
  * Model GroupInvitation
  * 
  */
@@ -133,6 +143,11 @@ export type LoanRequest = $Result.DefaultSelection<Prisma.$LoanRequestPayload>
  * 
  */
 export type LoanVote = $Result.DefaultSelection<Prisma.$LoanVotePayload>
+/**
+ * Model IndividualLoan
+ * 
+ */
+export type IndividualLoan = $Result.DefaultSelection<Prisma.$IndividualLoanPayload>
 
 /**
  * Enums
@@ -639,6 +654,26 @@ export class PrismaClient<
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.personalLoanDocuments`: Exposes CRUD operations for the **PersonalLoanDocuments** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PersonalLoanDocuments
+    * const personalLoanDocuments = await prisma.personalLoanDocuments.findMany()
+    * ```
+    */
+  get personalLoanDocuments(): Prisma.PersonalLoanDocumentsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.solarLoanDocuments`: Exposes CRUD operations for the **SolarLoanDocuments** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SolarLoanDocuments
+    * const solarLoanDocuments = await prisma.solarLoanDocuments.findMany()
+    * ```
+    */
+  get solarLoanDocuments(): Prisma.SolarLoanDocumentsDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.groupInvitation`: Exposes CRUD operations for the **GroupInvitation** model.
     * Example usage:
     * ```ts
@@ -687,6 +722,16 @@ export class PrismaClient<
     * ```
     */
   get loanVote(): Prisma.LoanVoteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.individualLoan`: Exposes CRUD operations for the **IndividualLoan** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IndividualLoans
+    * const individualLoans = await prisma.individualLoan.findMany()
+    * ```
+    */
+  get individualLoan(): Prisma.IndividualLoanDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1147,11 +1192,14 @@ export namespace Prisma {
     Vote: 'Vote',
     VoteResult: 'VoteResult',
     Notification: 'Notification',
+    PersonalLoanDocuments: 'PersonalLoanDocuments',
+    SolarLoanDocuments: 'SolarLoanDocuments',
     GroupInvitation: 'GroupInvitation',
     Wallet: 'Wallet',
     Contribution: 'Contribution',
     LoanRequest: 'LoanRequest',
-    LoanVote: 'LoanVote'
+    LoanVote: 'LoanVote',
+    IndividualLoan: 'IndividualLoan'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1170,7 +1218,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "meeting" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote"
+      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "meeting" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2580,6 +2628,154 @@ export namespace Prisma {
           }
         }
       }
+      PersonalLoanDocuments: {
+        payload: Prisma.$PersonalLoanDocumentsPayload<ExtArgs>
+        fields: Prisma.PersonalLoanDocumentsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PersonalLoanDocumentsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PersonalLoanDocumentsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>
+          }
+          findFirst: {
+            args: Prisma.PersonalLoanDocumentsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PersonalLoanDocumentsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>
+          }
+          findMany: {
+            args: Prisma.PersonalLoanDocumentsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>[]
+          }
+          create: {
+            args: Prisma.PersonalLoanDocumentsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>
+          }
+          createMany: {
+            args: Prisma.PersonalLoanDocumentsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PersonalLoanDocumentsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>[]
+          }
+          delete: {
+            args: Prisma.PersonalLoanDocumentsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>
+          }
+          update: {
+            args: Prisma.PersonalLoanDocumentsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>
+          }
+          deleteMany: {
+            args: Prisma.PersonalLoanDocumentsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PersonalLoanDocumentsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PersonalLoanDocumentsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>[]
+          }
+          upsert: {
+            args: Prisma.PersonalLoanDocumentsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonalLoanDocumentsPayload>
+          }
+          aggregate: {
+            args: Prisma.PersonalLoanDocumentsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePersonalLoanDocuments>
+          }
+          groupBy: {
+            args: Prisma.PersonalLoanDocumentsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PersonalLoanDocumentsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PersonalLoanDocumentsCountArgs<ExtArgs>
+            result: $Utils.Optional<PersonalLoanDocumentsCountAggregateOutputType> | number
+          }
+        }
+      }
+      SolarLoanDocuments: {
+        payload: Prisma.$SolarLoanDocumentsPayload<ExtArgs>
+        fields: Prisma.SolarLoanDocumentsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SolarLoanDocumentsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SolarLoanDocumentsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>
+          }
+          findFirst: {
+            args: Prisma.SolarLoanDocumentsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SolarLoanDocumentsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>
+          }
+          findMany: {
+            args: Prisma.SolarLoanDocumentsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>[]
+          }
+          create: {
+            args: Prisma.SolarLoanDocumentsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>
+          }
+          createMany: {
+            args: Prisma.SolarLoanDocumentsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SolarLoanDocumentsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>[]
+          }
+          delete: {
+            args: Prisma.SolarLoanDocumentsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>
+          }
+          update: {
+            args: Prisma.SolarLoanDocumentsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>
+          }
+          deleteMany: {
+            args: Prisma.SolarLoanDocumentsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SolarLoanDocumentsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SolarLoanDocumentsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>[]
+          }
+          upsert: {
+            args: Prisma.SolarLoanDocumentsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SolarLoanDocumentsPayload>
+          }
+          aggregate: {
+            args: Prisma.SolarLoanDocumentsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSolarLoanDocuments>
+          }
+          groupBy: {
+            args: Prisma.SolarLoanDocumentsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SolarLoanDocumentsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SolarLoanDocumentsCountArgs<ExtArgs>
+            result: $Utils.Optional<SolarLoanDocumentsCountAggregateOutputType> | number
+          }
+        }
+      }
       GroupInvitation: {
         payload: Prisma.$GroupInvitationPayload<ExtArgs>
         fields: Prisma.GroupInvitationFieldRefs
@@ -2950,6 +3146,80 @@ export namespace Prisma {
           }
         }
       }
+      IndividualLoan: {
+        payload: Prisma.$IndividualLoanPayload<ExtArgs>
+        fields: Prisma.IndividualLoanFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IndividualLoanFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IndividualLoanFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>
+          }
+          findFirst: {
+            args: Prisma.IndividualLoanFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IndividualLoanFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>
+          }
+          findMany: {
+            args: Prisma.IndividualLoanFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>[]
+          }
+          create: {
+            args: Prisma.IndividualLoanCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>
+          }
+          createMany: {
+            args: Prisma.IndividualLoanCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.IndividualLoanCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>[]
+          }
+          delete: {
+            args: Prisma.IndividualLoanDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>
+          }
+          update: {
+            args: Prisma.IndividualLoanUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>
+          }
+          deleteMany: {
+            args: Prisma.IndividualLoanDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IndividualLoanUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.IndividualLoanUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>[]
+          }
+          upsert: {
+            args: Prisma.IndividualLoanUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IndividualLoanPayload>
+          }
+          aggregate: {
+            args: Prisma.IndividualLoanAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIndividualLoan>
+          }
+          groupBy: {
+            args: Prisma.IndividualLoanGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IndividualLoanGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IndividualLoanCountArgs<ExtArgs>
+            result: $Utils.Optional<IndividualLoanCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3065,11 +3335,14 @@ export namespace Prisma {
     vote?: VoteOmit
     voteResult?: VoteResultOmit
     notification?: NotificationOmit
+    personalLoanDocuments?: PersonalLoanDocumentsOmit
+    solarLoanDocuments?: SolarLoanDocumentsOmit
     groupInvitation?: GroupInvitationOmit
     wallet?: WalletOmit
     contribution?: ContributionOmit
     loanRequest?: LoanRequestOmit
     loanVote?: LoanVoteOmit
+    individualLoan?: IndividualLoanOmit
   }
 
   /* Types for Logging */
@@ -3160,6 +3433,7 @@ export namespace Prisma {
     contributions: number
     loanRequests: number
     loanVotes: number
+    individualLoans: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3173,6 +3447,7 @@ export namespace Prisma {
     contributions?: boolean | UserCountOutputTypeCountContributionsArgs
     loanRequests?: boolean | UserCountOutputTypeCountLoanRequestsArgs
     loanVotes?: boolean | UserCountOutputTypeCountLoanVotesArgs
+    individualLoans?: boolean | UserCountOutputTypeCountIndividualLoansArgs
   }
 
   // Custom InputTypes
@@ -3254,6 +3529,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountLoanVotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LoanVoteWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountIndividualLoansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IndividualLoanWhereInput
   }
 
 
@@ -3659,6 +3941,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     isAdmin: boolean | null
+    nationalId: string | null
+    address: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3671,6 +3955,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     isAdmin: boolean | null
+    nationalId: string | null
+    address: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3683,6 +3969,8 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     isAdmin: number
+    nationalId: number
+    address: number
     _all: number
   }
 
@@ -3697,6 +3985,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     isAdmin?: true
+    nationalId?: true
+    address?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3709,6 +3999,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     isAdmin?: true
+    nationalId?: true
+    address?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3721,6 +4013,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     isAdmin?: true
+    nationalId?: true
+    address?: true
     _all?: true
   }
 
@@ -3806,6 +4100,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     isAdmin: boolean
+    nationalId: string | null
+    address: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3835,6 +4131,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     isAdmin?: boolean
+    nationalId?: boolean
+    address?: boolean
     memberships?: boolean | User$membershipsArgs<ExtArgs>
     ownedGroups?: boolean | User$ownedGroupsArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
@@ -3847,6 +4145,9 @@ export namespace Prisma {
     contributions?: boolean | User$contributionsArgs<ExtArgs>
     loanRequests?: boolean | User$loanRequestsArgs<ExtArgs>
     loanVotes?: boolean | User$loanVotesArgs<ExtArgs>
+    personalDocuments?: boolean | User$personalDocumentsArgs<ExtArgs>
+    solarDocuments?: boolean | User$solarDocumentsArgs<ExtArgs>
+    individualLoans?: boolean | User$individualLoansArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3860,6 +4161,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     isAdmin?: boolean
+    nationalId?: boolean
+    address?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3872,6 +4175,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     isAdmin?: boolean
+    nationalId?: boolean
+    address?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3884,9 +4189,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     isAdmin?: boolean
+    nationalId?: boolean
+    address?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "clerkUserId" | "avatar" | "createdAt" | "updatedAt" | "isAdmin", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "clerkUserId" | "avatar" | "createdAt" | "updatedAt" | "isAdmin" | "nationalId" | "address", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     memberships?: boolean | User$membershipsArgs<ExtArgs>
     ownedGroups?: boolean | User$ownedGroupsArgs<ExtArgs>
@@ -3900,6 +4207,9 @@ export namespace Prisma {
     contributions?: boolean | User$contributionsArgs<ExtArgs>
     loanRequests?: boolean | User$loanRequestsArgs<ExtArgs>
     loanVotes?: boolean | User$loanVotesArgs<ExtArgs>
+    personalDocuments?: boolean | User$personalDocumentsArgs<ExtArgs>
+    solarDocuments?: boolean | User$solarDocumentsArgs<ExtArgs>
+    individualLoans?: boolean | User$individualLoansArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3920,6 +4230,9 @@ export namespace Prisma {
       contributions: Prisma.$ContributionPayload<ExtArgs>[]
       loanRequests: Prisma.$LoanRequestPayload<ExtArgs>[]
       loanVotes: Prisma.$LoanVotePayload<ExtArgs>[]
+      personalDocuments: Prisma.$PersonalLoanDocumentsPayload<ExtArgs> | null
+      solarDocuments: Prisma.$SolarLoanDocumentsPayload<ExtArgs> | null
+      individualLoans: Prisma.$IndividualLoanPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3931,6 +4244,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       isAdmin: boolean
+      nationalId: string | null
+      address: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4337,6 +4652,9 @@ export namespace Prisma {
     contributions<T extends User$contributionsArgs<ExtArgs> = {}>(args?: Subset<T, User$contributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loanRequests<T extends User$loanRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$loanRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loanVotes<T extends User$loanVotesArgs<ExtArgs> = {}>(args?: Subset<T, User$loanVotesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    personalDocuments<T extends User$personalDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$personalDocumentsArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    solarDocuments<T extends User$solarDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$solarDocumentsArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    individualLoans<T extends User$individualLoansArgs<ExtArgs> = {}>(args?: Subset<T, User$individualLoansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4375,6 +4693,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
+    readonly nationalId: FieldRef<"User", 'String'>
+    readonly address: FieldRef<"User", 'String'>
   }
     
 
@@ -5038,6 +5358,68 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LoanVoteScalarFieldEnum | LoanVoteScalarFieldEnum[]
+  }
+
+  /**
+   * User.personalDocuments
+   */
+  export type User$personalDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    where?: PersonalLoanDocumentsWhereInput
+  }
+
+  /**
+   * User.solarDocuments
+   */
+  export type User$solarDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    where?: SolarLoanDocumentsWhereInput
+  }
+
+  /**
+   * User.individualLoans
+   */
+  export type User$individualLoansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    where?: IndividualLoanWhereInput
+    orderBy?: IndividualLoanOrderByWithRelationInput | IndividualLoanOrderByWithRelationInput[]
+    cursor?: IndividualLoanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IndividualLoanScalarFieldEnum | IndividualLoanScalarFieldEnum[]
   }
 
   /**
@@ -25854,6 +26236,2252 @@ export namespace Prisma {
 
 
   /**
+   * Model PersonalLoanDocuments
+   */
+
+  export type AggregatePersonalLoanDocuments = {
+    _count: PersonalLoanDocumentsCountAggregateOutputType | null
+    _min: PersonalLoanDocumentsMinAggregateOutputType | null
+    _max: PersonalLoanDocumentsMaxAggregateOutputType | null
+  }
+
+  export type PersonalLoanDocumentsMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    Nrcfront: string | null
+    NrcBack: string | null
+    PaySlip: string | null
+    ProofOfAddress: string | null
+    LiveSelfie: string | null
+    BankStatement: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PersonalLoanDocumentsMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    Nrcfront: string | null
+    NrcBack: string | null
+    PaySlip: string | null
+    ProofOfAddress: string | null
+    LiveSelfie: string | null
+    BankStatement: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PersonalLoanDocumentsCountAggregateOutputType = {
+    id: number
+    userId: number
+    Nrcfront: number
+    NrcBack: number
+    PaySlip: number
+    ProofOfAddress: number
+    LiveSelfie: number
+    BankStatement: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PersonalLoanDocumentsMinAggregateInputType = {
+    id?: true
+    userId?: true
+    Nrcfront?: true
+    NrcBack?: true
+    PaySlip?: true
+    ProofOfAddress?: true
+    LiveSelfie?: true
+    BankStatement?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PersonalLoanDocumentsMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    Nrcfront?: true
+    NrcBack?: true
+    PaySlip?: true
+    ProofOfAddress?: true
+    LiveSelfie?: true
+    BankStatement?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PersonalLoanDocumentsCountAggregateInputType = {
+    id?: true
+    userId?: true
+    Nrcfront?: true
+    NrcBack?: true
+    PaySlip?: true
+    ProofOfAddress?: true
+    LiveSelfie?: true
+    BankStatement?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PersonalLoanDocumentsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PersonalLoanDocuments to aggregate.
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PersonalLoanDocuments to fetch.
+     */
+    orderBy?: PersonalLoanDocumentsOrderByWithRelationInput | PersonalLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PersonalLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PersonalLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PersonalLoanDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PersonalLoanDocuments
+    **/
+    _count?: true | PersonalLoanDocumentsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PersonalLoanDocumentsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PersonalLoanDocumentsMaxAggregateInputType
+  }
+
+  export type GetPersonalLoanDocumentsAggregateType<T extends PersonalLoanDocumentsAggregateArgs> = {
+        [P in keyof T & keyof AggregatePersonalLoanDocuments]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePersonalLoanDocuments[P]>
+      : GetScalarType<T[P], AggregatePersonalLoanDocuments[P]>
+  }
+
+
+
+
+  export type PersonalLoanDocumentsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PersonalLoanDocumentsWhereInput
+    orderBy?: PersonalLoanDocumentsOrderByWithAggregationInput | PersonalLoanDocumentsOrderByWithAggregationInput[]
+    by: PersonalLoanDocumentsScalarFieldEnum[] | PersonalLoanDocumentsScalarFieldEnum
+    having?: PersonalLoanDocumentsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PersonalLoanDocumentsCountAggregateInputType | true
+    _min?: PersonalLoanDocumentsMinAggregateInputType
+    _max?: PersonalLoanDocumentsMaxAggregateInputType
+  }
+
+  export type PersonalLoanDocumentsGroupByOutputType = {
+    id: string
+    userId: string
+    Nrcfront: string
+    NrcBack: string
+    PaySlip: string
+    ProofOfAddress: string | null
+    LiveSelfie: string | null
+    BankStatement: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PersonalLoanDocumentsCountAggregateOutputType | null
+    _min: PersonalLoanDocumentsMinAggregateOutputType | null
+    _max: PersonalLoanDocumentsMaxAggregateOutputType | null
+  }
+
+  type GetPersonalLoanDocumentsGroupByPayload<T extends PersonalLoanDocumentsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PersonalLoanDocumentsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PersonalLoanDocumentsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PersonalLoanDocumentsGroupByOutputType[P]>
+            : GetScalarType<T[P], PersonalLoanDocumentsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PersonalLoanDocumentsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    PaySlip?: boolean
+    ProofOfAddress?: boolean
+    LiveSelfie?: boolean
+    BankStatement?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["personalLoanDocuments"]>
+
+  export type PersonalLoanDocumentsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    PaySlip?: boolean
+    ProofOfAddress?: boolean
+    LiveSelfie?: boolean
+    BankStatement?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["personalLoanDocuments"]>
+
+  export type PersonalLoanDocumentsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    PaySlip?: boolean
+    ProofOfAddress?: boolean
+    LiveSelfie?: boolean
+    BankStatement?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["personalLoanDocuments"]>
+
+  export type PersonalLoanDocumentsSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    PaySlip?: boolean
+    ProofOfAddress?: boolean
+    LiveSelfie?: boolean
+    BankStatement?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PersonalLoanDocumentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "Nrcfront" | "NrcBack" | "PaySlip" | "ProofOfAddress" | "LiveSelfie" | "BankStatement" | "createdAt" | "updatedAt", ExtArgs["result"]["personalLoanDocuments"]>
+  export type PersonalLoanDocumentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PersonalLoanDocumentsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PersonalLoanDocumentsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PersonalLoanDocumentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PersonalLoanDocuments"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      Nrcfront: string
+      NrcBack: string
+      PaySlip: string
+      ProofOfAddress: string | null
+      LiveSelfie: string | null
+      BankStatement: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["personalLoanDocuments"]>
+    composites: {}
+  }
+
+  type PersonalLoanDocumentsGetPayload<S extends boolean | null | undefined | PersonalLoanDocumentsDefaultArgs> = $Result.GetResult<Prisma.$PersonalLoanDocumentsPayload, S>
+
+  type PersonalLoanDocumentsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PersonalLoanDocumentsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PersonalLoanDocumentsCountAggregateInputType | true
+    }
+
+  export interface PersonalLoanDocumentsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PersonalLoanDocuments'], meta: { name: 'PersonalLoanDocuments' } }
+    /**
+     * Find zero or one PersonalLoanDocuments that matches the filter.
+     * @param {PersonalLoanDocumentsFindUniqueArgs} args - Arguments to find a PersonalLoanDocuments
+     * @example
+     * // Get one PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PersonalLoanDocumentsFindUniqueArgs>(args: SelectSubset<T, PersonalLoanDocumentsFindUniqueArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PersonalLoanDocuments that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PersonalLoanDocumentsFindUniqueOrThrowArgs} args - Arguments to find a PersonalLoanDocuments
+     * @example
+     * // Get one PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PersonalLoanDocumentsFindUniqueOrThrowArgs>(args: SelectSubset<T, PersonalLoanDocumentsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PersonalLoanDocuments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsFindFirstArgs} args - Arguments to find a PersonalLoanDocuments
+     * @example
+     * // Get one PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PersonalLoanDocumentsFindFirstArgs>(args?: SelectSubset<T, PersonalLoanDocumentsFindFirstArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PersonalLoanDocuments that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsFindFirstOrThrowArgs} args - Arguments to find a PersonalLoanDocuments
+     * @example
+     * // Get one PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PersonalLoanDocumentsFindFirstOrThrowArgs>(args?: SelectSubset<T, PersonalLoanDocumentsFindFirstOrThrowArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PersonalLoanDocuments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.findMany()
+     * 
+     * // Get first 10 PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const personalLoanDocumentsWithIdOnly = await prisma.personalLoanDocuments.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PersonalLoanDocumentsFindManyArgs>(args?: SelectSubset<T, PersonalLoanDocumentsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PersonalLoanDocuments.
+     * @param {PersonalLoanDocumentsCreateArgs} args - Arguments to create a PersonalLoanDocuments.
+     * @example
+     * // Create one PersonalLoanDocuments
+     * const PersonalLoanDocuments = await prisma.personalLoanDocuments.create({
+     *   data: {
+     *     // ... data to create a PersonalLoanDocuments
+     *   }
+     * })
+     * 
+     */
+    create<T extends PersonalLoanDocumentsCreateArgs>(args: SelectSubset<T, PersonalLoanDocumentsCreateArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PersonalLoanDocuments.
+     * @param {PersonalLoanDocumentsCreateManyArgs} args - Arguments to create many PersonalLoanDocuments.
+     * @example
+     * // Create many PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PersonalLoanDocumentsCreateManyArgs>(args?: SelectSubset<T, PersonalLoanDocumentsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PersonalLoanDocuments and returns the data saved in the database.
+     * @param {PersonalLoanDocumentsCreateManyAndReturnArgs} args - Arguments to create many PersonalLoanDocuments.
+     * @example
+     * // Create many PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PersonalLoanDocuments and only return the `id`
+     * const personalLoanDocumentsWithIdOnly = await prisma.personalLoanDocuments.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PersonalLoanDocumentsCreateManyAndReturnArgs>(args?: SelectSubset<T, PersonalLoanDocumentsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PersonalLoanDocuments.
+     * @param {PersonalLoanDocumentsDeleteArgs} args - Arguments to delete one PersonalLoanDocuments.
+     * @example
+     * // Delete one PersonalLoanDocuments
+     * const PersonalLoanDocuments = await prisma.personalLoanDocuments.delete({
+     *   where: {
+     *     // ... filter to delete one PersonalLoanDocuments
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PersonalLoanDocumentsDeleteArgs>(args: SelectSubset<T, PersonalLoanDocumentsDeleteArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PersonalLoanDocuments.
+     * @param {PersonalLoanDocumentsUpdateArgs} args - Arguments to update one PersonalLoanDocuments.
+     * @example
+     * // Update one PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PersonalLoanDocumentsUpdateArgs>(args: SelectSubset<T, PersonalLoanDocumentsUpdateArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PersonalLoanDocuments.
+     * @param {PersonalLoanDocumentsDeleteManyArgs} args - Arguments to filter PersonalLoanDocuments to delete.
+     * @example
+     * // Delete a few PersonalLoanDocuments
+     * const { count } = await prisma.personalLoanDocuments.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PersonalLoanDocumentsDeleteManyArgs>(args?: SelectSubset<T, PersonalLoanDocumentsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PersonalLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PersonalLoanDocumentsUpdateManyArgs>(args: SelectSubset<T, PersonalLoanDocumentsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PersonalLoanDocuments and returns the data updated in the database.
+     * @param {PersonalLoanDocumentsUpdateManyAndReturnArgs} args - Arguments to update many PersonalLoanDocuments.
+     * @example
+     * // Update many PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PersonalLoanDocuments and only return the `id`
+     * const personalLoanDocumentsWithIdOnly = await prisma.personalLoanDocuments.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PersonalLoanDocumentsUpdateManyAndReturnArgs>(args: SelectSubset<T, PersonalLoanDocumentsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PersonalLoanDocuments.
+     * @param {PersonalLoanDocumentsUpsertArgs} args - Arguments to update or create a PersonalLoanDocuments.
+     * @example
+     * // Update or create a PersonalLoanDocuments
+     * const personalLoanDocuments = await prisma.personalLoanDocuments.upsert({
+     *   create: {
+     *     // ... data to create a PersonalLoanDocuments
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PersonalLoanDocuments we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PersonalLoanDocumentsUpsertArgs>(args: SelectSubset<T, PersonalLoanDocumentsUpsertArgs<ExtArgs>>): Prisma__PersonalLoanDocumentsClient<$Result.GetResult<Prisma.$PersonalLoanDocumentsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PersonalLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsCountArgs} args - Arguments to filter PersonalLoanDocuments to count.
+     * @example
+     * // Count the number of PersonalLoanDocuments
+     * const count = await prisma.personalLoanDocuments.count({
+     *   where: {
+     *     // ... the filter for the PersonalLoanDocuments we want to count
+     *   }
+     * })
+    **/
+    count<T extends PersonalLoanDocumentsCountArgs>(
+      args?: Subset<T, PersonalLoanDocumentsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PersonalLoanDocumentsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PersonalLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PersonalLoanDocumentsAggregateArgs>(args: Subset<T, PersonalLoanDocumentsAggregateArgs>): Prisma.PrismaPromise<GetPersonalLoanDocumentsAggregateType<T>>
+
+    /**
+     * Group by PersonalLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonalLoanDocumentsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PersonalLoanDocumentsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PersonalLoanDocumentsGroupByArgs['orderBy'] }
+        : { orderBy?: PersonalLoanDocumentsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PersonalLoanDocumentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPersonalLoanDocumentsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PersonalLoanDocuments model
+   */
+  readonly fields: PersonalLoanDocumentsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PersonalLoanDocuments.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PersonalLoanDocumentsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PersonalLoanDocuments model
+   */
+  interface PersonalLoanDocumentsFieldRefs {
+    readonly id: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly userId: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly Nrcfront: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly NrcBack: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly PaySlip: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly ProofOfAddress: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly LiveSelfie: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly BankStatement: FieldRef<"PersonalLoanDocuments", 'String'>
+    readonly createdAt: FieldRef<"PersonalLoanDocuments", 'DateTime'>
+    readonly updatedAt: FieldRef<"PersonalLoanDocuments", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PersonalLoanDocuments findUnique
+   */
+  export type PersonalLoanDocumentsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which PersonalLoanDocuments to fetch.
+     */
+    where: PersonalLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * PersonalLoanDocuments findUniqueOrThrow
+   */
+  export type PersonalLoanDocumentsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which PersonalLoanDocuments to fetch.
+     */
+    where: PersonalLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * PersonalLoanDocuments findFirst
+   */
+  export type PersonalLoanDocumentsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which PersonalLoanDocuments to fetch.
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PersonalLoanDocuments to fetch.
+     */
+    orderBy?: PersonalLoanDocumentsOrderByWithRelationInput | PersonalLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PersonalLoanDocuments.
+     */
+    cursor?: PersonalLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PersonalLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PersonalLoanDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PersonalLoanDocuments.
+     */
+    distinct?: PersonalLoanDocumentsScalarFieldEnum | PersonalLoanDocumentsScalarFieldEnum[]
+  }
+
+  /**
+   * PersonalLoanDocuments findFirstOrThrow
+   */
+  export type PersonalLoanDocumentsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which PersonalLoanDocuments to fetch.
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PersonalLoanDocuments to fetch.
+     */
+    orderBy?: PersonalLoanDocumentsOrderByWithRelationInput | PersonalLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PersonalLoanDocuments.
+     */
+    cursor?: PersonalLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PersonalLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PersonalLoanDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PersonalLoanDocuments.
+     */
+    distinct?: PersonalLoanDocumentsScalarFieldEnum | PersonalLoanDocumentsScalarFieldEnum[]
+  }
+
+  /**
+   * PersonalLoanDocuments findMany
+   */
+  export type PersonalLoanDocumentsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which PersonalLoanDocuments to fetch.
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PersonalLoanDocuments to fetch.
+     */
+    orderBy?: PersonalLoanDocumentsOrderByWithRelationInput | PersonalLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PersonalLoanDocuments.
+     */
+    cursor?: PersonalLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PersonalLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PersonalLoanDocuments.
+     */
+    skip?: number
+    distinct?: PersonalLoanDocumentsScalarFieldEnum | PersonalLoanDocumentsScalarFieldEnum[]
+  }
+
+  /**
+   * PersonalLoanDocuments create
+   */
+  export type PersonalLoanDocumentsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PersonalLoanDocuments.
+     */
+    data: XOR<PersonalLoanDocumentsCreateInput, PersonalLoanDocumentsUncheckedCreateInput>
+  }
+
+  /**
+   * PersonalLoanDocuments createMany
+   */
+  export type PersonalLoanDocumentsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PersonalLoanDocuments.
+     */
+    data: PersonalLoanDocumentsCreateManyInput | PersonalLoanDocumentsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PersonalLoanDocuments createManyAndReturn
+   */
+  export type PersonalLoanDocumentsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * The data used to create many PersonalLoanDocuments.
+     */
+    data: PersonalLoanDocumentsCreateManyInput | PersonalLoanDocumentsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PersonalLoanDocuments update
+   */
+  export type PersonalLoanDocumentsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PersonalLoanDocuments.
+     */
+    data: XOR<PersonalLoanDocumentsUpdateInput, PersonalLoanDocumentsUncheckedUpdateInput>
+    /**
+     * Choose, which PersonalLoanDocuments to update.
+     */
+    where: PersonalLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * PersonalLoanDocuments updateMany
+   */
+  export type PersonalLoanDocumentsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PersonalLoanDocuments.
+     */
+    data: XOR<PersonalLoanDocumentsUpdateManyMutationInput, PersonalLoanDocumentsUncheckedUpdateManyInput>
+    /**
+     * Filter which PersonalLoanDocuments to update
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * Limit how many PersonalLoanDocuments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PersonalLoanDocuments updateManyAndReturn
+   */
+  export type PersonalLoanDocumentsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * The data used to update PersonalLoanDocuments.
+     */
+    data: XOR<PersonalLoanDocumentsUpdateManyMutationInput, PersonalLoanDocumentsUncheckedUpdateManyInput>
+    /**
+     * Filter which PersonalLoanDocuments to update
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * Limit how many PersonalLoanDocuments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PersonalLoanDocuments upsert
+   */
+  export type PersonalLoanDocumentsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PersonalLoanDocuments to update in case it exists.
+     */
+    where: PersonalLoanDocumentsWhereUniqueInput
+    /**
+     * In case the PersonalLoanDocuments found by the `where` argument doesn't exist, create a new PersonalLoanDocuments with this data.
+     */
+    create: XOR<PersonalLoanDocumentsCreateInput, PersonalLoanDocumentsUncheckedCreateInput>
+    /**
+     * In case the PersonalLoanDocuments was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PersonalLoanDocumentsUpdateInput, PersonalLoanDocumentsUncheckedUpdateInput>
+  }
+
+  /**
+   * PersonalLoanDocuments delete
+   */
+  export type PersonalLoanDocumentsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter which PersonalLoanDocuments to delete.
+     */
+    where: PersonalLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * PersonalLoanDocuments deleteMany
+   */
+  export type PersonalLoanDocumentsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PersonalLoanDocuments to delete
+     */
+    where?: PersonalLoanDocumentsWhereInput
+    /**
+     * Limit how many PersonalLoanDocuments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PersonalLoanDocuments without action
+   */
+  export type PersonalLoanDocumentsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PersonalLoanDocuments
+     */
+    select?: PersonalLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PersonalLoanDocuments
+     */
+    omit?: PersonalLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PersonalLoanDocumentsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SolarLoanDocuments
+   */
+
+  export type AggregateSolarLoanDocuments = {
+    _count: SolarLoanDocumentsCountAggregateOutputType | null
+    _min: SolarLoanDocumentsMinAggregateOutputType | null
+    _max: SolarLoanDocumentsMaxAggregateOutputType | null
+  }
+
+  export type SolarLoanDocumentsMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    Nrcfront: string | null
+    NrcBack: string | null
+    LandOwnership: string | null
+    UtilityBill: string | null
+    VendorQuotation: string | null
+    SubsidyReceipt: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SolarLoanDocumentsMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    Nrcfront: string | null
+    NrcBack: string | null
+    LandOwnership: string | null
+    UtilityBill: string | null
+    VendorQuotation: string | null
+    SubsidyReceipt: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SolarLoanDocumentsCountAggregateOutputType = {
+    id: number
+    userId: number
+    Nrcfront: number
+    NrcBack: number
+    LandOwnership: number
+    UtilityBill: number
+    VendorQuotation: number
+    SubsidyReceipt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SolarLoanDocumentsMinAggregateInputType = {
+    id?: true
+    userId?: true
+    Nrcfront?: true
+    NrcBack?: true
+    LandOwnership?: true
+    UtilityBill?: true
+    VendorQuotation?: true
+    SubsidyReceipt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SolarLoanDocumentsMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    Nrcfront?: true
+    NrcBack?: true
+    LandOwnership?: true
+    UtilityBill?: true
+    VendorQuotation?: true
+    SubsidyReceipt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SolarLoanDocumentsCountAggregateInputType = {
+    id?: true
+    userId?: true
+    Nrcfront?: true
+    NrcBack?: true
+    LandOwnership?: true
+    UtilityBill?: true
+    VendorQuotation?: true
+    SubsidyReceipt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SolarLoanDocumentsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SolarLoanDocuments to aggregate.
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SolarLoanDocuments to fetch.
+     */
+    orderBy?: SolarLoanDocumentsOrderByWithRelationInput | SolarLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SolarLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SolarLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SolarLoanDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SolarLoanDocuments
+    **/
+    _count?: true | SolarLoanDocumentsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SolarLoanDocumentsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SolarLoanDocumentsMaxAggregateInputType
+  }
+
+  export type GetSolarLoanDocumentsAggregateType<T extends SolarLoanDocumentsAggregateArgs> = {
+        [P in keyof T & keyof AggregateSolarLoanDocuments]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSolarLoanDocuments[P]>
+      : GetScalarType<T[P], AggregateSolarLoanDocuments[P]>
+  }
+
+
+
+
+  export type SolarLoanDocumentsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SolarLoanDocumentsWhereInput
+    orderBy?: SolarLoanDocumentsOrderByWithAggregationInput | SolarLoanDocumentsOrderByWithAggregationInput[]
+    by: SolarLoanDocumentsScalarFieldEnum[] | SolarLoanDocumentsScalarFieldEnum
+    having?: SolarLoanDocumentsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SolarLoanDocumentsCountAggregateInputType | true
+    _min?: SolarLoanDocumentsMinAggregateInputType
+    _max?: SolarLoanDocumentsMaxAggregateInputType
+  }
+
+  export type SolarLoanDocumentsGroupByOutputType = {
+    id: string
+    userId: string
+    Nrcfront: string
+    NrcBack: string
+    LandOwnership: string
+    UtilityBill: string
+    VendorQuotation: string
+    SubsidyReceipt: string
+    createdAt: Date
+    updatedAt: Date
+    _count: SolarLoanDocumentsCountAggregateOutputType | null
+    _min: SolarLoanDocumentsMinAggregateOutputType | null
+    _max: SolarLoanDocumentsMaxAggregateOutputType | null
+  }
+
+  type GetSolarLoanDocumentsGroupByPayload<T extends SolarLoanDocumentsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SolarLoanDocumentsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SolarLoanDocumentsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SolarLoanDocumentsGroupByOutputType[P]>
+            : GetScalarType<T[P], SolarLoanDocumentsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SolarLoanDocumentsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    LandOwnership?: boolean
+    UtilityBill?: boolean
+    VendorQuotation?: boolean
+    SubsidyReceipt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["solarLoanDocuments"]>
+
+  export type SolarLoanDocumentsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    LandOwnership?: boolean
+    UtilityBill?: boolean
+    VendorQuotation?: boolean
+    SubsidyReceipt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["solarLoanDocuments"]>
+
+  export type SolarLoanDocumentsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    LandOwnership?: boolean
+    UtilityBill?: boolean
+    VendorQuotation?: boolean
+    SubsidyReceipt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["solarLoanDocuments"]>
+
+  export type SolarLoanDocumentsSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    Nrcfront?: boolean
+    NrcBack?: boolean
+    LandOwnership?: boolean
+    UtilityBill?: boolean
+    VendorQuotation?: boolean
+    SubsidyReceipt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SolarLoanDocumentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "Nrcfront" | "NrcBack" | "LandOwnership" | "UtilityBill" | "VendorQuotation" | "SubsidyReceipt" | "createdAt" | "updatedAt", ExtArgs["result"]["solarLoanDocuments"]>
+  export type SolarLoanDocumentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SolarLoanDocumentsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SolarLoanDocumentsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SolarLoanDocumentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SolarLoanDocuments"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      Nrcfront: string
+      NrcBack: string
+      LandOwnership: string
+      UtilityBill: string
+      VendorQuotation: string
+      SubsidyReceipt: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["solarLoanDocuments"]>
+    composites: {}
+  }
+
+  type SolarLoanDocumentsGetPayload<S extends boolean | null | undefined | SolarLoanDocumentsDefaultArgs> = $Result.GetResult<Prisma.$SolarLoanDocumentsPayload, S>
+
+  type SolarLoanDocumentsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SolarLoanDocumentsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SolarLoanDocumentsCountAggregateInputType | true
+    }
+
+  export interface SolarLoanDocumentsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SolarLoanDocuments'], meta: { name: 'SolarLoanDocuments' } }
+    /**
+     * Find zero or one SolarLoanDocuments that matches the filter.
+     * @param {SolarLoanDocumentsFindUniqueArgs} args - Arguments to find a SolarLoanDocuments
+     * @example
+     * // Get one SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SolarLoanDocumentsFindUniqueArgs>(args: SelectSubset<T, SolarLoanDocumentsFindUniqueArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SolarLoanDocuments that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SolarLoanDocumentsFindUniqueOrThrowArgs} args - Arguments to find a SolarLoanDocuments
+     * @example
+     * // Get one SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SolarLoanDocumentsFindUniqueOrThrowArgs>(args: SelectSubset<T, SolarLoanDocumentsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SolarLoanDocuments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsFindFirstArgs} args - Arguments to find a SolarLoanDocuments
+     * @example
+     * // Get one SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SolarLoanDocumentsFindFirstArgs>(args?: SelectSubset<T, SolarLoanDocumentsFindFirstArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SolarLoanDocuments that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsFindFirstOrThrowArgs} args - Arguments to find a SolarLoanDocuments
+     * @example
+     * // Get one SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SolarLoanDocumentsFindFirstOrThrowArgs>(args?: SelectSubset<T, SolarLoanDocumentsFindFirstOrThrowArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SolarLoanDocuments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.findMany()
+     * 
+     * // Get first 10 SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const solarLoanDocumentsWithIdOnly = await prisma.solarLoanDocuments.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SolarLoanDocumentsFindManyArgs>(args?: SelectSubset<T, SolarLoanDocumentsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SolarLoanDocuments.
+     * @param {SolarLoanDocumentsCreateArgs} args - Arguments to create a SolarLoanDocuments.
+     * @example
+     * // Create one SolarLoanDocuments
+     * const SolarLoanDocuments = await prisma.solarLoanDocuments.create({
+     *   data: {
+     *     // ... data to create a SolarLoanDocuments
+     *   }
+     * })
+     * 
+     */
+    create<T extends SolarLoanDocumentsCreateArgs>(args: SelectSubset<T, SolarLoanDocumentsCreateArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SolarLoanDocuments.
+     * @param {SolarLoanDocumentsCreateManyArgs} args - Arguments to create many SolarLoanDocuments.
+     * @example
+     * // Create many SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SolarLoanDocumentsCreateManyArgs>(args?: SelectSubset<T, SolarLoanDocumentsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SolarLoanDocuments and returns the data saved in the database.
+     * @param {SolarLoanDocumentsCreateManyAndReturnArgs} args - Arguments to create many SolarLoanDocuments.
+     * @example
+     * // Create many SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SolarLoanDocuments and only return the `id`
+     * const solarLoanDocumentsWithIdOnly = await prisma.solarLoanDocuments.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SolarLoanDocumentsCreateManyAndReturnArgs>(args?: SelectSubset<T, SolarLoanDocumentsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SolarLoanDocuments.
+     * @param {SolarLoanDocumentsDeleteArgs} args - Arguments to delete one SolarLoanDocuments.
+     * @example
+     * // Delete one SolarLoanDocuments
+     * const SolarLoanDocuments = await prisma.solarLoanDocuments.delete({
+     *   where: {
+     *     // ... filter to delete one SolarLoanDocuments
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SolarLoanDocumentsDeleteArgs>(args: SelectSubset<T, SolarLoanDocumentsDeleteArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SolarLoanDocuments.
+     * @param {SolarLoanDocumentsUpdateArgs} args - Arguments to update one SolarLoanDocuments.
+     * @example
+     * // Update one SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SolarLoanDocumentsUpdateArgs>(args: SelectSubset<T, SolarLoanDocumentsUpdateArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SolarLoanDocuments.
+     * @param {SolarLoanDocumentsDeleteManyArgs} args - Arguments to filter SolarLoanDocuments to delete.
+     * @example
+     * // Delete a few SolarLoanDocuments
+     * const { count } = await prisma.solarLoanDocuments.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SolarLoanDocumentsDeleteManyArgs>(args?: SelectSubset<T, SolarLoanDocumentsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SolarLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SolarLoanDocumentsUpdateManyArgs>(args: SelectSubset<T, SolarLoanDocumentsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SolarLoanDocuments and returns the data updated in the database.
+     * @param {SolarLoanDocumentsUpdateManyAndReturnArgs} args - Arguments to update many SolarLoanDocuments.
+     * @example
+     * // Update many SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SolarLoanDocuments and only return the `id`
+     * const solarLoanDocumentsWithIdOnly = await prisma.solarLoanDocuments.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SolarLoanDocumentsUpdateManyAndReturnArgs>(args: SelectSubset<T, SolarLoanDocumentsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SolarLoanDocuments.
+     * @param {SolarLoanDocumentsUpsertArgs} args - Arguments to update or create a SolarLoanDocuments.
+     * @example
+     * // Update or create a SolarLoanDocuments
+     * const solarLoanDocuments = await prisma.solarLoanDocuments.upsert({
+     *   create: {
+     *     // ... data to create a SolarLoanDocuments
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SolarLoanDocuments we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SolarLoanDocumentsUpsertArgs>(args: SelectSubset<T, SolarLoanDocumentsUpsertArgs<ExtArgs>>): Prisma__SolarLoanDocumentsClient<$Result.GetResult<Prisma.$SolarLoanDocumentsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SolarLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsCountArgs} args - Arguments to filter SolarLoanDocuments to count.
+     * @example
+     * // Count the number of SolarLoanDocuments
+     * const count = await prisma.solarLoanDocuments.count({
+     *   where: {
+     *     // ... the filter for the SolarLoanDocuments we want to count
+     *   }
+     * })
+    **/
+    count<T extends SolarLoanDocumentsCountArgs>(
+      args?: Subset<T, SolarLoanDocumentsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SolarLoanDocumentsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SolarLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SolarLoanDocumentsAggregateArgs>(args: Subset<T, SolarLoanDocumentsAggregateArgs>): Prisma.PrismaPromise<GetSolarLoanDocumentsAggregateType<T>>
+
+    /**
+     * Group by SolarLoanDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SolarLoanDocumentsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SolarLoanDocumentsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SolarLoanDocumentsGroupByArgs['orderBy'] }
+        : { orderBy?: SolarLoanDocumentsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SolarLoanDocumentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSolarLoanDocumentsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SolarLoanDocuments model
+   */
+  readonly fields: SolarLoanDocumentsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SolarLoanDocuments.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SolarLoanDocumentsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SolarLoanDocuments model
+   */
+  interface SolarLoanDocumentsFieldRefs {
+    readonly id: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly userId: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly Nrcfront: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly NrcBack: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly LandOwnership: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly UtilityBill: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly VendorQuotation: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly SubsidyReceipt: FieldRef<"SolarLoanDocuments", 'String'>
+    readonly createdAt: FieldRef<"SolarLoanDocuments", 'DateTime'>
+    readonly updatedAt: FieldRef<"SolarLoanDocuments", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SolarLoanDocuments findUnique
+   */
+  export type SolarLoanDocumentsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which SolarLoanDocuments to fetch.
+     */
+    where: SolarLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * SolarLoanDocuments findUniqueOrThrow
+   */
+  export type SolarLoanDocumentsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which SolarLoanDocuments to fetch.
+     */
+    where: SolarLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * SolarLoanDocuments findFirst
+   */
+  export type SolarLoanDocumentsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which SolarLoanDocuments to fetch.
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SolarLoanDocuments to fetch.
+     */
+    orderBy?: SolarLoanDocumentsOrderByWithRelationInput | SolarLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SolarLoanDocuments.
+     */
+    cursor?: SolarLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SolarLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SolarLoanDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SolarLoanDocuments.
+     */
+    distinct?: SolarLoanDocumentsScalarFieldEnum | SolarLoanDocumentsScalarFieldEnum[]
+  }
+
+  /**
+   * SolarLoanDocuments findFirstOrThrow
+   */
+  export type SolarLoanDocumentsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which SolarLoanDocuments to fetch.
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SolarLoanDocuments to fetch.
+     */
+    orderBy?: SolarLoanDocumentsOrderByWithRelationInput | SolarLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SolarLoanDocuments.
+     */
+    cursor?: SolarLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SolarLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SolarLoanDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SolarLoanDocuments.
+     */
+    distinct?: SolarLoanDocumentsScalarFieldEnum | SolarLoanDocumentsScalarFieldEnum[]
+  }
+
+  /**
+   * SolarLoanDocuments findMany
+   */
+  export type SolarLoanDocumentsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter, which SolarLoanDocuments to fetch.
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SolarLoanDocuments to fetch.
+     */
+    orderBy?: SolarLoanDocumentsOrderByWithRelationInput | SolarLoanDocumentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SolarLoanDocuments.
+     */
+    cursor?: SolarLoanDocumentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SolarLoanDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SolarLoanDocuments.
+     */
+    skip?: number
+    distinct?: SolarLoanDocumentsScalarFieldEnum | SolarLoanDocumentsScalarFieldEnum[]
+  }
+
+  /**
+   * SolarLoanDocuments create
+   */
+  export type SolarLoanDocumentsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SolarLoanDocuments.
+     */
+    data: XOR<SolarLoanDocumentsCreateInput, SolarLoanDocumentsUncheckedCreateInput>
+  }
+
+  /**
+   * SolarLoanDocuments createMany
+   */
+  export type SolarLoanDocumentsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SolarLoanDocuments.
+     */
+    data: SolarLoanDocumentsCreateManyInput | SolarLoanDocumentsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SolarLoanDocuments createManyAndReturn
+   */
+  export type SolarLoanDocumentsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * The data used to create many SolarLoanDocuments.
+     */
+    data: SolarLoanDocumentsCreateManyInput | SolarLoanDocumentsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SolarLoanDocuments update
+   */
+  export type SolarLoanDocumentsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SolarLoanDocuments.
+     */
+    data: XOR<SolarLoanDocumentsUpdateInput, SolarLoanDocumentsUncheckedUpdateInput>
+    /**
+     * Choose, which SolarLoanDocuments to update.
+     */
+    where: SolarLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * SolarLoanDocuments updateMany
+   */
+  export type SolarLoanDocumentsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SolarLoanDocuments.
+     */
+    data: XOR<SolarLoanDocumentsUpdateManyMutationInput, SolarLoanDocumentsUncheckedUpdateManyInput>
+    /**
+     * Filter which SolarLoanDocuments to update
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * Limit how many SolarLoanDocuments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SolarLoanDocuments updateManyAndReturn
+   */
+  export type SolarLoanDocumentsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * The data used to update SolarLoanDocuments.
+     */
+    data: XOR<SolarLoanDocumentsUpdateManyMutationInput, SolarLoanDocumentsUncheckedUpdateManyInput>
+    /**
+     * Filter which SolarLoanDocuments to update
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * Limit how many SolarLoanDocuments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SolarLoanDocuments upsert
+   */
+  export type SolarLoanDocumentsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SolarLoanDocuments to update in case it exists.
+     */
+    where: SolarLoanDocumentsWhereUniqueInput
+    /**
+     * In case the SolarLoanDocuments found by the `where` argument doesn't exist, create a new SolarLoanDocuments with this data.
+     */
+    create: XOR<SolarLoanDocumentsCreateInput, SolarLoanDocumentsUncheckedCreateInput>
+    /**
+     * In case the SolarLoanDocuments was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SolarLoanDocumentsUpdateInput, SolarLoanDocumentsUncheckedUpdateInput>
+  }
+
+  /**
+   * SolarLoanDocuments delete
+   */
+  export type SolarLoanDocumentsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+    /**
+     * Filter which SolarLoanDocuments to delete.
+     */
+    where: SolarLoanDocumentsWhereUniqueInput
+  }
+
+  /**
+   * SolarLoanDocuments deleteMany
+   */
+  export type SolarLoanDocumentsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SolarLoanDocuments to delete
+     */
+    where?: SolarLoanDocumentsWhereInput
+    /**
+     * Limit how many SolarLoanDocuments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SolarLoanDocuments without action
+   */
+  export type SolarLoanDocumentsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SolarLoanDocuments
+     */
+    select?: SolarLoanDocumentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SolarLoanDocuments
+     */
+    omit?: SolarLoanDocumentsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SolarLoanDocumentsInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model GroupInvitation
    */
 
@@ -31716,6 +34344,1284 @@ export namespace Prisma {
 
 
   /**
+   * Model IndividualLoan
+   */
+
+  export type AggregateIndividualLoan = {
+    _count: IndividualLoanCountAggregateOutputType | null
+    _avg: IndividualLoanAvgAggregateOutputType | null
+    _sum: IndividualLoanSumAggregateOutputType | null
+    _min: IndividualLoanMinAggregateOutputType | null
+    _max: IndividualLoanMaxAggregateOutputType | null
+  }
+
+  export type IndividualLoanAvgAggregateOutputType = {
+    amount: Decimal | null
+    monthlyIncome: Decimal | null
+  }
+
+  export type IndividualLoanSumAggregateOutputType = {
+    amount: Decimal | null
+    monthlyIncome: Decimal | null
+  }
+
+  export type IndividualLoanMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    serviceType: string | null
+    serviceName: string | null
+    serviceCategory: string | null
+    amount: Decimal | null
+    purpose: string | null
+    repaymentPeriod: string | null
+    fullName: string | null
+    email: string | null
+    phone: string | null
+    nationalId: string | null
+    address: string | null
+    employmentStatus: string | null
+    monthlyIncome: Decimal | null
+    businessDetails: string | null
+    status: $Enums.LoanStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IndividualLoanMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    serviceType: string | null
+    serviceName: string | null
+    serviceCategory: string | null
+    amount: Decimal | null
+    purpose: string | null
+    repaymentPeriod: string | null
+    fullName: string | null
+    email: string | null
+    phone: string | null
+    nationalId: string | null
+    address: string | null
+    employmentStatus: string | null
+    monthlyIncome: Decimal | null
+    businessDetails: string | null
+    status: $Enums.LoanStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IndividualLoanCountAggregateOutputType = {
+    id: number
+    userId: number
+    serviceType: number
+    serviceName: number
+    serviceCategory: number
+    amount: number
+    purpose: number
+    repaymentPeriod: number
+    fullName: number
+    email: number
+    phone: number
+    nationalId: number
+    address: number
+    employmentStatus: number
+    monthlyIncome: number
+    businessDetails: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IndividualLoanAvgAggregateInputType = {
+    amount?: true
+    monthlyIncome?: true
+  }
+
+  export type IndividualLoanSumAggregateInputType = {
+    amount?: true
+    monthlyIncome?: true
+  }
+
+  export type IndividualLoanMinAggregateInputType = {
+    id?: true
+    userId?: true
+    serviceType?: true
+    serviceName?: true
+    serviceCategory?: true
+    amount?: true
+    purpose?: true
+    repaymentPeriod?: true
+    fullName?: true
+    email?: true
+    phone?: true
+    nationalId?: true
+    address?: true
+    employmentStatus?: true
+    monthlyIncome?: true
+    businessDetails?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IndividualLoanMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    serviceType?: true
+    serviceName?: true
+    serviceCategory?: true
+    amount?: true
+    purpose?: true
+    repaymentPeriod?: true
+    fullName?: true
+    email?: true
+    phone?: true
+    nationalId?: true
+    address?: true
+    employmentStatus?: true
+    monthlyIncome?: true
+    businessDetails?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IndividualLoanCountAggregateInputType = {
+    id?: true
+    userId?: true
+    serviceType?: true
+    serviceName?: true
+    serviceCategory?: true
+    amount?: true
+    purpose?: true
+    repaymentPeriod?: true
+    fullName?: true
+    email?: true
+    phone?: true
+    nationalId?: true
+    address?: true
+    employmentStatus?: true
+    monthlyIncome?: true
+    businessDetails?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IndividualLoanAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IndividualLoan to aggregate.
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IndividualLoans to fetch.
+     */
+    orderBy?: IndividualLoanOrderByWithRelationInput | IndividualLoanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IndividualLoanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IndividualLoans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IndividualLoans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IndividualLoans
+    **/
+    _count?: true | IndividualLoanCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IndividualLoanAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IndividualLoanSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IndividualLoanMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IndividualLoanMaxAggregateInputType
+  }
+
+  export type GetIndividualLoanAggregateType<T extends IndividualLoanAggregateArgs> = {
+        [P in keyof T & keyof AggregateIndividualLoan]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIndividualLoan[P]>
+      : GetScalarType<T[P], AggregateIndividualLoan[P]>
+  }
+
+
+
+
+  export type IndividualLoanGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IndividualLoanWhereInput
+    orderBy?: IndividualLoanOrderByWithAggregationInput | IndividualLoanOrderByWithAggregationInput[]
+    by: IndividualLoanScalarFieldEnum[] | IndividualLoanScalarFieldEnum
+    having?: IndividualLoanScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IndividualLoanCountAggregateInputType | true
+    _avg?: IndividualLoanAvgAggregateInputType
+    _sum?: IndividualLoanSumAggregateInputType
+    _min?: IndividualLoanMinAggregateInputType
+    _max?: IndividualLoanMaxAggregateInputType
+  }
+
+  export type IndividualLoanGroupByOutputType = {
+    id: string
+    userId: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome: Decimal | null
+    businessDetails: string | null
+    status: $Enums.LoanStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: IndividualLoanCountAggregateOutputType | null
+    _avg: IndividualLoanAvgAggregateOutputType | null
+    _sum: IndividualLoanSumAggregateOutputType | null
+    _min: IndividualLoanMinAggregateOutputType | null
+    _max: IndividualLoanMaxAggregateOutputType | null
+  }
+
+  type GetIndividualLoanGroupByPayload<T extends IndividualLoanGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IndividualLoanGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IndividualLoanGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IndividualLoanGroupByOutputType[P]>
+            : GetScalarType<T[P], IndividualLoanGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IndividualLoanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    serviceType?: boolean
+    serviceName?: boolean
+    serviceCategory?: boolean
+    amount?: boolean
+    purpose?: boolean
+    repaymentPeriod?: boolean
+    fullName?: boolean
+    email?: boolean
+    phone?: boolean
+    nationalId?: boolean
+    address?: boolean
+    employmentStatus?: boolean
+    monthlyIncome?: boolean
+    businessDetails?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["individualLoan"]>
+
+  export type IndividualLoanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    serviceType?: boolean
+    serviceName?: boolean
+    serviceCategory?: boolean
+    amount?: boolean
+    purpose?: boolean
+    repaymentPeriod?: boolean
+    fullName?: boolean
+    email?: boolean
+    phone?: boolean
+    nationalId?: boolean
+    address?: boolean
+    employmentStatus?: boolean
+    monthlyIncome?: boolean
+    businessDetails?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["individualLoan"]>
+
+  export type IndividualLoanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    serviceType?: boolean
+    serviceName?: boolean
+    serviceCategory?: boolean
+    amount?: boolean
+    purpose?: boolean
+    repaymentPeriod?: boolean
+    fullName?: boolean
+    email?: boolean
+    phone?: boolean
+    nationalId?: boolean
+    address?: boolean
+    employmentStatus?: boolean
+    monthlyIncome?: boolean
+    businessDetails?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["individualLoan"]>
+
+  export type IndividualLoanSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    serviceType?: boolean
+    serviceName?: boolean
+    serviceCategory?: boolean
+    amount?: boolean
+    purpose?: boolean
+    repaymentPeriod?: boolean
+    fullName?: boolean
+    email?: boolean
+    phone?: boolean
+    nationalId?: boolean
+    address?: boolean
+    employmentStatus?: boolean
+    monthlyIncome?: boolean
+    businessDetails?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IndividualLoanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "serviceType" | "serviceName" | "serviceCategory" | "amount" | "purpose" | "repaymentPeriod" | "fullName" | "email" | "phone" | "nationalId" | "address" | "employmentStatus" | "monthlyIncome" | "businessDetails" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["individualLoan"]>
+  export type IndividualLoanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type IndividualLoanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type IndividualLoanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $IndividualLoanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IndividualLoan"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      serviceType: string
+      serviceName: string
+      serviceCategory: string
+      amount: Prisma.Decimal
+      purpose: string
+      repaymentPeriod: string
+      fullName: string
+      email: string
+      phone: string
+      nationalId: string
+      address: string
+      employmentStatus: string
+      monthlyIncome: Prisma.Decimal | null
+      businessDetails: string | null
+      status: $Enums.LoanStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["individualLoan"]>
+    composites: {}
+  }
+
+  type IndividualLoanGetPayload<S extends boolean | null | undefined | IndividualLoanDefaultArgs> = $Result.GetResult<Prisma.$IndividualLoanPayload, S>
+
+  type IndividualLoanCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IndividualLoanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IndividualLoanCountAggregateInputType | true
+    }
+
+  export interface IndividualLoanDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IndividualLoan'], meta: { name: 'IndividualLoan' } }
+    /**
+     * Find zero or one IndividualLoan that matches the filter.
+     * @param {IndividualLoanFindUniqueArgs} args - Arguments to find a IndividualLoan
+     * @example
+     * // Get one IndividualLoan
+     * const individualLoan = await prisma.individualLoan.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IndividualLoanFindUniqueArgs>(args: SelectSubset<T, IndividualLoanFindUniqueArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IndividualLoan that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IndividualLoanFindUniqueOrThrowArgs} args - Arguments to find a IndividualLoan
+     * @example
+     * // Get one IndividualLoan
+     * const individualLoan = await prisma.individualLoan.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IndividualLoanFindUniqueOrThrowArgs>(args: SelectSubset<T, IndividualLoanFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IndividualLoan that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanFindFirstArgs} args - Arguments to find a IndividualLoan
+     * @example
+     * // Get one IndividualLoan
+     * const individualLoan = await prisma.individualLoan.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IndividualLoanFindFirstArgs>(args?: SelectSubset<T, IndividualLoanFindFirstArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IndividualLoan that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanFindFirstOrThrowArgs} args - Arguments to find a IndividualLoan
+     * @example
+     * // Get one IndividualLoan
+     * const individualLoan = await prisma.individualLoan.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IndividualLoanFindFirstOrThrowArgs>(args?: SelectSubset<T, IndividualLoanFindFirstOrThrowArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IndividualLoans that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IndividualLoans
+     * const individualLoans = await prisma.individualLoan.findMany()
+     * 
+     * // Get first 10 IndividualLoans
+     * const individualLoans = await prisma.individualLoan.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const individualLoanWithIdOnly = await prisma.individualLoan.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IndividualLoanFindManyArgs>(args?: SelectSubset<T, IndividualLoanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IndividualLoan.
+     * @param {IndividualLoanCreateArgs} args - Arguments to create a IndividualLoan.
+     * @example
+     * // Create one IndividualLoan
+     * const IndividualLoan = await prisma.individualLoan.create({
+     *   data: {
+     *     // ... data to create a IndividualLoan
+     *   }
+     * })
+     * 
+     */
+    create<T extends IndividualLoanCreateArgs>(args: SelectSubset<T, IndividualLoanCreateArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IndividualLoans.
+     * @param {IndividualLoanCreateManyArgs} args - Arguments to create many IndividualLoans.
+     * @example
+     * // Create many IndividualLoans
+     * const individualLoan = await prisma.individualLoan.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IndividualLoanCreateManyArgs>(args?: SelectSubset<T, IndividualLoanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many IndividualLoans and returns the data saved in the database.
+     * @param {IndividualLoanCreateManyAndReturnArgs} args - Arguments to create many IndividualLoans.
+     * @example
+     * // Create many IndividualLoans
+     * const individualLoan = await prisma.individualLoan.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many IndividualLoans and only return the `id`
+     * const individualLoanWithIdOnly = await prisma.individualLoan.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends IndividualLoanCreateManyAndReturnArgs>(args?: SelectSubset<T, IndividualLoanCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a IndividualLoan.
+     * @param {IndividualLoanDeleteArgs} args - Arguments to delete one IndividualLoan.
+     * @example
+     * // Delete one IndividualLoan
+     * const IndividualLoan = await prisma.individualLoan.delete({
+     *   where: {
+     *     // ... filter to delete one IndividualLoan
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IndividualLoanDeleteArgs>(args: SelectSubset<T, IndividualLoanDeleteArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IndividualLoan.
+     * @param {IndividualLoanUpdateArgs} args - Arguments to update one IndividualLoan.
+     * @example
+     * // Update one IndividualLoan
+     * const individualLoan = await prisma.individualLoan.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IndividualLoanUpdateArgs>(args: SelectSubset<T, IndividualLoanUpdateArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IndividualLoans.
+     * @param {IndividualLoanDeleteManyArgs} args - Arguments to filter IndividualLoans to delete.
+     * @example
+     * // Delete a few IndividualLoans
+     * const { count } = await prisma.individualLoan.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IndividualLoanDeleteManyArgs>(args?: SelectSubset<T, IndividualLoanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IndividualLoans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IndividualLoans
+     * const individualLoan = await prisma.individualLoan.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IndividualLoanUpdateManyArgs>(args: SelectSubset<T, IndividualLoanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IndividualLoans and returns the data updated in the database.
+     * @param {IndividualLoanUpdateManyAndReturnArgs} args - Arguments to update many IndividualLoans.
+     * @example
+     * // Update many IndividualLoans
+     * const individualLoan = await prisma.individualLoan.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more IndividualLoans and only return the `id`
+     * const individualLoanWithIdOnly = await prisma.individualLoan.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends IndividualLoanUpdateManyAndReturnArgs>(args: SelectSubset<T, IndividualLoanUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one IndividualLoan.
+     * @param {IndividualLoanUpsertArgs} args - Arguments to update or create a IndividualLoan.
+     * @example
+     * // Update or create a IndividualLoan
+     * const individualLoan = await prisma.individualLoan.upsert({
+     *   create: {
+     *     // ... data to create a IndividualLoan
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IndividualLoan we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IndividualLoanUpsertArgs>(args: SelectSubset<T, IndividualLoanUpsertArgs<ExtArgs>>): Prisma__IndividualLoanClient<$Result.GetResult<Prisma.$IndividualLoanPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IndividualLoans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanCountArgs} args - Arguments to filter IndividualLoans to count.
+     * @example
+     * // Count the number of IndividualLoans
+     * const count = await prisma.individualLoan.count({
+     *   where: {
+     *     // ... the filter for the IndividualLoans we want to count
+     *   }
+     * })
+    **/
+    count<T extends IndividualLoanCountArgs>(
+      args?: Subset<T, IndividualLoanCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IndividualLoanCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IndividualLoan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IndividualLoanAggregateArgs>(args: Subset<T, IndividualLoanAggregateArgs>): Prisma.PrismaPromise<GetIndividualLoanAggregateType<T>>
+
+    /**
+     * Group by IndividualLoan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IndividualLoanGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IndividualLoanGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IndividualLoanGroupByArgs['orderBy'] }
+        : { orderBy?: IndividualLoanGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IndividualLoanGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIndividualLoanGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IndividualLoan model
+   */
+  readonly fields: IndividualLoanFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IndividualLoan.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IndividualLoanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IndividualLoan model
+   */
+  interface IndividualLoanFieldRefs {
+    readonly id: FieldRef<"IndividualLoan", 'String'>
+    readonly userId: FieldRef<"IndividualLoan", 'String'>
+    readonly serviceType: FieldRef<"IndividualLoan", 'String'>
+    readonly serviceName: FieldRef<"IndividualLoan", 'String'>
+    readonly serviceCategory: FieldRef<"IndividualLoan", 'String'>
+    readonly amount: FieldRef<"IndividualLoan", 'Decimal'>
+    readonly purpose: FieldRef<"IndividualLoan", 'String'>
+    readonly repaymentPeriod: FieldRef<"IndividualLoan", 'String'>
+    readonly fullName: FieldRef<"IndividualLoan", 'String'>
+    readonly email: FieldRef<"IndividualLoan", 'String'>
+    readonly phone: FieldRef<"IndividualLoan", 'String'>
+    readonly nationalId: FieldRef<"IndividualLoan", 'String'>
+    readonly address: FieldRef<"IndividualLoan", 'String'>
+    readonly employmentStatus: FieldRef<"IndividualLoan", 'String'>
+    readonly monthlyIncome: FieldRef<"IndividualLoan", 'Decimal'>
+    readonly businessDetails: FieldRef<"IndividualLoan", 'String'>
+    readonly status: FieldRef<"IndividualLoan", 'LoanStatus'>
+    readonly createdAt: FieldRef<"IndividualLoan", 'DateTime'>
+    readonly updatedAt: FieldRef<"IndividualLoan", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IndividualLoan findUnique
+   */
+  export type IndividualLoanFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * Filter, which IndividualLoan to fetch.
+     */
+    where: IndividualLoanWhereUniqueInput
+  }
+
+  /**
+   * IndividualLoan findUniqueOrThrow
+   */
+  export type IndividualLoanFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * Filter, which IndividualLoan to fetch.
+     */
+    where: IndividualLoanWhereUniqueInput
+  }
+
+  /**
+   * IndividualLoan findFirst
+   */
+  export type IndividualLoanFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * Filter, which IndividualLoan to fetch.
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IndividualLoans to fetch.
+     */
+    orderBy?: IndividualLoanOrderByWithRelationInput | IndividualLoanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IndividualLoans.
+     */
+    cursor?: IndividualLoanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IndividualLoans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IndividualLoans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IndividualLoans.
+     */
+    distinct?: IndividualLoanScalarFieldEnum | IndividualLoanScalarFieldEnum[]
+  }
+
+  /**
+   * IndividualLoan findFirstOrThrow
+   */
+  export type IndividualLoanFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * Filter, which IndividualLoan to fetch.
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IndividualLoans to fetch.
+     */
+    orderBy?: IndividualLoanOrderByWithRelationInput | IndividualLoanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IndividualLoans.
+     */
+    cursor?: IndividualLoanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IndividualLoans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IndividualLoans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IndividualLoans.
+     */
+    distinct?: IndividualLoanScalarFieldEnum | IndividualLoanScalarFieldEnum[]
+  }
+
+  /**
+   * IndividualLoan findMany
+   */
+  export type IndividualLoanFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * Filter, which IndividualLoans to fetch.
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IndividualLoans to fetch.
+     */
+    orderBy?: IndividualLoanOrderByWithRelationInput | IndividualLoanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IndividualLoans.
+     */
+    cursor?: IndividualLoanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IndividualLoans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IndividualLoans.
+     */
+    skip?: number
+    distinct?: IndividualLoanScalarFieldEnum | IndividualLoanScalarFieldEnum[]
+  }
+
+  /**
+   * IndividualLoan create
+   */
+  export type IndividualLoanCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IndividualLoan.
+     */
+    data: XOR<IndividualLoanCreateInput, IndividualLoanUncheckedCreateInput>
+  }
+
+  /**
+   * IndividualLoan createMany
+   */
+  export type IndividualLoanCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IndividualLoans.
+     */
+    data: IndividualLoanCreateManyInput | IndividualLoanCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IndividualLoan createManyAndReturn
+   */
+  export type IndividualLoanCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * The data used to create many IndividualLoans.
+     */
+    data: IndividualLoanCreateManyInput | IndividualLoanCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IndividualLoan update
+   */
+  export type IndividualLoanUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IndividualLoan.
+     */
+    data: XOR<IndividualLoanUpdateInput, IndividualLoanUncheckedUpdateInput>
+    /**
+     * Choose, which IndividualLoan to update.
+     */
+    where: IndividualLoanWhereUniqueInput
+  }
+
+  /**
+   * IndividualLoan updateMany
+   */
+  export type IndividualLoanUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IndividualLoans.
+     */
+    data: XOR<IndividualLoanUpdateManyMutationInput, IndividualLoanUncheckedUpdateManyInput>
+    /**
+     * Filter which IndividualLoans to update
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * Limit how many IndividualLoans to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IndividualLoan updateManyAndReturn
+   */
+  export type IndividualLoanUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * The data used to update IndividualLoans.
+     */
+    data: XOR<IndividualLoanUpdateManyMutationInput, IndividualLoanUncheckedUpdateManyInput>
+    /**
+     * Filter which IndividualLoans to update
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * Limit how many IndividualLoans to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IndividualLoan upsert
+   */
+  export type IndividualLoanUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IndividualLoan to update in case it exists.
+     */
+    where: IndividualLoanWhereUniqueInput
+    /**
+     * In case the IndividualLoan found by the `where` argument doesn't exist, create a new IndividualLoan with this data.
+     */
+    create: XOR<IndividualLoanCreateInput, IndividualLoanUncheckedCreateInput>
+    /**
+     * In case the IndividualLoan was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IndividualLoanUpdateInput, IndividualLoanUncheckedUpdateInput>
+  }
+
+  /**
+   * IndividualLoan delete
+   */
+  export type IndividualLoanDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+    /**
+     * Filter which IndividualLoan to delete.
+     */
+    where: IndividualLoanWhereUniqueInput
+  }
+
+  /**
+   * IndividualLoan deleteMany
+   */
+  export type IndividualLoanDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IndividualLoans to delete
+     */
+    where?: IndividualLoanWhereInput
+    /**
+     * Limit how many IndividualLoans to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IndividualLoan without action
+   */
+  export type IndividualLoanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IndividualLoan
+     */
+    select?: IndividualLoanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IndividualLoan
+     */
+    omit?: IndividualLoanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IndividualLoanInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -31738,7 +35644,9 @@ export namespace Prisma {
     avatar: 'avatar',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    isAdmin: 'isAdmin'
+    isAdmin: 'isAdmin',
+    nationalId: 'nationalId',
+    address: 'address'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -32016,6 +35924,38 @@ export namespace Prisma {
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+  export const PersonalLoanDocumentsScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    Nrcfront: 'Nrcfront',
+    NrcBack: 'NrcBack',
+    PaySlip: 'PaySlip',
+    ProofOfAddress: 'ProofOfAddress',
+    LiveSelfie: 'LiveSelfie',
+    BankStatement: 'BankStatement',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PersonalLoanDocumentsScalarFieldEnum = (typeof PersonalLoanDocumentsScalarFieldEnum)[keyof typeof PersonalLoanDocumentsScalarFieldEnum]
+
+
+  export const SolarLoanDocumentsScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    Nrcfront: 'Nrcfront',
+    NrcBack: 'NrcBack',
+    LandOwnership: 'LandOwnership',
+    UtilityBill: 'UtilityBill',
+    VendorQuotation: 'VendorQuotation',
+    SubsidyReceipt: 'SubsidyReceipt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SolarLoanDocumentsScalarFieldEnum = (typeof SolarLoanDocumentsScalarFieldEnum)[keyof typeof SolarLoanDocumentsScalarFieldEnum]
+
+
   export const GroupInvitationScalarFieldEnum: {
     id: 'id',
     groupId: 'groupId',
@@ -32092,6 +36032,31 @@ export namespace Prisma {
   };
 
   export type LoanVoteScalarFieldEnum = (typeof LoanVoteScalarFieldEnum)[keyof typeof LoanVoteScalarFieldEnum]
+
+
+  export const IndividualLoanScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    serviceType: 'serviceType',
+    serviceName: 'serviceName',
+    serviceCategory: 'serviceCategory',
+    amount: 'amount',
+    purpose: 'purpose',
+    repaymentPeriod: 'repaymentPeriod',
+    fullName: 'fullName',
+    email: 'email',
+    phone: 'phone',
+    nationalId: 'nationalId',
+    address: 'address',
+    employmentStatus: 'employmentStatus',
+    monthlyIncome: 'monthlyIncome',
+    businessDetails: 'businessDetails',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IndividualLoanScalarFieldEnum = (typeof IndividualLoanScalarFieldEnum)[keyof typeof IndividualLoanScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -32428,6 +36393,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     isAdmin?: BoolFilter<"User"> | boolean
+    nationalId?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
     memberships?: MembershipListRelationFilter
     ownedGroups?: GroupListRelationFilter
     transactions?: TransactionListRelationFilter
@@ -32440,6 +36407,9 @@ export namespace Prisma {
     contributions?: ContributionListRelationFilter
     loanRequests?: LoanRequestListRelationFilter
     loanVotes?: LoanVoteListRelationFilter
+    personalDocuments?: XOR<PersonalLoanDocumentsNullableScalarRelationFilter, PersonalLoanDocumentsWhereInput> | null
+    solarDocuments?: XOR<SolarLoanDocumentsNullableScalarRelationFilter, SolarLoanDocumentsWhereInput> | null
+    individualLoans?: IndividualLoanListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -32452,6 +36422,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     isAdmin?: SortOrder
+    nationalId?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
     memberships?: MembershipOrderByRelationAggregateInput
     ownedGroups?: GroupOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
@@ -32464,6 +36436,9 @@ export namespace Prisma {
     contributions?: ContributionOrderByRelationAggregateInput
     loanRequests?: LoanRequestOrderByRelationAggregateInput
     loanVotes?: LoanVoteOrderByRelationAggregateInput
+    personalDocuments?: PersonalLoanDocumentsOrderByWithRelationInput
+    solarDocuments?: SolarLoanDocumentsOrderByWithRelationInput
+    individualLoans?: IndividualLoanOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -32479,6 +36454,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     isAdmin?: BoolFilter<"User"> | boolean
+    nationalId?: StringNullableFilter<"User"> | string | null
+    address?: StringNullableFilter<"User"> | string | null
     memberships?: MembershipListRelationFilter
     ownedGroups?: GroupListRelationFilter
     transactions?: TransactionListRelationFilter
@@ -32491,6 +36468,9 @@ export namespace Prisma {
     contributions?: ContributionListRelationFilter
     loanRequests?: LoanRequestListRelationFilter
     loanVotes?: LoanVoteListRelationFilter
+    personalDocuments?: XOR<PersonalLoanDocumentsNullableScalarRelationFilter, PersonalLoanDocumentsWhereInput> | null
+    solarDocuments?: XOR<SolarLoanDocumentsNullableScalarRelationFilter, SolarLoanDocumentsWhereInput> | null
+    individualLoans?: IndividualLoanListRelationFilter
   }, "id" | "email" | "clerkUserId">
 
   export type UserOrderByWithAggregationInput = {
@@ -32503,6 +36483,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     isAdmin?: SortOrder
+    nationalId?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -32521,6 +36503,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
+    nationalId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    address?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type BlogPostWhereInput = {
@@ -33970,6 +37954,166 @@ export namespace Prisma {
     relatedLoanRequestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
   }
 
+  export type PersonalLoanDocumentsWhereInput = {
+    AND?: PersonalLoanDocumentsWhereInput | PersonalLoanDocumentsWhereInput[]
+    OR?: PersonalLoanDocumentsWhereInput[]
+    NOT?: PersonalLoanDocumentsWhereInput | PersonalLoanDocumentsWhereInput[]
+    id?: StringFilter<"PersonalLoanDocuments"> | string
+    userId?: StringFilter<"PersonalLoanDocuments"> | string
+    Nrcfront?: StringFilter<"PersonalLoanDocuments"> | string
+    NrcBack?: StringFilter<"PersonalLoanDocuments"> | string
+    PaySlip?: StringFilter<"PersonalLoanDocuments"> | string
+    ProofOfAddress?: StringNullableFilter<"PersonalLoanDocuments"> | string | null
+    LiveSelfie?: StringNullableFilter<"PersonalLoanDocuments"> | string | null
+    BankStatement?: StringNullableFilter<"PersonalLoanDocuments"> | string | null
+    createdAt?: DateTimeFilter<"PersonalLoanDocuments"> | Date | string
+    updatedAt?: DateTimeFilter<"PersonalLoanDocuments"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PersonalLoanDocumentsOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    PaySlip?: SortOrder
+    ProofOfAddress?: SortOrderInput | SortOrder
+    LiveSelfie?: SortOrderInput | SortOrder
+    BankStatement?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PersonalLoanDocumentsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: PersonalLoanDocumentsWhereInput | PersonalLoanDocumentsWhereInput[]
+    OR?: PersonalLoanDocumentsWhereInput[]
+    NOT?: PersonalLoanDocumentsWhereInput | PersonalLoanDocumentsWhereInput[]
+    Nrcfront?: StringFilter<"PersonalLoanDocuments"> | string
+    NrcBack?: StringFilter<"PersonalLoanDocuments"> | string
+    PaySlip?: StringFilter<"PersonalLoanDocuments"> | string
+    ProofOfAddress?: StringNullableFilter<"PersonalLoanDocuments"> | string | null
+    LiveSelfie?: StringNullableFilter<"PersonalLoanDocuments"> | string | null
+    BankStatement?: StringNullableFilter<"PersonalLoanDocuments"> | string | null
+    createdAt?: DateTimeFilter<"PersonalLoanDocuments"> | Date | string
+    updatedAt?: DateTimeFilter<"PersonalLoanDocuments"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type PersonalLoanDocumentsOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    PaySlip?: SortOrder
+    ProofOfAddress?: SortOrderInput | SortOrder
+    LiveSelfie?: SortOrderInput | SortOrder
+    BankStatement?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PersonalLoanDocumentsCountOrderByAggregateInput
+    _max?: PersonalLoanDocumentsMaxOrderByAggregateInput
+    _min?: PersonalLoanDocumentsMinOrderByAggregateInput
+  }
+
+  export type PersonalLoanDocumentsScalarWhereWithAggregatesInput = {
+    AND?: PersonalLoanDocumentsScalarWhereWithAggregatesInput | PersonalLoanDocumentsScalarWhereWithAggregatesInput[]
+    OR?: PersonalLoanDocumentsScalarWhereWithAggregatesInput[]
+    NOT?: PersonalLoanDocumentsScalarWhereWithAggregatesInput | PersonalLoanDocumentsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PersonalLoanDocuments"> | string
+    userId?: StringWithAggregatesFilter<"PersonalLoanDocuments"> | string
+    Nrcfront?: StringWithAggregatesFilter<"PersonalLoanDocuments"> | string
+    NrcBack?: StringWithAggregatesFilter<"PersonalLoanDocuments"> | string
+    PaySlip?: StringWithAggregatesFilter<"PersonalLoanDocuments"> | string
+    ProofOfAddress?: StringNullableWithAggregatesFilter<"PersonalLoanDocuments"> | string | null
+    LiveSelfie?: StringNullableWithAggregatesFilter<"PersonalLoanDocuments"> | string | null
+    BankStatement?: StringNullableWithAggregatesFilter<"PersonalLoanDocuments"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PersonalLoanDocuments"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PersonalLoanDocuments"> | Date | string
+  }
+
+  export type SolarLoanDocumentsWhereInput = {
+    AND?: SolarLoanDocumentsWhereInput | SolarLoanDocumentsWhereInput[]
+    OR?: SolarLoanDocumentsWhereInput[]
+    NOT?: SolarLoanDocumentsWhereInput | SolarLoanDocumentsWhereInput[]
+    id?: StringFilter<"SolarLoanDocuments"> | string
+    userId?: StringFilter<"SolarLoanDocuments"> | string
+    Nrcfront?: StringFilter<"SolarLoanDocuments"> | string
+    NrcBack?: StringFilter<"SolarLoanDocuments"> | string
+    LandOwnership?: StringFilter<"SolarLoanDocuments"> | string
+    UtilityBill?: StringFilter<"SolarLoanDocuments"> | string
+    VendorQuotation?: StringFilter<"SolarLoanDocuments"> | string
+    SubsidyReceipt?: StringFilter<"SolarLoanDocuments"> | string
+    createdAt?: DateTimeFilter<"SolarLoanDocuments"> | Date | string
+    updatedAt?: DateTimeFilter<"SolarLoanDocuments"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SolarLoanDocumentsOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    LandOwnership?: SortOrder
+    UtilityBill?: SortOrder
+    VendorQuotation?: SortOrder
+    SubsidyReceipt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SolarLoanDocumentsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: SolarLoanDocumentsWhereInput | SolarLoanDocumentsWhereInput[]
+    OR?: SolarLoanDocumentsWhereInput[]
+    NOT?: SolarLoanDocumentsWhereInput | SolarLoanDocumentsWhereInput[]
+    Nrcfront?: StringFilter<"SolarLoanDocuments"> | string
+    NrcBack?: StringFilter<"SolarLoanDocuments"> | string
+    LandOwnership?: StringFilter<"SolarLoanDocuments"> | string
+    UtilityBill?: StringFilter<"SolarLoanDocuments"> | string
+    VendorQuotation?: StringFilter<"SolarLoanDocuments"> | string
+    SubsidyReceipt?: StringFilter<"SolarLoanDocuments"> | string
+    createdAt?: DateTimeFilter<"SolarLoanDocuments"> | Date | string
+    updatedAt?: DateTimeFilter<"SolarLoanDocuments"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type SolarLoanDocumentsOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    LandOwnership?: SortOrder
+    UtilityBill?: SortOrder
+    VendorQuotation?: SortOrder
+    SubsidyReceipt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SolarLoanDocumentsCountOrderByAggregateInput
+    _max?: SolarLoanDocumentsMaxOrderByAggregateInput
+    _min?: SolarLoanDocumentsMinOrderByAggregateInput
+  }
+
+  export type SolarLoanDocumentsScalarWhereWithAggregatesInput = {
+    AND?: SolarLoanDocumentsScalarWhereWithAggregatesInput | SolarLoanDocumentsScalarWhereWithAggregatesInput[]
+    OR?: SolarLoanDocumentsScalarWhereWithAggregatesInput[]
+    NOT?: SolarLoanDocumentsScalarWhereWithAggregatesInput | SolarLoanDocumentsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    userId?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    Nrcfront?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    NrcBack?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    LandOwnership?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    UtilityBill?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    VendorQuotation?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    SubsidyReceipt?: StringWithAggregatesFilter<"SolarLoanDocuments"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SolarLoanDocuments"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SolarLoanDocuments"> | Date | string
+  }
+
   export type GroupInvitationWhereInput = {
     AND?: GroupInvitationWhereInput | GroupInvitationWhereInput[]
     OR?: GroupInvitationWhereInput[]
@@ -34397,6 +38541,133 @@ export namespace Prisma {
     membershipId?: StringWithAggregatesFilter<"LoanVote"> | string
   }
 
+  export type IndividualLoanWhereInput = {
+    AND?: IndividualLoanWhereInput | IndividualLoanWhereInput[]
+    OR?: IndividualLoanWhereInput[]
+    NOT?: IndividualLoanWhereInput | IndividualLoanWhereInput[]
+    id?: StringFilter<"IndividualLoan"> | string
+    userId?: StringFilter<"IndividualLoan"> | string
+    serviceType?: StringFilter<"IndividualLoan"> | string
+    serviceName?: StringFilter<"IndividualLoan"> | string
+    serviceCategory?: StringFilter<"IndividualLoan"> | string
+    amount?: DecimalFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string
+    purpose?: StringFilter<"IndividualLoan"> | string
+    repaymentPeriod?: StringFilter<"IndividualLoan"> | string
+    fullName?: StringFilter<"IndividualLoan"> | string
+    email?: StringFilter<"IndividualLoan"> | string
+    phone?: StringFilter<"IndividualLoan"> | string
+    nationalId?: StringFilter<"IndividualLoan"> | string
+    address?: StringFilter<"IndividualLoan"> | string
+    employmentStatus?: StringFilter<"IndividualLoan"> | string
+    monthlyIncome?: DecimalNullableFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: StringNullableFilter<"IndividualLoan"> | string | null
+    status?: EnumLoanStatusFilter<"IndividualLoan"> | $Enums.LoanStatus
+    createdAt?: DateTimeFilter<"IndividualLoan"> | Date | string
+    updatedAt?: DateTimeFilter<"IndividualLoan"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type IndividualLoanOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    serviceType?: SortOrder
+    serviceName?: SortOrder
+    serviceCategory?: SortOrder
+    amount?: SortOrder
+    purpose?: SortOrder
+    repaymentPeriod?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
+    employmentStatus?: SortOrder
+    monthlyIncome?: SortOrderInput | SortOrder
+    businessDetails?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type IndividualLoanWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: IndividualLoanWhereInput | IndividualLoanWhereInput[]
+    OR?: IndividualLoanWhereInput[]
+    NOT?: IndividualLoanWhereInput | IndividualLoanWhereInput[]
+    userId?: StringFilter<"IndividualLoan"> | string
+    serviceType?: StringFilter<"IndividualLoan"> | string
+    serviceName?: StringFilter<"IndividualLoan"> | string
+    serviceCategory?: StringFilter<"IndividualLoan"> | string
+    amount?: DecimalFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string
+    purpose?: StringFilter<"IndividualLoan"> | string
+    repaymentPeriod?: StringFilter<"IndividualLoan"> | string
+    fullName?: StringFilter<"IndividualLoan"> | string
+    email?: StringFilter<"IndividualLoan"> | string
+    phone?: StringFilter<"IndividualLoan"> | string
+    nationalId?: StringFilter<"IndividualLoan"> | string
+    address?: StringFilter<"IndividualLoan"> | string
+    employmentStatus?: StringFilter<"IndividualLoan"> | string
+    monthlyIncome?: DecimalNullableFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: StringNullableFilter<"IndividualLoan"> | string | null
+    status?: EnumLoanStatusFilter<"IndividualLoan"> | $Enums.LoanStatus
+    createdAt?: DateTimeFilter<"IndividualLoan"> | Date | string
+    updatedAt?: DateTimeFilter<"IndividualLoan"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type IndividualLoanOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    serviceType?: SortOrder
+    serviceName?: SortOrder
+    serviceCategory?: SortOrder
+    amount?: SortOrder
+    purpose?: SortOrder
+    repaymentPeriod?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
+    employmentStatus?: SortOrder
+    monthlyIncome?: SortOrderInput | SortOrder
+    businessDetails?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IndividualLoanCountOrderByAggregateInput
+    _avg?: IndividualLoanAvgOrderByAggregateInput
+    _max?: IndividualLoanMaxOrderByAggregateInput
+    _min?: IndividualLoanMinOrderByAggregateInput
+    _sum?: IndividualLoanSumOrderByAggregateInput
+  }
+
+  export type IndividualLoanScalarWhereWithAggregatesInput = {
+    AND?: IndividualLoanScalarWhereWithAggregatesInput | IndividualLoanScalarWhereWithAggregatesInput[]
+    OR?: IndividualLoanScalarWhereWithAggregatesInput[]
+    NOT?: IndividualLoanScalarWhereWithAggregatesInput | IndividualLoanScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    userId?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    serviceType?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    serviceName?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    serviceCategory?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    amount?: DecimalWithAggregatesFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string
+    purpose?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    repaymentPeriod?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    fullName?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    email?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    phone?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    nationalId?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    address?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    employmentStatus?: StringWithAggregatesFilter<"IndividualLoan"> | string
+    monthlyIncome?: DecimalNullableWithAggregatesFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: StringNullableWithAggregatesFilter<"IndividualLoan"> | string | null
+    status?: EnumLoanStatusWithAggregatesFilter<"IndividualLoan"> | $Enums.LoanStatus
+    createdAt?: DateTimeWithAggregatesFilter<"IndividualLoan"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IndividualLoan"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -34407,6 +38678,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -34419,6 +38692,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -34431,6 +38707,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -34443,6 +38721,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -34455,6 +38736,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -34467,6 +38750,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -34479,6 +38765,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -34491,6 +38779,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -34503,6 +38794,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -34515,6 +38808,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -34527,6 +38822,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogPostCreateInput = {
@@ -36106,6 +40403,186 @@ export namespace Prisma {
     relatedLoanRequestId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type PersonalLoanDocumentsCreateInput = {
+    id?: string
+    Nrcfront: string
+    NrcBack: string
+    PaySlip: string
+    ProofOfAddress?: string | null
+    LiveSelfie?: string | null
+    BankStatement?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPersonalDocumentsInput
+  }
+
+  export type PersonalLoanDocumentsUncheckedCreateInput = {
+    id?: string
+    userId: string
+    Nrcfront: string
+    NrcBack: string
+    PaySlip: string
+    ProofOfAddress?: string | null
+    LiveSelfie?: string | null
+    BankStatement?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PersonalLoanDocumentsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    PaySlip?: StringFieldUpdateOperationsInput | string
+    ProofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    LiveSelfie?: NullableStringFieldUpdateOperationsInput | string | null
+    BankStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPersonalDocumentsNestedInput
+  }
+
+  export type PersonalLoanDocumentsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    PaySlip?: StringFieldUpdateOperationsInput | string
+    ProofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    LiveSelfie?: NullableStringFieldUpdateOperationsInput | string | null
+    BankStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonalLoanDocumentsCreateManyInput = {
+    id?: string
+    userId: string
+    Nrcfront: string
+    NrcBack: string
+    PaySlip: string
+    ProofOfAddress?: string | null
+    LiveSelfie?: string | null
+    BankStatement?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PersonalLoanDocumentsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    PaySlip?: StringFieldUpdateOperationsInput | string
+    ProofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    LiveSelfie?: NullableStringFieldUpdateOperationsInput | string | null
+    BankStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonalLoanDocumentsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    PaySlip?: StringFieldUpdateOperationsInput | string
+    ProofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    LiveSelfie?: NullableStringFieldUpdateOperationsInput | string | null
+    BankStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SolarLoanDocumentsCreateInput = {
+    id?: string
+    Nrcfront: string
+    NrcBack: string
+    LandOwnership: string
+    UtilityBill: string
+    VendorQuotation: string
+    SubsidyReceipt: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSolarDocumentsInput
+  }
+
+  export type SolarLoanDocumentsUncheckedCreateInput = {
+    id?: string
+    userId: string
+    Nrcfront: string
+    NrcBack: string
+    LandOwnership: string
+    UtilityBill: string
+    VendorQuotation: string
+    SubsidyReceipt: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SolarLoanDocumentsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    LandOwnership?: StringFieldUpdateOperationsInput | string
+    UtilityBill?: StringFieldUpdateOperationsInput | string
+    VendorQuotation?: StringFieldUpdateOperationsInput | string
+    SubsidyReceipt?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSolarDocumentsNestedInput
+  }
+
+  export type SolarLoanDocumentsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    LandOwnership?: StringFieldUpdateOperationsInput | string
+    UtilityBill?: StringFieldUpdateOperationsInput | string
+    VendorQuotation?: StringFieldUpdateOperationsInput | string
+    SubsidyReceipt?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SolarLoanDocumentsCreateManyInput = {
+    id?: string
+    userId: string
+    Nrcfront: string
+    NrcBack: string
+    LandOwnership: string
+    UtilityBill: string
+    VendorQuotation: string
+    SubsidyReceipt: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SolarLoanDocumentsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    LandOwnership?: StringFieldUpdateOperationsInput | string
+    UtilityBill?: StringFieldUpdateOperationsInput | string
+    VendorQuotation?: StringFieldUpdateOperationsInput | string
+    SubsidyReceipt?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SolarLoanDocumentsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    LandOwnership?: StringFieldUpdateOperationsInput | string
+    UtilityBill?: StringFieldUpdateOperationsInput | string
+    VendorQuotation?: StringFieldUpdateOperationsInput | string
+    SubsidyReceipt?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GroupInvitationCreateInput = {
     id?: string
     status?: $Enums.InvitationStatus
@@ -36547,6 +41024,159 @@ export namespace Prisma {
     membershipId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type IndividualLoanCreateInput = {
+    id?: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal | DecimalJsLike | number | string
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome?: Decimal | DecimalJsLike | number | string | null
+    businessDetails?: string | null
+    status?: $Enums.LoanStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutIndividualLoansInput
+  }
+
+  export type IndividualLoanUncheckedCreateInput = {
+    id?: string
+    userId: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal | DecimalJsLike | number | string
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome?: Decimal | DecimalJsLike | number | string | null
+    businessDetails?: string | null
+    status?: $Enums.LoanStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IndividualLoanUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutIndividualLoansNestedInput
+  }
+
+  export type IndividualLoanUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IndividualLoanCreateManyInput = {
+    id?: string
+    userId: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal | DecimalJsLike | number | string
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome?: Decimal | DecimalJsLike | number | string | null
+    businessDetails?: string | null
+    status?: $Enums.LoanStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IndividualLoanUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IndividualLoanUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -36657,6 +41287,22 @@ export namespace Prisma {
     none?: LoanVoteWhereInput
   }
 
+  export type PersonalLoanDocumentsNullableScalarRelationFilter = {
+    is?: PersonalLoanDocumentsWhereInput | null
+    isNot?: PersonalLoanDocumentsWhereInput | null
+  }
+
+  export type SolarLoanDocumentsNullableScalarRelationFilter = {
+    is?: SolarLoanDocumentsWhereInput | null
+    isNot?: SolarLoanDocumentsWhereInput | null
+  }
+
+  export type IndividualLoanListRelationFilter = {
+    every?: IndividualLoanWhereInput
+    some?: IndividualLoanWhereInput
+    none?: IndividualLoanWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -36698,6 +41344,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type IndividualLoanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -36708,6 +41358,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     isAdmin?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -36720,6 +41372,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     isAdmin?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -36732,6 +41386,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     isAdmin?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -38136,6 +42792,84 @@ export namespace Prisma {
     _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
   }
 
+  export type PersonalLoanDocumentsCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    PaySlip?: SortOrder
+    ProofOfAddress?: SortOrder
+    LiveSelfie?: SortOrder
+    BankStatement?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PersonalLoanDocumentsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    PaySlip?: SortOrder
+    ProofOfAddress?: SortOrder
+    LiveSelfie?: SortOrder
+    BankStatement?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PersonalLoanDocumentsMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    PaySlip?: SortOrder
+    ProofOfAddress?: SortOrder
+    LiveSelfie?: SortOrder
+    BankStatement?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SolarLoanDocumentsCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    LandOwnership?: SortOrder
+    UtilityBill?: SortOrder
+    VendorQuotation?: SortOrder
+    SubsidyReceipt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SolarLoanDocumentsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    LandOwnership?: SortOrder
+    UtilityBill?: SortOrder
+    VendorQuotation?: SortOrder
+    SubsidyReceipt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SolarLoanDocumentsMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    Nrcfront?: SortOrder
+    NrcBack?: SortOrder
+    LandOwnership?: SortOrder
+    UtilityBill?: SortOrder
+    VendorQuotation?: SortOrder
+    SubsidyReceipt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type EnumInvitationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.InvitationStatus | EnumInvitationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.InvitationStatus[] | ListEnumInvitationStatusFieldRefInput<$PrismaModel>
@@ -38402,6 +43136,82 @@ export namespace Prisma {
     membershipId?: SortOrder
   }
 
+  export type IndividualLoanCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    serviceType?: SortOrder
+    serviceName?: SortOrder
+    serviceCategory?: SortOrder
+    amount?: SortOrder
+    purpose?: SortOrder
+    repaymentPeriod?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
+    employmentStatus?: SortOrder
+    monthlyIncome?: SortOrder
+    businessDetails?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IndividualLoanAvgOrderByAggregateInput = {
+    amount?: SortOrder
+    monthlyIncome?: SortOrder
+  }
+
+  export type IndividualLoanMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    serviceType?: SortOrder
+    serviceName?: SortOrder
+    serviceCategory?: SortOrder
+    amount?: SortOrder
+    purpose?: SortOrder
+    repaymentPeriod?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
+    employmentStatus?: SortOrder
+    monthlyIncome?: SortOrder
+    businessDetails?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IndividualLoanMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    serviceType?: SortOrder
+    serviceName?: SortOrder
+    serviceCategory?: SortOrder
+    amount?: SortOrder
+    purpose?: SortOrder
+    repaymentPeriod?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    nationalId?: SortOrder
+    address?: SortOrder
+    employmentStatus?: SortOrder
+    monthlyIncome?: SortOrder
+    businessDetails?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IndividualLoanSumOrderByAggregateInput = {
+    amount?: SortOrder
+    monthlyIncome?: SortOrder
+  }
+
   export type MembershipCreateNestedManyWithoutUserInput = {
     create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
@@ -38484,6 +43294,25 @@ export namespace Prisma {
     connect?: LoanVoteWhereUniqueInput | LoanVoteWhereUniqueInput[]
   }
 
+  export type PersonalLoanDocumentsCreateNestedOneWithoutUserInput = {
+    create?: XOR<PersonalLoanDocumentsCreateWithoutUserInput, PersonalLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PersonalLoanDocumentsCreateOrConnectWithoutUserInput
+    connect?: PersonalLoanDocumentsWhereUniqueInput
+  }
+
+  export type SolarLoanDocumentsCreateNestedOneWithoutUserInput = {
+    create?: XOR<SolarLoanDocumentsCreateWithoutUserInput, SolarLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SolarLoanDocumentsCreateOrConnectWithoutUserInput
+    connect?: SolarLoanDocumentsWhereUniqueInput
+  }
+
+  export type IndividualLoanCreateNestedManyWithoutUserInput = {
+    create?: XOR<IndividualLoanCreateWithoutUserInput, IndividualLoanUncheckedCreateWithoutUserInput> | IndividualLoanCreateWithoutUserInput[] | IndividualLoanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IndividualLoanCreateOrConnectWithoutUserInput | IndividualLoanCreateOrConnectWithoutUserInput[]
+    createMany?: IndividualLoanCreateManyUserInputEnvelope
+    connect?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+  }
+
   export type MembershipUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
@@ -38564,6 +43393,25 @@ export namespace Prisma {
     connectOrCreate?: LoanVoteCreateOrConnectWithoutUserInput | LoanVoteCreateOrConnectWithoutUserInput[]
     createMany?: LoanVoteCreateManyUserInputEnvelope
     connect?: LoanVoteWhereUniqueInput | LoanVoteWhereUniqueInput[]
+  }
+
+  export type PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<PersonalLoanDocumentsCreateWithoutUserInput, PersonalLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PersonalLoanDocumentsCreateOrConnectWithoutUserInput
+    connect?: PersonalLoanDocumentsWhereUniqueInput
+  }
+
+  export type SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<SolarLoanDocumentsCreateWithoutUserInput, SolarLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SolarLoanDocumentsCreateOrConnectWithoutUserInput
+    connect?: SolarLoanDocumentsWhereUniqueInput
+  }
+
+  export type IndividualLoanUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<IndividualLoanCreateWithoutUserInput, IndividualLoanUncheckedCreateWithoutUserInput> | IndividualLoanCreateWithoutUserInput[] | IndividualLoanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IndividualLoanCreateOrConnectWithoutUserInput | IndividualLoanCreateOrConnectWithoutUserInput[]
+    createMany?: IndividualLoanCreateManyUserInputEnvelope
+    connect?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -38742,6 +43590,40 @@ export namespace Prisma {
     deleteMany?: LoanVoteScalarWhereInput | LoanVoteScalarWhereInput[]
   }
 
+  export type PersonalLoanDocumentsUpdateOneWithoutUserNestedInput = {
+    create?: XOR<PersonalLoanDocumentsCreateWithoutUserInput, PersonalLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PersonalLoanDocumentsCreateOrConnectWithoutUserInput
+    upsert?: PersonalLoanDocumentsUpsertWithoutUserInput
+    disconnect?: PersonalLoanDocumentsWhereInput | boolean
+    delete?: PersonalLoanDocumentsWhereInput | boolean
+    connect?: PersonalLoanDocumentsWhereUniqueInput
+    update?: XOR<XOR<PersonalLoanDocumentsUpdateToOneWithWhereWithoutUserInput, PersonalLoanDocumentsUpdateWithoutUserInput>, PersonalLoanDocumentsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SolarLoanDocumentsUpdateOneWithoutUserNestedInput = {
+    create?: XOR<SolarLoanDocumentsCreateWithoutUserInput, SolarLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SolarLoanDocumentsCreateOrConnectWithoutUserInput
+    upsert?: SolarLoanDocumentsUpsertWithoutUserInput
+    disconnect?: SolarLoanDocumentsWhereInput | boolean
+    delete?: SolarLoanDocumentsWhereInput | boolean
+    connect?: SolarLoanDocumentsWhereUniqueInput
+    update?: XOR<XOR<SolarLoanDocumentsUpdateToOneWithWhereWithoutUserInput, SolarLoanDocumentsUpdateWithoutUserInput>, SolarLoanDocumentsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type IndividualLoanUpdateManyWithoutUserNestedInput = {
+    create?: XOR<IndividualLoanCreateWithoutUserInput, IndividualLoanUncheckedCreateWithoutUserInput> | IndividualLoanCreateWithoutUserInput[] | IndividualLoanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IndividualLoanCreateOrConnectWithoutUserInput | IndividualLoanCreateOrConnectWithoutUserInput[]
+    upsert?: IndividualLoanUpsertWithWhereUniqueWithoutUserInput | IndividualLoanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: IndividualLoanCreateManyUserInputEnvelope
+    set?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    disconnect?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    delete?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    connect?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    update?: IndividualLoanUpdateWithWhereUniqueWithoutUserInput | IndividualLoanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: IndividualLoanUpdateManyWithWhereWithoutUserInput | IndividualLoanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: IndividualLoanScalarWhereInput | IndividualLoanScalarWhereInput[]
+  }
+
   export type MembershipUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
@@ -38900,6 +43782,40 @@ export namespace Prisma {
     update?: LoanVoteUpdateWithWhereUniqueWithoutUserInput | LoanVoteUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: LoanVoteUpdateManyWithWhereWithoutUserInput | LoanVoteUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: LoanVoteScalarWhereInput | LoanVoteScalarWhereInput[]
+  }
+
+  export type PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<PersonalLoanDocumentsCreateWithoutUserInput, PersonalLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PersonalLoanDocumentsCreateOrConnectWithoutUserInput
+    upsert?: PersonalLoanDocumentsUpsertWithoutUserInput
+    disconnect?: PersonalLoanDocumentsWhereInput | boolean
+    delete?: PersonalLoanDocumentsWhereInput | boolean
+    connect?: PersonalLoanDocumentsWhereUniqueInput
+    update?: XOR<XOR<PersonalLoanDocumentsUpdateToOneWithWhereWithoutUserInput, PersonalLoanDocumentsUpdateWithoutUserInput>, PersonalLoanDocumentsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<SolarLoanDocumentsCreateWithoutUserInput, SolarLoanDocumentsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SolarLoanDocumentsCreateOrConnectWithoutUserInput
+    upsert?: SolarLoanDocumentsUpsertWithoutUserInput
+    disconnect?: SolarLoanDocumentsWhereInput | boolean
+    delete?: SolarLoanDocumentsWhereInput | boolean
+    connect?: SolarLoanDocumentsWhereUniqueInput
+    update?: XOR<XOR<SolarLoanDocumentsUpdateToOneWithWhereWithoutUserInput, SolarLoanDocumentsUpdateWithoutUserInput>, SolarLoanDocumentsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type IndividualLoanUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<IndividualLoanCreateWithoutUserInput, IndividualLoanUncheckedCreateWithoutUserInput> | IndividualLoanCreateWithoutUserInput[] | IndividualLoanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IndividualLoanCreateOrConnectWithoutUserInput | IndividualLoanCreateOrConnectWithoutUserInput[]
+    upsert?: IndividualLoanUpsertWithWhereUniqueWithoutUserInput | IndividualLoanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: IndividualLoanCreateManyUserInputEnvelope
+    set?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    disconnect?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    delete?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    connect?: IndividualLoanWhereUniqueInput | IndividualLoanWhereUniqueInput[]
+    update?: IndividualLoanUpdateWithWhereUniqueWithoutUserInput | IndividualLoanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: IndividualLoanUpdateManyWithWhereWithoutUserInput | IndividualLoanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: IndividualLoanScalarWhereInput | IndividualLoanScalarWhereInput[]
   }
 
   export type BlogPostCreateblog_tagsInput = {
@@ -40073,6 +44989,34 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
   }
 
+  export type UserCreateNestedOneWithoutPersonalDocumentsInput = {
+    create?: XOR<UserCreateWithoutPersonalDocumentsInput, UserUncheckedCreateWithoutPersonalDocumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPersonalDocumentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPersonalDocumentsNestedInput = {
+    create?: XOR<UserCreateWithoutPersonalDocumentsInput, UserUncheckedCreateWithoutPersonalDocumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPersonalDocumentsInput
+    upsert?: UserUpsertWithoutPersonalDocumentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPersonalDocumentsInput, UserUpdateWithoutPersonalDocumentsInput>, UserUncheckedUpdateWithoutPersonalDocumentsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSolarDocumentsInput = {
+    create?: XOR<UserCreateWithoutSolarDocumentsInput, UserUncheckedCreateWithoutSolarDocumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSolarDocumentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSolarDocumentsNestedInput = {
+    create?: XOR<UserCreateWithoutSolarDocumentsInput, UserUncheckedCreateWithoutSolarDocumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSolarDocumentsInput
+    upsert?: UserUpsertWithoutSolarDocumentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSolarDocumentsInput, UserUpdateWithoutSolarDocumentsInput>, UserUncheckedUpdateWithoutSolarDocumentsInput>
+  }
+
   export type GroupCreateNestedOneWithoutInvitationsInput = {
     create?: XOR<GroupCreateWithoutInvitationsInput, GroupUncheckedCreateWithoutInvitationsInput>
     connectOrCreate?: GroupCreateOrConnectWithoutInvitationsInput
@@ -40375,6 +45319,20 @@ export namespace Prisma {
     upsert?: MembershipUpsertWithoutLoanVotesInput
     connect?: MembershipWhereUniqueInput
     update?: XOR<XOR<MembershipUpdateToOneWithWhereWithoutLoanVotesInput, MembershipUpdateWithoutLoanVotesInput>, MembershipUncheckedUpdateWithoutLoanVotesInput>
+  }
+
+  export type UserCreateNestedOneWithoutIndividualLoansInput = {
+    create?: XOR<UserCreateWithoutIndividualLoansInput, UserUncheckedCreateWithoutIndividualLoansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutIndividualLoansInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutIndividualLoansNestedInput = {
+    create?: XOR<UserCreateWithoutIndividualLoansInput, UserUncheckedCreateWithoutIndividualLoansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutIndividualLoansInput
+    upsert?: UserUpsertWithoutIndividualLoansInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIndividualLoansInput, UserUpdateWithoutIndividualLoansInput>, UserUncheckedUpdateWithoutIndividualLoansInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -41360,6 +46318,116 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PersonalLoanDocumentsCreateWithoutUserInput = {
+    id?: string
+    Nrcfront: string
+    NrcBack: string
+    PaySlip: string
+    ProofOfAddress?: string | null
+    LiveSelfie?: string | null
+    BankStatement?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PersonalLoanDocumentsUncheckedCreateWithoutUserInput = {
+    id?: string
+    Nrcfront: string
+    NrcBack: string
+    PaySlip: string
+    ProofOfAddress?: string | null
+    LiveSelfie?: string | null
+    BankStatement?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PersonalLoanDocumentsCreateOrConnectWithoutUserInput = {
+    where: PersonalLoanDocumentsWhereUniqueInput
+    create: XOR<PersonalLoanDocumentsCreateWithoutUserInput, PersonalLoanDocumentsUncheckedCreateWithoutUserInput>
+  }
+
+  export type SolarLoanDocumentsCreateWithoutUserInput = {
+    id?: string
+    Nrcfront: string
+    NrcBack: string
+    LandOwnership: string
+    UtilityBill: string
+    VendorQuotation: string
+    SubsidyReceipt: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SolarLoanDocumentsUncheckedCreateWithoutUserInput = {
+    id?: string
+    Nrcfront: string
+    NrcBack: string
+    LandOwnership: string
+    UtilityBill: string
+    VendorQuotation: string
+    SubsidyReceipt: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SolarLoanDocumentsCreateOrConnectWithoutUserInput = {
+    where: SolarLoanDocumentsWhereUniqueInput
+    create: XOR<SolarLoanDocumentsCreateWithoutUserInput, SolarLoanDocumentsUncheckedCreateWithoutUserInput>
+  }
+
+  export type IndividualLoanCreateWithoutUserInput = {
+    id?: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal | DecimalJsLike | number | string
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome?: Decimal | DecimalJsLike | number | string | null
+    businessDetails?: string | null
+    status?: $Enums.LoanStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IndividualLoanUncheckedCreateWithoutUserInput = {
+    id?: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal | DecimalJsLike | number | string
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome?: Decimal | DecimalJsLike | number | string | null
+    businessDetails?: string | null
+    status?: $Enums.LoanStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IndividualLoanCreateOrConnectWithoutUserInput = {
+    where: IndividualLoanWhereUniqueInput
+    create: XOR<IndividualLoanCreateWithoutUserInput, IndividualLoanUncheckedCreateWithoutUserInput>
+  }
+
+  export type IndividualLoanCreateManyUserInputEnvelope = {
+    data: IndividualLoanCreateManyUserInput | IndividualLoanCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MembershipUpsertWithWhereUniqueWithoutUserInput = {
     where: MembershipWhereUniqueInput
     update: XOR<MembershipUpdateWithoutUserInput, MembershipUncheckedUpdateWithoutUserInput>
@@ -41745,6 +46813,117 @@ export namespace Prisma {
     userId?: StringFilter<"LoanVote"> | string
     loanRequestId?: StringFilter<"LoanVote"> | string
     membershipId?: StringFilter<"LoanVote"> | string
+  }
+
+  export type PersonalLoanDocumentsUpsertWithoutUserInput = {
+    update: XOR<PersonalLoanDocumentsUpdateWithoutUserInput, PersonalLoanDocumentsUncheckedUpdateWithoutUserInput>
+    create: XOR<PersonalLoanDocumentsCreateWithoutUserInput, PersonalLoanDocumentsUncheckedCreateWithoutUserInput>
+    where?: PersonalLoanDocumentsWhereInput
+  }
+
+  export type PersonalLoanDocumentsUpdateToOneWithWhereWithoutUserInput = {
+    where?: PersonalLoanDocumentsWhereInput
+    data: XOR<PersonalLoanDocumentsUpdateWithoutUserInput, PersonalLoanDocumentsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PersonalLoanDocumentsUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    PaySlip?: StringFieldUpdateOperationsInput | string
+    ProofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    LiveSelfie?: NullableStringFieldUpdateOperationsInput | string | null
+    BankStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonalLoanDocumentsUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    PaySlip?: StringFieldUpdateOperationsInput | string
+    ProofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    LiveSelfie?: NullableStringFieldUpdateOperationsInput | string | null
+    BankStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SolarLoanDocumentsUpsertWithoutUserInput = {
+    update: XOR<SolarLoanDocumentsUpdateWithoutUserInput, SolarLoanDocumentsUncheckedUpdateWithoutUserInput>
+    create: XOR<SolarLoanDocumentsCreateWithoutUserInput, SolarLoanDocumentsUncheckedCreateWithoutUserInput>
+    where?: SolarLoanDocumentsWhereInput
+  }
+
+  export type SolarLoanDocumentsUpdateToOneWithWhereWithoutUserInput = {
+    where?: SolarLoanDocumentsWhereInput
+    data: XOR<SolarLoanDocumentsUpdateWithoutUserInput, SolarLoanDocumentsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SolarLoanDocumentsUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    LandOwnership?: StringFieldUpdateOperationsInput | string
+    UtilityBill?: StringFieldUpdateOperationsInput | string
+    VendorQuotation?: StringFieldUpdateOperationsInput | string
+    SubsidyReceipt?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SolarLoanDocumentsUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    Nrcfront?: StringFieldUpdateOperationsInput | string
+    NrcBack?: StringFieldUpdateOperationsInput | string
+    LandOwnership?: StringFieldUpdateOperationsInput | string
+    UtilityBill?: StringFieldUpdateOperationsInput | string
+    VendorQuotation?: StringFieldUpdateOperationsInput | string
+    SubsidyReceipt?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IndividualLoanUpsertWithWhereUniqueWithoutUserInput = {
+    where: IndividualLoanWhereUniqueInput
+    update: XOR<IndividualLoanUpdateWithoutUserInput, IndividualLoanUncheckedUpdateWithoutUserInput>
+    create: XOR<IndividualLoanCreateWithoutUserInput, IndividualLoanUncheckedCreateWithoutUserInput>
+  }
+
+  export type IndividualLoanUpdateWithWhereUniqueWithoutUserInput = {
+    where: IndividualLoanWhereUniqueInput
+    data: XOR<IndividualLoanUpdateWithoutUserInput, IndividualLoanUncheckedUpdateWithoutUserInput>
+  }
+
+  export type IndividualLoanUpdateManyWithWhereWithoutUserInput = {
+    where: IndividualLoanScalarWhereInput
+    data: XOR<IndividualLoanUpdateManyMutationInput, IndividualLoanUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type IndividualLoanScalarWhereInput = {
+    AND?: IndividualLoanScalarWhereInput | IndividualLoanScalarWhereInput[]
+    OR?: IndividualLoanScalarWhereInput[]
+    NOT?: IndividualLoanScalarWhereInput | IndividualLoanScalarWhereInput[]
+    id?: StringFilter<"IndividualLoan"> | string
+    userId?: StringFilter<"IndividualLoan"> | string
+    serviceType?: StringFilter<"IndividualLoan"> | string
+    serviceName?: StringFilter<"IndividualLoan"> | string
+    serviceCategory?: StringFilter<"IndividualLoan"> | string
+    amount?: DecimalFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string
+    purpose?: StringFilter<"IndividualLoan"> | string
+    repaymentPeriod?: StringFilter<"IndividualLoan"> | string
+    fullName?: StringFilter<"IndividualLoan"> | string
+    email?: StringFilter<"IndividualLoan"> | string
+    phone?: StringFilter<"IndividualLoan"> | string
+    nationalId?: StringFilter<"IndividualLoan"> | string
+    address?: StringFilter<"IndividualLoan"> | string
+    employmentStatus?: StringFilter<"IndividualLoan"> | string
+    monthlyIncome?: DecimalNullableFilter<"IndividualLoan"> | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: StringNullableFilter<"IndividualLoan"> | string | null
+    status?: EnumLoanStatusFilter<"IndividualLoan"> | $Enums.LoanStatus
+    createdAt?: DateTimeFilter<"IndividualLoan"> | Date | string
+    updatedAt?: DateTimeFilter<"IndividualLoan"> | Date | string
   }
 
   export type BlogCommentCreateWithoutBlog_postInput = {
@@ -42311,6 +47490,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     personalSavings?: PersonalSavingsCreateNestedOneWithoutUserInput
@@ -42322,6 +47503,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOwnedGroupsInput = {
@@ -42334,6 +47518,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     personalSavings?: PersonalSavingsUncheckedCreateNestedOneWithoutUserInput
@@ -42345,6 +47531,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOwnedGroupsInput = {
@@ -42595,6 +47784,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     personalSavings?: PersonalSavingsUpdateOneWithoutUserNestedInput
@@ -42606,6 +47797,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedGroupsInput = {
@@ -42618,6 +47812,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     personalSavings?: PersonalSavingsUncheckedUpdateOneWithoutUserNestedInput
@@ -42629,6 +47825,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MembershipUpsertWithWhereUniqueWithoutGroupInput = {
@@ -42753,6 +47952,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     personalSavings?: PersonalSavingsCreateNestedOneWithoutUserInput
@@ -42764,6 +47965,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -42776,6 +47980,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     personalSavings?: PersonalSavingsUncheckedCreateNestedOneWithoutUserInput
@@ -42787,6 +47993,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -43004,6 +48213,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     personalSavings?: PersonalSavingsUpdateOneWithoutUserNestedInput
@@ -43015,6 +48226,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -43027,6 +48241,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     personalSavings?: PersonalSavingsUncheckedUpdateOneWithoutUserNestedInput
@@ -43038,6 +48254,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupUpsertWithoutMembershipsInput = {
@@ -43235,6 +48454,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     personalSavings?: PersonalSavingsCreateNestedOneWithoutUserInput
@@ -43246,6 +48467,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -43258,6 +48482,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     personalSavings?: PersonalSavingsUncheckedCreateNestedOneWithoutUserInput
@@ -43269,6 +48495,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -43473,6 +48702,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     personalSavings?: PersonalSavingsUpdateOneWithoutUserNestedInput
@@ -43484,6 +48715,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -43496,6 +48730,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     personalSavings?: PersonalSavingsUncheckedUpdateOneWithoutUserNestedInput
@@ -43507,6 +48743,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupUpsertWithoutTransactionsInput = {
@@ -43719,6 +48958,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -43730,6 +48971,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPersonalSavingsInput = {
@@ -43742,6 +48986,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -43753,6 +48999,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPersonalSavingsInput = {
@@ -43781,6 +49030,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -43792,6 +49043,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPersonalSavingsInput = {
@@ -43804,6 +49058,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -43815,6 +49071,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSavingsGoalsInput = {
@@ -43827,6 +49086,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -43838,6 +49099,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSavingsGoalsInput = {
@@ -43850,6 +49114,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -43861,6 +49127,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSavingsGoalsInput = {
@@ -43917,6 +49186,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -43928,6 +49199,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSavingsGoalsInput = {
@@ -43940,6 +49214,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -43951,6 +49227,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SavingsTransactionUpsertWithWhereUniqueWithoutSavingsGoalInput = {
@@ -44658,6 +49937,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -44669,6 +49950,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -44681,6 +49965,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -44692,6 +49978,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -44720,6 +50009,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -44731,6 +50022,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -44743,6 +50037,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -44754,6 +50050,265 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPersonalDocumentsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    phone?: string | null
+    clerkUserId?: string | null
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    personalSavings?: PersonalSavingsCreateNestedOneWithoutUserInput
+    savingsGoals?: SavingsGoalCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    sentInvitations?: GroupInvitationCreateNestedManyWithoutInviterInput
+    receivedInvitations?: GroupInvitationCreateNestedManyWithoutInviteeInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    contributions?: ContributionCreateNestedManyWithoutUserInput
+    loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
+    loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPersonalDocumentsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    phone?: string | null
+    clerkUserId?: string | null
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    personalSavings?: PersonalSavingsUncheckedCreateNestedOneWithoutUserInput
+    savingsGoals?: SavingsGoalUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sentInvitations?: GroupInvitationUncheckedCreateNestedManyWithoutInviterInput
+    receivedInvitations?: GroupInvitationUncheckedCreateNestedManyWithoutInviteeInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
+    loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
+    loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPersonalDocumentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPersonalDocumentsInput, UserUncheckedCreateWithoutPersonalDocumentsInput>
+  }
+
+  export type UserUpsertWithoutPersonalDocumentsInput = {
+    update: XOR<UserUpdateWithoutPersonalDocumentsInput, UserUncheckedUpdateWithoutPersonalDocumentsInput>
+    create: XOR<UserCreateWithoutPersonalDocumentsInput, UserUncheckedCreateWithoutPersonalDocumentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPersonalDocumentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPersonalDocumentsInput, UserUncheckedUpdateWithoutPersonalDocumentsInput>
+  }
+
+  export type UserUpdateWithoutPersonalDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    personalSavings?: PersonalSavingsUpdateOneWithoutUserNestedInput
+    savingsGoals?: SavingsGoalUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sentInvitations?: GroupInvitationUpdateManyWithoutInviterNestedInput
+    receivedInvitations?: GroupInvitationUpdateManyWithoutInviteeNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    contributions?: ContributionUpdateManyWithoutUserNestedInput
+    loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
+    loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPersonalDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    personalSavings?: PersonalSavingsUncheckedUpdateOneWithoutUserNestedInput
+    savingsGoals?: SavingsGoalUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sentInvitations?: GroupInvitationUncheckedUpdateManyWithoutInviterNestedInput
+    receivedInvitations?: GroupInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
+    loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
+    loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutSolarDocumentsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    phone?: string | null
+    clerkUserId?: string | null
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    personalSavings?: PersonalSavingsCreateNestedOneWithoutUserInput
+    savingsGoals?: SavingsGoalCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    sentInvitations?: GroupInvitationCreateNestedManyWithoutInviterInput
+    receivedInvitations?: GroupInvitationCreateNestedManyWithoutInviteeInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    contributions?: ContributionCreateNestedManyWithoutUserInput
+    loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
+    loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSolarDocumentsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    phone?: string | null
+    clerkUserId?: string | null
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    personalSavings?: PersonalSavingsUncheckedCreateNestedOneWithoutUserInput
+    savingsGoals?: SavingsGoalUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sentInvitations?: GroupInvitationUncheckedCreateNestedManyWithoutInviterInput
+    receivedInvitations?: GroupInvitationUncheckedCreateNestedManyWithoutInviteeInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
+    loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
+    loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSolarDocumentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSolarDocumentsInput, UserUncheckedCreateWithoutSolarDocumentsInput>
+  }
+
+  export type UserUpsertWithoutSolarDocumentsInput = {
+    update: XOR<UserUpdateWithoutSolarDocumentsInput, UserUncheckedUpdateWithoutSolarDocumentsInput>
+    create: XOR<UserCreateWithoutSolarDocumentsInput, UserUncheckedCreateWithoutSolarDocumentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSolarDocumentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSolarDocumentsInput, UserUncheckedUpdateWithoutSolarDocumentsInput>
+  }
+
+  export type UserUpdateWithoutSolarDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    personalSavings?: PersonalSavingsUpdateOneWithoutUserNestedInput
+    savingsGoals?: SavingsGoalUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sentInvitations?: GroupInvitationUpdateManyWithoutInviterNestedInput
+    receivedInvitations?: GroupInvitationUpdateManyWithoutInviteeNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    contributions?: ContributionUpdateManyWithoutUserNestedInput
+    loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
+    loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSolarDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    personalSavings?: PersonalSavingsUncheckedUpdateOneWithoutUserNestedInput
+    savingsGoals?: SavingsGoalUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sentInvitations?: GroupInvitationUncheckedUpdateManyWithoutInviterNestedInput
+    receivedInvitations?: GroupInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
+    loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
+    loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupCreateWithoutInvitationsInput = {
@@ -44845,6 +50400,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -44856,6 +50413,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentInvitationsInput = {
@@ -44868,6 +50428,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -44879,6 +50441,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentInvitationsInput = {
@@ -44896,6 +50461,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -44907,6 +50474,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedInvitationsInput = {
@@ -44919,6 +50489,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -44930,6 +50502,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedInvitationsInput = {
@@ -45043,6 +50618,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -45054,6 +50631,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentInvitationsInput = {
@@ -45066,6 +50646,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -45077,6 +50659,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedInvitationsInput = {
@@ -45100,6 +50685,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -45111,6 +50698,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedInvitationsInput = {
@@ -45123,6 +50713,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -45134,6 +50726,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWalletInput = {
@@ -45146,6 +50741,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -45157,6 +50754,9 @@ export namespace Prisma {
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -45169,6 +50769,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -45180,6 +50782,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -45252,6 +50857,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -45263,6 +50870,9 @@ export namespace Prisma {
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -45275,6 +50885,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -45286,6 +50898,9 @@ export namespace Prisma {
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TransactionUpsertWithWhereUniqueWithoutWalletInput = {
@@ -45314,6 +50929,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -45325,6 +50942,9 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutContributionsInput = {
@@ -45337,6 +50957,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -45348,6 +50970,9 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutContributionsInput = {
@@ -45494,6 +51119,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -45505,6 +51132,9 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContributionsInput = {
@@ -45517,6 +51147,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -45528,6 +51160,9 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupUpsertWithoutContributionsInput = {
@@ -45670,6 +51305,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -45681,6 +51318,9 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLoanRequestsInput = {
@@ -45693,6 +51333,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -45704,6 +51346,9 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLoanRequestsInput = {
@@ -45885,6 +51530,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -45896,6 +51543,9 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoanRequestsInput = {
@@ -45908,6 +51558,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -45919,6 +51571,9 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupUpsertWithoutLoanRequestsInput = {
@@ -46048,6 +51703,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -46059,6 +51716,9 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     contributions?: ContributionCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLoanVotesInput = {
@@ -46071,6 +51731,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -46082,6 +51744,9 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    individualLoans?: IndividualLoanUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLoanVotesInput = {
@@ -46182,6 +51847,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -46193,6 +51860,9 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     contributions?: ContributionUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoanVotesInput = {
@@ -46205,6 +51875,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -46216,6 +51888,9 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    individualLoans?: IndividualLoanUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LoanRequestUpsertWithoutVotesInput = {
@@ -46300,6 +51975,134 @@ export namespace Prisma {
     votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
+  }
+
+  export type UserCreateWithoutIndividualLoansInput = {
+    id?: string
+    name?: string | null
+    email: string
+    phone?: string | null
+    clerkUserId?: string | null
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    ownedGroups?: GroupCreateNestedManyWithoutOwnerInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    personalSavings?: PersonalSavingsCreateNestedOneWithoutUserInput
+    savingsGoals?: SavingsGoalCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    sentInvitations?: GroupInvitationCreateNestedManyWithoutInviterInput
+    receivedInvitations?: GroupInvitationCreateNestedManyWithoutInviteeInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    contributions?: ContributionCreateNestedManyWithoutUserInput
+    loanRequests?: LoanRequestCreateNestedManyWithoutUserInput
+    loanVotes?: LoanVoteCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutIndividualLoansInput = {
+    id?: string
+    name?: string | null
+    email: string
+    phone?: string | null
+    clerkUserId?: string | null
+    avatar?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isAdmin?: boolean
+    nationalId?: string | null
+    address?: string | null
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    ownedGroups?: GroupUncheckedCreateNestedManyWithoutOwnerInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    personalSavings?: PersonalSavingsUncheckedCreateNestedOneWithoutUserInput
+    savingsGoals?: SavingsGoalUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sentInvitations?: GroupInvitationUncheckedCreateNestedManyWithoutInviterInput
+    receivedInvitations?: GroupInvitationUncheckedCreateNestedManyWithoutInviteeInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    contributions?: ContributionUncheckedCreateNestedManyWithoutUserInput
+    loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutUserInput
+    loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutUserInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+    solarDocuments?: SolarLoanDocumentsUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutIndividualLoansInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutIndividualLoansInput, UserUncheckedCreateWithoutIndividualLoansInput>
+  }
+
+  export type UserUpsertWithoutIndividualLoansInput = {
+    update: XOR<UserUpdateWithoutIndividualLoansInput, UserUncheckedUpdateWithoutIndividualLoansInput>
+    create: XOR<UserCreateWithoutIndividualLoansInput, UserUncheckedCreateWithoutIndividualLoansInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutIndividualLoansInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutIndividualLoansInput, UserUncheckedUpdateWithoutIndividualLoansInput>
+  }
+
+  export type UserUpdateWithoutIndividualLoansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    ownedGroups?: GroupUpdateManyWithoutOwnerNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    personalSavings?: PersonalSavingsUpdateOneWithoutUserNestedInput
+    savingsGoals?: SavingsGoalUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sentInvitations?: GroupInvitationUpdateManyWithoutInviterNestedInput
+    receivedInvitations?: GroupInvitationUpdateManyWithoutInviteeNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    contributions?: ContributionUpdateManyWithoutUserNestedInput
+    loanRequests?: LoanRequestUpdateManyWithoutUserNestedInput
+    loanVotes?: LoanVoteUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutIndividualLoansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    nationalId?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    ownedGroups?: GroupUncheckedUpdateManyWithoutOwnerNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    personalSavings?: PersonalSavingsUncheckedUpdateOneWithoutUserNestedInput
+    savingsGoals?: SavingsGoalUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sentInvitations?: GroupInvitationUncheckedUpdateManyWithoutInviterNestedInput
+    receivedInvitations?: GroupInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    contributions?: ContributionUncheckedUpdateManyWithoutUserNestedInput
+    loanRequests?: LoanRequestUncheckedUpdateManyWithoutUserNestedInput
+    loanVotes?: LoanVoteUncheckedUpdateManyWithoutUserNestedInput
+    personalDocuments?: PersonalLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
+    solarDocuments?: SolarLoanDocumentsUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type MembershipCreateManyUserInput = {
@@ -46435,6 +52238,27 @@ export namespace Prisma {
     updatedAt?: Date | string
     loanRequestId: string
     membershipId: string
+  }
+
+  export type IndividualLoanCreateManyUserInput = {
+    id?: string
+    serviceType: string
+    serviceName: string
+    serviceCategory: string
+    amount: Decimal | DecimalJsLike | number | string
+    purpose: string
+    repaymentPeriod: string
+    fullName: string
+    email: string
+    phone: string
+    nationalId: string
+    address: string
+    employmentStatus: string
+    monthlyIncome?: Decimal | DecimalJsLike | number | string | null
+    businessDetails?: string | null
+    status?: $Enums.LoanStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type MembershipUpdateWithoutUserInput = {
@@ -46868,6 +52692,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loanRequestId?: StringFieldUpdateOperationsInput | string
     membershipId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type IndividualLoanUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IndividualLoanUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IndividualLoanUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceType?: StringFieldUpdateOperationsInput | string
+    serviceName?: StringFieldUpdateOperationsInput | string
+    serviceCategory?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purpose?: StringFieldUpdateOperationsInput | string
+    repaymentPeriod?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    nationalId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    employmentStatus?: StringFieldUpdateOperationsInput | string
+    monthlyIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    businessDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BlogCommentCreateManyBlog_postInput = {

@@ -45,6 +45,8 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import LoanRequestForm from "@/components/loans/loan-request-form"
 import axios from "axios"
 
 const LoanStatusTab = () => {
@@ -66,6 +68,7 @@ const LoanStatusTab = () => {
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
     const [loanRequests, setLoanRequests] = useState<any[]>([])
     const [groupMembers, setGroupMembers] = useState<any[]>([])
+    const [isLoanDialogOpen, setIsLoanDialogOpen] = useState(false)
 
     useEffect(() => {
         setIsClient(true)
@@ -447,23 +450,23 @@ const LoanStatusTab = () => {
         // Generate loan status trends based on actual loan data
         const loanStatusTrends = months.map(month => {
             // Count loans by status for this month
-            const activeLoans = loanRequests.filter(loan => 
-                (loan.status === "DISBURSED" || loan.status === "REPAYING") && 
+            const activeLoans = loanRequests.filter(loan =>
+                (loan.status === "DISBURSED" || loan.status === "REPAYING") &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const pendingLoans = loanRequests.filter(loan => 
-                loan.status === "PENDING" && 
+            const pendingLoans = loanRequests.filter(loan =>
+                loan.status === "PENDING" &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const completedLoans = loanRequests.filter(loan => 
-                loan.status === "REPAID" && 
+            const completedLoans = loanRequests.filter(loan =>
+                loan.status === "REPAID" &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const defaultedLoans = loanRequests.filter(loan => 
-                loan.status === "DEFAULTED" && 
+            const defaultedLoans = loanRequests.filter(loan =>
+                loan.status === "DEFAULTED" &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
@@ -479,28 +482,28 @@ const LoanStatusTab = () => {
         // Generate purpose trend data based on actual loan purposes
         const purposeTrendData = months.map(month => {
             // Group loans by purpose for this month
-            const businessLoans = loanRequests.filter(loan => 
-                loan.purpose.toLowerCase().includes('business') && 
+            const businessLoans = loanRequests.filter(loan =>
+                loan.purpose.toLowerCase().includes('business') &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const educationLoans = loanRequests.filter(loan => 
-                loan.purpose.toLowerCase().includes('education') && 
+            const educationLoans = loanRequests.filter(loan =>
+                loan.purpose.toLowerCase().includes('education') &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const medicalLoans = loanRequests.filter(loan => 
-                loan.purpose.toLowerCase().includes('medical') && 
+            const medicalLoans = loanRequests.filter(loan =>
+                loan.purpose.toLowerCase().includes('medical') &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const homeLoans = loanRequests.filter(loan => 
-                loan.purpose.toLowerCase().includes('home') && 
+            const homeLoans = loanRequests.filter(loan =>
+                loan.purpose.toLowerCase().includes('home') &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
-            const emergencyLoans = loanRequests.filter(loan => 
-                loan.purpose.toLowerCase().includes('emergency') && 
+            const emergencyLoans = loanRequests.filter(loan =>
+                loan.purpose.toLowerCase().includes('emergency') &&
                 new Date(loan.createdAt).getMonth() === monthNames.indexOf(month)
             ).length;
 
@@ -529,7 +532,7 @@ const LoanStatusTab = () => {
             // For each month, calculate the percentage of on-time payments
             return months.map(month => {
                 // Get loans that were active in this month
-                const monthLoans = loanRequests.filter(loan => 
+                const monthLoans = loanRequests.filter(loan =>
                     (loan.status === "REPAYING" || loan.status === "REPAID" || loan.status === "DISBURSED") &&
                     new Date(loan.createdAt).getMonth() <= monthNames.indexOf(month) &&
                     (loan.status !== "REPAID" || new Date(loan.updatedAt).getMonth() >= monthNames.indexOf(month))
@@ -539,12 +542,12 @@ const LoanStatusTab = () => {
                 if (monthLoans.length > 0) {
                     // For a real implementation, we would check if payments were made on time
                     // Since we don't have payment data, we'll estimate based on loan status
-                    const onTimeLoans = monthLoans.filter(loan => 
-                        (loan.status === "REPAID" && new Date(loan.updatedAt) <= new Date(loan.repaymentDate)) || 
+                    const onTimeLoans = monthLoans.filter(loan =>
+                        (loan.status === "REPAID" && new Date(loan.updatedAt) <= new Date(loan.repaymentDate)) ||
                         loan.status === "REPAYING"
                     ).length;
 
-                    const lateLoans = loanRequests.filter(loan => 
+                    const lateLoans = loanRequests.filter(loan =>
                         loan.status === "DEFAULTED" &&
                         new Date(loan.createdAt).getMonth() <= monthNames.indexOf(month) &&
                         new Date(loan.updatedAt).getMonth() >= monthNames.indexOf(month)
@@ -587,11 +590,11 @@ const LoanStatusTab = () => {
     const loanPurposeData = getLoanPurposeData();
 
     // Generate trend data
-    const { 
-        loanStatusTrends, 
-        purposeTrendData, 
-        contributionTrendData, 
-        repaymentTrendData 
+    const {
+        loanStatusTrends,
+        purposeTrendData,
+        contributionTrendData,
+        repaymentTrendData
     } = generateTrendData();
 
     // Use group members from API
@@ -732,9 +735,25 @@ const LoanStatusTab = () => {
                 <CircleDollarSign className="h-8 w-8 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium mb-2">No Loan Data</h3>
                 <p className="text-muted-foreground mb-4">There are no loan requests in this group yet.</p>
-                <Button asChild>
-                    <a href="/dashboard/loans/request">Create Loan Request</a>
+                <Button onClick={() => setIsLoanDialogOpen(true)}>
+                    Create Loan Request
                 </Button>
+
+                {/* Loan Request Dialog */}
+                <Dialog open={isLoanDialogOpen} onOpenChange={setIsLoanDialogOpen}>
+                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <DialogHeader>
+                            <DialogTitle>Create Loan Request</DialogTitle>
+                            <DialogDescription>
+                                Submit a new loan request to your savings group for approval.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <LoanRequestForm
+                            preSelectedGroupId={selectedGroup || undefined}
+                            onSuccess={() => setIsLoanDialogOpen(false)}
+                        />
+                    </DialogContent>
+                </Dialog>
             </div>
         );
     }
@@ -1024,11 +1043,11 @@ const LoanStatusTab = () => {
                                         <TableIcon className="h-3 w-3 mr-1" />
                                         {showTableView ? "Chart View" : "Table View"}
                                     </Button>
-                                    <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => {}}>
+                                    <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => { }}>
                                         <Share2 className="h-3 w-3 mr-1" />
                                         Share
                                     </Button>
-                                    <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => {}}>
+                                    <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => { }}>
                                         <Download className="h-3 w-3 mr-1" />
                                         Export
                                     </Button>
@@ -1038,46 +1057,46 @@ const LoanStatusTab = () => {
                                 <div className="mt-4 overflow-x-auto">
                                     <table className="w-full text-sm">
                                         <thead>
-                                        <tr className="border-b">
-                                            <th className="text-left py-2 px-3 font-medium">Status</th>
-                                            <th className="text-right py-2 px-3 font-medium">Count</th>
-                                            <th className="text-right py-2 px-3 font-medium">Percentage</th>
-                                            <th className="text-right py-2 px-3 font-medium">Total Amount</th>
-                                            <th className="text-right py-2 px-3 font-medium">Trend</th>
-                                        </tr>
+                                            <tr className="border-b">
+                                                <th className="text-left py-2 px-3 font-medium">Status</th>
+                                                <th className="text-right py-2 px-3 font-medium">Count</th>
+                                                <th className="text-right py-2 px-3 font-medium">Percentage</th>
+                                                <th className="text-right py-2 px-3 font-medium">Total Amount</th>
+                                                <th className="text-right py-2 px-3 font-medium">Trend</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        {loanStatusData.map((status, index) => (
-                                            <tr key={index} className="border-b border-border/50 hover:bg-muted/30">
-                                                <td className="py-2 px-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="h-3 w-3 rounded-full" style={{ backgroundColor: status.color }} />
-                                                        <span>{status.name}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="text-right py-2 px-3 font-medium">{status.value}</td>
-                                                <td className="text-right py-2 px-3">{Math.round((status.value / totalLoans) * 100)}%</td>
-                                                <td className="text-right py-2 px-3">K{status.totalAmount.toLocaleString()}</td>
-                                                <td className="text-right py-2 px-3">
-                                                    <Badge
-                                                        variant={status.trendDirection === "up" ? "outline" : "secondary"}
-                                                        className={cn(
-                                                            "text-xs rounded-sm px-1.5 py-0",
-                                                            status.trendDirection === "up"
-                                                                ? "text-green-500 border-green-200"
-                                                                : "text-red-500 border-red-200",
-                                                        )}
-                                                    >
-                                                        {status.trendDirection === "up" ? (
-                                                            <TrendingUp className="h-3 w-3 mr-0.5" />
-                                                        ) : (
-                                                            <TrendingDown className="h-3 w-3 mr-0.5" />
-                                                        )}
-                                                        {status.trend}
-                                                    </Badge>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                            {loanStatusData.map((status, index) => (
+                                                <tr key={index} className="border-b border-border/50 hover:bg-muted/30">
+                                                    <td className="py-2 px-3">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: status.color }} />
+                                                            <span>{status.name}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="text-right py-2 px-3 font-medium">{status.value}</td>
+                                                    <td className="text-right py-2 px-3">{Math.round((status.value / totalLoans) * 100)}%</td>
+                                                    <td className="text-right py-2 px-3">K{status.totalAmount.toLocaleString()}</td>
+                                                    <td className="text-right py-2 px-3">
+                                                        <Badge
+                                                            variant={status.trendDirection === "up" ? "outline" : "secondary"}
+                                                            className={cn(
+                                                                "text-xs rounded-sm px-1.5 py-0",
+                                                                status.trendDirection === "up"
+                                                                    ? "text-green-500 border-green-200"
+                                                                    : "text-red-500 border-red-200",
+                                                            )}
+                                                        >
+                                                            {status.trendDirection === "up" ? (
+                                                                <TrendingUp className="h-3 w-3 mr-0.5" />
+                                                            ) : (
+                                                                <TrendingDown className="h-3 w-3 mr-0.5" />
+                                                            )}
+                                                            {status.trend}
+                                                        </Badge>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>
@@ -1136,10 +1155,10 @@ const LoanStatusTab = () => {
                             <div className="space-y-5 mt-4">
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="flex items-center gap-1.5">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Completion Rate
-                    </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <CheckCircle className="h-4 w-4 text-green-500" />
+                                            Completion Rate
+                                        </span>
                                         <span className="font-medium text-green-500">{completionRate}%</span>
                                     </div>
                                     <div className="relative pt-1">
@@ -1155,10 +1174,10 @@ const LoanStatusTab = () => {
 
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="flex items-center gap-1.5">
-                      <XCircle className="h-4 w-4 text-red-500" />
-                      Default Rate
-                    </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <XCircle className="h-4 w-4 text-red-500" />
+                                            Default Rate
+                                        </span>
                                         <span className="font-medium text-red-500">{defaultRate}%</span>
                                     </div>
                                     <div className="relative pt-1">
@@ -1174,20 +1193,20 @@ const LoanStatusTab = () => {
 
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="flex items-center gap-1.5">
-                      <Zap className="h-4 w-4 text-blue-500" />
-                      Active Loans
-                    </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <Zap className="h-4 w-4 text-blue-500" />
+                                            Active Loans
+                                        </span>
                                         <span className="font-medium text-blue-500">
-                      {Math.round(((loanStatusData.find((s) => s.name === "Active")?.value || 0) / totalLoans) * 100)}%
-                    </span>
+                                            {Math.round(((loanStatusData.find((s) => s.name === "Active")?.value || 0) / totalLoans) * 100)}%
+                                        </span>
                                     </div>
                                     <div className="relative pt-1">
                                         <div className="flex mb-1 items-center justify-between">
                                             <div className="text-xs text-muted-foreground">
-                        <span className="font-semibold text-blue-500">
-                          {loanStatusData.find((s) => s.name === "Active")?.value || 0}
-                        </span>{" "}
+                                                <span className="font-semibold text-blue-500">
+                                                    {loanStatusData.find((s) => s.name === "Active")?.value || 0}
+                                                </span>{" "}
                                                 of {totalLoans} total loans
                                             </div>
                                             <div className="text-xs text-blue-500 font-semibold">+12%</div>
@@ -1202,23 +1221,23 @@ const LoanStatusTab = () => {
 
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="h-4 w-4 text-amber-500" />
-                      Pending Approval
-                    </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <Clock className="h-4 w-4 text-amber-500" />
+                                            Pending Approval
+                                        </span>
                                         <span className="font-medium text-amber-500">
-                      {Math.round(
-                          ((loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0) / totalLoans) * 100,
-                      )}
+                                            {Math.round(
+                                                ((loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0) / totalLoans) * 100,
+                                            )}
                                             %
-                    </span>
+                                        </span>
                                     </div>
                                     <div className="relative pt-1">
                                         <div className="flex mb-1 items-center justify-between">
                                             <div className="text-xs text-muted-foreground">
-                        <span className="font-semibold text-amber-500">
-                          {loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0}
-                        </span>{" "}
+                                                <span className="font-semibold text-amber-500">
+                                                    {loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0}
+                                                </span>{" "}
                                                 of {totalLoans} total loans
                                             </div>
                                             <div className="text-xs text-amber-500 font-semibold">+20%</div>
@@ -1243,22 +1262,22 @@ const LoanStatusTab = () => {
                                     <li className="flex items-start gap-1.5">
                                         <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
                                         <span>
-                      Default rate is <span className="text-green-500 font-medium">6% lower</span> than industry average
-                    </span>
+                                            Default rate is <span className="text-green-500 font-medium">6% lower</span> than industry average
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-1.5">
                                         <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
                                         <span>
-                      Completion rate has improved by <span className="text-green-500 font-medium">5%</span> since last{" "}
+                                            Completion rate has improved by <span className="text-green-500 font-medium">5%</span> since last{" "}
                                             {timeRange}
-                    </span>
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-1.5">
                                         <AlertCircle className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
                                         <span>
-                      Pending approvals increased by <span className="text-amber-500 font-medium">20%</span> - review
-                      process may need optimization
-                    </span>
+                                            Pending approvals increased by <span className="text-amber-500 font-medium">20%</span> - review
+                                            process may need optimization
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
@@ -1288,7 +1307,7 @@ const LoanStatusTab = () => {
                                             Show percentages
                                         </Label>
                                     </div>
-                                    <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => {}}>
+                                    <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => { }}>
                                         <ListFilter className="h-3 w-3 mr-1" />
                                         Filter
                                     </Button>
@@ -1366,16 +1385,16 @@ const LoanStatusTab = () => {
                                         <li className="flex items-start gap-1.5">
                                             <ArrowUpRight className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
                                             <span>
-                        <span className="font-medium">Completed loans</span> show steady growth over the last 6 months
-                        (+33%)
-                      </span>
+                                                <span className="font-medium">Completed loans</span> show steady growth over the last 6 months
+                                                (+33%)
+                                            </span>
                                         </li>
                                         <li className="flex items-start gap-1.5">
                                             <ArrowDownRight className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
                                             <span>
-                        <span className="font-medium">Defaulted loans</span> have remained consistently low (0-1 per
-                        month)
-                      </span>
+                                                <span className="font-medium">Defaulted loans</span> have remained consistently low (0-1 per
+                                                month)
+                                            </span>
                                         </li>
                                     </ul>
                                 </div>
@@ -1410,7 +1429,7 @@ const LoanStatusTab = () => {
                         <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-4">
                                 <h4 className="text-sm font-medium">Loan Purpose Distribution</h4>
-                                <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => {}}>
+                                <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => { }}>
                                     <Download className="h-3 w-3 mr-1" />
                                     Export
                                 </Button>
@@ -1684,9 +1703,9 @@ const LoanStatusTab = () => {
                                 <div className="flex items-center gap-1">
                                     <div className="h-3 w-3 bg-green-500 rounded"></div>
                                     <span>
-                    On Time Payments (
+                                        On Time Payments (
                                         {(repaymentTrendData.reduce((sum, data) => sum + data.onTime, 0) / repaymentTrendData.length).toFixed(2)}% avg)
-                  </span>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -1694,24 +1713,24 @@ const LoanStatusTab = () => {
 
                     {(() => {
                         // Calculate overall repayment performance
-                        const activeLoans = loanRequests.filter(loan => 
+                        const activeLoans = loanRequests.filter(loan =>
                             loan.status === "REPAID" || loan.status === "REPAYING" || loan.status === "DISBURSED"
                         );
 
-                        const onTimeLoans = activeLoans.filter(loan => 
-                            (loan.status === "REPAID" && new Date(loan.updatedAt) <= new Date(loan.repaymentDate)) || 
+                        const onTimeLoans = activeLoans.filter(loan =>
+                            (loan.status === "REPAID" && new Date(loan.updatedAt) <= new Date(loan.repaymentDate)) ||
                             loan.status === "REPAYING"
                         ).length;
 
-                        const lateLoans = loanRequests.filter(loan => 
+                        const lateLoans = loanRequests.filter(loan =>
                             loan.status === "DEFAULTED"
                         ).length;
 
                         const totalLoans = onTimeLoans + lateLoans;
 
                         // Calculate on-time percentage
-                        const onTimePercentage = totalLoans > 0 
-                            ? Math.round((onTimeLoans / totalLoans) * 100) 
+                        const onTimePercentage = totalLoans > 0
+                            ? Math.round((onTimeLoans / totalLoans) * 100)
                             : 95.3; // Fallback to default if no data
 
                         const latePercentage = 100 - onTimePercentage;
@@ -1810,24 +1829,24 @@ const LoanStatusTab = () => {
                                 <h5 className="text-sm font-medium text-green-700 dark:text-green-300">Performance Insight</h5>
                                 {(() => {
                                     // Calculate overall repayment performance
-                                    const activeLoans = loanRequests.filter(loan => 
+                                    const activeLoans = loanRequests.filter(loan =>
                                         loan.status === "REPAID" || loan.status === "REPAYING" || loan.status === "DISBURSED"
                                     );
 
-                                    const onTimeLoans = activeLoans.filter(loan => 
-                                        (loan.status === "REPAID" && new Date(loan.updatedAt) <= new Date(loan.repaymentDate)) || 
+                                    const onTimeLoans = activeLoans.filter(loan =>
+                                        (loan.status === "REPAID" && new Date(loan.updatedAt) <= new Date(loan.repaymentDate)) ||
                                         loan.status === "REPAYING"
                                     ).length;
 
-                                    const lateLoans = loanRequests.filter(loan => 
+                                    const lateLoans = loanRequests.filter(loan =>
                                         loan.status === "DEFAULTED"
                                     ).length;
 
                                     const totalLoans = onTimeLoans + lateLoans;
 
                                     // Calculate on-time percentage
-                                    const onTimePercentage = totalLoans > 0 
-                                        ? Math.round((onTimeLoans / totalLoans) * 100) 
+                                    const onTimePercentage = totalLoans > 0
+                                        ? Math.round((onTimeLoans / totalLoans) * 100)
                                         : 95.3; // Fallback to default if no data
 
                                     // Industry average (mock value)
@@ -1848,9 +1867,9 @@ const LoanStatusTab = () => {
 
                                     return (
                                         <p className={`text-xs ${textColorClass} mt-1`}>
-                                            Your repayment performance is {performanceLevel} with {onTimePercentage}% on-time payments, 
+                                            Your repayment performance is {performanceLevel} with {onTimePercentage}% on-time payments,
                                             which is {Math.abs(difference).toFixed(1)}% {difference >= 0 ? "above" : "below"} the industry
-                                            average. {difference >= 0 
+                                            average. {difference >= 0
                                                 ? "Continue this trend to maintain high credit ratings and member trust."
                                                 : "Improving your on-time payments will help build better credit ratings and member trust."
                                             }

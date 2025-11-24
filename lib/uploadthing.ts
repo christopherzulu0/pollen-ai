@@ -59,20 +59,20 @@ export const ourFileRouter = {
     }),
 
 
-    groupLogo: f({
-      image: { maxFileSize: "4MB", maxFileCount: 1 },
+  groupLogo: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 },
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
     })
-      .middleware(async ({ req }) => {
-        return { userId: "user-id" }
-      })
-      .onUploadComplete(async ({ metadata, file }) => {
-        console.log("Project image uploaded for userId:", metadata.userId)
-        console.log("Project image url:", file.ufsUrl)
-        return { url: file.ufsUrl }
-      }),
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Project image uploaded for userId:", metadata.userId)
+      console.log("Project image url:", file.ufsUrl)
+      return { url: file.ufsUrl }
+    }),
 
-  blogImageUploader: f({ 
-    image: { maxFileSize: "16MB", maxFileCount: 1 } 
+  blogImageUploader: f({
+    image: { maxFileSize: "16MB", maxFileCount: 1 }
   })
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
@@ -100,8 +100,8 @@ export const ourFileRouter = {
       return { url: file.url }
     }),
 
-  serviceImageUploader: f({ 
-    image: { maxFileSize: "16MB", maxFileCount: 1 } 
+  serviceImageUploader: f({
+    image: { maxFileSize: "16MB", maxFileCount: 1 }
   })
     .middleware(async ({ req }) => {
       return { userId: "user-id" }
@@ -109,6 +109,19 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Service image uploaded for userId:", metadata.userId)
       console.log("Service image url", file.url)
+      return { url: file.url }
+    }),
+
+  loanDocumentUploader: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 },
+    pdf: { maxFileSize: "4MB", maxFileCount: 1 }
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Loan document uploaded for userId:", metadata.userId)
+      console.log("Loan document url", file.url)
       return { url: file.url }
     }),
 } satisfies FileRouter

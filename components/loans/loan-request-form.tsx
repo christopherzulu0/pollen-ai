@@ -20,7 +20,6 @@ import {
     AlertCircle,
 } from "lucide-react"
 import { format, addMonths } from "date-fns"
-
 import { Button } from "@/components/ui/button"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -28,7 +27,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -58,7 +57,7 @@ const formSchema = z.object({
     interestRate: z.number().min(0).default(0),
 })
 
-export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGroupId?: string }) {
+export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { preSelectedGroupId?: string; onSuccess?: () => void }) {
     const router = useRouter()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [activeTab, setActiveTab] = useState("details")
@@ -141,6 +140,7 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
         resolver: zodResolver(formSchema),
         defaultValues: {
             groupId: preSelectedGroupId || "",
+            amount: "",
             purpose: "",
             repaymentTerms: "",
             installments: 1,
@@ -254,20 +254,22 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
             const data = await response.json();
             console.log("Loan request submitted:", data);
 
-            toast({
-                title: "Loan request submitted",
-                description: "Your loan request has been submitted for voting.",
+            toast.success("Your loan request has been submitted for voting.", {
+                description: "Loan request submitted"
             })
 
             form.reset()
-            router.push("/dashboard/groups/saving-groups?tab=my-requests")
+
+            // Call onSuccess callback if provided (for dialog mode)
+            if (onSuccess) {
+                onSuccess()
+            } else {
+                // Only navigate if not in dialog mode
+                router.push("/dashboard/groups/saving-groups?tab=my-requests")
+            }
         } catch (error) {
             console.error("Error submitting loan request:", error);
-            toast({
-                title: "Error",
-                description: error instanceof Error ? error.message : "Failed to submit loan request. Please try again.",
-                variant: "destructive",
-            })
+            toast.error(error instanceof Error ? error.message : "Failed to submit loan request. Please try again.")
         } finally {
             setIsSubmitting(false)
         }
@@ -319,22 +321,22 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                 <div className="w-full overflow-hidden">
                     <TabsList className="w-full grid grid-cols-3 mb-4">
                         <TabsTrigger value="details" className="px-2 py-1.5">
-              <span className="flex items-center gap-1 whitespace-nowrap">
-                <FileText className="h-4 w-4 mr-1" />
-                <span>Loan Details</span>
-              </span>
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                                <FileText className="h-4 w-4 mr-1" />
+                                <span>Loan Details</span>
+                            </span>
                         </TabsTrigger>
                         <TabsTrigger value="calculator" className="px-2 py-1.5">
-              <span className="flex items-center gap-1 whitespace-nowrap">
-                <DollarSign className="h-4 w-4 mr-1" />
-                <span>Calculator</span>
-              </span>
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                                <DollarSign className="h-4 w-4 mr-1" />
+                                <span>Calculator</span>
+                            </span>
                         </TabsTrigger>
                         <TabsTrigger value="faq" className="px-2 py-1.5">
-              <span className="flex items-center gap-1 whitespace-nowrap">
-                <InfoIcon className="h-4 w-4 mr-1" />
-                <span>FAQ</span>
-              </span>
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                                <InfoIcon className="h-4 w-4 mr-1" />
+                                <span>FAQ</span>
+                            </span>
                         </TabsTrigger>
                     </TabsList>
                 </div>
@@ -404,8 +406,8 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                                                         <FormDescription>Choose the group you want to request a loan from</FormDescription>
                                                         {selectedGroup && (
                                                             <span className="text-xs text-muted-foreground">
-                                Total Contributions: {formatCurrency(totalContributions)}
-                              </span>
+                                                                Total Contributions: {formatCurrency(totalContributions)}
+                                                            </span>
                                                         )}
                                                     </div>
                                                     <FormMessage />
@@ -424,9 +426,9 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                                                     </FormLabel>
                                                     <FormControl>
                                                         <div className="relative">
-                              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                                ZMK
-                              </span>
+                                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                                ZMK
+                                                            </span>
                                                             <Input
                                                                 placeholder="0.00"
                                                                 {...field}
@@ -444,10 +446,10 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                                                             <span
                                                                 className={`text-xs ${Number.parseFloat(watchAmount) > totalContributions ? "text-destructive" : "text-muted-foreground"}`}
                                                             >
-                                {Number.parseFloat(watchAmount) > totalContributions
-                                    ? "Exceeds maximum"
-                                    : "Within limit"}
-                              </span>
+                                                                {Number.parseFloat(watchAmount) > totalContributions
+                                                                    ? "Exceeds maximum"
+                                                                    : "Within limit"}
+                                                            </span>
                                                         )}
                                                     </div>
                                                     <FormMessage />
@@ -598,8 +600,8 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                                                             <FormDescription>Proposed interest rate</FormDescription>
                                                             {selectedGroup && (
                                                                 <span className="text-xs text-muted-foreground">
-                                  Recommended: {selectedGroup.interestRate}%
-                                </span>
+                                                                    Recommended: {selectedGroup.interestRate}%
+                                                                </span>
                                                             )}
                                                         </div>
                                                         <FormMessage />
@@ -818,12 +820,12 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Interest:</span>
                                             <span>
-                        {formatCurrency(
-                            watchAmount && watchInterestRate
-                                ? Number.parseFloat(watchAmount) * (watchInterestRate / 100)
-                                : 0,
-                        )}
-                      </span>
+                                                {formatCurrency(
+                                                    watchAmount && watchInterestRate
+                                                        ? Number.parseFloat(watchAmount) * (watchInterestRate / 100)
+                                                        : 0,
+                                                )}
+                                            </span>
                                         </div>
 
                                         <Separator />
@@ -831,12 +833,12 @@ export default function LoanRequestForm({ preSelectedGroupId }: { preSelectedGro
                                         <div className="flex justify-between font-medium">
                                             <span>Total to Repay:</span>
                                             <span>
-                        {formatCurrency(
-                            watchAmount && watchInterestRate
-                                ? Number.parseFloat(watchAmount) * (1 + watchInterestRate / 100)
-                                : 0,
-                        )}
-                      </span>
+                                                {formatCurrency(
+                                                    watchAmount && watchInterestRate
+                                                        ? Number.parseFloat(watchAmount) * (1 + watchInterestRate / 100)
+                                                        : 0,
+                                                )}
+                                            </span>
                                         </div>
 
                                         <div className="flex justify-between text-primary font-medium">

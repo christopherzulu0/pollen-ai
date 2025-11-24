@@ -16,27 +16,32 @@ datasource db {
 }
 
 model User {
-  id                  String            @id @default(cuid())
+  id                  String                 @id @default(cuid())
   name                String?
-  email               String            @unique
+  email               String                 @unique
   phone               String?
-  clerkUserId         String?           @unique
+  clerkUserId         String?                @unique
   avatar              String?
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  isAdmin             Boolean           @default(false)
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  isAdmin             Boolean                @default(false)
   memberships         Membership[]
-  ownedGroups         Group[]           @relation("GroupOwner")
+  ownedGroups         Group[]                @relation("GroupOwner")
   transactions        Transaction[]
   personalSavings     PersonalSavings?
   savingsGoals        SavingsGoal[]
   notifications       Notification[]
-  sentInvitations     GroupInvitation[] @relation("SentInvitations")
-  receivedInvitations GroupInvitation[] @relation("ReceivedInvitations")
+  sentInvitations     GroupInvitation[]      @relation("SentInvitations")
+  receivedInvitations GroupInvitation[]      @relation("ReceivedInvitations")
   wallet              Wallet?
   contributions       Contribution[]
-  loanRequests        LoanRequest[]     @relation("UserLoanRequests")
-  loanVotes           LoanVote[]        @relation("UserLoanVotes")
+  loanRequests        LoanRequest[]          @relation("UserLoanRequests")
+  loanVotes           LoanVote[]             @relation("UserLoanVotes")
+  personalDocuments   PersonalLoanDocuments?
+  solarDocuments      SolarLoanDocuments?
+  individualLoans     IndividualLoan[]
+  nationalId          String?
+  address             String?
 }
 
 model BlogPost {
@@ -320,6 +325,34 @@ model Notification {
   relatedLoanRequestId String?
 }
 
+model PersonalLoanDocuments {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Nrcfront       String
+  NrcBack        String
+  PaySlip        String
+  ProofOfAddress String?
+  LiveSelfie     String?
+  BankStatement  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SolarLoanDocuments {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Nrcfront        String
+  NrcBack         String
+  LandOwnership   String
+  UtilityBill     String
+  VendorQuotation String
+  SubsidyReceipt  String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
 model GroupInvitation {
   id        String           @id @default(cuid())
   groupId   String
@@ -498,4 +531,39 @@ enum LoanStatus {
   REPAYING
   REPAID
   DEFAULTED
+}
+
+model IndividualLoan {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Service Details
+  serviceType     String // "Personal Loan" or "Solar Equipment"
+  serviceName     String
+  serviceCategory String
+
+  // Application Details
+  amount          Decimal
+  purpose         String  @db.Text
+  repaymentPeriod String
+
+  // Personal/Employment Details (Snapshot)
+  fullName         String
+  email            String
+  phone            String
+  nationalId       String
+  address          String   @db.Text
+  employmentStatus String
+  monthlyIncome    Decimal?
+  businessDetails  String?  @db.Text
+
+  // Status
+  status LoanStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
 }
