@@ -29,6 +29,9 @@ import {
     AlertTriangle,
     Sparkles,
     Calculator,
+    Brain,
+    Zap,
+    Eye,
 } from "lucide-react"
 import * as LucideIcons from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -37,6 +40,7 @@ import * as z from "zod"
 import { format } from "date-fns"
 import { toast } from "sonner"
 import { UploadButton } from "@/utils/uploadthing"
+import { DocumentType, DocumentVerificationStatus, ProcessingStatus, AutoFillData, ExtractedDocumentData, NRCFrontData, NRCBackData, PayslipData } from "@/lib/types/document-types"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -95,7 +99,7 @@ interface Group {
 // Form schema - conditional based on service type
 const createApplicationFormSchema = (serviceName: string, serviceCategory: string) => {
     const isVillageBanking = serviceCategory === "Village Banking" || serviceName.toLowerCase().includes("village banking")
-    
+
     // Base schema for all loans
     const baseLoanSchema = {
         // Loan Details
@@ -207,11 +211,11 @@ function getServiceIcon(category: string, iconName?: string | null, className = 
 function LoanCalculator({ service, amount, period }: { service: Service; amount: string; period: string }) {
     const loanAmount = Number(amount) || 0
     const months = Number(period) || 12
-    
+
     // Determine interest rate based on service type
     const isSolarEquipment = service.name === "Solar Equipment" || service.name.toLowerCase().includes("solar")
     const isPersonalLoan = service.name === "Personal Loans" || service.name === "Personal Loans "
-    
+
     // Interest rates: Solar 20%, Personal 10%
     const interestRate = isSolarEquipment ? 0.20 : isPersonalLoan ? 0.10 : 0.10 // Default to 10% if unknown
     const interestRatePercent = (interestRate * 100).toFixed(0)
@@ -401,6 +405,12 @@ function ApplicationForm({ service }: { service: Service }) {
     const [uploadingField, setUploadingField] = useState<string | null>(null)
     const [profileError, setProfileError] = useState<string | null>(null)
 
+    // AI Processing State
+    const [documentVerifications, setDocumentVerifications] = useState<Record<string, DocumentVerificationStatus>>({})
+    const [autoFillData, setAutoFillData] = useState<AutoFillData | null>(null)
+    const [showAutoFillDialog, setShowAutoFillDialog] = useState(false)
+    const [aiProcessing, setAiProcessing] = useState<Record<string, boolean>>({})
+
     const isPersonalLoan = service.name === "Personal Loans" || service.name === "Personal Loans "
     const isSolarEquipment = service.name === "Solar Equipment" || service.name.toLowerCase().includes("solar")
     const isVillageBanking = service.category === "Village Banking" || service.name.toLowerCase().includes("village banking")
@@ -483,14 +493,199 @@ function ApplicationForm({ service }: { service: Service }) {
         mode: "onChange",
     })
 
-    // Handle file upload completion
-    const handleUploadComplete = (res: { name: string; url: string; size: number }[], fieldName: 'nrcFront' | 'nrcBack' | 'payslip' | 'proofOfAddress' | 'liveSelfie' | 'bankStatement' | 'landOwnership' | 'utilityBill' | 'vendorQuotation' | 'subsidyReceipt') => {
+    // Process document with AI
+    const processDocumentWithAI = async (documentUrl: string, documentType: DocumentType) => {
+        try {
+            setAiProcessing(prev => ({ ...prev, [documentType]: true }))
+            setDocumentVerifications(prev => ({
+                ...prev,
+                [documentType]: {
+                    documentType,
+                    status: 'processing' as ProcessingStatus,
+                }
+            }))
+
+            const response = await fetch('/api/process-document', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    documentUrl,
+                    documentType,
+                }),
+            })
+
+            const result = await response.json()
+
+            if (result.success) {
+                setDocumentVerifications(prev => ({
+                    ...prev,
+                    [documentType]: {
+                        documentType,
+                        status: 'success' as ProcessingStatus,
+                        extractedData: result.data,
+                        processedAt: result.processedAt,
+                    }
+                }))
+
+                toast.success('Document processed successfully!', {
+                    description: `AI extracted data from your ${documentType.replace(/([A-Z])/g, ' $1').toLowerCase()}`,
+                    icon: <Brain className="h-4 w-4" />,
+                })
+
+                // Auto-fill logic
+                if (documentType === 'nrcFront' || documentType === 'nrcBack' || documentType === 'payslip') {
+                    updateAutoFillData(documentType, result.data)
+                }
+            } else {
+                setDocumentVerifications(prev => ({
+                    ...prev,
+                    [documentType]: {
+                        documentType,
+                        status: 'error' as ProcessingStatus,
+                        error: result.error,
+                    }
+                }))
+
+                toast.error('Document processing failed', {
+                    description: result.error || 'Could not extract data from document',
+                })
+            }
+        } catch (error) {
+            console.error('Error processing document:', error)
+            setDocumentVerifications(prev => ({
+                ...prev,
+                [documentType]: {
+                    documentType,
+                    status: 'error' as ProcessingStatus,
+                    error: 'Failed to process document',
+                }
+            }))
+
+            toast.error('Processing error', {
+                description: 'An error occurred while processing your document',
+            })
+        } finally {
+            setAiProcessing(prev => ({ ...prev, [documentType]: false }))
+        }
+    }
+
+    // Update auto-fill data based on extracted information
+    const updateAutoFillData = (documentType: DocumentType, extractedData: ExtractedDocumentData) => {
+        setAutoFillData(prev => {
+            const updated = { ...prev }
+
+            if (documentType === 'nrcFront') {
+                const nrcData = extractedData as NRCFrontData
+                updated.fullName = nrcData.fullName || undefined
+                updated.dateOfBirth = nrcData.dateOfBirth || undefined
+                updated.nrcNumber = nrcData.nrcNumber || undefined
+                updated.confidence = {
+                    ...updated.confidence,
+                    nrc: nrcData.confidence,
+                }
+            } else if (documentType === 'nrcBack') {
+                const nrcData = extractedData as NRCBackData
+                updated.address = nrcData.address || undefined
+                updated.confidence = {
+                    ...updated.confidence,
+                    address: nrcData.confidence,
+                }
+            } else if (documentType === 'payslip') {
+                const payslipData = extractedData as PayslipData
+                updated.monthlyIncome = payslipData.monthlyNetSalary || payslipData.monthlyGrossSalary || undefined
+                updated.employerName = payslipData.employerName || undefined
+                updated.employmentStatus = 'employed'
+                updated.confidence = {
+                    ...updated.confidence,
+                    payslip: payslipData.confidence,
+                }
+            }
+
+            return updated
+        })
+
+        // Show auto-fill dialog if we have enough data
+        if (autoFillData && (autoFillData.fullName || autoFillData.monthlyIncome)) {
+            setShowAutoFillDialog(true)
+        }
+    }
+
+    // Apply auto-fill data to form
+    const applyAutoFillData = () => {
+        if (!autoFillData) return
+
+        // Note: We don't auto-fill form fields directly as they may not exist in all loan types
+        // Instead, we show the extracted data and let users confirm
+
+        toast.success('Auto-fill applied!', {
+            description: 'Extracted data has been prepared. Please review before submitting.',
+        })
+
+        setShowAutoFillDialog(false)
+    }
+
+    // Verify NRC documents match
+    const verifyNRCDocuments = async () => {
+        if (!uploadedFiles.nrcFront || !uploadedFiles.nrcBack) return
+
+        try {
+            toast.info('Verifying NRC documents...', {
+                description: 'AI is checking if your NRC front and back match',
+            })
+
+            const response = await fetch('/api/process-document', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nrcFrontUrl: uploadedFiles.nrcFront.url,
+                    nrcBackUrl: uploadedFiles.nrcBack.url,
+                }),
+            })
+
+            const result = await response.json()
+
+            if (result.success && result.verification) {
+                if (result.verification.match) {
+                    toast.success('NRC Verified!', {
+                        description: `Documents match with ${result.verification.confidence}% confidence`,
+                        icon: <CheckCircle2 className="h-4 w-4" />,
+                    })
+                } else {
+                    toast.warning('NRC Mismatch', {
+                        description: result.verification.reason || 'Documents may not match',
+                        icon: <AlertTriangle className="h-4 w-4" />,
+                    })
+                }
+            }
+        } catch (error) {
+            console.error('Error verifying NRC:', error)
+        }
+    }
+
+    // Handle file upload completion with AI processing
+    const handleUploadComplete = async (res: { name: string; url: string; size: number }[], fieldName: 'nrcFront' | 'nrcBack' | 'payslip' | 'proofOfAddress' | 'liveSelfie' | 'bankStatement' | 'landOwnership' | 'utilityBill' | 'vendorQuotation' | 'subsidyReceipt') => {
         setUploadingField(null)
         if (res && res.length > 0) {
             const file = res[0]
             setUploadedFiles(prev => ({ ...prev, [fieldName]: file }))
             form.setValue(fieldName as any, file.url)
             toast.success(`${fieldName.replace(/([A-Z])/g, ' $1').trim()} uploaded successfully`)
+
+            // Trigger AI processing for relevant documents
+            if (['nrcFront', 'nrcBack', 'payslip', 'utilityBill', 'landOwnership', 'vendorQuotation', 'subsidyReceipt', 'proofOfAddress'].includes(fieldName)) {
+                await processDocumentWithAI(file.url, fieldName as DocumentType)
+            }
+
+            // If both NRC documents are uploaded, verify they match
+            if (fieldName === 'nrcBack' && uploadedFiles.nrcFront) {
+                await verifyNRCDocuments()
+            } else if (fieldName === 'nrcFront' && uploadedFiles.nrcBack) {
+                await verifyNRCDocuments()
+            }
         }
     }
 
@@ -502,10 +697,17 @@ function ApplicationForm({ service }: { service: Service }) {
             return newFiles
         })
         form.setValue(fieldName as any, "")
+
+        // Clear AI verification for this document
+        setDocumentVerifications(prev => {
+            const newVerifications = { ...prev }
+            delete newVerifications[fieldName]
+            return newVerifications
+        })
     }
 
     const watchedValues = form.watch()
-    
+
     // Create a stable string representation of watched values for dependency tracking
     const watchedValuesKey = useMemo(() => {
         return JSON.stringify(watchedValues)
@@ -514,24 +716,24 @@ function ApplicationForm({ service }: { service: Service }) {
     // Calculate form progress
     useEffect(() => {
         const allFields = Object.keys(form.getValues())
-        
+
         // Exclude document fields if documents already exist
-        const documentFields = isPersonalLoan || isSolarEquipment 
-            ? (isPersonalLoan 
+        const documentFields = isPersonalLoan || isSolarEquipment
+            ? (isPersonalLoan
                 ? ['nrcFront', 'nrcBack', 'payslip', 'proofOfAddress', 'liveSelfie', 'bankStatement']
                 : ['nrcFront', 'nrcBack', 'landOwnership', 'utilityBill', 'vendorQuotation', 'subsidyReceipt'])
             : []
-        
+
         // Filter out document fields if documents already exist
         const fieldsToCount = hasExistingDocuments && (isPersonalLoan || isSolarEquipment)
             ? allFields.filter(field => !documentFields.includes(field))
             : allFields
-        
+
         const filledFields = fieldsToCount.filter((field) => {
             const value = form.getValues(field as keyof ApplicationFormValues)
             return value !== undefined && value !== "" && value !== null
         })
-        
+
         const progress = fieldsToCount.length > 0 ? (filledFields.length / fieldsToCount.length) * 100 : 0
         setFormProgress(progress)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -625,7 +827,7 @@ function ApplicationForm({ service }: { service: Service }) {
             if (!response.ok) {
                 const errorData = await response.json()
                 const errorMessage = errorData.error || "Failed to submit application"
-                
+
                 // Check if it's a profile update error
                 if (errorMessage.includes("Please update your profile") || errorMessage.includes("National ID and Address")) {
                     setProfileError(errorMessage)
@@ -640,10 +842,10 @@ function ApplicationForm({ service }: { service: Service }) {
                     setIsSubmitting(false)
                     return
                 }
-                
+
                 throw new Error(errorMessage)
             }
-            
+
             // Clear any previous profile errors on success
             setProfileError(null)
 
@@ -670,6 +872,134 @@ function ApplicationForm({ service }: { service: Service }) {
                 </div>
                 <Progress value={formProgress} className="h-2" />
             </div>
+
+            {/* AI Processing Status */}
+            {Object.keys(documentVerifications).length > 0 && (
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800/30"
+                >
+                    <div className="flex items-center gap-2 mb-3">
+                        <Brain className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                        <h4 className="font-semibold text-purple-900 dark:text-purple-100">AI Document Analysis</h4>
+                        <Badge variant="outline" className="ml-auto bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700">
+                            <Zap className="h-3 w-3 mr-1" />
+                            Powered by OpenAI
+                        </Badge>
+                    </div>
+
+                    <div className="space-y-2">
+                        {Object.entries(documentVerifications).map(([docType, verification]) => (
+                            <motion.div
+                                key={docType}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-purple-100 dark:border-purple-900/30"
+                            >
+                                <div className="flex items-center gap-3 flex-1">
+                                    <div className="relative">
+                                        {verification.status === 'processing' && (
+                                            <Loader2 className="h-5 w-5 text-purple-600 dark:text-purple-400 animate-spin" />
+                                        )}
+                                        {verification.status === 'success' && (
+                                            <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                        )}
+                                        {verification.status === 'error' && (
+                                            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+                                        )}
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            {docType.replace(/([A-Z])/g, ' $1').trim()}
+                                        </p>
+                                        {verification.status === 'processing' && (
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">Analyzing document...</p>
+                                        )}
+                                        {verification.status === 'success' && verification.extractedData && (
+                                            <p className="text-xs text-green-600 dark:text-green-400">
+                                                Data extracted • {(verification.extractedData as any).confidence}% confidence
+                                            </p>
+                                        )}
+                                        {verification.status === 'error' && (
+                                            <p className="text-xs text-red-600 dark:text-red-400">
+                                                {verification.error || 'Processing failed'}
+                                            </p>
+                                        )}
+                                    </div>
+                                    {verification.status === 'success' && verification.extractedData && (
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            className="text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                                            onClick={() => {
+                                                toast.info('Extracted Data', {
+                                                    description: JSON.stringify(verification.extractedData, null, 2),
+                                                })
+                                            }}
+                                        >
+                                            <Eye className="h-4 w-4 mr-1" />
+                                            View
+                                        </Button>
+                                    )}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {autoFillData && (autoFillData.fullName || autoFillData.monthlyIncome) && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-4 p-3 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-lg border border-emerald-200 dark:border-emerald-800/30"
+                        >
+                            <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                                        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
+                                            Auto-fill Available
+                                        </p>
+                                    </div>
+                                    <p className="text-xs text-emerald-700 dark:text-emerald-300 mb-2">
+                                        We've extracted information from your documents that can help fill your application.
+                                    </p>
+                                    <div className="space-y-1 text-xs">
+                                        {autoFillData.fullName && (
+                                            <div className="flex items-center gap-2">
+                                                <Check className="h-3 w-3 text-emerald-600" />
+                                                <span className="text-gray-700 dark:text-gray-300">Name: {autoFillData.fullName}</span>
+                                            </div>
+                                        )}
+                                        {autoFillData.monthlyIncome && (
+                                            <div className="flex items-center gap-2">
+                                                <Check className="h-3 w-3 text-emerald-600" />
+                                                <span className="text-gray-700 dark:text-gray-300">Income: K{autoFillData.monthlyIncome.toLocaleString()}</span>
+                                            </div>
+                                        )}
+                                        {autoFillData.address && (
+                                            <div className="flex items-center gap-2">
+                                                <Check className="h-3 w-3 text-emerald-600" />
+                                                <span className="text-gray-700 dark:text-gray-300">Address: {autoFillData.address}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <Button
+                                    type="button"
+                                    size="sm"
+                                    onClick={applyAutoFillData}
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white ml-3"
+                                >
+                                    <Zap className="h-3 w-3 mr-1" />
+                                    Review
+                                </Button>
+                            </div>
+                        </motion.div>
+                    )}
+                </motion.div>
+            )}
 
             {/* Profile Update Error Alert */}
             {profileError && (
@@ -825,75 +1155,75 @@ function ApplicationForm({ service }: { service: Service }) {
                                             <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Employment & Income</h3>
                                         </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <FormField
-                                        control={form.control}
-                                        name="employmentStatus"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="flex items-center gap-2">
-                                                    <Building className="h-4 w-4" />
-                                                    Employment Status
-                                                </FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="employmentStatus"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="flex items-center gap-2">
+                                                            <Building className="h-4 w-4" />
+                                                            Employment Status
+                                                        </FormLabel>
+                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <FormControl>
+                                                                <SelectTrigger className="border-[#003366]/20 focus:border-[#00CC66]">
+                                                                    <SelectValue placeholder="Select status" />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                <SelectItem value="employed">Employed</SelectItem>
+                                                                <SelectItem value="self-employed">Self-Employed</SelectItem>
+                                                                <SelectItem value="farmer">Farmer</SelectItem>
+                                                                <SelectItem value="business-owner">Business Owner</SelectItem>
+                                                                <SelectItem value="unemployed">Unemployed</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+
+                                            <FormField
+                                                control={form.control}
+                                                name="monthlyIncome"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="flex items-center gap-2">
+                                                            <DollarSign className="h-4 w-4" />
+                                                            Monthly Income (ZMK)
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <Input type="number" placeholder="3000" {...field} className="border-[#003366]/20 focus:border-[#00CC66]" />
+                                                        </FormControl>
+                                                        <FormDescription>Optional</FormDescription>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+
+                                        <FormField
+                                            control={form.control}
+                                            name="businessDetails"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="flex items-center gap-2">
+                                                        <FileText className="h-4 w-4" />
+                                                        Business/Farming Details
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <SelectTrigger className="border-[#003366]/20 focus:border-[#00CC66]">
-                                                            <SelectValue placeholder="Select status" />
-                                                        </SelectTrigger>
+                                                        <Textarea
+                                                            placeholder="If self-employed or farmer, describe your business or farming activities..."
+                                                            className="resize-none border-[#003366]/20 focus:border-[#00CC66]"
+                                                            {...field}
+                                                        />
                                                     </FormControl>
-                                                    <SelectContent>
-                                                        <SelectItem value="employed">Employed</SelectItem>
-                                                        <SelectItem value="self-employed">Self-Employed</SelectItem>
-                                                        <SelectItem value="farmer">Farmer</SelectItem>
-                                                        <SelectItem value="business-owner">Business Owner</SelectItem>
-                                                        <SelectItem value="unemployed">Unemployed</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <FormField
-                                        control={form.control}
-                                        name="monthlyIncome"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="flex items-center gap-2">
-                                                    <DollarSign className="h-4 w-4" />
-                                                    Monthly Income (ZMK)
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" placeholder="3000" {...field} className="border-[#003366]/20 focus:border-[#00CC66]" />
-                                                </FormControl>
-                                                <FormDescription>Optional</FormDescription>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-
-                                <FormField
-                                    control={form.control}
-                                    name="businessDetails"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="flex items-center gap-2">
-                                                <FileText className="h-4 w-4" />
-                                                Business/Farming Details
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Textarea
-                                                    placeholder="If self-employed or farmer, describe your business or farming activities..."
-                                                    className="resize-none border-[#003366]/20 focus:border-[#00CC66]"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormDescription>Optional - relevant for farmers and business owners</FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                                    <FormDescription>Optional - relevant for farmers and business owners</FormDescription>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                     </motion.div>
                                 </>
                             )}

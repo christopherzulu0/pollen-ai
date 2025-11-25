@@ -83,6 +83,13 @@ model BlogComment {
   parent        BlogComment?  @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
   replies       BlogComment[] @relation("CommentReplies")
   audio_url     String?
+
+  // Sentiment Analysis Fields
+  sentiment           String? // 'positive', 'negative', 'neutral', 'mixed'
+  sentimentScore      Float? // -1 to 1 scale
+  sentimentConfidence Float? // 0-100
+  emotions            String[]  @default([])
+  analyzedAt          DateTime? // When sentiment was analyzed
 }
 
 model BlogBookmark {

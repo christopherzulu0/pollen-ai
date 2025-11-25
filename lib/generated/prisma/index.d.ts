@@ -7718,10 +7718,14 @@ export namespace Prisma {
 
   export type BlogCommentAvgAggregateOutputType = {
     comment_likes: number | null
+    sentimentScore: number | null
+    sentimentConfidence: number | null
   }
 
   export type BlogCommentSumAggregateOutputType = {
     comment_likes: number | null
+    sentimentScore: number | null
+    sentimentConfidence: number | null
   }
 
   export type BlogCommentMinAggregateOutputType = {
@@ -7733,6 +7737,10 @@ export namespace Prisma {
     blog_post_id: string | null
     parent_id: string | null
     audio_url: string | null
+    sentiment: string | null
+    sentimentScore: number | null
+    sentimentConfidence: number | null
+    analyzedAt: Date | null
   }
 
   export type BlogCommentMaxAggregateOutputType = {
@@ -7744,6 +7752,10 @@ export namespace Prisma {
     blog_post_id: string | null
     parent_id: string | null
     audio_url: string | null
+    sentiment: string | null
+    sentimentScore: number | null
+    sentimentConfidence: number | null
+    analyzedAt: Date | null
   }
 
   export type BlogCommentCountAggregateOutputType = {
@@ -7755,16 +7767,25 @@ export namespace Prisma {
     blog_post_id: number
     parent_id: number
     audio_url: number
+    sentiment: number
+    sentimentScore: number
+    sentimentConfidence: number
+    emotions: number
+    analyzedAt: number
     _all: number
   }
 
 
   export type BlogCommentAvgAggregateInputType = {
     comment_likes?: true
+    sentimentScore?: true
+    sentimentConfidence?: true
   }
 
   export type BlogCommentSumAggregateInputType = {
     comment_likes?: true
+    sentimentScore?: true
+    sentimentConfidence?: true
   }
 
   export type BlogCommentMinAggregateInputType = {
@@ -7776,6 +7797,10 @@ export namespace Prisma {
     blog_post_id?: true
     parent_id?: true
     audio_url?: true
+    sentiment?: true
+    sentimentScore?: true
+    sentimentConfidence?: true
+    analyzedAt?: true
   }
 
   export type BlogCommentMaxAggregateInputType = {
@@ -7787,6 +7812,10 @@ export namespace Prisma {
     blog_post_id?: true
     parent_id?: true
     audio_url?: true
+    sentiment?: true
+    sentimentScore?: true
+    sentimentConfidence?: true
+    analyzedAt?: true
   }
 
   export type BlogCommentCountAggregateInputType = {
@@ -7798,6 +7827,11 @@ export namespace Prisma {
     blog_post_id?: true
     parent_id?: true
     audio_url?: true
+    sentiment?: true
+    sentimentScore?: true
+    sentimentConfidence?: true
+    emotions?: true
+    analyzedAt?: true
     _all?: true
   }
 
@@ -7896,6 +7930,11 @@ export namespace Prisma {
     blog_post_id: string
     parent_id: string | null
     audio_url: string | null
+    sentiment: string | null
+    sentimentScore: number | null
+    sentimentConfidence: number | null
+    emotions: string[]
+    analyzedAt: Date | null
     _count: BlogCommentCountAggregateOutputType | null
     _avg: BlogCommentAvgAggregateOutputType | null
     _sum: BlogCommentSumAggregateOutputType | null
@@ -7926,6 +7965,11 @@ export namespace Prisma {
     blog_post_id?: boolean
     parent_id?: boolean
     audio_url?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    sentimentConfidence?: boolean
+    emotions?: boolean
+    analyzedAt?: boolean
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
     replies?: boolean | BlogComment$repliesArgs<ExtArgs>
@@ -7941,6 +7985,11 @@ export namespace Prisma {
     blog_post_id?: boolean
     parent_id?: boolean
     audio_url?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    sentimentConfidence?: boolean
+    emotions?: boolean
+    analyzedAt?: boolean
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
   }, ExtArgs["result"]["blogComment"]>
@@ -7954,6 +8003,11 @@ export namespace Prisma {
     blog_post_id?: boolean
     parent_id?: boolean
     audio_url?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    sentimentConfidence?: boolean
+    emotions?: boolean
+    analyzedAt?: boolean
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
   }, ExtArgs["result"]["blogComment"]>
@@ -7967,9 +8021,14 @@ export namespace Prisma {
     blog_post_id?: boolean
     parent_id?: boolean
     audio_url?: boolean
+    sentiment?: boolean
+    sentimentScore?: boolean
+    sentimentConfidence?: boolean
+    emotions?: boolean
+    analyzedAt?: boolean
   }
 
-  export type BlogCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment" | "comment_by" | "comment_at" | "comment_likes" | "blog_post_id" | "parent_id" | "audio_url", ExtArgs["result"]["blogComment"]>
+  export type BlogCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment" | "comment_by" | "comment_at" | "comment_likes" | "blog_post_id" | "parent_id" | "audio_url" | "sentiment" | "sentimentScore" | "sentimentConfidence" | "emotions" | "analyzedAt", ExtArgs["result"]["blogComment"]>
   export type BlogCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
@@ -8001,6 +8060,11 @@ export namespace Prisma {
       blog_post_id: string
       parent_id: string | null
       audio_url: string | null
+      sentiment: string | null
+      sentimentScore: number | null
+      sentimentConfidence: number | null
+      emotions: string[]
+      analyzedAt: Date | null
     }, ExtArgs["result"]["blogComment"]>
     composites: {}
   }
@@ -8435,6 +8499,11 @@ export namespace Prisma {
     readonly blog_post_id: FieldRef<"BlogComment", 'String'>
     readonly parent_id: FieldRef<"BlogComment", 'String'>
     readonly audio_url: FieldRef<"BlogComment", 'String'>
+    readonly sentiment: FieldRef<"BlogComment", 'String'>
+    readonly sentimentScore: FieldRef<"BlogComment", 'Float'>
+    readonly sentimentConfidence: FieldRef<"BlogComment", 'Float'>
+    readonly emotions: FieldRef<"BlogComment", 'String[]'>
+    readonly analyzedAt: FieldRef<"BlogComment", 'DateTime'>
   }
     
 
@@ -35690,7 +35759,12 @@ export namespace Prisma {
     comment_likes: 'comment_likes',
     blog_post_id: 'blog_post_id',
     parent_id: 'parent_id',
-    audio_url: 'audio_url'
+    audio_url: 'audio_url',
+    sentiment: 'sentiment',
+    sentimentScore: 'sentimentScore',
+    sentimentConfidence: 'sentimentConfidence',
+    emotions: 'emotions',
+    analyzedAt: 'analyzedAt'
   };
 
   export type BlogCommentScalarFieldEnum = (typeof BlogCommentScalarFieldEnum)[keyof typeof BlogCommentScalarFieldEnum]
@@ -36674,6 +36748,11 @@ export namespace Prisma {
     blog_post_id?: StringFilter<"BlogComment"> | string
     parent_id?: StringNullableFilter<"BlogComment"> | string | null
     audio_url?: StringNullableFilter<"BlogComment"> | string | null
+    sentiment?: StringNullableFilter<"BlogComment"> | string | null
+    sentimentScore?: FloatNullableFilter<"BlogComment"> | number | null
+    sentimentConfidence?: FloatNullableFilter<"BlogComment"> | number | null
+    emotions?: StringNullableListFilter<"BlogComment">
+    analyzedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
     blog_post?: XOR<BlogPostScalarRelationFilter, BlogPostWhereInput>
     parent?: XOR<BlogCommentNullableScalarRelationFilter, BlogCommentWhereInput> | null
     replies?: BlogCommentListRelationFilter
@@ -36688,6 +36767,11 @@ export namespace Prisma {
     blog_post_id?: SortOrder
     parent_id?: SortOrderInput | SortOrder
     audio_url?: SortOrderInput | SortOrder
+    sentiment?: SortOrderInput | SortOrder
+    sentimentScore?: SortOrderInput | SortOrder
+    sentimentConfidence?: SortOrderInput | SortOrder
+    emotions?: SortOrder
+    analyzedAt?: SortOrderInput | SortOrder
     blog_post?: BlogPostOrderByWithRelationInput
     parent?: BlogCommentOrderByWithRelationInput
     replies?: BlogCommentOrderByRelationAggregateInput
@@ -36705,6 +36789,11 @@ export namespace Prisma {
     blog_post_id?: StringFilter<"BlogComment"> | string
     parent_id?: StringNullableFilter<"BlogComment"> | string | null
     audio_url?: StringNullableFilter<"BlogComment"> | string | null
+    sentiment?: StringNullableFilter<"BlogComment"> | string | null
+    sentimentScore?: FloatNullableFilter<"BlogComment"> | number | null
+    sentimentConfidence?: FloatNullableFilter<"BlogComment"> | number | null
+    emotions?: StringNullableListFilter<"BlogComment">
+    analyzedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
     blog_post?: XOR<BlogPostScalarRelationFilter, BlogPostWhereInput>
     parent?: XOR<BlogCommentNullableScalarRelationFilter, BlogCommentWhereInput> | null
     replies?: BlogCommentListRelationFilter
@@ -36719,6 +36808,11 @@ export namespace Prisma {
     blog_post_id?: SortOrder
     parent_id?: SortOrderInput | SortOrder
     audio_url?: SortOrderInput | SortOrder
+    sentiment?: SortOrderInput | SortOrder
+    sentimentScore?: SortOrderInput | SortOrder
+    sentimentConfidence?: SortOrderInput | SortOrder
+    emotions?: SortOrder
+    analyzedAt?: SortOrderInput | SortOrder
     _count?: BlogCommentCountOrderByAggregateInput
     _avg?: BlogCommentAvgOrderByAggregateInput
     _max?: BlogCommentMaxOrderByAggregateInput
@@ -36738,6 +36832,11 @@ export namespace Prisma {
     blog_post_id?: StringWithAggregatesFilter<"BlogComment"> | string
     parent_id?: StringNullableWithAggregatesFilter<"BlogComment"> | string | null
     audio_url?: StringNullableWithAggregatesFilter<"BlogComment"> | string | null
+    sentiment?: StringNullableWithAggregatesFilter<"BlogComment"> | string | null
+    sentimentScore?: FloatNullableWithAggregatesFilter<"BlogComment"> | number | null
+    sentimentConfidence?: FloatNullableWithAggregatesFilter<"BlogComment"> | number | null
+    emotions?: StringNullableListFilter<"BlogComment">
+    analyzedAt?: DateTimeNullableWithAggregatesFilter<"BlogComment"> | Date | string | null
   }
 
   export type BlogBookmarkWhereInput = {
@@ -39013,6 +39112,11 @@ export namespace Prisma {
     comment_at?: Date | string
     comment_likes?: number
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     blog_post: BlogPostCreateNestedOneWithoutBlog_commentsInput
     parent?: BlogCommentCreateNestedOneWithoutRepliesInput
     replies?: BlogCommentCreateNestedManyWithoutParentInput
@@ -39027,6 +39131,11 @@ export namespace Prisma {
     blog_post_id: string
     parent_id?: string | null
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     replies?: BlogCommentUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -39037,6 +39146,11 @@ export namespace Prisma {
     comment_at?: DateTimeFieldUpdateOperationsInput | Date | string
     comment_likes?: IntFieldUpdateOperationsInput | number
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     blog_post?: BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput
     parent?: BlogCommentUpdateOneWithoutRepliesNestedInput
     replies?: BlogCommentUpdateManyWithoutParentNestedInput
@@ -39051,6 +39165,11 @@ export namespace Prisma {
     blog_post_id?: StringFieldUpdateOperationsInput | string
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replies?: BlogCommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -39063,6 +39182,11 @@ export namespace Prisma {
     blog_post_id: string
     parent_id?: string | null
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
   }
 
   export type BlogCommentUpdateManyMutationInput = {
@@ -39072,6 +39196,11 @@ export namespace Prisma {
     comment_at?: DateTimeFieldUpdateOperationsInput | Date | string
     comment_likes?: IntFieldUpdateOperationsInput | number
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BlogCommentUncheckedUpdateManyInput = {
@@ -39083,6 +39212,11 @@ export namespace Prisma {
     blog_post_id?: StringFieldUpdateOperationsInput | string
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BlogBookmarkCreateInput = {
@@ -41622,6 +41756,28 @@ export namespace Prisma {
     description?: SortOrder
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type BlogPostScalarRelationFilter = {
     is?: BlogPostWhereInput
     isNot?: BlogPostWhereInput
@@ -41641,10 +41797,17 @@ export namespace Prisma {
     blog_post_id?: SortOrder
     parent_id?: SortOrder
     audio_url?: SortOrder
+    sentiment?: SortOrder
+    sentimentScore?: SortOrder
+    sentimentConfidence?: SortOrder
+    emotions?: SortOrder
+    analyzedAt?: SortOrder
   }
 
   export type BlogCommentAvgOrderByAggregateInput = {
     comment_likes?: SortOrder
+    sentimentScore?: SortOrder
+    sentimentConfidence?: SortOrder
   }
 
   export type BlogCommentMaxOrderByAggregateInput = {
@@ -41656,6 +41819,10 @@ export namespace Prisma {
     blog_post_id?: SortOrder
     parent_id?: SortOrder
     audio_url?: SortOrder
+    sentiment?: SortOrder
+    sentimentScore?: SortOrder
+    sentimentConfidence?: SortOrder
+    analyzedAt?: SortOrder
   }
 
   export type BlogCommentMinOrderByAggregateInput = {
@@ -41667,10 +41834,46 @@ export namespace Prisma {
     blog_post_id?: SortOrder
     parent_id?: SortOrder
     audio_url?: SortOrder
+    sentiment?: SortOrder
+    sentimentScore?: SortOrder
+    sentimentConfidence?: SortOrder
+    analyzedAt?: SortOrder
   }
 
   export type BlogCommentSumOrderByAggregateInput = {
     comment_likes?: SortOrder
+    sentimentScore?: SortOrder
+    sentimentConfidence?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type BlogBookmarkUser_idBlog_post_idCompoundUniqueInput = {
@@ -41762,17 +41965,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ServiceCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -41849,22 +42041,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumGroupPrivacyFilter<$PrismaModel = never> = {
@@ -42155,17 +42331,6 @@ export namespace Prisma {
     not?: NestedEnumMembershipStatusFilter<$PrismaModel> | $Enums.MembershipStatus
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type GroupScalarRelationFilter = {
     is?: GroupWhereInput
     isNot?: GroupWhereInput
@@ -42270,20 +42435,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMembershipStatusFilter<$PrismaModel>
     _max?: NestedEnumMembershipStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumTransactionTypeFilter<$PrismaModel = never> = {
@@ -43969,6 +44120,10 @@ export namespace Prisma {
     deleteMany?: BlogLikeScalarWhereInput | BlogLikeScalarWhereInput[]
   }
 
+  export type BlogCommentCreateemotionsInput = {
+    set: string[]
+  }
+
   export type BlogPostCreateNestedOneWithoutBlog_commentsInput = {
     create?: XOR<BlogPostCreateWithoutBlog_commentsInput, BlogPostUncheckedCreateWithoutBlog_commentsInput>
     connectOrCreate?: BlogPostCreateOrConnectWithoutBlog_commentsInput
@@ -43993,6 +44148,23 @@ export namespace Prisma {
     connectOrCreate?: BlogCommentCreateOrConnectWithoutParentInput | BlogCommentCreateOrConnectWithoutParentInput[]
     createMany?: BlogCommentCreateManyParentInputEnvelope
     connect?: BlogCommentWhereUniqueInput | BlogCommentWhereUniqueInput[]
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type BlogCommentUpdateemotionsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput = {
@@ -44078,14 +44250,6 @@ export namespace Prisma {
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
@@ -44479,10 +44643,6 @@ export namespace Prisma {
 
   export type EnumMembershipStatusFieldUpdateOperationsInput = {
     set?: $Enums.MembershipStatus
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutMembershipsNestedInput = {
@@ -45511,20 +45671,15 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -45541,6 +45696,36 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumGroupPrivacyFilter<$PrismaModel = never> = {
@@ -45696,17 +45881,6 @@ export namespace Prisma {
     not?: NestedEnumMembershipStatusFilter<$PrismaModel> | $Enums.MembershipStatus
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumMembershipRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
     in?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
@@ -45725,20 +45899,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMembershipStatusFilter<$PrismaModel>
     _max?: NestedEnumMembershipStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
@@ -46933,6 +47093,11 @@ export namespace Prisma {
     comment_at?: Date | string
     comment_likes?: number
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     parent?: BlogCommentCreateNestedOneWithoutRepliesInput
     replies?: BlogCommentCreateNestedManyWithoutParentInput
   }
@@ -46945,6 +47110,11 @@ export namespace Prisma {
     comment_likes?: number
     parent_id?: string | null
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     replies?: BlogCommentUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -47030,6 +47200,11 @@ export namespace Prisma {
     blog_post_id?: StringFilter<"BlogComment"> | string
     parent_id?: StringNullableFilter<"BlogComment"> | string | null
     audio_url?: StringNullableFilter<"BlogComment"> | string | null
+    sentiment?: StringNullableFilter<"BlogComment"> | string | null
+    sentimentScore?: FloatNullableFilter<"BlogComment"> | number | null
+    sentimentConfidence?: FloatNullableFilter<"BlogComment"> | number | null
+    emotions?: StringNullableListFilter<"BlogComment">
+    analyzedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
   }
 
   export type BlogBookmarkUpsertWithWhereUniqueWithoutBlog_postInput = {
@@ -47136,6 +47311,11 @@ export namespace Prisma {
     comment_at?: Date | string
     comment_likes?: number
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     blog_post: BlogPostCreateNestedOneWithoutBlog_commentsInput
     parent?: BlogCommentCreateNestedOneWithoutRepliesInput
   }
@@ -47149,6 +47329,11 @@ export namespace Prisma {
     blog_post_id: string
     parent_id?: string | null
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
   }
 
   export type BlogCommentCreateOrConnectWithoutRepliesInput = {
@@ -47163,6 +47348,11 @@ export namespace Prisma {
     comment_at?: Date | string
     comment_likes?: number
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     blog_post: BlogPostCreateNestedOneWithoutBlog_commentsInput
     replies?: BlogCommentCreateNestedManyWithoutParentInput
   }
@@ -47175,6 +47365,11 @@ export namespace Prisma {
     comment_likes?: number
     blog_post_id: string
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
     replies?: BlogCommentUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -47257,6 +47452,11 @@ export namespace Prisma {
     comment_at?: DateTimeFieldUpdateOperationsInput | Date | string
     comment_likes?: IntFieldUpdateOperationsInput | number
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     blog_post?: BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput
     parent?: BlogCommentUpdateOneWithoutRepliesNestedInput
   }
@@ -47270,6 +47470,11 @@ export namespace Prisma {
     blog_post_id?: StringFieldUpdateOperationsInput | string
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BlogCommentUpsertWithWhereUniqueWithoutParentInput = {
@@ -52765,6 +52970,11 @@ export namespace Prisma {
     comment_likes?: number
     parent_id?: string | null
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
   }
 
   export type BlogBookmarkCreateManyBlog_postInput = {
@@ -52786,6 +52996,11 @@ export namespace Prisma {
     comment_at?: DateTimeFieldUpdateOperationsInput | Date | string
     comment_likes?: IntFieldUpdateOperationsInput | number
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     parent?: BlogCommentUpdateOneWithoutRepliesNestedInput
     replies?: BlogCommentUpdateManyWithoutParentNestedInput
   }
@@ -52798,6 +53013,11 @@ export namespace Prisma {
     comment_likes?: IntFieldUpdateOperationsInput | number
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replies?: BlogCommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -52809,6 +53029,11 @@ export namespace Prisma {
     comment_likes?: IntFieldUpdateOperationsInput | number
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BlogBookmarkUpdateWithoutBlog_postInput = {
@@ -52855,6 +53080,11 @@ export namespace Prisma {
     comment_likes?: number
     blog_post_id: string
     audio_url?: string | null
+    sentiment?: string | null
+    sentimentScore?: number | null
+    sentimentConfidence?: number | null
+    emotions?: BlogCommentCreateemotionsInput | string[]
+    analyzedAt?: Date | string | null
   }
 
   export type BlogCommentUpdateWithoutParentInput = {
@@ -52864,6 +53094,11 @@ export namespace Prisma {
     comment_at?: DateTimeFieldUpdateOperationsInput | Date | string
     comment_likes?: IntFieldUpdateOperationsInput | number
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     blog_post?: BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput
     replies?: BlogCommentUpdateManyWithoutParentNestedInput
   }
@@ -52876,6 +53111,11 @@ export namespace Prisma {
     comment_likes?: IntFieldUpdateOperationsInput | number
     blog_post_id?: StringFieldUpdateOperationsInput | string
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replies?: BlogCommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -52887,6 +53127,11 @@ export namespace Prisma {
     comment_likes?: IntFieldUpdateOperationsInput | number
     blog_post_id?: StringFieldUpdateOperationsInput | string
     audio_url?: NullableStringFieldUpdateOperationsInput | string | null
+    sentiment?: NullableStringFieldUpdateOperationsInput | string | null
+    sentimentScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    emotions?: BlogCommentUpdateemotionsInput | string[]
+    analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type MembershipCreateManyGroupInput = {

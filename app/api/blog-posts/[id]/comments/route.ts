@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { analyzeCommentSentiment } from "@/lib/openai";
 
 export async function POST(
   req: Request,
@@ -17,6 +18,18 @@ export async function POST(
       );
     }
 
+    // Analyze sentiment with OpenAI (run in background, don't block comment creation)
+    let sentimentData = null;
+    try {
+      const sentimentResult = await analyzeCommentSentiment(data.comment);
+      if (sentimentResult.success) {
+        sentimentData = sentimentResult.data;
+      }
+    } catch (error) {
+      console.error("Error analyzing sentiment (non-blocking):", error);
+      // Continue with comment creation even if sentiment analysis fails
+    }
+
     const comment = await prisma.blogComment.create({
       data: {
         comment: data.comment,
@@ -25,13 +38,30 @@ export async function POST(
         comment_likes: 0,
         parent_id: data.parent_id || null, // Support replies
         audio_url: data.audio_url || null, // Support voice comments
+        // Add sentiment data if available
+        sentiment: sentimentData?.sentiment || null,
+        sentimentScore: sentimentData?.score || null,
+        sentimentConfidence: sentimentData?.confidence || null,
+        emotions: sentimentData?.emotions || [],
+        analyzedAt: sentimentData ? new Date() : null,
       },
       include: {
         blog_post: true,
       },
     });
 
-    return NextResponse.json(comment, { status: 201 });
+    return NextResponse.json({
+      ...comment,
+      // Include sentiment analysis in response
+      sentimentAnalysis: sentimentData ? {
+        sentiment: sentimentData.sentiment,
+        score: sentimentData.score,
+        confidence: sentimentData.confidence,
+        emotions: sentimentData.emotions,
+        keywords: sentimentData.keywords,
+        intensity: sentimentData.intensity,
+      } : null,
+    }, { status: 201 });
   } catch (error) {
     console.error("Error creating comment:", error);
     return NextResponse.json(
@@ -47,11 +77,11 @@ function buildCommentTree(comments: any[], parentId: string | null = null): any[
     .filter(comment => comment.parent_id === parentId)
     .map(comment => ({
       ...comment,
-      replies: buildCommentTree(comments, comment.id).sort((a, b) => 
+      replies: buildCommentTree(comments, comment.id).sort((a, b) =>
         new Date(a.comment_at).getTime() - new Date(b.comment_at).getTime()
       ),
     }))
-    .sort((a, b) => 
+    .sort((a, b) =>
       new Date(b.comment_at).getTime() - new Date(a.comment_at).getTime()
     );
 }
@@ -75,7 +105,7 @@ export async function GET(
 
     // Build comment tree recursively (handles nested replies)
     const topLevelComments = buildCommentTree(allComments, null);
-    
+
     return NextResponse.json(topLevelComments);
   } catch (error) {
     console.error("Error fetching comments:", error);

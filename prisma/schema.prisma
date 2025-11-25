@@ -72,17 +72,24 @@ model BlogCategory {
 }
 
 model BlogComment {
-  id            String        @id @default(cuid())
-  comment       String
-  comment_by    String
-  comment_at    DateTime      @default(now())
-  comment_likes Int           @default(0)
-  blog_post_id  String
-  blog_post     BlogPost      @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
-  parent_id     String?
-  parent        BlogComment?  @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
-  replies       BlogComment[] @relation("CommentReplies")
-  audio_url     String?
+  id                  String        @id @default(cuid())
+  comment             String
+  comment_by          String
+  comment_at          DateTime      @default(now())
+  comment_likes       Int           @default(0)
+  blog_post_id        String
+  blog_post           BlogPost      @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  parent_id           String?
+  parent              BlogComment?  @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
+  replies             BlogComment[] @relation("CommentReplies")
+  audio_url           String?
+  
+  // Sentiment Analysis Fields
+  sentiment           String?       // 'positive', 'negative', 'neutral', 'mixed'
+  sentimentScore      Float?        // -1 to 1 scale
+  sentimentConfidence Float?        // 0-100
+  emotions            String[]      @default([])
+  analyzedAt          DateTime?     // When sentiment was analyzed
 }
 
 model BlogBookmark {

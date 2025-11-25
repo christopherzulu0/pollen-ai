@@ -69,6 +69,7 @@ import BlogSection from "@/components/blog-section"
 import { useQuery } from "@tanstack/react-query"
 import { DEFAULT_TRANSLATIONS } from "@/lib/translations"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 type Language = "en" | "bem" | "nya" | "to" | "loz" | "kqn" | "lun"
 
@@ -78,7 +79,7 @@ async function fetchTranslation(targetLanguage: Language) {
   }
 
   console.log(`[fetchTranslation] Starting translation to ${targetLanguage}`)
-  
+
   try {
     const response = await fetch("/api/translate", {
       method: "POST",
@@ -127,14 +128,15 @@ export default function HomePage() {
   const [language, setLanguage] = useState<Language>("en")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
-  
+  const router = useRouter();
+
   const [isTranslatingState, setIsTranslatingState] = useState(false)
 
   // Only render DropdownMenu after mount to avoid hydration mismatch
   useEffect(() => {
     setIsMounted(true)
   }, [])
-  
+
   const { data: t, isLoading, isFetching, error: translationError, refetch } = useQuery({
     queryKey: ["translation", language],
     queryFn: () => {
@@ -192,7 +194,7 @@ export default function HomePage() {
       // Dismiss loading toast when translation completes
       toast.dismiss(toastIdRef.current)
       toastIdRef.current = null
-      
+
       // Show success toast only if translation was successful and we haven't shown it yet
       if (language !== "en" && t && !translationError && !hasShownSuccessRef.current) {
         hasShownSuccessRef.current = true
@@ -203,7 +205,7 @@ export default function HomePage() {
         })
       }
     }
-    
+
     // Reset success ref when language changes
     if (language === "en") {
       hasShownSuccessRef.current = false
@@ -229,12 +231,12 @@ export default function HomePage() {
       // Reset translation state
       setIsTranslatingState(false)
       setIsDropdownOpen(false)
-      
+
       // Set loading state immediately when switching to a non-English language
       if (newLanguage !== "en") {
         setIsTranslatingState(true)
       }
-      
+
       // Update language - this will trigger React Query refetch
       setLanguage(newLanguage)
     }
@@ -276,86 +278,86 @@ export default function HomePage() {
       {isMounted && (
         <div className="fixed top-24 left-4 md:top-6 md:left-auto md:right-[180px] lg:right-[200px] z-[100]">
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="outline" 
-              className="bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white border-[#4C4EFB] dark:bg-[#4C4EFB] dark:hover:bg-[#4C4EFB]/90 dark:text-white dark:border-[#4C4EFB] backdrop-blur-md rounded-full px-3 md:px-4 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                console.log("Button clicked, opening dropdown")
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white border-[#4C4EFB] dark:bg-[#4C4EFB] dark:hover:bg-[#4C4EFB]/90 dark:text-white dark:border-[#4C4EFB] backdrop-blur-md rounded-full px-3 md:px-4 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer -mt-1"
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  console.log("Button clicked, opening dropdown")
+                }}
+              >
+                <Globe className="h-4 w-4 mr-2 text-white" />
+                <span className="hidden md:inline font-medium">{languages.find(l => l.code === language)?.name}</span>
+                <span className="md:hidden font-medium">{languages.find(l => l.code === language)?.name.substring(0, 3)}</span>
+                {isTranslating ? (
+                  <Loader2 className="h-3 w-3 ml-1 md:ml-2 animate-spin text-white" />
+                ) : (
+                  <ChevronDown className="h-3 w-3 ml-1 md:ml-2 opacity-90 text-white" />
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-[100] min-w-[180px]"
+              onCloseAutoFocus={(e) => e.preventDefault()}
+              onInteractOutside={(e) => {
+                // Allow closing on outside click
               }}
             >
-              <Globe className="h-4 w-4 mr-2 text-white" />
-              <span className="hidden md:inline font-medium">{languages.find(l => l.code === language)?.name}</span>
-              <span className="md:hidden font-medium">{languages.find(l => l.code === language)?.name.substring(0, 3)}</span>
-              {isTranslating ? (
-                <Loader2 className="h-3 w-3 ml-1 md:ml-2 animate-spin text-white" />
-              ) : (
-                <ChevronDown className="h-3 w-3 ml-1 md:ml-2 opacity-90 text-white" />
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            align="end" 
-            className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-[100] min-w-[180px]"
-            onCloseAutoFocus={(e) => e.preventDefault()}
-            onInteractOutside={(e) => {
-              // Allow closing on outside click
-            }}
-          >
-            {/* English Option */}
-            {languages.filter(lang => lang.code === "en").map((lang) => (
-              <DropdownMenuItem 
-                key={lang.code}
-                className="cursor-pointer flex items-center justify-between hover:bg-accent"
-                onSelect={(e) => {
-                  e.preventDefault()
-                  console.log("Selecting language:", lang.code)
-                  handleLanguageChange(lang.code as Language)
-                }}
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  console.log("Click handler triggered for:", lang.code)
-                  handleLanguageChange(lang.code as Language)
-                }}
-              >
-                <span className="flex-1">{lang.name}</span>
-                {language === lang.code && <Check className="h-3 w-3 text-green-500 ml-2" />}
-              </DropdownMenuItem>
-            ))}
-            
-            <DropdownMenuSeparator />
-            
-            {/* Zambian Languages Section */}
-            <DropdownMenuLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-2 py-1.5">
-              Zambian Languages Available
-            </DropdownMenuLabel>
-            
-            {languages.filter(lang => lang.code !== "en").map((lang) => (
-              <DropdownMenuItem 
-                key={lang.code}
-                className="cursor-pointer flex items-center justify-between hover:bg-accent"
-                onSelect={(e) => {
-                  e.preventDefault()
-                  console.log("Selecting language:", lang.code)
-                  handleLanguageChange(lang.code as Language)
-                }}
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  console.log("Click handler triggered for:", lang.code)
-                  handleLanguageChange(lang.code as Language)
-                }}
-              >
-                <span className="flex-1">{lang.name}</span>
-                {language === lang.code && <Check className="h-3 w-3 text-green-500 ml-2" />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+              {/* English Option */}
+              {languages.filter(lang => lang.code === "en").map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  className="cursor-pointer flex items-center justify-between hover:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault()
+                    console.log("Selecting language:", lang.code)
+                    handleLanguageChange(lang.code as Language)
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log("Click handler triggered for:", lang.code)
+                    handleLanguageChange(lang.code as Language)
+                  }}
+                >
+                  <span className="flex-1">{lang.name}</span>
+                  {language === lang.code && <Check className="h-3 w-3 text-green-500 ml-2" />}
+                </DropdownMenuItem>
+              ))}
+
+              <DropdownMenuSeparator />
+
+              {/* Zambian Languages Section */}
+              <DropdownMenuLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-2 py-1.5">
+                Zambian Languages Available
+              </DropdownMenuLabel>
+
+              {languages.filter(lang => lang.code !== "en").map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  className="cursor-pointer flex items-center justify-between hover:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault()
+                    console.log("Selecting language:", lang.code)
+                    handleLanguageChange(lang.code as Language)
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log("Click handler triggered for:", lang.code)
+                    handleLanguageChange(lang.code as Language)
+                  }}
+                >
+                  <span className="flex-1">{lang.name}</span>
+                  {language === lang.code && <Check className="h-3 w-3 text-green-500 ml-2" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       )}
 
       {/* Translation Loading Overlay with Enhanced Skeleton */}
@@ -370,10 +372,10 @@ export default function HomePage() {
           >
             {/* Animated Background Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#4C4EFB]/5 via-transparent to-[#00CC66]/5 dark:from-[#4C4EFB]/10 dark:via-transparent dark:to-[#00CC66]/10 animate-pulse" />
-            
+
             <div className="w-full h-full flex flex-col items-center justify-center relative px-4 py-8">
               {/* Main Loading Indicator - Prominent */}
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -389,7 +391,7 @@ export default function HomePage() {
                   <Loader2 className="h-12 w-12 animate-spin text-[#4C4EFB] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                 </div>
                 <div className="text-center space-y-3">
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
@@ -397,7 +399,7 @@ export default function HomePage() {
                   >
                     Translating content...
                   </motion.p>
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4 }}
@@ -412,7 +414,7 @@ export default function HomePage() {
               <div className="absolute inset-0 opacity-30 dark:opacity-20 pointer-events-none overflow-y-auto">
                 <div className="max-w-4xl w-full mx-auto px-4 py-8 space-y-8 mt-20 md:mt-32">
                   {/* Hero Section Skeleton */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
@@ -429,7 +431,7 @@ export default function HomePage() {
                   </motion.div>
 
                   {/* Features Section Skeleton */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
@@ -448,7 +450,7 @@ export default function HomePage() {
                   </motion.div>
 
                   {/* Content Section Skeleton */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
@@ -597,7 +599,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative w-full py-20 md:py-32 -mt-20 overflow-hidden bg-gradient-to-br from-[#001122] via-[#003366] to-[#002244]"
+        className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 2xl:py-32 -mt-20 overflow-hidden bg-gradient-to-br from-[#001122] via-[#003366] to-[#002244]"
       >
         <div className="absolute inset-0 overflow-hidden">
           {/* Enhanced animated gradient orbs with vibrant colors */}
@@ -706,19 +708,19 @@ export default function HomePage() {
           </svg>
         </motion.div>
 
-        <div className="container px-4 md:px-6 mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="container px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 mx-auto relative z-10 max-w-[2400px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 xl:gap-16 2xl:gap-20 items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="flex flex-col space-y-8"
+              className="flex flex-col space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-7 xl:space-y-8"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium"
+                className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-xs sm:text-sm font-medium w-fit"
               >
                 <span className="flex h-2 w-2 rounded-full bg-[#4C4EFB] mr-2"></span>
                 <span className="animate-pulse">{t.hero.badge}</span>
@@ -727,7 +729,7 @@ export default function HomePage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
-                className="text-4xl md:text-6xl font-bold tracking-tighter text-white leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold tracking-tighter text-white leading-tight"
               >
                 {t.hero.title_prefix}{" "}
                 <span className="text-[#4C4EFB] relative">
@@ -736,7 +738,7 @@ export default function HomePage() {
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{ delay: 1.2, duration: 1.5, ease: "easeInOut" }}
-                    className="absolute -bottom-2 left-0 w-full"
+                    className="absolute -bottom-1 sm:-bottom-2 left-0 w-full"
                     viewBox="0 0 358 12"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -754,7 +756,7 @@ export default function HomePage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7, duration: 0.8 }}
-                className="text-white/80 text-lg md:text-xl max-w-[600px]"
+                className="text-white/80 text-base sm:text-lg md:text-xl lg:text-2xl max-w-[600px] leading-relaxed"
               >
                 {t.hero.description}
               </motion.p>
@@ -762,20 +764,21 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9, duration: 0.8 }}
-                className="flex flex-col sm:flex-row gap-4 mt-4"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4"
               >
                 <Button
                   size="lg"
-                  className="bg-[#4C4EFB] hover:bg-[#FFC000] text-white rounded-full group transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#4C4EFB]/20"
+                  className="bg-[#4C4EFB] hover:bg-[#FFC000] text-white rounded-full group transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#4C4EFB]/20 text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6"
+                  onClick={() => router.push('/sign-in')}
                 >
                   {t.hero.cta_primary}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
                 <Button
                   size="lg"
-                  className="text-white border border-white/30 bg-transparent hover:bg-white/10 rounded-full backdrop-blur-sm"
+                  className="text-white border border-white/30 bg-transparent hover:bg-white/10 rounded-full backdrop-blur-sm text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6"
                 >
-                  <Play className="mr-2 h-4 w-4" />
+                  <Play className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   {t.hero.cta_secondary}
                 </Button>
               </motion.div>
@@ -784,13 +787,13 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="relative perspective-1000"
+              className="relative perspective-1000 mt-8 lg:mt-0"
             >
               <motion.div
                 initial={{ rotateY: -15 }}
                 whileHover={{ rotateY: 0 }}
                 transition={{ duration: 0.7 }}
-                className="relative z-10 rounded-2xl overflow-hidden shadow-2xl shadow-[#003366]/20 border border-white/10 backdrop-blur-sm transform"
+                className="relative z-10 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-[#003366]/20 border border-white/10 backdrop-blur-sm transform max-w-[700px] mx-auto"
               >
                 <Image
                   src='/home.jpg'
@@ -800,9 +803,9 @@ export default function HomePage() {
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute inset-0 "></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <p className="font-bold text-xl">{t.hero.image_caption_title}</p>
-                  <p className="text-white/80">{t.hero.image_caption_text}</p>
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
+                  <p className="font-bold text-base sm:text-lg md:text-xl">{t.hero.image_caption_title}</p>
+                  <p className="text-white/80 text-sm sm:text-base">{t.hero.image_caption_text}</p>
                 </div>
               </motion.div>
               <motion.div
@@ -815,7 +818,7 @@ export default function HomePage() {
                   repeat: Number.POSITIVE_INFINITY,
                   repeatType: "reverse",
                 }}
-                className="absolute -top-6 -right-6 w-32 h-32 bg-[#4C4EFB]/30 rounded-full blur-2xl"
+                className="absolute -top-4 sm:-top-6 -right-4 sm:-right-6 w-24 h-24 sm:w-32 sm:h-32 bg-[#4C4EFB]/30 rounded-full blur-2xl"
               />
               <motion.div
                 animate={{
@@ -828,7 +831,7 @@ export default function HomePage() {
                   repeatType: "reverse",
                   delay: 1,
                 }}
-                className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#4C4EFB]/20 rounded-full blur-2xl"
+                className="absolute -bottom-4 sm:-bottom-6 -left-4 sm:-left-6 w-24 h-24 sm:w-32 sm:h-32 bg-[#4C4EFB]/20 rounded-full blur-2xl"
               />
 
               {/* <motion.div
@@ -1015,12 +1018,12 @@ export default function HomePage() {
               >
                 <div className="w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mb-4">
                   {[
-                     <MapPin key="map" className="h-6 w-6 text-[#4C4EFB]" />,
-                     <DollarSign key="dollar" className="h-6 w-6 text-[#4C4EFB]" />,
-                     <FileText key="file" className="h-6 w-6 text-[#4C4EFB]" />,
-                     <CreditCard key="card" className="h-6 w-6 text-[#4C4EFB]" />,
-                     <Wifi key="wifi" className="h-6 w-6 text-[#4C4EFB]" />,
-                     <BookOpen key="book" className="h-6 w-6 text-[#4C4EFB]" />
+                    <MapPin key="map" className="h-6 w-6 text-[#4C4EFB]" />,
+                    <DollarSign key="dollar" className="h-6 w-6 text-[#4C4EFB]" />,
+                    <FileText key="file" className="h-6 w-6 text-[#4C4EFB]" />,
+                    <CreditCard key="card" className="h-6 w-6 text-[#4C4EFB]" />,
+                    <Wifi key="wifi" className="h-6 w-6 text-[#4C4EFB]" />,
+                    <BookOpen key="book" className="h-6 w-6 text-[#4C4EFB]" />
                   ][index] || <Zap className="h-6 w-6 text-[#4C4EFB]" />}
                 </div>
                 <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">{item.title}</h3>
@@ -2084,8 +2087,8 @@ export default function HomePage() {
         </div>
       </section> */}
 
-       {/* Problem Statement Section with Interactive Elements */}
-       {/* <section className="py-16 md:py-24 bg-gray-50">
+      {/* Problem Statement Section with Interactive Elements */}
+      {/* <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">The Challenge We're Addressing</h2>

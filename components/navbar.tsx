@@ -31,7 +31,7 @@ export default function Navbar() {
       if (user?.organizationMemberships && user.organizationMemberships.length > 0) {
         const orgs = user.organizationMemberships
         setUserOrganizations(orgs)
-        
+
         // Get the primary/first organization
         const primaryOrg = orgs[0]
         const role = primaryOrg?.role
@@ -99,9 +99,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
-      }`}
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex h-20 items-center justify-between">
@@ -111,102 +110,95 @@ export default function Navbar() {
                 P
               </div>
               <span className={`text-2xl font-bold ${isScrolled ? "text-[#003366] dark:text-white" : "text-white"}`}>
-                Pollen 
+                Pollen
               </span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1">
             <Link
               href="/"
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                isScrolled
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
                   ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
                   : "text-white/80 hover:text-white"
-              } transition-colors`}
+                } transition-colors`}
             >
               Home
             </Link>
 
             <button
-              onClick={()=>router.push('/about')}
-              className={`px-4 py-2 rounded-full text-sm font-medium flex items-center ${
-                isScrolled
+              onClick={() => router.push('/about')}
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium flex items-center ${isScrolled
                   ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
                   : "text-white/80 hover:text-white"
-              } transition-colors`}
+                } transition-colors`}
             >
               About
             </button>
 
             <button
               onClick={() => router.push('/services')}
-              className={`px-4 py-2 rounded-full text-sm font-medium flex items-center ${
-                isScrolled
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium flex items-center ${isScrolled
                   ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
                   : "text-white/80 hover:text-white"
-              } transition-colors`}
+                } transition-colors`}
             >
               Services
             </button>
 
             <Link
               href="/blog"
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                isScrolled
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
                   ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
                   : "text-white/80 hover:text-white"
-              } transition-colors`}
+                } transition-colors`}
             >
               Blog
             </Link>
 
             <Link
               href="/contact"
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                isScrolled
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
                   ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
                   : "text-white/80 hover:text-white"
-              } transition-colors`}
+                } transition-colors`}
             >
               Contact
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-2 lg:space-x-4">
             {/* <ThemeToggle /> */}
             <SignedOut>
-              <Button 
-              onClick={handleGetStarted}
-              className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
+              <Button
+                onClick={handleGetStarted}
+                className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
                 Get Started
               </Button>
             </SignedOut>
 
             <SignedIn>
               {isAuthorized ? (
-                <Button 
+                <Button
                   onClick={handleDashboardClick}
-                  className={`${
-                    isScrolled 
-                      ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white" 
+                  className={`${isScrolled
+                      ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
                       : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
-                  } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
+                    } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
                   {isAdmin ? '📊 Admin' : '📈 Dashboard'}
                 </Button>
               ) : (
-                <Button 
+                <Button
                   onClick={handleRequestAccess}
-                  className={`${
-                    isScrolled 
-                      ? "bg-yellow-500 hover:bg-yellow-600 text-white" 
+                  className={`${isScrolled
+                      ? "bg-yellow-500 hover:bg-yellow-600 text-white"
                       : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
-                  } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
+                    } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
                   🔐 Request Access
                 </Button>
               )}
 
-              <UserButton 
+              <UserButton
                 appearance={{
                   elements: {
                     avatarBox: "h-10 w-10 rounded-full"
@@ -217,7 +209,7 @@ export default function Navbar() {
             </SignedIn>
           </div>
 
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-2">
             {/* <ThemeToggle /> */}
             <Button
               variant="ghost"
@@ -234,7 +226,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden fixed left-0 right-0 top-20 bg-gradient-to-br from-[#003366] to-[#002244] dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)]">
+        <div className="lg:hidden fixed left-0 right-0 top-20 bg-gradient-to-br from-[#003366] to-[#002244] dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)]">
           <nav className="flex flex-col space-y-2">
             <Link
               href="/"
@@ -346,12 +338,12 @@ export default function Navbar() {
             <div className="pt-4 space-y-2">
               <SignedOut>
                 <Button
-                onClick={handleGetStarted}
-                className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
+                  onClick={handleGetStarted}
+                  className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
                   Get Started
                 </Button>
               </SignedOut>
-              
+
               <SignedIn>
                 {isAuthorized ? (
                   <Button
@@ -375,7 +367,7 @@ export default function Navbar() {
 
                 <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
                   <span className="font-medium">Account</span>
-                  <UserButton 
+                  <UserButton
                     appearance={{
                       elements: {
                         avatarBox: "h-10 w-10 rounded-full"
