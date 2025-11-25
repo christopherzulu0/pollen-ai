@@ -574,3 +574,43 @@ model IndividualLoan {
   @@index([userId])
   @@index([status])
 }
+
+model ContactMessage {
+  id               String   @id @default(cuid())
+  name             String
+  email            String
+  phone            String?
+  subject          String
+  message          String   @db.Text
+  department       String   // customer-support, sales, technical, billing, general
+  preferredContact String   @default("email") // email, phone, either
+  timeframe        String   @default("anytime") // urgent, standard, anytime
+  status           String   @default("new") // new, in-progress, resolved
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([department])
+  @@index([createdAt])
+}
+
+model MeetingRequest {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  meetingDate DateTime
+  meetingTime String
+  purpose     String?  @db.Text
+  status      String   @default("pending") // pending, confirmed, cancelled, completed
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([meetingDate])
+  @@index([createdAt])
+}
+

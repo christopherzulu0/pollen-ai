@@ -128,11 +128,10 @@ const Widget = () => {
                 {messages.map((msg, index) => (
                   <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                     <div
-                      className={`max-w-[70%] rounded-lg px-3 py-2 ${
-                        msg.role === "user"
+                      className={`max-w-[70%] rounded-lg px-3 py-2 ${msg.role === "user"
                           ? "bg-[#4C4EFB] text-white rounded-br-none"
                           : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white rounded-bl-none"
-                      }`}
+                        }`}
                     >
                       <p className="text-sm break-words">{msg.content}</p>
                       <p className="text-xs opacity-70 mt-1">{msg.timestamp}</p>
@@ -148,11 +147,10 @@ const Widget = () => {
             <Button
               onClick={toggleCall}
               disabled={connecting}
-              className={`w-full ${
-                callActive
+              className={`w-full ${callActive
                   ? "bg-red-500 hover:bg-red-600"
                   : "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90"
-              } text-white font-medium`}
+                } text-white font-medium`}
             >
               {connecting ? "Connecting..." : callActive ? "End Call" : "Start Call"}
             </Button>

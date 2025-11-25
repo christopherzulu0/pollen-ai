@@ -1,0 +1,485 @@
+{
+  "name": "Pollen AI Meeting Scheduler",
+  "nodes": [
+    {
+      "name": "start",
+      "type": "conversation",
+      "isStart": true,
+      "metadata": {
+        "position": {
+          "x": -700,
+          "y": -700
+        }
+      },
+      "prompt": "You are Maya, the meeting scheduling assistant for Pollen AI. Start with: 'Thank you for calling Pollen AI. This is Maya, your scheduling assistant. How may I help you today?' Listen for meeting scheduling, rescheduling, canceling, or general questions about our financial inclusion services.",
+      "messagePlan": {
+        "firstMessage": "Thank you for calling Pollen AI. This is Maya, your scheduling assistant. How may I help you today?"
+      }
+    },
+    {
+      "name": "meeting_type",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -1400,
+          "y": 0
+        }
+      },
+      "prompt": "Ask: 'What would you like to discuss in this meeting? We offer consultations on: Personal Loans, Solar Equipment Financing, Village Banking, Savings Groups, or General Financial Services.' Determine the purpose of their meeting.",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "enum": [
+              "Personal Loans",
+              "Solar Equipment",
+              "Village Banking",
+              "Savings Groups",
+              "General Consultation"
+            ],
+            "type": "string",
+            "title": "meeting_purpose",
+            "description": "Purpose of the meeting"
+          }
+        ]
+      }
+    },
+    {
+      "name": "collect_contact_info",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -1400,
+          "y": 400
+        }
+      },
+      "prompt": "Collect contact details: 'I'll need your full name, email address, and phone number to schedule your meeting.' Also ask if they have any specific topics they'd like to cover.",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "type": "string",
+            "title": "client_name",
+            "description": "Client's full name"
+          },
+          {
+            "type": "string",
+            "title": "email",
+            "description": "Client's email address"
+          },
+          {
+            "type": "string",
+            "title": "phone",
+            "description": "Client's phone number"
+          },
+          {
+            "type": "string",
+            "title": "specific_topics",
+            "description": "Specific topics to discuss (optional)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "schedule_meeting_time",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -1400,
+          "y": 800
+        }
+      },
+      "prompt": "Offer available meeting times: 'We have availability on [dates]. Our meeting slots are: 9:00 AM, 10:00 AM, 11:00 AM, 1:00 PM, 2:00 PM, 3:00 PM, or 4:00 PM. Which date and time works best for you?'",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "type": "string",
+            "title": "meeting_date",
+            "description": "Selected meeting date (YYYY-MM-DD format)"
+          },
+          {
+            "enum": [
+              "9:00 AM",
+              "10:00 AM",
+              "11:00 AM",
+              "1:00 PM",
+              "2:00 PM",
+              "3:00 PM",
+              "4:00 PM"
+            ],
+            "type": "string",
+            "title": "meeting_time",
+            "description": "Selected meeting time"
+          }
+        ]
+      }
+    },
+    {
+      "name": "api_create_meeting",
+      "type": "apiRequest",
+      "metadata": {
+        "position": {
+          "x": -1400,
+          "y": 1200
+        }
+      },
+      "url": "https://pollenzm.com/api/meetings/request",
+      "method": "POST",
+      "mode": "blocking",
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "meetingDate": {
+            "type": "string"
+          },
+          "meetingTime": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "confirm_meeting",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -1400,
+          "y": 1600
+        }
+      },
+      "prompt": "Confirm the meeting: 'Perfect! Your meeting for {{meeting_purpose}} has been scheduled for {{meeting_date}} at {{meeting_time}}. You'll receive a confirmation email at {{email}} with meeting details and a calendar invite. Our office is located at 123 Innovation Street, Lusaka, Zambia. Please arrive 5 minutes early. Is there anything else I can help you with?'",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "enum": [
+              "yes",
+              "no"
+            ],
+            "type": "string",
+            "title": "needs_more_help",
+            "description": "Whether the client needs additional help"
+          }
+        ]
+      }
+    },
+    {
+      "name": "reschedule_cancel",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -400,
+          "y": 0
+        }
+      },
+      "prompt": "Ask: 'I'll help you with that. Can you provide your name and email address so I can locate your meeting?' Determine if they want to reschedule or cancel.",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "type": "string",
+            "title": "client_name",
+            "description": "Client's full name"
+          },
+          {
+            "type": "string",
+            "title": "email",
+            "description": "Client's email address"
+          },
+          {
+            "enum": [
+              "reschedule",
+              "cancel"
+            ],
+            "type": "string",
+            "title": "action_type",
+            "description": "Whether to reschedule or cancel"
+          }
+        ]
+      }
+    },
+    {
+      "name": "reschedule_meeting",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -400,
+          "y": 400
+        }
+      },
+      "prompt": "Say: 'I found your meeting. Here are new available times: [options].' Confirm their new selection.",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "type": "string",
+            "title": "new_date",
+            "description": "New meeting date"
+          },
+          {
+            "type": "string",
+            "title": "new_time",
+            "description": "New meeting time"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cancel_meeting",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": 100,
+          "y": 400
+        }
+      },
+      "prompt": "Say: 'I found your meeting scheduled for [date] at [time]. I can cancel this for you. Would you like to proceed with the cancellation or reschedule instead?'",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "enum": [
+              "cancel_confirmed",
+              "reschedule_instead"
+            ],
+            "type": "string",
+            "title": "final_action",
+            "description": "Final action to take"
+          }
+        ]
+      }
+    },
+    {
+      "name": "general_info",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": 700,
+          "y": 0
+        }
+      },
+      "prompt": "Provide Pollen AI information: 'Pollen AI offers financial inclusion services including Personal Loans, Solar Equipment Financing, Village Banking, and Savings Groups. Our office hours are Monday-Friday 8am-5pm, Saturday 9am-1pm. We're located at 123 Innovation Street, Lusaka, Zambia. You can also visit our website at pollenai.com or contact us at info@pollenai.com. Would you like to schedule a consultation?'",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "enum": [
+              "schedule",
+              "done"
+            ],
+            "type": "string",
+            "title": "next_action",
+            "description": "Next action to take"
+          }
+        ]
+      }
+    },
+    {
+      "name": "api_error_fallback",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -1400,
+          "y": 2000
+        }
+      },
+      "prompt": "Say: 'I apologize, but I'm experiencing a technical issue with our scheduling system. I've noted your details: {{client_name}}, {{email}}, {{phone}} for {{meeting_purpose}} on {{meeting_date}} at {{meeting_time}}. Our team will contact you within 24 hours to confirm your meeting. Is there anything else I can help you with?'"
+    },
+    {
+      "name": "hangup",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": -400,
+          "y": 2000
+        }
+      },
+      "prompt": "Say goodbye: 'Thank you for choosing Pollen AI. We look forward to meeting with you. Have a wonderful day!' Then end the call."
+    },
+    {
+      "name": "transfer_to_human",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": 2000,
+          "y": -700
+        }
+      },
+      "prompt": "Confirm that the user wants to speak to a human representative and ask them what they would like to discuss.",
+      "globalNodePlan": {
+        "enabled": true,
+        "enterCondition": "User wants to speak to a human or has complex questions"
+      }
+    },
+    {
+      "name": "transfer_call",
+      "type": "conversation",
+      "metadata": {
+        "position": {
+          "x": 2000,
+          "y": -300
+        }
+      },
+      "prompt": "Say: 'Please hold while I transfer you to one of our representatives.' Then transfer the call to +260971234567."
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "meeting_type",
+      "condition": {
+        "type": "ai",
+        "prompt": "User wants to schedule a new meeting"
+      }
+    },
+    {
+      "from": "start",
+      "to": "reschedule_cancel",
+      "condition": {
+        "type": "ai",
+        "prompt": "User wants to reschedule or cancel an existing meeting"
+      }
+    },
+    {
+      "from": "start",
+      "to": "general_info",
+      "condition": {
+        "type": "ai",
+        "prompt": "User has questions about Pollen AI services or general information"
+      }
+    },
+    {
+      "from": "meeting_type",
+      "to": "collect_contact_info",
+      "condition": {
+        "type": "ai",
+        "prompt": "Meeting purpose determined, ready to collect contact information"
+      }
+    },
+    {
+      "from": "collect_contact_info",
+      "to": "schedule_meeting_time",
+      "condition": {
+        "type": "ai",
+        "prompt": "Contact information collected, ready to schedule time"
+      }
+    },
+    {
+      "from": "schedule_meeting_time",
+      "to": "api_create_meeting",
+      "condition": {
+        "type": "ai",
+        "prompt": "Date and time selected, ready to create meeting"
+      }
+    },
+    {
+      "from": "api_create_meeting",
+      "to": "confirm_meeting",
+      "condition": {
+        "type": "ai",
+        "prompt": "API call successful, meeting created"
+      }
+    },
+    {
+      "from": "api_create_meeting",
+      "to": "api_error_fallback",
+      "condition": {
+        "type": "ai",
+        "prompt": "API call failed or returned error"
+      }
+    },
+    {
+      "from": "confirm_meeting",
+      "to": "hangup",
+      "condition": {
+        "type": "ai",
+        "prompt": "Meeting confirmed, no additional help needed"
+      }
+    },
+    {
+      "from": "confirm_meeting",
+      "to": "general_info",
+      "condition": {
+        "type": "ai",
+        "prompt": "Client needs additional information"
+      }
+    },
+    {
+      "from": "reschedule_cancel",
+      "to": "reschedule_meeting",
+      "condition": {
+        "type": "ai",
+        "prompt": "User wants to reschedule meeting"
+      }
+    },
+    {
+      "from": "reschedule_cancel",
+      "to": "cancel_meeting",
+      "condition": {
+        "type": "ai",
+        "prompt": "User wants to cancel meeting"
+      }
+    },
+    {
+      "from": "cancel_meeting",
+      "to": "reschedule_meeting",
+      "condition": {
+        "type": "ai",
+        "prompt": "User decided to reschedule instead of cancel"
+      }
+    },
+    {
+      "from": "cancel_meeting",
+      "to": "hangup",
+      "condition": {
+        "type": "ai",
+        "prompt": "Cancellation confirmed"
+      }
+    },
+    {
+      "from": "reschedule_meeting",
+      "to": "api_create_meeting",
+      "condition": {
+        "type": "ai",
+        "prompt": "New time selected, ready to update meeting"
+      }
+    },
+    {
+      "from": "general_info",
+      "to": "meeting_type",
+      "condition": {
+        "type": "ai",
+        "prompt": "User wants to schedule a meeting after getting information"
+      }
+    },
+    {
+      "from": "general_info",
+      "to": "hangup",
+      "condition": {
+        "type": "ai",
+        "prompt": "User's questions answered, no further help needed"
+      }
+    },
+    {
+      "from": "api_error_fallback",
+      "to": "hangup",
+      "condition": {
+        "type": "ai",
+        "prompt": "Error handled, ready to end call"
+      }
+    },
+    {
+      "from": "transfer_to_human",
+      "to": "transfer_call",
+      "condition": {
+        "type": "ai",
+        "prompt": "User confirmed they want to speak to a human"
+      }
+    }
+  ]
+}

@@ -35,10 +35,10 @@ export async function GET(request: NextRequest) {
             })
         } else {
             // Default to Personal Loans
-            return NextResponse.json({
+        return NextResponse.json({
                 hasDocuments: !!user.personalDocuments,
                 documents: user.personalDocuments || null,
-            })
+        })
         }
     } catch (error) {
         console.error("Error checking user documents:", error)
@@ -91,14 +91,14 @@ export async function POST(request: NextRequest) {
                     { error: "All documents are required: NRC front, NRC back, Land Ownership, Utility Bill, Vendor Quotation, and Subsidy Receipt" },
                     { status: 400 }
                 )
-            }
+        }
 
-            // Check if documents already exist
+        // Check if documents already exist
             const existingDocuments = await prisma.solarLoanDocuments.findUnique({
-                where: { userId: user.id },
-            })
+            where: { userId: user.id },
+        })
 
-            if (existingDocuments) {
+        if (existingDocuments) {
                 // Update existing documents
                 const updatedDocuments = await prisma.solarLoanDocuments.update({
                     where: { userId: user.id },
@@ -140,11 +140,11 @@ export async function POST(request: NextRequest) {
         else {
             // Validate required fields for Personal Loans
             if (!nrcFront || !nrcBack || !payslip) {
-                return NextResponse.json(
+            return NextResponse.json(
                     { error: "NRC front, NRC back, and payslip are required" },
-                    { status: 400 }
-                )
-            }
+                { status: 400 }
+            )
+        }
 
             // Check if documents already exist
             const existingDocuments = await prisma.personalLoanDocuments.findUnique({
@@ -173,21 +173,21 @@ export async function POST(request: NextRequest) {
 
             // Create new documents
             const personalDocuments = await prisma.personalLoanDocuments.create({
-                data: {
-                    userId: user.id,
-                    Nrcfront: nrcFront,
-                    NrcBack: nrcBack,
-                    PaySlip: payslip,
+            data: {
+                userId: user.id,
+                Nrcfront: nrcFront,
+                NrcBack: nrcBack,
+                PaySlip: payslip,
                     ProofOfAddress: proofOfAddress || null,
                     LiveSelfie: liveSelfie || null,
                     BankStatement: bankStatement || null,
-                },
-            })
+            },
+        })
 
-            return NextResponse.json({
-                message: "Documents uploaded successfully",
+        return NextResponse.json({
+            message: "Documents uploaded successfully",
                 documents: personalDocuments,
-            })
+        })
         }
     } catch (error) {
         console.error("Error uploading user documents:", error)

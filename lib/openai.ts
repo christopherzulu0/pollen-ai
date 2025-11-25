@@ -13,10 +13,22 @@ export const openai = new OpenAI({
  */
 export async function analyzeDocument(
     imageUrl: string,
-    documentType: 'nrcFront' | 'nrcBack' | 'payslip' | 'utilityBill' | 'landOwnership' | 'vendorQuotation' | 'subsidyReceipt' | 'proofOfAddress' | 'liveSelfie'
+    documentType: 'nrcFront' | 'nrcBack' | 'payslip' | 'utilityBill' | 'landOwnership' | 'vendorQuotation' | 'subsidyReceipt' | 'proofOfAddress' | 'liveSelfie' | 'bankStatement'
 ) {
     try {
-        const prompts: Record<typeof documentType, string> = {
+        const prompts: Record<
+            | 'nrcFront'
+            | 'nrcBack'
+            | 'payslip'
+            | 'utilityBill'
+            | 'landOwnership'
+            | 'vendorQuotation'
+            | 'subsidyReceipt'
+            | 'proofOfAddress'
+            | 'liveSelfie'
+            | 'bankStatement',
+            string
+        > = {
             nrcFront: `Analyze this Zambian National Registration Card (NRC) front image and extract the following information in JSON format:
 {
   "nrcNumber": "NRC number",
@@ -130,6 +142,19 @@ If any field is not clearly visible, use null.`,
   "confidence": 0-100
 }
 Assess if this appears to be a genuine live selfie.`,
+
+            bankStatement: `Analyze this bank statement and extract the following information in JSON format:
+{
+  "accountHolderName": "Name on the account",
+  "accountNumber": "Last 4 digits only",
+  "bankName": "Name of the bank",
+  "statementPeriod": "Statement period (e.g., January 2024)",
+  "averageBalance": "Average monthly balance",
+  "documentQuality": "good/fair/poor",
+  "isValid": true/false,
+  "confidence": 0-100
+}
+If any field is not clearly visible, use null.`,
         }
 
         const response = await openai.chat.completions.create({
@@ -162,21 +187,49 @@ Assess if this appears to be a genuine live selfie.`,
 
         // Parse JSON response
         try {
-            // Extract JSON from markdown code blocks if present
+            // Try to extract JSON from markdown code blocks or raw JSON
             const jsonMatch = content.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/) || content.match(/(\{[\s\S]*\})/)
-            const jsonString = jsonMatch ? jsonMatch[1] : content
-            const extractedData = JSON.parse(jsonString)
 
-            return {
-                success: true,
-                data: extractedData,
-                rawResponse: content,
+            if (!jsonMatch) {
+                // OpenAI returned a text response instead of JSON
+                console.error('OpenAI returned non-JSON response:', content)
+                throw new Error(`Unable to process document: ${content.substring(0, 200)}`)
+            }
+
+            const jsonString = jsonMatch[1]
+
+            try {
+                const extractedData = JSON.parse(jsonString)
+
+                return {
+                    success: true,
+                    data: extractedData,
+                    rawResponse: content,
+                }
+            } catch (parseError) {
+                console.error('Failed to parse extracted JSON:', jsonString)
+                throw new Error('Unable to extract valid data from document. Please ensure the document is clear and readable.')
             }
         } catch (parseError) {
-            console.error('Failed to parse OpenAI response:', parseError)
+            console.error('Failed to process OpenAI response:', parseError)
+
+            // Return the actual error message instead of generic one
+            let errorMessage = 'Failed to parse document data'
+
+            if (parseError instanceof Error) {
+                // Extract the OpenAI message if it's our custom error
+                if (parseError.message.includes('Unable to process document:')) {
+                    errorMessage = parseError.message.replace('Unable to process document: ', '')
+                } else if (parseError.message.includes('Unable to extract valid data')) {
+                    errorMessage = parseError.message
+                } else {
+                    errorMessage = `Unable to process document: ${parseError.message}`
+                }
+            }
+
             return {
                 success: false,
-                error: 'Failed to parse document data',
+                error: errorMessage,
                 rawResponse: content,
             }
         }

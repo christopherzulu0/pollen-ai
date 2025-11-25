@@ -50,29 +50,41 @@ export async function POST(request: NextRequest) {
         // Process document with OpenAI
         const result = await analyzeDocument(documentUrl, documentType)
 
-        if (!result.success) {
+        if (result.success) {
+            return NextResponse.json({
+                success: true,
+                data: result.data,
+                processedAt: new Date().toISOString(),
+            })
+        } else {
             return NextResponse.json(
                 {
                     success: false,
-                    error: result.error || 'Failed to process document',
+                    error: result.error,
                 },
-                { status: 500 }
+                { status: 400 }
             )
         }
-
-        // Return extracted data
-        return NextResponse.json({
-            success: true,
-            documentType,
-            data: result.data,
-            processedAt: new Date().toISOString(),
-        })
     } catch (error) {
-        console.error('Error processing document:', error)
+        console.error('Error in process-document API:', error)
+
+        // Extract user-friendly message from error
+        let userMessage = 'Failed to process document. Please try again.'
+
+        if (error instanceof Error) {
+            // Check if it's an OpenAI non-JSON response error
+            if (error.message.includes('Unable to process document:')) {
+                // Extract the OpenAI message (remove the prefix)
+                userMessage = error.message.replace('Unable to process document: ', '')
+            } else {
+                userMessage = error.message
+            }
+        }
+
         return NextResponse.json(
             {
                 success: false,
-                error: error instanceof Error ? error.message : 'Failed to process document',
+                error: userMessage,
             },
             { status: 500 }
         )

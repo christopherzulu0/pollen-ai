@@ -55,6 +55,15 @@ import { Progress } from "@/components/ui/progress"
 import { Slider } from "@/components/ui/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 // Service interface
 interface Service {
@@ -410,6 +419,13 @@ function ApplicationForm({ service }: { service: Service }) {
     const [autoFillData, setAutoFillData] = useState<AutoFillData | null>(null)
     const [showAutoFillDialog, setShowAutoFillDialog] = useState(false)
     const [aiProcessing, setAiProcessing] = useState<Record<string, boolean>>({})
+    
+    // Alert Dialog State
+    const [alertDialogOpen, setAlertDialogOpen] = useState(false)
+    const [alertDialogContent, setAlertDialogContent] = useState<{ title: string; description: string }>({
+        title: "",
+        description: ""
+    })
 
     const isPersonalLoan = service.name === "Personal Loans" || service.name === "Personal Loans "
     const isSolarEquipment = service.name === "Solar Equipment" || service.name.toLowerCase().includes("solar")
@@ -548,12 +564,27 @@ function ApplicationForm({ service }: { service: Service }) {
                     }
                 }))
 
-                toast.error('Document processing failed', {
-                    description: result.error || 'Could not extract data from document',
+                // Remove the uploaded file since processing failed
+                removeFile(documentType as any)
+
+                // Show alert dialog for errors
+                setAlertDialogContent({
+                    title: 'Document Processing Failed',
+                    description: result.error || 'Could not extract data from document. Please ensure you uploaded the correct document type.'
                 })
+                setAlertDialogOpen(true)
             }
         } catch (error) {
             console.error('Error processing document:', error)
+
+            // Show alert dialog for errors
+            const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred while processing the document'
+            setAlertDialogContent({
+                title: 'Processing Error',
+                description: errorMessage
+            })
+            setAlertDialogOpen(true)
+
             setDocumentVerifications(prev => ({
                 ...prev,
                 [documentType]: {
@@ -563,9 +594,8 @@ function ApplicationForm({ service }: { service: Service }) {
                 }
             }))
 
-            toast.error('Processing error', {
-                description: 'An error occurred while processing your document',
-            })
+            // Remove the uploaded file since processing failed
+            removeFile(documentType as any)
         } finally {
             setAiProcessing(prev => ({ ...prev, [documentType]: false }))
         }
@@ -1401,20 +1431,29 @@ function ApplicationForm({ service }: { service: Service }) {
                                                 </label>
                                                 {!uploadedFiles.nrcFront ? (
                                                     <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
-                                                        <UploadButton
-                                                            endpoint="loanDocumentUploader"
-                                                            onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcFront')}
-                                                            onUploadError={(error: Error) => {
-                                                                toast.error(`Upload failed: ${error.message}`)
-                                                            }}
-                                                            appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
-                                                                allowedContent: "text-gray-500 dark:text-gray-400"
-                                                            }}
-                                                            content={{
-                                                                button: "Upload NRC Front"
-                                                            }}
-                                                        />
+                                                        {uploadingField === 'nrcFront' ? (
+                                                            <div className="flex flex-col items-center justify-center py-4">
+                                                                <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
+                                                                <p className="text-sm text-gray-500">Uploading...</p>
+                                                            </div>
+                                                        ) : (
+                                                            <UploadButton
+                                                                endpoint="loanDocumentUploader"
+                                                                onUploadBegin={() => setUploadingField('nrcFront')}
+                                                                onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcFront')}
+                                                                onUploadError={(error: Error) => {
+                                                                    setUploadingField(null)
+                                                                    toast.error(`Upload failed: ${error.message}`)
+                                                                }}
+                                                                appearance={{
+                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    allowedContent: "text-gray-500 dark:text-gray-400"
+                                                                }}
+                                                                content={{
+                                                                    button: "Upload NRC Front"
+                                                                }}
+                                                            />
+                                                        )}
                                                     </div>
                                                 ) : (
                                                     <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
@@ -1448,20 +1487,29 @@ function ApplicationForm({ service }: { service: Service }) {
                                                 </label>
                                                 {!uploadedFiles.nrcBack ? (
                                                     <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
-                                                        <UploadButton
-                                                            endpoint="loanDocumentUploader"
-                                                            onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcBack')}
-                                                            onUploadError={(error: Error) => {
-                                                                toast.error(`Upload failed: ${error.message}`)
-                                                            }}
-                                                            appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
-                                                                allowedContent: "text-gray-500 dark:text-gray-400"
-                                                            }}
-                                                            content={{
-                                                                button: "Upload NRC Back"
-                                                            }}
-                                                        />
+                                                        {uploadingField === 'nrcBack' ? (
+                                                            <div className="flex flex-col items-center justify-center py-4">
+                                                                <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
+                                                                <p className="text-sm text-gray-500">Uploading...</p>
+                                                            </div>
+                                                        ) : (
+                                                            <UploadButton
+                                                                endpoint="loanDocumentUploader"
+                                                                onUploadBegin={() => setUploadingField('nrcBack')}
+                                                                onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcBack')}
+                                                                onUploadError={(error: Error) => {
+                                                                    setUploadingField(null)
+                                                                    toast.error(`Upload failed: ${error.message}`)
+                                                                }}
+                                                                appearance={{
+                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    allowedContent: "text-gray-500 dark:text-gray-400"
+                                                                }}
+                                                                content={{
+                                                                    button: "Upload NRC Back"
+                                                                }}
+                                                            />
+                                                        )}
                                                     </div>
                                                 ) : (
                                                     <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
@@ -1763,20 +1811,29 @@ function ApplicationForm({ service }: { service: Service }) {
                                                 </label>
                                                 {!uploadedFiles.nrcFront ? (
                                                     <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
-                                                        <UploadButton
-                                                            endpoint="loanDocumentUploader"
-                                                            onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcFront')}
-                                                            onUploadError={(error: Error) => {
-                                                                toast.error(`Upload failed: ${error.message}`)
-                                                            }}
-                                                            appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
-                                                                allowedContent: "text-gray-500 dark:text-gray-400"
-                                                            }}
-                                                            content={{
-                                                                button: "Upload NRC Front"
-                                                            }}
-                                                        />
+                                                        {uploadingField === 'nrcFront' ? (
+                                                            <div className="flex flex-col items-center justify-center py-4">
+                                                                <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
+                                                                <p className="text-sm text-gray-500">Uploading...</p>
+                                                            </div>
+                                                        ) : (
+                                                            <UploadButton
+                                                                endpoint="loanDocumentUploader"
+                                                                onUploadBegin={() => setUploadingField('nrcFront')}
+                                                                onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcFront')}
+                                                                onUploadError={(error: Error) => {
+                                                                    setUploadingField(null)
+                                                                    toast.error(`Upload failed: ${error.message}`)
+                                                                }}
+                                                                appearance={{
+                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    allowedContent: "text-gray-500 dark:text-gray-400"
+                                                                }}
+                                                                content={{
+                                                                    button: "Upload NRC Front"
+                                                                }}
+                                                            />
+                                                        )}
                                                     </div>
                                                 ) : (
                                                     <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
@@ -1810,20 +1867,29 @@ function ApplicationForm({ service }: { service: Service }) {
                                                 </label>
                                                 {!uploadedFiles.nrcBack ? (
                                                     <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
-                                                        <UploadButton
-                                                            endpoint="loanDocumentUploader"
-                                                            onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcBack')}
-                                                            onUploadError={(error: Error) => {
-                                                                toast.error(`Upload failed: ${error.message}`)
-                                                            }}
-                                                            appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
-                                                                allowedContent: "text-gray-500 dark:text-gray-400"
-                                                            }}
-                                                            content={{
-                                                                button: "Upload NRC Back"
-                                                            }}
-                                                        />
+                                                        {uploadingField === 'nrcBack' ? (
+                                                            <div className="flex flex-col items-center justify-center py-4">
+                                                                <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
+                                                                <p className="text-sm text-gray-500">Uploading...</p>
+                                                            </div>
+                                                        ) : (
+                                                            <UploadButton
+                                                                endpoint="loanDocumentUploader"
+                                                                onUploadBegin={() => setUploadingField('nrcBack')}
+                                                                onClientUploadComplete={(res) => handleUploadComplete(res, 'nrcBack')}
+                                                                onUploadError={(error: Error) => {
+                                                                    setUploadingField(null)
+                                                                    toast.error(`Upload failed: ${error.message}`)
+                                                                }}
+                                                                appearance={{
+                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    allowedContent: "text-gray-500 dark:text-gray-400"
+                                                                }}
+                                                                content={{
+                                                                    button: "Upload NRC Back"
+                                                                }}
+                                                            />
+                                                        )}
                                                     </div>
                                                 ) : (
                                                     <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
@@ -2127,6 +2193,26 @@ function ApplicationForm({ service }: { service: Service }) {
                     <EligibilityChecker service={service} formData={watchedValues} />
                 </TabsContent>
             </Tabs>
+
+            {/* Alert Dialog for Errors */}
+            <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="flex items-center gap-2">
+                            <AlertCircle className="h-5 w-5 text-red-600" />
+                            {alertDialogContent.title}
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {alertDialogContent.description}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction onClick={() => setAlertDialogOpen(false)}>
+                            Okay
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div >
     )
 }
