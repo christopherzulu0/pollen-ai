@@ -72,24 +72,38 @@ model BlogCategory {
 }
 
 model BlogComment {
-  id                  String        @id @default(cuid())
-  comment             String
-  comment_by          String
-  comment_at          DateTime      @default(now())
-  comment_likes       Int           @default(0)
-  blog_post_id        String
-  blog_post           BlogPost      @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
-  parent_id           String?
-  parent              BlogComment?  @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
-  replies             BlogComment[] @relation("CommentReplies")
-  audio_url           String?
+  id                   String    @id @default(cuid())
+  comment              String    @db.Text
+  comment_by           String
+  comment_at           DateTime  @default(now())
+  comment_likes        Int       @default(0)
+  blog_post_id         String
+  parent_id            String?   // For nested replies
+  audio_url            String?   // For voice comments
   
   // Sentiment Analysis Fields
-  sentiment           String?       // 'positive', 'negative', 'neutral', 'mixed'
-  sentimentScore      Float?        // -1 to 1 scale
-  sentimentConfidence Float?        // 0-100
-  emotions            String[]      @default([])
-  analyzedAt          DateTime?     // When sentiment was analyzed
+  sentiment            String?   // positive, negative, neutral
+  sentimentScore       Float?    // -1 to 1
+  sentimentConfidence  Float?    // 0 to 1
+  emotions             String[]  @default([])
+  analyzedAt           DateTime?
+  
+  // Content Moderation Fields
+  moderationStatus     String?   @default("pending") // pending, approved, rejected, flagged
+  moderationScore      Float?    // 0-100 confidence score
+  moderationFlags      String[]  @default([]) // Array of flagged categories
+  moderatedAt          DateTime?
+  moderatedBy          String?   // Admin who reviewed if manually moderated
+
+  blog_post            BlogPost  @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  parent               BlogComment? @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
+  replies              BlogComment[] @relation("CommentReplies")
+
+  @@index([blog_post_id])
+  @@index([parent_id])
+  @@index([comment_by])
+  @@index([comment_at])
+  @@index([moderationStatus])
 }
 
 model BlogBookmark {

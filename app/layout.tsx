@@ -6,9 +6,9 @@ import { SettingsProvider } from "@/contexts/settings-context"
 import { ClerkProvider } from '@clerk/nextjs'
 import { Providers } from "@/lib/providers"
 import LayoutClient from "@/components/layout-client"
-import Widget from "@/components/voice/Widget"
-import { VoiceNavigator } from "@/components/voice/voice-navigator"
 import UserSync from "@/components/UserSync"
+import BottomNavigator from "@/components/Navigator/BottomNavigator"
+import { LanguageProvider } from "@/contexts/LanguageContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -30,12 +30,13 @@ export default function RootLayout({
         <body className={`${inter.className}`}>
           <SettingsProvider>
             <Providers>
-              <LayoutClient>
-                {children}
-              </LayoutClient>
-              <UserSync/>
-              <Widget />
-              <VoiceNavigator />
+              <LanguageProvider>
+                <LayoutClient>
+                  {children}
+                </LayoutClient>
+                <UserSync/>
+                <BottomNavigator/>
+              </LanguageProvider>
             </Providers>
           </SettingsProvider>
         </body>

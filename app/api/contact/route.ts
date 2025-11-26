@@ -26,7 +26,7 @@ const DEPARTMENT_EMAILS: Record<string, string> = {
 
 // Department type mapping for Knock workflow branching
 const DEPARTMENT_TYPES: Record<string, string> = {
-    "customer": "customer",
+    "customer-support": "customer",
     "sales": "sales",
     "technical": "technical",
     "billing": "billing",
@@ -85,8 +85,12 @@ export async function POST(request: NextRequest) {
         // Send Knock notifications
         try {
             const knock = getKnockClient()
-            const departmentType = DEPARTMENT_TYPES[validatedData.department]
+            const departmentType = DEPARTMENT_TYPES[validatedData.department] || "inquiry"
             const departmentEmail = DEPARTMENT_EMAILS[validatedData.department]
+
+            if (!departmentEmail) {
+                throw new Error(`No email configured for department: ${validatedData.department}`)
+            }
 
             // Notification data
             const notificationData = {
@@ -103,16 +107,19 @@ export async function POST(request: NextRequest) {
                 submittedAt: contactMessage.createdAt.toISOString(),
             }
 
+            console.log('Triggering Knock workflow with data:', JSON.stringify({
+                workflow: 'contact',
+                recipients: [departmentEmail],
+                dataKeys: Object.keys(notificationData)
+            }))
+
             // Send notification to department email using single workflow with branches
-            await knock.workflows.trigger("contact", {
-                recipients: [
-                    {
-                        id: `user${departmentEmail}`,
-                        email: departmentEmail,
-                    },
-                ],
+            const departmentNotification = await knock.workflows.trigger("contact", {
+                recipients: [departmentEmail],
                 data: notificationData,
             })
+
+            console.log('Knock workflow triggered successfully:', departmentNotification)
 
             // Send notification to user if authenticated
             if (userId) {
@@ -124,12 +131,17 @@ export async function POST(request: NextRequest) {
                         isUserConfirmation: true, // Flag for user confirmation branch
                     },
                 })
+                console.log(`User confirmation sent to Knock user: ${userId}`)
             }
 
             console.log(`Knock notifications sent for contact form submission: ${contactMessage.id}`)
         } catch (knockError) {
             // Log error but don't fail the request
             console.error("Failed to send Knock notifications:", knockError)
+            if (knockError instanceof Error) {
+                console.error("Error details:", knockError.message)
+                console.error("Error stack:", knockError.stack)
+            }
         }
 
         return NextResponse.json(

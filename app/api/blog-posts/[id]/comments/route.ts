@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { analyzeCommentSentiment } from "@/lib/openai";
+import { moderateComment } from "@/lib/content-moderation";
 
 export async function POST(
   req: Request,
@@ -18,7 +19,46 @@ export async function POST(
       );
     }
 
-    // Analyze sentiment with OpenAI (run in background, don't block comment creation)
+    // Step 1: Content Moderation - Check for spam and inappropriate content
+    const moderationResult = await moderateComment(data.comment);
+
+    console.log('Moderation result:', {
+      success: moderationResult.success,
+      isAppropriate: moderationResult.isAppropriate,
+      isSafe: moderationResult.isSafe,
+      isSpam: moderationResult.isSpam,
+      confidence: moderationResult.confidence,
+      flaggedCategories: moderationResult.flaggedCategories,
+      reason: moderationResult.reason,
+    });
+
+    if (!moderationResult.success) {
+      console.error("Moderation check failed:", moderationResult.error);
+      // Continue with comment creation if moderation service fails
+    } else if (!moderationResult.isAppropriate || moderationResult.isSpam) {
+      // Reject inappropriate or spam comments
+      console.warn('Comment rejected by moderation:', {
+        comment: data.comment.substring(0, 100),
+        reason: moderationResult.reason,
+        isSpam: moderationResult.isSpam,
+        flaggedCategories: moderationResult.flaggedCategories,
+      });
+
+      return NextResponse.json(
+        {
+          error: "Comment rejected",
+          reason: moderationResult.reason || "Your comment violates our community guidelines",
+          suggestions: moderationResult.suggestions,
+          flaggedCategories: moderationResult.flaggedCategories,
+          isSpam: moderationResult.isSpam,
+        },
+        { status: 400 }
+      );
+    }
+
+    console.log('Comment passed moderation, creating...');
+
+    // Step 2: Analyze sentiment with OpenAI (run in background, don't block comment creation)
     let sentimentData = null;
     try {
       const sentimentResult = await analyzeCommentSentiment(data.comment);
@@ -30,6 +70,7 @@ export async function POST(
       // Continue with comment creation even if sentiment analysis fails
     }
 
+    // Step 3: Create comment with moderation and sentiment data
     const comment = await prisma.blogComment.create({
       data: {
         comment: data.comment,
@@ -44,6 +85,10 @@ export async function POST(
         sentimentConfidence: sentimentData?.confidence || null,
         emotions: sentimentData?.emotions || [],
         analyzedAt: sentimentData ? new Date() : null,
+        // Add moderation data
+        moderationStatus: moderationResult.success ? 'approved' : 'pending',
+        moderationScore: moderationResult.confidence || null,
+        moderationFlags: moderationResult.flaggedCategories || [],
       },
       include: {
         blog_post: true,
@@ -61,6 +106,12 @@ export async function POST(
         keywords: sentimentData.keywords,
         intensity: sentimentData.intensity,
       } : null,
+      // Include moderation result
+      moderationResult: {
+        isAppropriate: moderationResult.isAppropriate,
+        isSafe: moderationResult.isSafe,
+        confidence: moderationResult.confidence,
+      },
     }, { status: 201 });
   } catch (error) {
     console.error("Error creating comment:", error);

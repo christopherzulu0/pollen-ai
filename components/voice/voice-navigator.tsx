@@ -66,7 +66,7 @@ interface SpeechRecognitionInstance extends EventTarget {
 }
 
 interface SpeechRecognitionConstructor {
-  new (): SpeechRecognitionInstance
+  new(): SpeechRecognitionInstance
 }
 
 declare global {
@@ -100,7 +100,7 @@ export function VoiceNavigator() {
     if (!SpeechRecognition) {
       setHasSupport(false)
     }
-    
+
     // Check if user has dismissed the banner in this session
     const dismissed = sessionStorage.getItem('voice-banner-dismissed')
     if (!dismissed) {
@@ -206,7 +206,7 @@ export function VoiceNavigator() {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}))
           console.error("Voice command API error:", errorData)
-          
+
           // Show specific error message if available
           if (errorData.message) {
             toast.error(errorData.message)
@@ -217,17 +217,17 @@ export function VoiceNavigator() {
         }
 
         const data: CommandResponse = await response.json()
-        
+
         // Check if the response indicates an unknown command
         if (data.action === "unknown") {
           toast.warning(data.message || "I couldn't understand that command. Try: 'Go to dashboard'")
           return
         }
-        
+
         handleAction(data)
       } catch (error: any) {
         console.error("Voice command failed:", error)
-        
+
         // Handle different types of errors
         if (error.name === 'AbortError') {
           toast.error("Command took too long. Please try a simpler phrase.")
@@ -266,33 +266,33 @@ export function VoiceNavigator() {
       setSpeechDetected(false)
       toast.info("Listening... Speak LOUD and CLEAR!", { duration: 3000 })
     }
-    
+
     recognition.onaudiostart = () => {
       console.log("🔊 Audio capture started")
       setAudioDetected(true)
       toast.info("Microphone active - now speak!", { duration: 2000 })
     }
-    
+
     recognition.onsoundstart = () => {
       console.log("🔉 Sound detected")
     }
-    
+
     recognition.onspeechstart = () => {
       console.log("🗣️ Speech detected")
       setSpeechDetected(true)
       toast.success("Speech detected! Keep talking...", { duration: 2000 })
     }
-    
+
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       const errorType = event.error
-      
+
       // Only log unexpected errors to console (not "no-speech" or "aborted" which are common/expected)
       if (errorType !== "no-speech" && errorType !== "aborted") {
         console.error("❌ Speech recognition error:", errorType, event)
       } else {
         console.log(`⚠️ ${errorType === "no-speech" ? "No speech detected" : "Recognition aborted"}`)
       }
-      
+
       // Provide specific error messages based on error type
       switch (errorType) {
         case "not-allowed":
@@ -325,16 +325,16 @@ export function VoiceNavigator() {
             duration: 4000,
           })
       }
-      
+
       stopRecognition()
     }
-    
+
     recognition.onend = () => {
       console.log("🛑 Speech recognition ended")
       setIsListening(false)
       recognitionRef.current = null
     }
-    
+
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       // Get the latest result
       const resultIndex = event.resultIndex
@@ -342,9 +342,9 @@ export function VoiceNavigator() {
       const text = result[0].transcript
       const confidence = result[0].confidence
       const isFinal = result.isFinal
-      
+
       console.log(`${isFinal ? '✅' : '⏳'} ${isFinal ? 'Final' : 'Interim'} result: "${text}" (confidence: ${confidence})`)
-      
+
       if (isFinal) {
         // Only process final results
         console.log(`🎯 Processing final transcript: "${text}"`)
@@ -392,7 +392,7 @@ export function VoiceNavigator() {
             transition={{ duration: 0.3 }}
             className="fixed left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[60] md:w-[90%] md:max-w-2xl"
             style={{ top: '130px' }}
-          
+
           >
             <div className="bg-gradient-to-r from-[#4C4EFB] to-[#6366F1] text-white rounded-lg md:rounded-xl shadow-2xl border border-white/20 backdrop-blur-md">
               <div className="p-3 md:p-5">
@@ -403,18 +403,18 @@ export function VoiceNavigator() {
                       <Mic className="h-5 w-5 text-white" />
                     </div>
                   </div>
-                  
+
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
                       <Mic className="h-4 w-4 md:hidden flex-shrink-0 text-white" />
                       <h3 className="text-sm md:text-lg font-bold">Voice Commands Available!</h3>
                     </div>
-                    
+
                     <p className="text-xs md:text-sm text-white/90 mb-2 md:mb-3">
                       Click the mic button and speak commands to navigate hands-free.
                     </p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px] md:text-xs">
                       <div className="space-y-0.5 md:space-y-1">
                         <p className="font-semibold text-white/80">📍 Navigation:</p>
@@ -436,13 +436,13 @@ export function VoiceNavigator() {
                         </ul>
                       </div>
                     </div>
-                    
+
                     <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-white/20 flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-white/80">
                       <Info className="h-3 w-3 md:h-3.5 md:w-3.5 flex-shrink-0" />
                       <span className="line-clamp-1">Speak clearly and loudly for best results</span>
                     </div>
                   </div>
-                  
+
                   {/* Close Button */}
                   <button
                     onClick={handleDismissBanner}
@@ -464,7 +464,7 @@ export function VoiceNavigator() {
           disabled={!hasSupport}
           onClick={isListening ? stopRecognition : startRecognition}
           className={cn(
-            "rounded-full h-14 w-14 shadow-lg hover:shadow-xl transition-all duration-200",
+            "rounded-full h-10 w-10  hover:shadow-lg transition-all duration-200",
             isListening ? "bg-red-500 hover:bg-red-600" : "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90",
             !hasSupport && "opacity-60 cursor-not-allowed",
             isProcessing && "animate-pulse"
@@ -474,11 +474,11 @@ export function VoiceNavigator() {
           title={statusLabel}
         >
           {isProcessing ? (
-            <Loader2 className="h-6 w-6 animate-spin text-white" />
+            <Loader2 className="h-4 w-4 animate-spin text-white" />
           ) : isListening ? (
-            <MicOff className="h-6 w-6 text-white" />
+            <MicOff className="h-4 w-4 text-white" />
           ) : (
-            <Mic className="h-6 w-6 text-white" />
+            <Mic className="h-4 w-4 text-white" />
           )}
         </Button>
       </div>

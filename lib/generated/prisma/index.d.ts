@@ -7902,12 +7902,14 @@ export namespace Prisma {
     comment_likes: number | null
     sentimentScore: number | null
     sentimentConfidence: number | null
+    moderationScore: number | null
   }
 
   export type BlogCommentSumAggregateOutputType = {
     comment_likes: number | null
     sentimentScore: number | null
     sentimentConfidence: number | null
+    moderationScore: number | null
   }
 
   export type BlogCommentMinAggregateOutputType = {
@@ -7923,6 +7925,10 @@ export namespace Prisma {
     sentimentScore: number | null
     sentimentConfidence: number | null
     analyzedAt: Date | null
+    moderationStatus: string | null
+    moderationScore: number | null
+    moderatedAt: Date | null
+    moderatedBy: string | null
   }
 
   export type BlogCommentMaxAggregateOutputType = {
@@ -7938,6 +7944,10 @@ export namespace Prisma {
     sentimentScore: number | null
     sentimentConfidence: number | null
     analyzedAt: Date | null
+    moderationStatus: string | null
+    moderationScore: number | null
+    moderatedAt: Date | null
+    moderatedBy: string | null
   }
 
   export type BlogCommentCountAggregateOutputType = {
@@ -7954,6 +7964,11 @@ export namespace Prisma {
     sentimentConfidence: number
     emotions: number
     analyzedAt: number
+    moderationStatus: number
+    moderationScore: number
+    moderationFlags: number
+    moderatedAt: number
+    moderatedBy: number
     _all: number
   }
 
@@ -7962,12 +7977,14 @@ export namespace Prisma {
     comment_likes?: true
     sentimentScore?: true
     sentimentConfidence?: true
+    moderationScore?: true
   }
 
   export type BlogCommentSumAggregateInputType = {
     comment_likes?: true
     sentimentScore?: true
     sentimentConfidence?: true
+    moderationScore?: true
   }
 
   export type BlogCommentMinAggregateInputType = {
@@ -7983,6 +8000,10 @@ export namespace Prisma {
     sentimentScore?: true
     sentimentConfidence?: true
     analyzedAt?: true
+    moderationStatus?: true
+    moderationScore?: true
+    moderatedAt?: true
+    moderatedBy?: true
   }
 
   export type BlogCommentMaxAggregateInputType = {
@@ -7998,6 +8019,10 @@ export namespace Prisma {
     sentimentScore?: true
     sentimentConfidence?: true
     analyzedAt?: true
+    moderationStatus?: true
+    moderationScore?: true
+    moderatedAt?: true
+    moderatedBy?: true
   }
 
   export type BlogCommentCountAggregateInputType = {
@@ -8014,6 +8039,11 @@ export namespace Prisma {
     sentimentConfidence?: true
     emotions?: true
     analyzedAt?: true
+    moderationStatus?: true
+    moderationScore?: true
+    moderationFlags?: true
+    moderatedAt?: true
+    moderatedBy?: true
     _all?: true
   }
 
@@ -8117,6 +8147,11 @@ export namespace Prisma {
     sentimentConfidence: number | null
     emotions: string[]
     analyzedAt: Date | null
+    moderationStatus: string | null
+    moderationScore: number | null
+    moderationFlags: string[]
+    moderatedAt: Date | null
+    moderatedBy: string | null
     _count: BlogCommentCountAggregateOutputType | null
     _avg: BlogCommentAvgAggregateOutputType | null
     _sum: BlogCommentSumAggregateOutputType | null
@@ -8152,6 +8187,11 @@ export namespace Prisma {
     sentimentConfidence?: boolean
     emotions?: boolean
     analyzedAt?: boolean
+    moderationStatus?: boolean
+    moderationScore?: boolean
+    moderationFlags?: boolean
+    moderatedAt?: boolean
+    moderatedBy?: boolean
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
     replies?: boolean | BlogComment$repliesArgs<ExtArgs>
@@ -8172,6 +8212,11 @@ export namespace Prisma {
     sentimentConfidence?: boolean
     emotions?: boolean
     analyzedAt?: boolean
+    moderationStatus?: boolean
+    moderationScore?: boolean
+    moderationFlags?: boolean
+    moderatedAt?: boolean
+    moderatedBy?: boolean
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
   }, ExtArgs["result"]["blogComment"]>
@@ -8190,6 +8235,11 @@ export namespace Prisma {
     sentimentConfidence?: boolean
     emotions?: boolean
     analyzedAt?: boolean
+    moderationStatus?: boolean
+    moderationScore?: boolean
+    moderationFlags?: boolean
+    moderatedAt?: boolean
+    moderatedBy?: boolean
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
   }, ExtArgs["result"]["blogComment"]>
@@ -8208,9 +8258,14 @@ export namespace Prisma {
     sentimentConfidence?: boolean
     emotions?: boolean
     analyzedAt?: boolean
+    moderationStatus?: boolean
+    moderationScore?: boolean
+    moderationFlags?: boolean
+    moderatedAt?: boolean
+    moderatedBy?: boolean
   }
 
-  export type BlogCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment" | "comment_by" | "comment_at" | "comment_likes" | "blog_post_id" | "parent_id" | "audio_url" | "sentiment" | "sentimentScore" | "sentimentConfidence" | "emotions" | "analyzedAt", ExtArgs["result"]["blogComment"]>
+  export type BlogCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment" | "comment_by" | "comment_at" | "comment_likes" | "blog_post_id" | "parent_id" | "audio_url" | "sentiment" | "sentimentScore" | "sentimentConfidence" | "emotions" | "analyzedAt" | "moderationStatus" | "moderationScore" | "moderationFlags" | "moderatedAt" | "moderatedBy", ExtArgs["result"]["blogComment"]>
   export type BlogCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     blog_post?: boolean | BlogPostDefaultArgs<ExtArgs>
     parent?: boolean | BlogComment$parentArgs<ExtArgs>
@@ -8247,6 +8302,11 @@ export namespace Prisma {
       sentimentConfidence: number | null
       emotions: string[]
       analyzedAt: Date | null
+      moderationStatus: string | null
+      moderationScore: number | null
+      moderationFlags: string[]
+      moderatedAt: Date | null
+      moderatedBy: string | null
     }, ExtArgs["result"]["blogComment"]>
     composites: {}
   }
@@ -8686,6 +8746,11 @@ export namespace Prisma {
     readonly sentimentConfidence: FieldRef<"BlogComment", 'Float'>
     readonly emotions: FieldRef<"BlogComment", 'String[]'>
     readonly analyzedAt: FieldRef<"BlogComment", 'DateTime'>
+    readonly moderationStatus: FieldRef<"BlogComment", 'String'>
+    readonly moderationScore: FieldRef<"BlogComment", 'Float'>
+    readonly moderationFlags: FieldRef<"BlogComment", 'String[]'>
+    readonly moderatedAt: FieldRef<"BlogComment", 'DateTime'>
+    readonly moderatedBy: FieldRef<"BlogComment", 'String'>
   }
     
 
@@ -38105,7 +38170,12 @@ export namespace Prisma {
     sentimentScore: 'sentimentScore',
     sentimentConfidence: 'sentimentConfidence',
     emotions: 'emotions',
-    analyzedAt: 'analyzedAt'
+    analyzedAt: 'analyzedAt',
+    moderationStatus: 'moderationStatus',
+    moderationScore: 'moderationScore',
+    moderationFlags: 'moderationFlags',
+    moderatedAt: 'moderatedAt',
+    moderatedBy: 'moderatedBy'
   };
 
   export type BlogCommentScalarFieldEnum = (typeof BlogCommentScalarFieldEnum)[keyof typeof BlogCommentScalarFieldEnum]
@@ -39129,6 +39199,11 @@ export namespace Prisma {
     sentimentConfidence?: FloatNullableFilter<"BlogComment"> | number | null
     emotions?: StringNullableListFilter<"BlogComment">
     analyzedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
+    moderationStatus?: StringNullableFilter<"BlogComment"> | string | null
+    moderationScore?: FloatNullableFilter<"BlogComment"> | number | null
+    moderationFlags?: StringNullableListFilter<"BlogComment">
+    moderatedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
+    moderatedBy?: StringNullableFilter<"BlogComment"> | string | null
     blog_post?: XOR<BlogPostScalarRelationFilter, BlogPostWhereInput>
     parent?: XOR<BlogCommentNullableScalarRelationFilter, BlogCommentWhereInput> | null
     replies?: BlogCommentListRelationFilter
@@ -39148,6 +39223,11 @@ export namespace Prisma {
     sentimentConfidence?: SortOrderInput | SortOrder
     emotions?: SortOrder
     analyzedAt?: SortOrderInput | SortOrder
+    moderationStatus?: SortOrderInput | SortOrder
+    moderationScore?: SortOrderInput | SortOrder
+    moderationFlags?: SortOrder
+    moderatedAt?: SortOrderInput | SortOrder
+    moderatedBy?: SortOrderInput | SortOrder
     blog_post?: BlogPostOrderByWithRelationInput
     parent?: BlogCommentOrderByWithRelationInput
     replies?: BlogCommentOrderByRelationAggregateInput
@@ -39170,6 +39250,11 @@ export namespace Prisma {
     sentimentConfidence?: FloatNullableFilter<"BlogComment"> | number | null
     emotions?: StringNullableListFilter<"BlogComment">
     analyzedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
+    moderationStatus?: StringNullableFilter<"BlogComment"> | string | null
+    moderationScore?: FloatNullableFilter<"BlogComment"> | number | null
+    moderationFlags?: StringNullableListFilter<"BlogComment">
+    moderatedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
+    moderatedBy?: StringNullableFilter<"BlogComment"> | string | null
     blog_post?: XOR<BlogPostScalarRelationFilter, BlogPostWhereInput>
     parent?: XOR<BlogCommentNullableScalarRelationFilter, BlogCommentWhereInput> | null
     replies?: BlogCommentListRelationFilter
@@ -39189,6 +39274,11 @@ export namespace Prisma {
     sentimentConfidence?: SortOrderInput | SortOrder
     emotions?: SortOrder
     analyzedAt?: SortOrderInput | SortOrder
+    moderationStatus?: SortOrderInput | SortOrder
+    moderationScore?: SortOrderInput | SortOrder
+    moderationFlags?: SortOrder
+    moderatedAt?: SortOrderInput | SortOrder
+    moderatedBy?: SortOrderInput | SortOrder
     _count?: BlogCommentCountOrderByAggregateInput
     _avg?: BlogCommentAvgOrderByAggregateInput
     _max?: BlogCommentMaxOrderByAggregateInput
@@ -39213,6 +39303,11 @@ export namespace Prisma {
     sentimentConfidence?: FloatNullableWithAggregatesFilter<"BlogComment"> | number | null
     emotions?: StringNullableListFilter<"BlogComment">
     analyzedAt?: DateTimeNullableWithAggregatesFilter<"BlogComment"> | Date | string | null
+    moderationStatus?: StringNullableWithAggregatesFilter<"BlogComment"> | string | null
+    moderationScore?: FloatNullableWithAggregatesFilter<"BlogComment"> | number | null
+    moderationFlags?: StringNullableListFilter<"BlogComment">
+    moderatedAt?: DateTimeNullableWithAggregatesFilter<"BlogComment"> | Date | string | null
+    moderatedBy?: StringNullableWithAggregatesFilter<"BlogComment"> | string | null
   }
 
   export type BlogBookmarkWhereInput = {
@@ -41662,6 +41757,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     blog_post: BlogPostCreateNestedOneWithoutBlog_commentsInput
     parent?: BlogCommentCreateNestedOneWithoutRepliesInput
     replies?: BlogCommentCreateNestedManyWithoutParentInput
@@ -41681,6 +41781,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     replies?: BlogCommentUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -41696,6 +41801,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     blog_post?: BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput
     parent?: BlogCommentUpdateOneWithoutRepliesNestedInput
     replies?: BlogCommentUpdateManyWithoutParentNestedInput
@@ -41715,6 +41825,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     replies?: BlogCommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -41732,6 +41847,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
   }
 
   export type BlogCommentUpdateManyMutationInput = {
@@ -41746,6 +41866,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogCommentUncheckedUpdateManyInput = {
@@ -41762,6 +41887,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogBookmarkCreateInput = {
@@ -44550,12 +44680,18 @@ export namespace Prisma {
     sentimentConfidence?: SortOrder
     emotions?: SortOrder
     analyzedAt?: SortOrder
+    moderationStatus?: SortOrder
+    moderationScore?: SortOrder
+    moderationFlags?: SortOrder
+    moderatedAt?: SortOrder
+    moderatedBy?: SortOrder
   }
 
   export type BlogCommentAvgOrderByAggregateInput = {
     comment_likes?: SortOrder
     sentimentScore?: SortOrder
     sentimentConfidence?: SortOrder
+    moderationScore?: SortOrder
   }
 
   export type BlogCommentMaxOrderByAggregateInput = {
@@ -44571,6 +44707,10 @@ export namespace Prisma {
     sentimentScore?: SortOrder
     sentimentConfidence?: SortOrder
     analyzedAt?: SortOrder
+    moderationStatus?: SortOrder
+    moderationScore?: SortOrder
+    moderatedAt?: SortOrder
+    moderatedBy?: SortOrder
   }
 
   export type BlogCommentMinOrderByAggregateInput = {
@@ -44586,12 +44726,17 @@ export namespace Prisma {
     sentimentScore?: SortOrder
     sentimentConfidence?: SortOrder
     analyzedAt?: SortOrder
+    moderationStatus?: SortOrder
+    moderationScore?: SortOrder
+    moderatedAt?: SortOrder
+    moderatedBy?: SortOrder
   }
 
   export type BlogCommentSumOrderByAggregateInput = {
     comment_likes?: SortOrder
     sentimentScore?: SortOrder
     sentimentConfidence?: SortOrder
+    moderationScore?: SortOrder
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -46959,6 +47104,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type BlogCommentCreatemoderationFlagsInput = {
+    set: string[]
+  }
+
   export type BlogPostCreateNestedOneWithoutBlog_commentsInput = {
     create?: XOR<BlogPostCreateWithoutBlog_commentsInput, BlogPostUncheckedCreateWithoutBlog_commentsInput>
     connectOrCreate?: BlogPostCreateOrConnectWithoutBlog_commentsInput
@@ -47000,6 +47149,11 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type BlogCommentUpdatemoderationFlagsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput = {
@@ -49933,6 +50087,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     parent?: BlogCommentCreateNestedOneWithoutRepliesInput
     replies?: BlogCommentCreateNestedManyWithoutParentInput
   }
@@ -49950,6 +50109,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     replies?: BlogCommentUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -50040,6 +50204,11 @@ export namespace Prisma {
     sentimentConfidence?: FloatNullableFilter<"BlogComment"> | number | null
     emotions?: StringNullableListFilter<"BlogComment">
     analyzedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
+    moderationStatus?: StringNullableFilter<"BlogComment"> | string | null
+    moderationScore?: FloatNullableFilter<"BlogComment"> | number | null
+    moderationFlags?: StringNullableListFilter<"BlogComment">
+    moderatedAt?: DateTimeNullableFilter<"BlogComment"> | Date | string | null
+    moderatedBy?: StringNullableFilter<"BlogComment"> | string | null
   }
 
   export type BlogBookmarkUpsertWithWhereUniqueWithoutBlog_postInput = {
@@ -50151,6 +50320,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     blog_post: BlogPostCreateNestedOneWithoutBlog_commentsInput
     parent?: BlogCommentCreateNestedOneWithoutRepliesInput
   }
@@ -50169,6 +50343,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
   }
 
   export type BlogCommentCreateOrConnectWithoutRepliesInput = {
@@ -50188,6 +50367,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     blog_post: BlogPostCreateNestedOneWithoutBlog_commentsInput
     replies?: BlogCommentCreateNestedManyWithoutParentInput
   }
@@ -50205,6 +50389,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
     replies?: BlogCommentUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -50292,6 +50481,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     blog_post?: BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput
     parent?: BlogCommentUpdateOneWithoutRepliesNestedInput
   }
@@ -50310,6 +50504,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogCommentUpsertWithWhereUniqueWithoutParentInput = {
@@ -55810,6 +56009,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
   }
 
   export type BlogBookmarkCreateManyBlog_postInput = {
@@ -55836,6 +56040,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     parent?: BlogCommentUpdateOneWithoutRepliesNestedInput
     replies?: BlogCommentUpdateManyWithoutParentNestedInput
   }
@@ -55853,6 +56062,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     replies?: BlogCommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -55869,6 +56083,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BlogBookmarkUpdateWithoutBlog_postInput = {
@@ -55920,6 +56139,11 @@ export namespace Prisma {
     sentimentConfidence?: number | null
     emotions?: BlogCommentCreateemotionsInput | string[]
     analyzedAt?: Date | string | null
+    moderationStatus?: string | null
+    moderationScore?: number | null
+    moderationFlags?: BlogCommentCreatemoderationFlagsInput | string[]
+    moderatedAt?: Date | string | null
+    moderatedBy?: string | null
   }
 
   export type BlogCommentUpdateWithoutParentInput = {
@@ -55934,6 +56158,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     blog_post?: BlogPostUpdateOneRequiredWithoutBlog_commentsNestedInput
     replies?: BlogCommentUpdateManyWithoutParentNestedInput
   }
@@ -55951,6 +56180,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     replies?: BlogCommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -55967,6 +56201,11 @@ export namespace Prisma {
     sentimentConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     emotions?: BlogCommentUpdateemotionsInput | string[]
     analyzedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    moderationScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    moderationFlags?: BlogCommentUpdatemoderationFlagsInput | string[]
+    moderatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MembershipCreateManyGroupInput = {

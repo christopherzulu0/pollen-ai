@@ -8,6 +8,7 @@ import ThemeToggle from "@/components/theme-toggle"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
 import { SignedOut, SignedIn, SignIn, SignInButton, UserButton, useUser } from "@clerk/nextjs"
+import { VoiceNavigator } from "./voice/voice-navigator"
 
 
 
@@ -113,14 +114,15 @@ export default function Navbar() {
                 Pollen
               </span>
             </Link>
+            {/* <VoiceNavigator /> */}
           </div>
 
           <nav className="hidden lg:flex items-center space-x-1">
             <Link
               href="/"
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-                  : "text-white/80 hover:text-white"
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
                 } transition-colors`}
             >
               Home
@@ -129,8 +131,8 @@ export default function Navbar() {
             <button
               onClick={() => router.push('/about')}
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium flex items-center ${isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-                  : "text-white/80 hover:text-white"
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
                 } transition-colors`}
             >
               About
@@ -139,8 +141,8 @@ export default function Navbar() {
             <button
               onClick={() => router.push('/services')}
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium flex items-center ${isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-                  : "text-white/80 hover:text-white"
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
                 } transition-colors`}
             >
               Services
@@ -149,8 +151,8 @@ export default function Navbar() {
             <Link
               href="/blog"
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-                  : "text-white/80 hover:text-white"
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
                 } transition-colors`}
             >
               Blog
@@ -159,8 +161,8 @@ export default function Navbar() {
             <Link
               href="/contact"
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
-                  ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-                  : "text-white/80 hover:text-white"
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
                 } transition-colors`}
             >
               Contact
@@ -182,8 +184,8 @@ export default function Navbar() {
                 <Button
                   onClick={handleDashboardClick}
                   className={`${isScrolled
-                      ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
-                      : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+                    ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
+                    : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
                     } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
                   {isAdmin ? '📊 Admin' : '📈 Dashboard'}
                 </Button>
@@ -191,8 +193,8 @@ export default function Navbar() {
                 <Button
                   onClick={handleRequestAccess}
                   className={`${isScrolled
-                      ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                      : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
+                    ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                    : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
                     } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
                   🔐 Request Access
                 </Button>

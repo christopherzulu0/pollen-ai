@@ -35,6 +35,8 @@ import {
   Share2,
   UserPlus,
   UserMinus,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -44,6 +46,15 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useToast } from "@/hooks/use-toast"
 import { useUploadThing } from "@/lib/uploadthing-react"
 
@@ -123,16 +134,16 @@ const fetchBlogPost = async (id: string): Promise<BlogPost> => {
     throw new Error('Failed to fetch blog post')
   }
   const data: ApiBlogPost = await response.json()
-  
+
   // Parse read time (e.g., "5 min" -> 5)
   const readTimeMatch = data.read_time.match(/(\d+)/)
   const readTime = readTimeMatch ? parseInt(readTimeMatch[1]) : 5
-  
+
   // Create excerpt from description (first 200 characters)
-  const excerpt = data.Description.length > 200 
-    ? data.Description.substring(0, 200) + '...' 
+  const excerpt = data.Description.length > 200
+    ? data.Description.substring(0, 200) + '...'
     : data.Description
-  
+
   // Format content as HTML (convert line breaks to paragraphs)
   const content = data.Description.split('\n\n').map(para => {
     if (para.trim()) {
@@ -140,17 +151,17 @@ const fetchBlogPost = async (id: string): Promise<BlogPost> => {
     }
     return ''
   }).join('')
-  
+
   return {
     id: data.id,
     title: data.title,
     excerpt: excerpt,
     content: content || `<p>${data.Description}</p>`,
     image: data.Blog_image || '/placeholder.svg?height=600&width=800',
-    date: new Date(data.posted_at).toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    date: new Date(data.posted_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     }),
     author: {
       name: data.author,
@@ -198,7 +209,7 @@ const fetchComments = async (postId: string, postAuthor?: string): Promise<BlogC
     throw new Error('Failed to fetch comments')
   }
   const data: ApiBlogComment[] = await response.json()
-  
+
   return data.map((comment) => transformComment(comment, postAuthor))
 }
 
@@ -209,27 +220,27 @@ const fetchAllBlogPosts = async (): Promise<BlogPost[]> => {
     throw new Error('Failed to fetch blog posts')
   }
   const data: ApiBlogPost[] = await response.json()
-  
+
   // Filter published posts only
   const publishedPosts = data.filter((post) => post.status === 'published')
-  
+
   return publishedPosts.map((post) => {
     const readTimeMatch = post.read_time.match(/(\d+)/)
     const readTime = readTimeMatch ? parseInt(readTimeMatch[1]) : 5
-    const excerpt = post.Description.length > 200 
-      ? post.Description.substring(0, 200) + '...' 
+    const excerpt = post.Description.length > 200
+      ? post.Description.substring(0, 200) + '...'
       : post.Description
-    
+
     return {
       id: post.id,
       title: post.title,
       excerpt: excerpt,
       content: post.Description,
       image: post.Blog_image || '/placeholder.svg?height=600&width=800',
-      date: new Date(post.posted_at).toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      date: new Date(post.posted_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       }),
       author: {
         name: post.author,
@@ -361,7 +372,17 @@ function EmojiPicker({ onEmojiSelect }: { onEmojiSelect: (emoji: string) => void
 }
 
 // Voice Recorder Component
-function VoiceRecorder({ onRecordingComplete, onCancel }: { onRecordingComplete: (audioUrl: string) => void; onCancel: () => void }) {
+function VoiceRecorder({
+  onRecordingComplete,
+  onCancel,
+  setAlertDialogContent,
+  setAlertDialogOpen,
+}: {
+  onRecordingComplete: (audioUrl: string) => void
+  onCancel: () => void
+  setAlertDialogContent: (content: { type: 'success' | 'error'; title: string; description: string }) => void
+  setAlertDialogOpen: (open: boolean) => void
+}) {
   const [isRecording, setIsRecording] = useState(false)
   const [recordingTime, setRecordingTime] = useState(0)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
@@ -424,7 +445,12 @@ function VoiceRecorder({ onRecordingComplete, onCancel }: { onRecordingComplete:
       setRecordingTime(0)
     } catch (error) {
       console.error('Error starting recording:', error)
-      alert('Could not access microphone. Please ensure you have granted microphone permissions.')
+      setAlertDialogContent({
+        type: 'error',
+        title: 'Microphone Access Denied',
+        description: 'Could not access microphone. Please ensure you have granted microphone permissions.',
+      })
+      setAlertDialogOpen(true)
     }
   }
 
@@ -451,7 +477,12 @@ function VoiceRecorder({ onRecordingComplete, onCancel }: { onRecordingComplete:
       }
     } catch (error) {
       console.error('Error uploading audio:', error)
-      alert('Failed to upload audio. Please try again.')
+      setAlertDialogContent({
+        type: 'error',
+        title: 'Upload Failed',
+        description: 'Failed to upload audio. Please try again.',
+      })
+      setAlertDialogOpen(true)
     } finally {
       setIsUploading(false)
     }
@@ -512,10 +543,10 @@ function VoiceRecorder({ onRecordingComplete, onCancel }: { onRecordingComplete:
       ) : (
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <audio 
-              src={audioUrl || undefined} 
-              controls 
-              controlsList="nodownload nofullscreen noplaybackrate" 
+            <audio
+              src={audioUrl || undefined}
+              controls
+              controlsList="nodownload nofullscreen noplaybackrate"
               className="flex-1 h-10"
               onContextMenu={(e) => e.preventDefault()}
             />
@@ -562,7 +593,7 @@ function BlogPostContent() {
   const postId = params.id as string
   const commentInputRef = useRef<HTMLTextAreaElement>(null)
   const replyInputRefs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({})
-  
+
   const [isSaved, setIsSaved] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [isFollowing, setIsFollowing] = useState(false)
@@ -577,7 +608,7 @@ function BlogPostContent() {
   const [showReplyVoiceRecorder, setShowReplyVoiceRecorder] = useState<string | null>(null)
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set())
   const [supportsNativeShare, setSupportsNativeShare] = useState(false)
-  
+
   // Text-to-speech state
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
@@ -585,13 +616,25 @@ function BlogPostContent() {
   const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
 
+  // AlertDialog state for moderation results
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false)
+  const [alertDialogContent, setAlertDialogContent] = useState<{
+    type: 'success' | 'error'
+    title: string
+    description: string
+  }>({
+    type: 'success',
+    title: '',
+    description: '',
+  })
+
   // Get user's name from session
   const userName = user
-    ? user.fullName || 
-      user.firstName || 
-      user.username || 
-      user.emailAddresses[0]?.emailAddress?.split('@')[0] ||
-      'Anonymous'
+    ? user.fullName ||
+    user.firstName ||
+    user.username ||
+    user.emailAddresses[0]?.emailAddress?.split('@')[0] ||
+    'Anonymous'
     : null
 
   // Fetch blog post using React Query
@@ -688,12 +731,26 @@ function BlogPostContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comment, comment_by, parent_id, audio_url: audio_url || null }),
       })
+
+      const data = await response.json()
+
       if (!response.ok) {
-        throw new Error('Failed to submit comment')
+        // Check if it's a moderation rejection
+        if (response.status === 400 && data.error === 'Comment rejected') {
+          throw {
+            type: 'moderation',
+            message: data.reason || 'Your comment violates our community guidelines',
+            suggestions: data.suggestions,
+            flaggedCategories: data.flaggedCategories,
+            isSpam: data.isSpam,
+          }
+        }
+        throw new Error(data.error || 'Failed to submit comment')
       }
-      return response.json()
+
+      return data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['blogComments', postId] })
       queryClient.invalidateQueries({ queryKey: ['blogPost', postId] })
       setCommentText('')
@@ -703,7 +760,7 @@ function BlogPostContent() {
       setReplyingTo(null)
       setShowVoiceRecorder(false)
       setShowReplyVoiceRecorder(null)
-      
+
       // Update engagement when user comments
       if (postId) {
         fetch(`/api/blog-posts/${postId}/engagement`, {
@@ -714,17 +771,61 @@ function BlogPostContent() {
           console.error('Error updating engagement:', error)
         })
       }
-      
+
+      // Show success alert dialog
+      const moderationInfo = data.moderationResult
+      const message = moderationInfo
+        ? `Your comment has been posted successfully and passed our content moderation (${moderationInfo.confidence}% confidence).`
+        : 'Your comment has been successfully posted.'
+
+      setAlertDialogContent({
+        type: 'success',
+        title: 'Comment Posted!',
+        description: message,
+      })
+      setAlertDialogOpen(true)
+
       toast({
         title: "Comment posted!",
         description: "Your comment has been successfully posted.",
         duration: 3000,
       })
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      // Check if it's a moderation error
+      if (error.type === 'moderation') {
+        let description = error.message
+
+        if (error.isSpam) {
+          description += '\n\n🚫 Reason: Detected as spam'
+        }
+
+        if (error.flaggedCategories && error.flaggedCategories.length > 0) {
+          description += `\n\n⚠️ Flagged for: ${error.flaggedCategories.join(', ')}`
+        }
+
+        if (error.suggestions) {
+          description += `\n\n💡 Suggestion: ${error.suggestions}`
+        }
+
+        setAlertDialogContent({
+          type: 'error',
+          title: 'Comment Rejected',
+          description,
+        })
+        setAlertDialogOpen(true)
+      } else {
+        setAlertDialogContent({
+          type: 'error',
+          title: 'Failed to Post Comment',
+          description: error instanceof Error ? error.message : 'Please try again later.',
+        })
+        setAlertDialogOpen(true)
+      }
+
       toast({
         title: "Failed to post comment",
-        description: error instanceof Error ? error.message : "Please try again later.",
+        description: error.message || (error instanceof Error ? error.message : "Please try again later."),
         variant: "destructive",
         duration: 3000,
       })
@@ -834,12 +935,12 @@ function BlogPostContent() {
   // Get related posts (same category or tags)
   const relatedPosts = post
     ? allPosts
-          .filter(
-            (p) =>
-            p.id !== post.id &&
-            (p.category === post.category || p.tags.some((tag) => post.tags.includes(tag))),
-          )
-          .slice(0, 3)
+      .filter(
+        (p) =>
+          p.id !== post.id &&
+          (p.category === post.category || p.tags.some((tag) => post.tags.includes(tag))),
+      )
+      .slice(0, 3)
     : []
 
   // Handle emoji selection for main comment
@@ -851,13 +952,13 @@ function BlogPostContent() {
       const text = commentText
       const newText = text.substring(0, start) + emoji + text.substring(end)
       setCommentText(newText)
-      
+
       // Focus back on textarea and set cursor position
       setTimeout(() => {
         textarea.focus()
         textarea.setSelectionRange(start + emoji.length, start + emoji.length)
       }, 0)
-      } else {
+    } else {
       setCommentText(commentText + emoji)
     }
   }
@@ -871,7 +972,7 @@ function BlogPostContent() {
       const text = replyText
       const newText = text.substring(0, start) + emoji + text.substring(end)
       setReplyText(newText)
-      
+
       // Focus back on textarea and set cursor position
       setTimeout(() => {
         textarea.focus()
@@ -887,7 +988,7 @@ function BlogPostContent() {
   useEffect(() => {
     if (post?.id && postId && !hasTrackedView.current) {
       hasTrackedView.current = true
-      
+
       // Track view
       fetch(`/api/blog-posts/${postId}/views`, {
         method: 'POST',
@@ -895,33 +996,33 @@ function BlogPostContent() {
           'Content-Type': 'application/json',
         },
       })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
-          throw new Error(errorData.error || `Failed to track view: ${response.status} ${response.statusText}`)
-        }
-        return response.json()
-      })
-      .then(() => {
-        // After view is tracked, update engagement
-        return fetch(`/api/blog-posts/${postId}/engagement`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'view' }),
+        .then(async (response) => {
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+            throw new Error(errorData.error || `Failed to track view: ${response.status} ${response.statusText}`)
+          }
+          return response.json()
         })
-      })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
-          throw new Error(errorData.error || `Failed to update engagement: ${response.status} ${response.statusText}`)
-        }
-        // Invalidate queries to refresh view count
-        queryClient.invalidateQueries({ queryKey: ['blogPost', postId] })
-      })
-      .catch(error => {
-        console.error('Error tracking view/engagement:', error)
-        // Don't show toast for tracking errors as they're not critical for user experience
-      })
+        .then(() => {
+          // After view is tracked, update engagement
+          return fetch(`/api/blog-posts/${postId}/engagement`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'view' }),
+          })
+        })
+        .then(async (response) => {
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+            throw new Error(errorData.error || `Failed to update engagement: ${response.status} ${response.statusText}`)
+          }
+          // Invalidate queries to refresh view count
+          queryClient.invalidateQueries({ queryKey: ['blogPost', postId] })
+        })
+        .catch(error => {
+          console.error('Error tracking view/engagement:', error)
+          // Don't show toast for tracking errors as they're not critical for user experience
+        })
     }
   }, [post?.id, postId, queryClient])
 
@@ -937,11 +1038,11 @@ function BlogPostContent() {
       const currentProgress = Math.floor(progress / 25) * 25
       if (currentProgress > lastEngagementUpdate.current && post?.id && currentProgress > 0) {
         lastEngagementUpdate.current = currentProgress
-        
+
         fetch(`/api/blog-posts/${postId}/engagement`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             action: 'read_time',
             readTimeProgress: currentProgress
           }),
@@ -1002,7 +1103,7 @@ function BlogPostContent() {
       setIsLiked(isLiking)
       queryClient.invalidateQueries({ queryKey: ['blogLike', postId] })
       queryClient.invalidateQueries({ queryKey: ['blogPost', postId] })
-      
+
       // Update engagement when user likes/unlikes
       if (post?.id) {
         try {
@@ -1050,7 +1151,7 @@ function BlogPostContent() {
       queryClient.invalidateQueries({ queryKey: ['authorFollow', post?.author.name] })
       toast({
         title: isFollowing ? "Following author" : "Unfollowed author",
-        description: isFollowing 
+        description: isFollowing
           ? `You're now following ${post?.author.name}. You'll get updates on their new articles.`
           : `You've unfollowed ${post?.author.name}.`,
         duration: 3000,
@@ -1069,12 +1170,12 @@ function BlogPostContent() {
   // Handle save/bookmark post
   const toggleSavePost = () => {
     if (!user || !isUserLoaded) {
-    toast({
+      toast({
         title: "Sign in required",
         description: "Please sign in to bookmark posts.",
         variant: "destructive",
-      duration: 3000,
-    })
+        duration: 3000,
+      })
       router.push('/sign-in')
       return
     }
@@ -1151,7 +1252,7 @@ function BlogPostContent() {
         // Copy to clipboard
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(shareUrl)
-    toast({
+          toast({
             title: "Link copied!",
             description: "The article link has been copied to your clipboard.",
             duration: 3000,
@@ -1177,8 +1278,8 @@ function BlogPostContent() {
               title: "Failed to copy link",
               description: "Please copy the link manually.",
               variant: "destructive",
-      duration: 3000,
-    })
+              duration: 3000,
+            })
           }
           document.body.removeChild(textArea)
         }
@@ -1326,7 +1427,7 @@ function BlogPostContent() {
     }
 
     const text = stripHtml(post.content)
-    
+
     if (!text.trim()) {
       toast({
         title: "No content to read",
@@ -1374,7 +1475,7 @@ function BlogPostContent() {
         // Handle different error types
         let errorMessage = "An error occurred while reading the article."
         let shouldShowError = true
-        
+
         if (event.error) {
           const errorCode = event.error as string
           switch (errorCode) {
@@ -1667,11 +1768,10 @@ function BlogPostContent() {
                 <Button
                   size="icon"
                   variant={isSaved ? "default" : "outline"}
-                  className={`rounded-full h-10 w-10 ${
-                    isSaved
-                      ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
-                      : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#00CC66] hover:text-white hover:border-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white dark:hover:border-[#00CC66]"
-                  }`}
+                  className={`rounded-full h-10 w-10 ${isSaved
+                    ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
+                    : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#00CC66] hover:text-white hover:border-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white dark:hover:border-[#00CC66]"
+                    }`}
                   onClick={toggleSavePost}
                   disabled={bookmarkMutation.isPending}
                 >
@@ -1686,18 +1786,17 @@ function BlogPostContent() {
                 <Button
                   size="icon"
                   variant={isLiked ? "default" : "outline"}
-                  className={`rounded-full h-10 w-10 ${
-                    isLiked
-                      ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
-                      : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#00CC66] hover:text-white hover:border-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white dark:hover:border-[#00CC66]"
-                  }`}
+                  className={`rounded-full h-10 w-10 ${isLiked
+                    ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
+                    : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#00CC66] hover:text-white hover:border-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white dark:hover:border-[#00CC66]"
+                    }`}
                   onClick={toggleLikePost}
                   disabled={likeMutation.isPending}
                 >
                   {likeMutation.isPending ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                  <ThumbsUp className="h-5 w-5" />
+                    <ThumbsUp className="h-5 w-5" />
                   )}
                 </Button>
               </div>
@@ -1724,88 +1823,88 @@ function BlogPostContent() {
                 <TabsContent value="article" className="mt-6">
                   {/* Text-to-Speech Controls */}
                   {post && (
-                  <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center justify-between gap-4 flex-wrap">
-                      <div className="flex items-center gap-2">
-                        <Volume2 className="h-5 w-5 text-[#003366] dark:text-[#00CC66]" />
-                        <span className="font-medium text-gray-900 dark:text-white">Listen to Article</span>
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
+                    <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center justify-between gap-4 flex-wrap">
                         <div className="flex items-center gap-2">
-                          <label htmlFor="speech-rate" className="text-sm text-gray-600 dark:text-gray-400">
-                            Speed:
-                          </label>
-                          <input
-                            id="speech-rate"
-                            type="range"
-                            min="0.5"
-                            max="2"
-                            step="0.1"
-                            value={speechRate}
-                            onChange={(e) => {
-                              const newRate = parseFloat(e.target.value)
-                              setSpeechRate(newRate)
-                              if (utteranceRef.current && speechSynthesisRef.current) {
-                                utteranceRef.current.rate = newRate
-                                if (speechSynthesisRef.current.speaking && !speechSynthesisRef.current.paused) {
-                                  speechSynthesisRef.current.cancel()
-                                  speechSynthesisRef.current.speak(utteranceRef.current)
-                                }
-                              }
-                            }}
-                            className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#003366]"
-                          />
-                          <span className="text-sm text-gray-600 dark:text-gray-400 w-8">
-                            {speechRate.toFixed(1)}x
-                          </span>
+                          <Volume2 className="h-5 w-5 text-[#003366] dark:text-[#00CC66]" />
+                          <span className="font-medium text-gray-900 dark:text-white">Listen to Article</span>
                         </div>
-                        {!isSpeaking && !isPaused && (
-                          <Button
-                            onClick={handleStartReading}
-                            className="bg-[#003366] hover:bg-[#002244] text-white"
-                            size="sm"
-                            disabled={typeof window === 'undefined' || !('speechSynthesis' in window)}
-                          >
-                            <Play className="h-4 w-4 mr-2" />
-                            Start Reading
-                          </Button>
-                        )}
-                        {isSpeaking && !isPaused && (
-                          <Button
-                            onClick={handlePauseReading}
-                            variant="outline"
-                            size="sm"
-                            className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white"
-                          >
-                            <Pause className="h-4 w-4 mr-2" />
-                            Pause
-                          </Button>
-                        )}
-                        {isPaused && (
-                          <Button
-                            onClick={handlePauseReading}
-                            variant="outline"
-                            size="sm"
-                            className="border-[#00CC66] text-[#00CC66] hover:bg-[#00CC66] hover:text-white"
-                          >
-                            <Play className="h-4 w-4 mr-2" />
-                            Resume
-                          </Button>
-                        )}
-                        {(isSpeaking || isPaused) && (
-                          <Button
-                            onClick={handleStopReading}
-                            variant="outline"
-                            size="sm"
-                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-                          >
-                            <Square className="h-4 w-4 mr-2" />
-                            Stop
-                          </Button>
-                        )}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="flex items-center gap-2">
+                            <label htmlFor="speech-rate" className="text-sm text-gray-600 dark:text-gray-400">
+                              Speed:
+                            </label>
+                            <input
+                              id="speech-rate"
+                              type="range"
+                              min="0.5"
+                              max="2"
+                              step="0.1"
+                              value={speechRate}
+                              onChange={(e) => {
+                                const newRate = parseFloat(e.target.value)
+                                setSpeechRate(newRate)
+                                if (utteranceRef.current && speechSynthesisRef.current) {
+                                  utteranceRef.current.rate = newRate
+                                  if (speechSynthesisRef.current.speaking && !speechSynthesisRef.current.paused) {
+                                    speechSynthesisRef.current.cancel()
+                                    speechSynthesisRef.current.speak(utteranceRef.current)
+                                  }
+                                }
+                              }}
+                              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#003366]"
+                            />
+                            <span className="text-sm text-gray-600 dark:text-gray-400 w-8">
+                              {speechRate.toFixed(1)}x
+                            </span>
+                          </div>
+                          {!isSpeaking && !isPaused && (
+                            <Button
+                              onClick={handleStartReading}
+                              className="bg-[#003366] hover:bg-[#002244] text-white"
+                              size="sm"
+                              disabled={typeof window === 'undefined' || !('speechSynthesis' in window)}
+                            >
+                              <Play className="h-4 w-4 mr-2" />
+                              Start Reading
+                            </Button>
+                          )}
+                          {isSpeaking && !isPaused && (
+                            <Button
+                              onClick={handlePauseReading}
+                              variant="outline"
+                              size="sm"
+                              className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white"
+                            >
+                              <Pause className="h-4 w-4 mr-2" />
+                              Pause
+                            </Button>
+                          )}
+                          {isPaused && (
+                            <Button
+                              onClick={handlePauseReading}
+                              variant="outline"
+                              size="sm"
+                              className="border-[#00CC66] text-[#00CC66] hover:bg-[#00CC66] hover:text-white"
+                            >
+                              <Play className="h-4 w-4 mr-2" />
+                              Resume
+                            </Button>
+                          )}
+                          {(isSpeaking || isPaused) && (
+                            <Button
+                              onClick={handleStopReading}
+                              variant="outline"
+                              size="sm"
+                              className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                            >
+                              <Square className="h-4 w-4 mr-2" />
+                              Stop
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
                   )}
 
                   <article className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-[#003366] dark:prose-headings:text-white prose-a:text-[#00CC66] dark:prose-a:text-[#00CC66] prose-a:no-underline hover:prose-a:underline prose-p:text-gray-700 dark:prose-p:text-gray-200 prose-strong:text-gray-900 dark:prose-strong:text-white prose-li:text-gray-700 dark:prose-li:text-gray-200 prose-ul:text-gray-700 dark:prose-ul:text-gray-200 prose-ol:text-gray-700 dark:prose-ol:text-gray-200 prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-200 prose-code:text-gray-900 dark:prose-code:text-gray-100 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800">
@@ -1841,9 +1940,9 @@ function BlogPostContent() {
                         {post.author.role && <p className="text-gray-600 dark:text-gray-400 mb-4">{post.author.role}</p>}
                         {post.author.bio && <p className="text-gray-700 dark:text-gray-300">{post.author.bio}</p>}
                         <div className="mt-4 flex gap-2">
-                          <Button 
-                            variant={isFollowing ? "default" : "outline"} 
-                            size="sm" 
+                          <Button
+                            variant={isFollowing ? "default" : "outline"}
+                            size="sm"
                             className={
                               isFollowing
                                 ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
@@ -1865,7 +1964,7 @@ function BlogPostContent() {
                             ) : (
                               <>
                                 <UserPlus className="mr-2 h-4 w-4" />
-                            Follow
+                                Follow
                               </>
                             )}
                           </Button>
@@ -1895,7 +1994,7 @@ function BlogPostContent() {
                         </Button>
                       </div>
                     ) : (
-                    <form onSubmit={handleSubmitComment}>
+                      <form onSubmit={handleSubmitComment}>
                         {userName && (
                           <div className="mb-2 md:mb-3 flex flex-wrap items-center gap-1 md:gap-2">
                             <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Commenting as:</span>
@@ -1903,14 +2002,14 @@ function BlogPostContent() {
                           </div>
                         )}
                         <div className="relative">
-                      <textarea
+                          <textarea
                             ref={commentInputRef}
                             className="w-full p-3 md:p-4 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm md:text-base"
-                        rows={4}
+                            rows={4}
                             placeholder="Share your thoughts... 😊"
-                        value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
-                      ></textarea>
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                          ></textarea>
                           <div className="absolute bottom-2 md:bottom-3 right-2 md:right-3 z-10">
                             <EmojiPicker onEmojiSelect={handleEmojiSelect} />
                           </div>
@@ -1940,13 +2039,15 @@ function BlogPostContent() {
                                 setShowVoiceRecorder(false)
                                 setCommentAudioUrl(null)
                               }}
+                              setAlertDialogContent={setAlertDialogContent}
+                              setAlertDialogOpen={setAlertDialogOpen}
                             />
                           )}
                         </div>
-                      <div className="mt-2 md:mt-3 flex justify-end">
-                        <Button
-                          type="submit"
-                          className="h-9 md:h-10 px-4 md:px-6 text-sm md:text-base bg-[#003366] hover:bg-[#002244]"
+                        <div className="mt-2 md:mt-3 flex justify-end">
+                          <Button
+                            type="submit"
+                            className="h-9 md:h-10 px-4 md:px-6 text-sm md:text-base bg-[#003366] hover:bg-[#002244]"
                             disabled={(!commentText.trim() && !commentAudioUrl) || commentMutation.isPending}
                           >
                             {commentMutation.isPending ? (
@@ -1957,9 +2058,9 @@ function BlogPostContent() {
                             ) : (
                               <span className="text-sm md:text-base">Post Comment</span>
                             )}
-                        </Button>
-                      </div>
-                    </form>
+                          </Button>
+                        </div>
+                      </form>
                     )}
                   </div>
 
@@ -1986,419 +2087,425 @@ function BlogPostContent() {
                       <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">Be the first to share your thoughts!</p>
                     </div>
                   ) : (
-                  <div className="space-y-4 md:space-y-6">
-                    {comments.map((comment) => (
-                      <div key={comment.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 md:p-6">
-                        <div className="flex items-start gap-2 md:gap-4">
-                          <Avatar className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0">
-                            <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
-                            <AvatarFallback className="text-xs md:text-sm">{comment.author.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                              <div className="flex flex-wrap items-center gap-1 md:gap-2 min-w-0">
-                                <span className="font-medium text-sm md:text-base text-gray-900 dark:text-white truncate">{comment.author.name}</span>
-                                {comment.author.isAuthor && <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>}
-                                <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{comment.date}</span>
+                    <div className="space-y-4 md:space-y-6">
+                      {comments.map((comment) => (
+                        <div key={comment.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 md:p-6">
+                          <div className="flex items-start gap-2 md:gap-4">
+                            <Avatar className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0">
+                              <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
+                              <AvatarFallback className="text-xs md:text-sm">{comment.author.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                                <div className="flex flex-wrap items-center gap-1 md:gap-2 min-w-0">
+                                  <span className="font-medium text-sm md:text-base text-gray-900 dark:text-white truncate">{comment.author.name}</span>
+                                  {comment.author.isAuthor && <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>}
+                                  <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{comment.date}</span>
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className={`h-7 md:h-8 px-2 text-xs md:text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(comment.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
+                                  onClick={() => handleLikeComment(comment.id)}
+                                  disabled={likeCommentMutation.isPending}
+                                >
+                                  <ThumbsUp className={`h-3 w-3 md:h-4 md:w-4 mr-1 ${likedComments.has(comment.id) ? 'fill-current' : ''}`} />
+                                  <span className="text-xs md:text-sm">{comment.likes}</span>
+                                </Button>
                               </div>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className={`h-7 md:h-8 px-2 text-xs md:text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(comment.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
-                                onClick={() => handleLikeComment(comment.id)}
-                                disabled={likeCommentMutation.isPending}
-                              >
-                                <ThumbsUp className={`h-3 w-3 md:h-4 md:w-4 mr-1 ${likedComments.has(comment.id) ? 'fill-current' : ''}`} />
-                                <span className="text-xs md:text-sm">{comment.likes}</span>
-                              </Button>
-                            </div>
-                            <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{comment.content}</p>
-                            {comment.audioUrl && (
-                              <div className="mt-3">
-                                <audio 
-                                  src={comment.audioUrl} 
-                                  controls 
-                                  controlsList="nodownload nofullscreen noplaybackrate" 
-                                  className="w-full h-8 md:h-10"
-                                  onContextMenu={(e) => e.preventDefault()}
-                                />
+                              <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{comment.content}</p>
+                              {comment.audioUrl && (
+                                <div className="mt-3">
+                                  <audio
+                                    src={comment.audioUrl}
+                                    controls
+                                    controlsList="nodownload nofullscreen noplaybackrate"
+                                    className="w-full h-8 md:h-10"
+                                    onContextMenu={(e) => e.preventDefault()}
+                                  />
+                                </div>
+                              )}
+                              <div className="mt-3 flex gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 md:h-8 px-2 md:px-3 text-xs md:text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                  onClick={() => handleReply(comment.id)}
+                                >
+                                  Reply
+                                </Button>
                               </div>
-                            )}
-                            <div className="mt-3 flex gap-2">
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-7 md:h-8 px-2 md:px-3 text-xs md:text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                                onClick={() => handleReply(comment.id)}
-                              >
-                                Reply
-                              </Button>
-                            </div>
 
-                            {/* Reply Form */}
-                            {replyingTo === comment.id && (
-                              <div className="mt-3 md:mt-4 pl-2 md:pl-4 lg:pl-6 border-l-2 border-[#00CC66]">
-                                <form onSubmit={(e) => handleSubmitReply(e, comment.id)} className="mt-3 md:mt-4">
-                                  <div className="relative">
-                                    <textarea
-                                      ref={(el) => {
-                                        if (el) {
-                                          replyInputRefs.current[comment.id] = el
-                                        }
-                                      }}
-                                      className="w-full p-2 md:p-3 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
-                                      rows={3}
-                                      placeholder="Write a reply... 😊"
-                                      value={replyText}
-                                      onChange={(e) => setReplyText(e.target.value)}
-                                    ></textarea>
-                                    <div className="absolute bottom-2 right-2 z-10">
-                                      <EmojiPicker onEmojiSelect={(emoji) => handleReplyEmojiSelect(emoji, comment.id)} />
+                              {/* Reply Form */}
+                              {replyingTo === comment.id && (
+                                <div className="mt-3 md:mt-4 pl-2 md:pl-4 lg:pl-6 border-l-2 border-[#00CC66]">
+                                  <form onSubmit={(e) => handleSubmitReply(e, comment.id)} className="mt-3 md:mt-4">
+                                    <div className="relative">
+                                      <textarea
+                                        ref={(el) => {
+                                          if (el) {
+                                            replyInputRefs.current[comment.id] = el
+                                          }
+                                        }}
+                                        className="w-full p-2 md:p-3 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
+                                        rows={3}
+                                        placeholder="Write a reply... 😊"
+                                        value={replyText}
+                                        onChange={(e) => setReplyText(e.target.value)}
+                                      ></textarea>
+                                      <div className="absolute bottom-2 right-2 z-10">
+                                        <EmojiPicker onEmojiSelect={(emoji) => handleReplyEmojiSelect(emoji, comment.id)} />
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="mt-2 flex flex-col sm:flex-row gap-2 justify-end">
-                                    <Button
-                                      type="button"
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-7 md:h-8 px-3 text-xs md:text-sm w-full sm:w-auto"
-                                      onClick={() => {
-                                        setReplyingTo(null)
-                                        setReplyText('')
-                                      }}
-                                    >
-                                      Cancel
-                                    </Button>
-                                    <Button
-                                      type="submit"
-                                      size="sm"
-                                      className="h-7 md:h-8 px-3 md:px-4 text-xs md:text-sm bg-[#003366] hover:bg-[#002244] w-full sm:w-auto"
-                                      disabled={(!replyText.trim() && !(showReplyVoiceRecorder === comment.id && replyAudioUrl)) || commentMutation.isPending}
-                                    >
-                                      {commentMutation.isPending ? (
-                                        <>
-                                          <Loader2 className="mr-1 md:mr-2 h-3 w-3 animate-spin" />
-                                          <span className="text-xs md:text-sm">Posting...</span>
-                                        </>
-                                      ) : (
-                                        <span className="text-xs md:text-sm">Post Reply</span>
-                                      )}
-                                    </Button>
-                                  </div>
-                                  <div className="mt-2">
-                                    {!showReplyVoiceRecorder || showReplyVoiceRecorder !== comment.id ? (
+                                    <div className="mt-2 flex flex-col sm:flex-row gap-2 justify-end">
                                       <Button
                                         type="button"
-                                        variant="outline"
+                                        variant="ghost"
                                         size="sm"
-                                        className="h-7 md:h-8 px-2 md:px-3 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                        className="h-7 md:h-8 px-3 text-xs md:text-sm w-full sm:w-auto"
                                         onClick={() => {
-                                          setShowReplyVoiceRecorder(comment.id)
-                                          setReplyAudioUrl(null)
+                                          setReplyingTo(null)
+                                          setReplyText('')
                                         }}
                                       >
-                                        <Mic className="h-3 w-3 mr-1" />
-                                        <span className="text-xs">Record Voice</span>
+                                        Cancel
                                       </Button>
-                                    ) : (
-                                      <VoiceRecorder
-                                        onRecordingComplete={(audioUrl) => {
-                                          setReplyAudioUrl(audioUrl)
-                                        }}
-                                        onCancel={() => {
-                                          setShowReplyVoiceRecorder(null)
-                                          setReplyAudioUrl(null)
-                                        }}
-                                      />
-                                    )}
-                                  </div>
-                                </form>
-                              </div>
-                            )}
-
-                            {/* Replies */}
-                            {comment.replies.length > 0 && (
-                              <div className="mt-3 md:mt-4 pl-2 md:pl-4 lg:pl-6 border-l-2 border-gray-200 dark:border-gray-700 space-y-3 md:space-y-4">
-                                {comment.replies.map((reply) => (
-                                  <div key={reply.id} className="bg-white dark:bg-gray-900 rounded-lg p-2 md:p-4">
-                                    <div className="flex items-start gap-2 md:gap-3">
-                                      <Avatar className="h-7 w-7 md:h-8 md:w-8 flex-shrink-0">
-                                        <AvatarImage src={reply.author.avatar} alt={reply.author.name} />
-                                        <AvatarFallback className="text-xs">{reply.author.name.charAt(0)}</AvatarFallback>
-                                      </Avatar>
-                                      <div className="flex-1 min-w-0">
-                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 md:gap-2 mb-1">
-                                          <div className="flex flex-wrap items-center gap-1 md:gap-2 min-w-0">
-                                            <span className="font-medium text-xs md:text-sm text-gray-900 dark:text-white truncate">{reply.author.name}</span>
-                                          {reply.author.isAuthor && (
-                                            <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>
-                                          )}
-                                            <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{reply.date}</span>
-                                        </div>
-                                          <Button 
-                                            variant="ghost" 
-                                            size="sm" 
-                                            className={`h-6 md:h-7 px-1.5 md:px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(reply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
-                                            onClick={() => handleLikeComment(reply.id)}
-                                            disabled={likeCommentMutation.isPending}
-                                          >
-                                            <ThumbsUp className={`h-3 w-3 mr-0.5 md:mr-1 ${likedComments.has(reply.id) ? 'fill-current' : ''}`} />
-                                          <span className="text-xs">{reply.likes}</span>
-                                        </Button>
-                                      </div>
-                                        <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{reply.content}</p>
-                                        {reply.audioUrl && (
-                                          <div className="mt-2">
-                                            <audio 
-                                              src={reply.audioUrl} 
-                                              controls 
-                                              controlsList="nodownload nofullscreen noplaybackrate" 
-                                              className="w-full h-7 md:h-8"
-                                              onContextMenu={(e) => e.preventDefault()}
-                                            />
-                                          </div>
+                                      <Button
+                                        type="submit"
+                                        size="sm"
+                                        className="h-7 md:h-8 px-3 md:px-4 text-xs md:text-sm bg-[#003366] hover:bg-[#002244] w-full sm:w-auto"
+                                        disabled={(!replyText.trim() && !(showReplyVoiceRecorder === comment.id && replyAudioUrl)) || commentMutation.isPending}
+                                      >
+                                        {commentMutation.isPending ? (
+                                          <>
+                                            <Loader2 className="mr-1 md:mr-2 h-3 w-3 animate-spin" />
+                                            <span className="text-xs md:text-sm">Posting...</span>
+                                          </>
+                                        ) : (
+                                          <span className="text-xs md:text-sm">Post Reply</span>
                                         )}
-                                        <div className="mt-2 flex gap-2">
-                                          <Button 
-                                            variant="ghost" 
-                                            size="sm" 
-                                            className="h-6 md:h-7 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                                            onClick={() => handleReply(reply.id)}
-                                          >
-                                            Reply
-                                          </Button>
-                                        </div>
+                                      </Button>
+                                    </div>
+                                    <div className="mt-2">
+                                      {!showReplyVoiceRecorder || showReplyVoiceRecorder !== comment.id ? (
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          size="sm"
+                                          className="h-7 md:h-8 px-2 md:px-3 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                          onClick={() => {
+                                            setShowReplyVoiceRecorder(comment.id)
+                                            setReplyAudioUrl(null)
+                                          }}
+                                        >
+                                          <Mic className="h-3 w-3 mr-1" />
+                                          <span className="text-xs">Record Voice</span>
+                                        </Button>
+                                      ) : (
+                                        <VoiceRecorder
+                                          onRecordingComplete={(audioUrl) => {
+                                            setReplyAudioUrl(audioUrl)
+                                          }}
+                                          onCancel={() => {
+                                            setShowReplyVoiceRecorder(null)
+                                            setReplyAudioUrl(null)
+                                          }}
+                                          setAlertDialogContent={setAlertDialogContent}
+                                          setAlertDialogOpen={setAlertDialogOpen}
+                                        />
+                                      )}
+                                    </div>
+                                  </form>
+                                </div>
+                              )}
 
-                                        {/* Nested Reply Form */}
-                                        {replyingTo === reply.id && (
-                                          <div className="mt-2 md:mt-3 ml-1 md:ml-2 pl-2 md:pl-3 lg:pl-4 border-l-2 border-[#00CC66]">
-                                            <form onSubmit={(e) => handleSubmitReply(e, reply.id)} className="mt-2 md:mt-3">
-                                              <div className="relative">
-                                                <textarea
-                                                  ref={(el) => {
-                                                    if (el) {
-                                                      replyInputRefs.current[reply.id] = el
-                                                    }
-                                                  }}
-                                                  className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
-                                                  rows={2}
-                                                  placeholder="Write a reply... 😊"
-                                                  value={replyText}
-                                                  onChange={(e) => setReplyText(e.target.value)}
-                                                ></textarea>
-                                                <div className="absolute bottom-2 right-2 z-10">
-                                                  <EmojiPicker onEmojiSelect={(emoji) => handleReplyEmojiSelect(emoji, reply.id)} />
+                              {/* Replies */}
+                              {comment.replies.length > 0 && (
+                                <div className="mt-3 md:mt-4 pl-2 md:pl-4 lg:pl-6 border-l-2 border-gray-200 dark:border-gray-700 space-y-3 md:space-y-4">
+                                  {comment.replies.map((reply) => (
+                                    <div key={reply.id} className="bg-white dark:bg-gray-900 rounded-lg p-2 md:p-4">
+                                      <div className="flex items-start gap-2 md:gap-3">
+                                        <Avatar className="h-7 w-7 md:h-8 md:w-8 flex-shrink-0">
+                                          <AvatarImage src={reply.author.avatar} alt={reply.author.name} />
+                                          <AvatarFallback className="text-xs">{reply.author.name.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 md:gap-2 mb-1">
+                                            <div className="flex flex-wrap items-center gap-1 md:gap-2 min-w-0">
+                                              <span className="font-medium text-xs md:text-sm text-gray-900 dark:text-white truncate">{reply.author.name}</span>
+                                              {reply.author.isAuthor && (
+                                                <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>
+                                              )}
+                                              <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{reply.date}</span>
+                                            </div>
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              className={`h-6 md:h-7 px-1.5 md:px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(reply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
+                                              onClick={() => handleLikeComment(reply.id)}
+                                              disabled={likeCommentMutation.isPending}
+                                            >
+                                              <ThumbsUp className={`h-3 w-3 mr-0.5 md:mr-1 ${likedComments.has(reply.id) ? 'fill-current' : ''}`} />
+                                              <span className="text-xs">{reply.likes}</span>
+                                            </Button>
+                                          </div>
+                                          <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{reply.content}</p>
+                                          {reply.audioUrl && (
+                                            <div className="mt-2">
+                                              <audio
+                                                src={reply.audioUrl}
+                                                controls
+                                                controlsList="nodownload nofullscreen noplaybackrate"
+                                                className="w-full h-7 md:h-8"
+                                                onContextMenu={(e) => e.preventDefault()}
+                                              />
+                                            </div>
+                                          )}
+                                          <div className="mt-2 flex gap-2">
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              className="h-6 md:h-7 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                              onClick={() => handleReply(reply.id)}
+                                            >
+                                              Reply
+                                            </Button>
+                                          </div>
+
+                                          {/* Nested Reply Form */}
+                                          {replyingTo === reply.id && (
+                                            <div className="mt-2 md:mt-3 ml-1 md:ml-2 pl-2 md:pl-3 lg:pl-4 border-l-2 border-[#00CC66]">
+                                              <form onSubmit={(e) => handleSubmitReply(e, reply.id)} className="mt-2 md:mt-3">
+                                                <div className="relative">
+                                                  <textarea
+                                                    ref={(el) => {
+                                                      if (el) {
+                                                        replyInputRefs.current[reply.id] = el
+                                                      }
+                                                    }}
+                                                    className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
+                                                    rows={2}
+                                                    placeholder="Write a reply... 😊"
+                                                    value={replyText}
+                                                    onChange={(e) => setReplyText(e.target.value)}
+                                                  ></textarea>
+                                                  <div className="absolute bottom-2 right-2 z-10">
+                                                    <EmojiPicker onEmojiSelect={(emoji) => handleReplyEmojiSelect(emoji, reply.id)} />
+                                                  </div>
                                                 </div>
-                                              </div>
-                                              <div className="mt-2 flex flex-col sm:flex-row gap-1.5 md:gap-2 justify-end">
-                                                <Button
-                                                  type="button"
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  className="h-6 md:h-7 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white w-full sm:w-auto"
-                                                  onClick={() => {
-                                                    setReplyingTo(null)
-                                                    setReplyText('')
-                                                  }}
-                                                >
-                                                  Cancel
-                                                </Button>
-                                                <Button
-                                                  type="submit"
-                                                  size="sm"
-                                                  className="h-6 md:h-7 px-2 md:px-3 text-xs bg-[#003366] hover:bg-[#002244] text-white w-full sm:w-auto"
-                                                  disabled={(!replyText.trim() && !(showReplyVoiceRecorder === reply.id && replyAudioUrl)) || commentMutation.isPending}
-                                                >
-                                                  {commentMutation.isPending ? (
-                                                    <>
-                                                      <Loader2 className="mr-1 h-2.5 w-2.5 md:h-3 md:w-3 animate-spin" />
-                                                      <span className="text-xs">Posting...</span>
-                                                    </>
-                                                  ) : (
-                                                    <span className="text-xs">Post Reply</span>
-                                                  )}
-                                                </Button>
-                                              </div>
-                                              <div className="mt-2">
-                                                {!showReplyVoiceRecorder || showReplyVoiceRecorder !== reply.id ? (
+                                                <div className="mt-2 flex flex-col sm:flex-row gap-1.5 md:gap-2 justify-end">
                                                   <Button
                                                     type="button"
-                                                    variant="outline"
+                                                    variant="ghost"
                                                     size="sm"
-                                                    className="h-6 md:h-7 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                                    className="h-6 md:h-7 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white w-full sm:w-auto"
                                                     onClick={() => {
-                                                      setShowReplyVoiceRecorder(reply.id)
-                                                      setReplyAudioUrl(null)
+                                                      setReplyingTo(null)
+                                                      setReplyText('')
                                                     }}
                                                   >
-                                                    <Mic className="h-3 w-3 mr-1" />
-                                                    <span className="text-xs">Record Voice</span>
+                                                    Cancel
                                                   </Button>
-                                                ) : (
-                                                  <VoiceRecorder
-                                                    onRecordingComplete={(audioUrl) => {
-                                                      setReplyAudioUrl(audioUrl)
-                                                    }}
-                                                    onCancel={() => {
-                                                      setShowReplyVoiceRecorder(null)
-                                                      setReplyAudioUrl(null)
-                                                    }}
-                                                  />
-                                                )}
-                                              </div>
-                                            </form>
-                                          </div>
-                                        )}
-
-                                        {/* Nested Replies (replies to replies) */}
-                                        {reply.replies && reply.replies.length > 0 && (
-                                          <div className="mt-2 md:mt-3 ml-1 md:ml-2 pl-2 md:pl-3 lg:pl-4 border-l-2 border-gray-200 dark:border-gray-600 space-y-2 md:space-y-3">
-                                            {reply.replies.map((nestedReply) => (
-                                              <div key={nestedReply.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-2 md:p-3">
-                                                <div className="flex items-start gap-1.5 md:gap-2">
-                                                  <Avatar className="h-6 w-6 md:h-7 md:w-7 flex-shrink-0">
-                                                    <AvatarImage src={nestedReply.author.avatar} alt={nestedReply.author.name} />
-                                                    <AvatarFallback className="text-xs">{nestedReply.author.name.charAt(0)}</AvatarFallback>
-                                                  </Avatar>
-                                                  <div className="flex-1 min-w-0">
-                                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
-                                                      <div className="flex flex-wrap items-center gap-1 min-w-0">
-                                                        <span className="font-medium text-gray-900 dark:text-white text-xs md:text-sm truncate">{nestedReply.author.name}</span>
-                                                        {nestedReply.author.isAuthor && (
-                                                          <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>
-                                                        )}
-                                                        <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{nestedReply.date}</span>
-                                                      </div>
-                                                      <Button 
-                                                        variant="ghost" 
-                                                        size="sm" 
-                                                        className={`h-5 md:h-6 px-1 md:px-1.5 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(nestedReply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
-                                                        onClick={() => handleLikeComment(nestedReply.id)}
-                                                        disabled={likeCommentMutation.isPending}
-                                                      >
-                                                        <ThumbsUp className={`h-2.5 w-2.5 md:h-3 md:w-3 mr-0.5 ${likedComments.has(nestedReply.id) ? 'fill-current' : ''}`} />
-                                                        <span className="text-xs">{nestedReply.likes}</span>
-                                                      </Button>
-                                                    </div>
-                                                    <p className="text-gray-700 dark:text-gray-300 text-xs whitespace-pre-wrap break-words">{nestedReply.content}</p>
-                                                    {nestedReply.audioUrl && (
-                                                      <div className="mt-1.5 md:mt-2">
-                                                        <audio 
-                                                          src={nestedReply.audioUrl} 
-                                                          controls 
-                                                          controlsList="nodownload nofullscreen noplaybackrate" 
-                                                          className="w-full h-6 md:h-7"
-                                                          onContextMenu={(e) => e.preventDefault()}
-                                                        />
-                                                      </div>
+                                                  <Button
+                                                    type="submit"
+                                                    size="sm"
+                                                    className="h-6 md:h-7 px-2 md:px-3 text-xs bg-[#003366] hover:bg-[#002244] text-white w-full sm:w-auto"
+                                                    disabled={(!replyText.trim() && !(showReplyVoiceRecorder === reply.id && replyAudioUrl)) || commentMutation.isPending}
+                                                  >
+                                                    {commentMutation.isPending ? (
+                                                      <>
+                                                        <Loader2 className="mr-1 h-2.5 w-2.5 md:h-3 md:w-3 animate-spin" />
+                                                        <span className="text-xs">Posting...</span>
+                                                      </>
+                                                    ) : (
+                                                      <span className="text-xs">Post Reply</span>
                                                     )}
-                                                    <div className="mt-1.5 md:mt-2">
-                                                      <Button 
-                                                        variant="ghost" 
-                                                        size="sm" 
-                                                        className="h-5 md:h-6 px-1.5 md:px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                                                        onClick={() => handleReply(nestedReply.id)}
-                                                      >
-                                                        Reply
-                                                      </Button>
-                                                    </div>
+                                                  </Button>
+                                                </div>
+                                                <div className="mt-2">
+                                                  {!showReplyVoiceRecorder || showReplyVoiceRecorder !== reply.id ? (
+                                                    <Button
+                                                      type="button"
+                                                      variant="outline"
+                                                      size="sm"
+                                                      className="h-6 md:h-7 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                                      onClick={() => {
+                                                        setShowReplyVoiceRecorder(reply.id)
+                                                        setReplyAudioUrl(null)
+                                                      }}
+                                                    >
+                                                      <Mic className="h-3 w-3 mr-1" />
+                                                      <span className="text-xs">Record Voice</span>
+                                                    </Button>
+                                                  ) : (
+                                                    <VoiceRecorder
+                                                      onRecordingComplete={(audioUrl) => {
+                                                        setReplyAudioUrl(audioUrl)
+                                                      }}
+                                                      onCancel={() => {
+                                                        setShowReplyVoiceRecorder(null)
+                                                        setReplyAudioUrl(null)
+                                                      }}
+                                                      setAlertDialogContent={setAlertDialogContent}
+                                                      setAlertDialogOpen={setAlertDialogOpen}
+                                                    />
+                                                  )}
+                                                </div>
+                                              </form>
+                                            </div>
+                                          )}
 
-                                                    {/* Nested Reply Form for nested replies */}
-                                                    {replyingTo === nestedReply.id && (
-                                                      <div className="mt-2 ml-1 md:ml-2 pl-2 md:pl-3 border-l-2 border-[#00CC66]">
-                                                        <form onSubmit={(e) => handleSubmitReply(e, nestedReply.id)} className="mt-2">
-                                                          <div className="relative">
-                                                            <textarea
-                                                              ref={(el) => {
-                                                                if (el) {
-                                                                  replyInputRefs.current[nestedReply.id] = el
-                                                                }
-                                                              }}
-                                                              className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs"
-                                                              rows={2}
-                                                              placeholder="Write a reply... 😊"
-                                                              value={replyText}
-                                                              onChange={(e) => setReplyText(e.target.value)}
-                                                            ></textarea>
-                                                            <div className="absolute bottom-2 right-2 z-10">
-                                                              <EmojiPicker onEmojiSelect={(emoji) => handleReplyEmojiSelect(emoji, nestedReply.id)} />
+                                          {/* Nested Replies (replies to replies) */}
+                                          {reply.replies && reply.replies.length > 0 && (
+                                            <div className="mt-2 md:mt-3 ml-1 md:ml-2 pl-2 md:pl-3 lg:pl-4 border-l-2 border-gray-200 dark:border-gray-600 space-y-2 md:space-y-3">
+                                              {reply.replies.map((nestedReply) => (
+                                                <div key={nestedReply.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-2 md:p-3">
+                                                  <div className="flex items-start gap-1.5 md:gap-2">
+                                                    <Avatar className="h-6 w-6 md:h-7 md:w-7 flex-shrink-0">
+                                                      <AvatarImage src={nestedReply.author.avatar} alt={nestedReply.author.name} />
+                                                      <AvatarFallback className="text-xs">{nestedReply.author.name.charAt(0)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="flex-1 min-w-0">
+                                                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
+                                                        <div className="flex flex-wrap items-center gap-1 min-w-0">
+                                                          <span className="font-medium text-gray-900 dark:text-white text-xs md:text-sm truncate">{nestedReply.author.name}</span>
+                                                          {nestedReply.author.isAuthor && (
+                                                            <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>
+                                                          )}
+                                                          <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{nestedReply.date}</span>
+                                                        </div>
+                                                        <Button
+                                                          variant="ghost"
+                                                          size="sm"
+                                                          className={`h-5 md:h-6 px-1 md:px-1.5 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(nestedReply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
+                                                          onClick={() => handleLikeComment(nestedReply.id)}
+                                                          disabled={likeCommentMutation.isPending}
+                                                        >
+                                                          <ThumbsUp className={`h-2.5 w-2.5 md:h-3 md:w-3 mr-0.5 ${likedComments.has(nestedReply.id) ? 'fill-current' : ''}`} />
+                                                          <span className="text-xs">{nestedReply.likes}</span>
+                                                        </Button>
+                                                      </div>
+                                                      <p className="text-gray-700 dark:text-gray-300 text-xs whitespace-pre-wrap break-words">{nestedReply.content}</p>
+                                                      {nestedReply.audioUrl && (
+                                                        <div className="mt-1.5 md:mt-2">
+                                                          <audio
+                                                            src={nestedReply.audioUrl}
+                                                            controls
+                                                            controlsList="nodownload nofullscreen noplaybackrate"
+                                                            className="w-full h-6 md:h-7"
+                                                            onContextMenu={(e) => e.preventDefault()}
+                                                          />
+                                                        </div>
+                                                      )}
+                                                      <div className="mt-1.5 md:mt-2">
+                                                        <Button
+                                                          variant="ghost"
+                                                          size="sm"
+                                                          className="h-5 md:h-6 px-1.5 md:px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                                          onClick={() => handleReply(nestedReply.id)}
+                                                        >
+                                                          Reply
+                                                        </Button>
+                                                      </div>
+
+                                                      {/* Nested Reply Form for nested replies */}
+                                                      {replyingTo === nestedReply.id && (
+                                                        <div className="mt-2 ml-1 md:ml-2 pl-2 md:pl-3 border-l-2 border-[#00CC66]">
+                                                          <form onSubmit={(e) => handleSubmitReply(e, nestedReply.id)} className="mt-2">
+                                                            <div className="relative">
+                                                              <textarea
+                                                                ref={(el) => {
+                                                                  if (el) {
+                                                                    replyInputRefs.current[nestedReply.id] = el
+                                                                  }
+                                                                }}
+                                                                className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs"
+                                                                rows={2}
+                                                                placeholder="Write a reply... 😊"
+                                                                value={replyText}
+                                                                onChange={(e) => setReplyText(e.target.value)}
+                                                              ></textarea>
+                                                              <div className="absolute bottom-2 right-2 z-10">
+                                                                <EmojiPicker onEmojiSelect={(emoji) => handleReplyEmojiSelect(emoji, nestedReply.id)} />
+                                                              </div>
                                                             </div>
-                                                          </div>
-                                                          <div className="mt-1.5 md:mt-2 flex flex-col sm:flex-row gap-1 justify-end">
-                                                            <Button
-                                                              type="button"
-                                                              variant="ghost"
-                                                              size="sm"
-                                                              className="h-6 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white w-full sm:w-auto"
-                                                              onClick={() => {
-                                                                setReplyingTo(null)
-                                                                setReplyText('')
-                                                              }}
-                                                            >
-                                                              Cancel
-                                                            </Button>
-                                                            <Button
-                                                              type="submit"
-                                                              size="sm"
-                                                              className="h-6 px-2 md:px-3 text-xs bg-[#003366] hover:bg-[#002244] text-white w-full sm:w-auto"
-                                                              disabled={(!replyText.trim() && !(showReplyVoiceRecorder === nestedReply.id && replyAudioUrl)) || commentMutation.isPending}
-                                                            >
-                                                              {commentMutation.isPending ? (
-                                                                <>
-                                                                  <Loader2 className="mr-1 h-2.5 w-2.5 animate-spin" />
-                                                                  <span className="text-xs">Posting...</span>
-                                                                </>
-                                                              ) : (
-                                                                <span className="text-xs">Post</span>
-                                                              )}
-                                                            </Button>
-                                                          </div>
-                                                          <div className="mt-1.5">
-                                                            {!showReplyVoiceRecorder || showReplyVoiceRecorder !== nestedReply.id ? (
+                                                            <div className="mt-1.5 md:mt-2 flex flex-col sm:flex-row gap-1 justify-end">
                                                               <Button
                                                                 type="button"
-                                                                variant="outline"
+                                                                variant="ghost"
                                                                 size="sm"
-                                                                className="h-5 md:h-6 px-1.5 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                                                className="h-6 px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white w-full sm:w-auto"
                                                                 onClick={() => {
-                                                                  setShowReplyVoiceRecorder(nestedReply.id)
-                                                                  setReplyAudioUrl(null)
+                                                                  setReplyingTo(null)
+                                                                  setReplyText('')
                                                                 }}
                                                               >
-                                                                <Mic className="h-2.5 w-2.5 md:h-3 md:w-3 mr-1" />
-                                                                <span className="text-xs">Record</span>
+                                                                Cancel
                                                               </Button>
-                                                            ) : (
-                                                              <VoiceRecorder
-                                                                onRecordingComplete={(audioUrl) => {
-                                                                  setReplyAudioUrl(audioUrl)
-                                                                }}
-                                                                onCancel={() => {
-                                                                  setShowReplyVoiceRecorder(null)
-                                                                  setReplyAudioUrl(null)
-                                                                }}
-                                                              />
-                                                            )}
-                                                          </div>
-                                                        </form>
-                                                      </div>
-                                                    )}
+                                                              <Button
+                                                                type="submit"
+                                                                size="sm"
+                                                                className="h-6 px-2 md:px-3 text-xs bg-[#003366] hover:bg-[#002244] text-white w-full sm:w-auto"
+                                                                disabled={(!replyText.trim() && !(showReplyVoiceRecorder === nestedReply.id && replyAudioUrl)) || commentMutation.isPending}
+                                                              >
+                                                                {commentMutation.isPending ? (
+                                                                  <>
+                                                                    <Loader2 className="mr-1 h-2.5 w-2.5 animate-spin" />
+                                                                    <span className="text-xs">Posting...</span>
+                                                                  </>
+                                                                ) : (
+                                                                  <span className="text-xs">Post</span>
+                                                                )}
+                                                              </Button>
+                                                            </div>
+                                                            <div className="mt-1.5">
+                                                              {!showReplyVoiceRecorder || showReplyVoiceRecorder !== nestedReply.id ? (
+                                                                <Button
+                                                                  type="button"
+                                                                  variant="outline"
+                                                                  size="sm"
+                                                                  className="h-5 md:h-6 px-1.5 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                                                  onClick={() => {
+                                                                    setShowReplyVoiceRecorder(nestedReply.id)
+                                                                    setReplyAudioUrl(null)
+                                                                  }}
+                                                                >
+                                                                  <Mic className="h-2.5 w-2.5 md:h-3 md:w-3 mr-1" />
+                                                                  <span className="text-xs">Record</span>
+                                                                </Button>
+                                                              ) : (
+                                                                <VoiceRecorder
+                                                                  onRecordingComplete={(audioUrl) => {
+                                                                    setReplyAudioUrl(audioUrl)
+                                                                  }}
+                                                                  onCancel={() => {
+                                                                    setShowReplyVoiceRecorder(null)
+                                                                    setReplyAudioUrl(null)
+                                                                  }}
+                                                                  setAlertDialogContent={setAlertDialogContent}
+                                                                  setAlertDialogOpen={setAlertDialogOpen}
+                                                                />
+                                                              )}
+                                                            </div>
+                                                          </form>
+                                                        </div>
+                                                      )}
+                                                    </div>
                                                   </div>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                     </div>
                   )}
                 </TabsContent>
@@ -2460,7 +2567,7 @@ function BlogPostContent() {
                   </div>
                 </div>
 
-                
+
               </div>
             </div>
           </div>
@@ -2475,7 +2582,7 @@ function BlogPostContent() {
               const currentIndex = allPosts.findIndex((p) => p.id === post.id)
               const previousPost = currentIndex > 0 ? allPosts[currentIndex - 1] : allPosts[allPosts.length - 1]
               const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : allPosts[0]
-              
+
               return (
                 <>
                   {previousPost && (
@@ -2484,13 +2591,13 @@ function BlogPostContent() {
                         <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">Previous Article</div>
                         <h3 className="text-lg font-bold text-[#003366] dark:text-white mb-2 line-clamp-2">
                           {previousPost.title}
-                </h3>
+                        </h3>
                         <div className="mt-auto flex items-center text-[#00CC66] dark:text-[#00CC66]">
-                  <ArrowLeft className="h-4 w-4 mr-1" />
-                  <span>Read Article</span>
-                </div>
-              </div>
-            </Link>
+                          <ArrowLeft className="h-4 w-4 mr-1" />
+                          <span>Read Article</span>
+                        </div>
+                      </div>
+                    </Link>
                   )}
 
                   {nextPost && (
@@ -2499,13 +2606,13 @@ function BlogPostContent() {
                         <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 text-right">Next Article</div>
                         <h3 className="text-lg font-bold text-[#003366] dark:text-white mb-2 line-clamp-2 text-right">
                           {nextPost.title}
-                </h3>
+                        </h3>
                         <div className="mt-auto flex items-center justify-end text-[#00CC66] dark:text-[#00CC66]">
-                  <span>Read Article</span>
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </div>
-              </div>
-            </Link>
+                          <span>Read Article</span>
+                          <ArrowRight className="h-4 w-4 ml-1" />
+                        </div>
+                      </div>
+                    </Link>
                   )}
                 </>
               )
@@ -2513,6 +2620,30 @@ function BlogPostContent() {
           </div>
         </div>
       </section>
+
+      {/* AlertDialog for Moderation Results */}
+      <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              {alertDialogContent.type === 'success' ? (
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+              ) : (
+                <AlertCircle className="h-5 w-5 text-red-600" />
+              )}
+              {alertDialogContent.title}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="whitespace-pre-line">
+              {alertDialogContent.description}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setAlertDialogOpen(false)}>
+              Okay
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
