@@ -22,6 +22,7 @@ import { useLanguage } from "@/contexts/LanguageContext"
 export default function BottomNavigator() {
     const { language, languages, isTranslating, handleLanguageChange, isDropdownOpen, setIsDropdownOpen } = useLanguage()
     const [showWidget, setShowWidget] = useState(false)
+    const [currentTime, setCurrentTime] = useState("")
 
     const handleVoiceClick = () => {
         // Trigger the VoiceNavigator button click programmatically
@@ -31,31 +32,45 @@ export default function BottomNavigator() {
         }
     }
 
+    useEffect(() => {
+        const updateTime = () => {
+            const timeString = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+            setCurrentTime(timeString)
+        }
+
+        updateTime()
+        const intervalId = setInterval(updateTime, 60000)
+        return () => clearInterval(intervalId)
+    }, [])
+
     return (
-        <div className="fixed bottom-0 left-0 z-50 grid w-full h-20 grid-cols-1 px-8 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border md:grid-cols-3">
+        <div className="fixed bottom-0 left-0 z-50 grid w-full  grid-cols-1 px-8 bg-white dark:bg-gray-900 backdrop-blur border-t border-border md:grid-cols-3 rounded-t-2xl overflow-hidden">
             <div className="items-center justify-center hidden text-foreground me-auto md:flex">
                 <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-muted/50">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-sm font-medium">12:43 PM</span>
+                    <span className="text-sm font-medium">{currentTime}</span>
                     <span className="text-xs text-muted-foreground">|</span>
                     <span className="text-sm font-medium">Pollen Daily Standup</span>
                 </div>
             </div>
 
-            <div className="flex items-center justify-center mx-auto space-x-4">
+            <div className="flex items-center justify-center mx-auto flex-wrap gap-4">
                 <TooltipProvider>
                     {/* Voice Navigator Button - Replaces Mic */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button 
-                                variant="outline" 
-                                size="icon" 
-                                className="rounded-full h-12 w-12 bg-[#4C4EFB] text-white hover:bg-[#4C4EFB]/90 border-border transition-all duration-300"
-                                onClick={handleVoiceClick}
-                            >
-                                <Mic className="h-5 w-5" />
-                                <span className="sr-only">Voice Navigator</span>
-                            </Button>
+                            <div className="flex flex-col items-center gap-1">
+                                <Button 
+                                    variant="outline" 
+                                    size="icon" 
+                                    className="rounded-full h-12 w-12 bg-[#4C4EFB] text-white hover:bg-[#4C4EFB]/90 border-border transition-all duration-300"
+                                    onClick={handleVoiceClick}
+                                >
+                                    <Mic className="h-5 w-5" />
+                                    <span className="sr-only">Voice Navigator</span>
+                                </Button>
+                                <span className="text-[10px] uppercase tracking-wide text-muted-foreground md:text-xs">Voice</span>
+                            </div>
                         </TooltipTrigger>
                         <TooltipContent>
                             <p>Voice Navigator</p>
@@ -65,15 +80,18 @@ export default function BottomNavigator() {
                     {/* AI Chat Widget Button - Replaces Video */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button 
-                                variant="outline" 
-                                size="icon" 
-                                className={`rounded-full h-12 w-12 ${showWidget ? 'bg-[#4C4EFB] text-white hover:bg-[#4C4EFB]/90' : 'bg-background hover:bg-muted'} border-border transition-all duration-300`}
-                                onClick={() => setShowWidget(!showWidget)}
-                            >
-                                <MessageCircle className="h-5 w-5" />
-                                <span className="sr-only">AI Assistant</span>
-                            </Button>
+                            <div className="flex flex-col items-center gap-1">
+                                <Button 
+                                    variant="outline" 
+                                    size="icon" 
+                                    className={`rounded-full h-12 w-12 ${showWidget ? 'bg-[#4C4EFB] text-white hover:bg-[#4C4EFB]/90' : 'bg-background hover:bg-muted'} border-border transition-all duration-300`}
+                                    onClick={() => setShowWidget(!showWidget)}
+                                >
+                                    <MessageCircle className="h-5 w-5" />
+                                    <span className="sr-only">AI Assistant</span>
+                                </Button>
+                                <span className="text-[10px] uppercase tracking-wide text-muted-foreground md:text-xs">AI Chat</span>
+                            </div>
                         </TooltipTrigger>
                         <TooltipContent>
                             <p>AI Chat Assistant</p>
@@ -144,21 +162,24 @@ export default function BottomNavigator() {
                      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <DropdownMenuTrigger asChild>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="rounded-full hover:bg-muted px-3"
-                                    >
-                                        <Globe className="h-4 w-4 mr-2" />
-                                        <span className="text-sm font-medium">{languages.find(l => l.code === language)?.name.substring(0, 3)}</span>
-                                        {isTranslating ? (
-                                            <Loader2 className="h-3 w-3 ml-2 animate-spin" />
-                                        ) : (
-                                            <ChevronDown className="h-3 w-3 ml-2" />
-                                        )}
-                                    </Button>
-                                </DropdownMenuTrigger>
+                                <div className="flex flex-col items-center gap-1">
+                                    <DropdownMenuTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="rounded-full hover:bg-muted px-3"
+                                        >
+                                            <Globe className="h-4 w-4 mr-2" />
+                                            <span className="text-sm font-medium">{languages.find(l => l.code === language)?.name.substring(0, 3)}</span>
+                                            {isTranslating ? (
+                                                <Loader2 className="h-3 w-3 ml-2 animate-spin" />
+                                            ) : (
+                                                <ChevronDown className="h-3 w-3 ml-2" />
+                                            )}
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <span className="text-[10px] uppercase tracking-wide text-muted-foreground md:text-xs">Language</span>
+                                </div>
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>Change Language</p>

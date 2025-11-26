@@ -464,7 +464,7 @@ export function VoiceNavigator() {
           disabled={!hasSupport}
           onClick={isListening ? stopRecognition : startRecognition}
           className={cn(
-            "rounded-full h-10 w-10  hover:shadow-lg transition-all duration-200",
+            "rounded-full h-10 w-10 shadow-sm hover:shadow-lg transition-all duration-200",
             isListening ? "bg-red-500 hover:bg-red-600" : "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90",
             !hasSupport && "opacity-60 cursor-not-allowed",
             isProcessing && "animate-pulse"
