@@ -86,6 +86,17 @@ export default function ContactPage() {
     purpose: "",
   })
   const [isMeetingSubmitting, setIsMeetingSubmitting] = useState(false)
+  const [meetingScheduled, setMeetingScheduled] = useState(false)
+  const [meetingDetails, setMeetingDetails] = useState<{
+    id: string;
+    meetingDate: string;
+    meetingTime: string;
+    videoMeetingLink?: string;
+    googleMeetLink?: string;
+    zoomMeetingLink?: string;
+    hasVideoLink?: boolean;
+    videoPlatform?: string;
+  } | null>(null)
 
   // Form validation
   const validateForm = () => {
@@ -276,14 +287,20 @@ export default function ContactPage() {
         toast.success("Meeting Scheduled!", {
           description: data.message,
         })
-        // Reset form
-        setMeetingFormData({ name: "", email: "", phone: "", purpose: "" })
-        setSelectedDate("")
-        setSelectedTime("")
+        // Set meeting details
+        setMeetingDetails(data.data)
+        setMeetingScheduled(true)
       } else {
-        toast.error("Failed to schedule meeting", {
-          description: data.message || "Please try again later.",
-        })
+        // Handle specific error cases
+        if (response.status === 409) {
+          toast.error("Time Slot Already Booked", {
+            description: data.message || "This time is already taken. Please choose a different time slot.",
+          })
+        } else {
+          toast.error("Failed to schedule meeting", {
+            description: data.message || "Please try again later.",
+          })
+        }
       }
     } catch (error) {
       console.error("Meeting request error:", error)
@@ -877,17 +894,159 @@ export default function ContactPage() {
               <TabsContent value="schedule" className="mt-0">
                 <Card className="border-2 border-[#003366]/10 shadow-sm hover:shadow-md transition-all duration-300">
                   <CardContent className="p-6">
-                    <div className="mb-6">
-                      <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
-                        Schedule a Meeting
-                      </h2>
-                      <p className="text-gray-600">
-                        Fill in your details and select a date and time that works for you.
-                      </p>
-                    </div>
-
-                    {/* Contact Information Form */}
-                    <div className="mb-8 space-y-4">
+                    {!meetingScheduled ? (
+                      <>
+                        <div className="mb-6">
+                          <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                            Schedule a Meeting
+                          </h2>
+                          <p className="text-gray-600">
+                            Fill in your details and select a date and time that works for you.
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center py-8 animate-in fade-in duration-500">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#00CC66]/20 mb-6">
+                          <CheckCircle className="h-8 w-8 text-[#00CC66]" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-[#003366] mb-4">Meeting Scheduled Successfully!</h2>
+                        <p className="text-gray-600 mb-6">
+                          We've scheduled your meeting and sent calendar invites to all participants.
+                        </p>
+                        
+                        {/* Meeting Details Card */}
+                        <div className="bg-gradient-to-br from-[#003366]/5 to-[#00CC66]/5 border-2 border-[#00CC66] rounded-lg p-6 mb-6 text-left max-w-md mx-auto">
+                          <h3 className="text-lg font-semibold text-[#003366] mb-4 flex items-center">
+                            <Calendar className="h-5 w-5 mr-2 text-[#00CC66]" />
+                            Meeting Details
+                          </h3>
+                          <div className="space-y-3">
+                            <div className="flex items-start">
+                              <div className="w-24 text-gray-500 font-medium">Date:</div>
+                              <div className="flex-1 text-[#003366] font-semibold">
+                                {meetingDetails?.meetingDate && new Date(meetingDetails.meetingDate).toLocaleDateString('en-US', {
+                                  weekday: 'long',
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                })}
+                              </div>
+                            </div>
+                            <div className="flex items-start">
+                              <div className="w-24 text-gray-500 font-medium">Time:</div>
+                              <div className="flex-1 text-[#003366] font-semibold">
+                                {meetingDetails?.meetingTime}
+                              </div>
+                            </div>
+                            <div className="flex items-start">
+                              <div className="w-24 text-gray-500 font-medium">Duration:</div>
+                              <div className="flex-1 text-[#003366]">1 hour</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Video Conference Link */}
+                        {meetingDetails?.videoMeetingLink || meetingDetails?.zoomMeetingLink || meetingDetails?.googleMeetLink ? (
+                          <div className="bg-white border-2 border-[#003366] rounded-lg p-6 mb-6 max-w-md mx-auto">
+                            <div className="flex items-center justify-center mb-4">
+                              <div className="w-12 h-12 bg-gradient-to-br from-[#00CC66] to-[#00AA55] rounded-full flex items-center justify-center">
+                                {meetingDetails.videoPlatform === 'Zoom' ? (
+                                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M2 9.5V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3.5l5.5 3.5V6L2 9.5z"/>
+                                  </svg>
+                                ) : (
+                                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M15.5 2C13.57 2 12 3.57 12 5.5V11H5.5C3.57 11 2 12.57 2 14.5S3.57 18 5.5 18H9V19.5C9 21.43 10.57 23 12.5 23S16 21.43 16 19.5V18H19.5C21.43 18 23 16.43 23 14.5S21.43 11 19.5 11H16V5.5C16 3.57 14.43 2 12.5 2H15.5M5.5 13H19.5C20.33 13 21 13.67 21 14.5S20.33 16 19.5 16H5.5C4.67 16 4 15.33 4 14.5S4.67 13 5.5 13Z" />
+                                  </svg>
+                                )}
+                              </div>
+                            </div>
+                            <h3 className="text-lg font-semibold text-[#003366] mb-3 text-center">
+                              {meetingDetails.videoPlatform || 'Video'} Meeting Link
+                            </h3>
+                            <a
+                              href={meetingDetails.videoMeetingLink || meetingDetails.zoomMeetingLink || meetingDetails.googleMeetLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block w-full bg-gradient-to-r from-[#00CC66] to-[#00AA55] text-white text-center py-3 px-4 rounded-lg font-semibold hover:from-[#00AA55] hover:to-[#009944] transition-all shadow-md hover:shadow-lg"
+                            >
+                              Join {meetingDetails.videoPlatform || 'Meeting'}
+                            </a>
+                            <p className="text-xs text-gray-500 text-center mt-3">
+                              {meetingDetails.videoPlatform === 'Zoom' 
+                                ? 'Meeting link is active now. Join 5 minutes early!'
+                                : 'Link will be active 15 minutes before the meeting'}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-6 max-w-md mx-auto">
+                            <div className="flex items-center justify-center mb-4">
+                              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                              </div>
+                            </div>
+                            <h3 className="text-lg font-semibold text-blue-900 mb-2 text-center">
+                              Video Conference Link
+                            </h3>
+                            <p className="text-sm text-blue-700 text-center">
+                              We'll send you the video conference link via email before your meeting. Check your inbox!
+                            </p>
+                          </div>
+                        )}
+                        
+                        {/* Calendar Invite Info */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 max-w-md mx-auto">
+                          <div className="flex items-start">
+                            <Mail className="h-5 w-5 text-blue-600 mr-3 mt-0.5" />
+                            <div className="text-left">
+                              <h4 className="font-semibold text-blue-900 mb-1">Calendar Invite Sent</h4>
+                              <p className="text-sm text-blue-700">
+                                We've sent a calendar invitation to <strong>{meetingFormData.email}</strong>. 
+                                Add it to your calendar to receive automatic reminders.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                          <Button 
+                            onClick={() => {
+                              setMeetingScheduled(false);
+                              setMeetingDetails(null);
+                              setMeetingFormData({ name: "", email: "", phone: "", purpose: "" });
+                              setSelectedDate("");
+                              setSelectedTime("");
+                            }}
+                            variant="outline"
+                            className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white"
+                          >
+                            Schedule Another Meeting
+                          </Button>
+                          {(meetingDetails?.videoMeetingLink || meetingDetails?.zoomMeetingLink || meetingDetails?.googleMeetLink) && (
+                            <Button 
+                              onClick={() => {
+                                const linkToCopy = meetingDetails.videoMeetingLink || meetingDetails.zoomMeetingLink || meetingDetails.googleMeetLink!;
+                                navigator.clipboard.writeText(linkToCopy);
+                                toast.success("Link Copied!", {
+                                  description: `${meetingDetails.videoPlatform || 'Meeting'} link copied to clipboard`,
+                                });
+                              }}
+                              className="bg-[#003366] hover:bg-[#002244]"
+                            >
+                              Copy Meeting Link
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!meetingScheduled && (
+                      <>
+                        {/* Contact Information Form */}
+                        <div className="mb-8 space-y-4">
                       <h3 className="text-lg font-semibold text-[#003366] mb-4">Your Information</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -1117,6 +1276,8 @@ export default function ContactPage() {
                         )}
                       </div>
                     </div>
+                      </>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>

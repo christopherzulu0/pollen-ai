@@ -1,0 +1,90 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        🚀 GOOGLE CALENDAR - 3 MINUTE SETUP                    ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📝 STEP 1: Add to your .env file
+───────────────────────────────────────────────────────────────
+Open: .env
+Add these 4 lines:
+
+GOOGLE_APPLICATION_CREDENTIALS="./pollenblockchain-firebase-adminsdk-fbsvc-731021d8f2.json"
+GOOGLE_CALENDAR_ID="primary"
+SUPPORT_TEAM_EMAIL="christopherzulu04@gmail.com"
+ENABLE_GOOGLE_CALENDAR=true
+
+Save and close.
+
+
+🌐 STEP 2: Enable Calendar API
+───────────────────────────────────────────────────────────────
+1. Go to: https://console.cloud.google.com/
+2. Select project: "pollenblockchain"
+3. Click: APIs & Services → Library
+4. Search: "Google Calendar API"
+5. Click: Enable
+
+
+🔄 STEP 3: Restart Server
+───────────────────────────────────────────────────────────────
+Press Ctrl+C to stop, then:
+npm run dev
+
+
+✅ STEP 4: Test It
+───────────────────────────────────────────────────────────────
+1. Open: http://localhost:3000/contact
+2. Click: "Schedule Meeting" tab
+3. Fill form and submit
+4. Look for: "Google Meet link" on confirmation page
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ SUCCESS INDICATORS:
+
+In terminal logs, you should see:
+  🔑 Using Google service account JSON file: ./pollenblockchain...
+  ✓ Google Calendar event created
+  meetLink: https://meet.google.com/xxx-yyyy-zzz
+
+On meeting confirmation page:
+  ✅ "Join Google Meet" button appears
+  ✅ Calendar invite sent notification
+
+In your email:
+  📧 Calendar invitation (.ics file)
+  📅 Event appears in Google Calendar
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ TROUBLESHOOTING:
+
+"API has not been enabled"
+  → Enable Google Calendar API in Cloud Console
+
+"Calendar not found"
+  → Use GOOGLE_CALENDAR_ID="primary" in .env
+
+"invalid_grant" still?
+  → Check JSON file path is correct
+  → Try absolute path in .env:
+    GOOGLE_APPLICATION_CREDENTIALS="/home/developer/Documents/Projects/Chayanika/pollen-web/pollenblockchain-firebase-adminsdk-fbsvc-731021d8f2.json"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 DETAILED GUIDES:
+
+Complete setup: SETUP_YOUR_CALENDAR.md
+Quick fix:      QUICK_FIX.md
+Full guide:     GOOGLE_CALENDAR_SETUP.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your service account email (for reference):
+firebase-adminsdk-fbsvc@pollenblockchain.iam.gserviceaccount.com
+
+JSON file location:
+./pollenblockchain-firebase-adminsdk-fbsvc-731021d8f2.json
+
+✅ File is protected in .gitignore
+

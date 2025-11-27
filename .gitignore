@@ -19,8 +19,14 @@ yarn-error.log*
 # env files
 /.env*
 
+# Google service account credentials
+*-firebase-adminsdk-*.json
+pollenblockchain-firebase-adminsdk-fbsvc-731021d8f2.json
+
 # vercel
 .vercel
+
+*.json
 
 # typescript
 *.tsbuildinfo
