@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useQueryClient } from "@tanstack/react-query"
+import { useUser } from "@clerk/nextjs"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -35,6 +36,7 @@ import {
   FileText,
   Scale,
   ArrowRight,
+  LogIn,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import type { GroupWithDetails } from "@/lib/types/groups"
@@ -95,6 +97,7 @@ export function GroupCard({
   const [localGroup, setLocalGroup] = useState(initialGroup)
   const { toast } = useToast()
   const queryClient = useQueryClient()
+  const { isSignedIn, user } = useUser()
 
   // Update local group when prop changes
   useState(() => {
@@ -109,6 +112,16 @@ export function GroupCard({
   const hasPendingRequest = group.userMembershipStatus === "PENDING"
 
   const handleJoin = async () => {
+    // Check if user is signed in
+    if (!isSignedIn) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to join this group",
+        variant: "destructive",
+      })
+      return
+    }
+
     // Show dialog for INVITE_ONLY and PRIVATE groups
     if (group.privacy === "INVITE_ONLY" || group.privacy === "PRIVATE") {
       setShowCodeDialog(true)
@@ -261,6 +274,11 @@ export function GroupCard({
     }
   }
 
+  const handleSignIn = () => {
+    // Redirect to sign in page
+    window.location.href = "/sign-in?redirect_url=" + encodeURIComponent(window.location.pathname)
+  }
+
   if (viewMode === "list") {
     return (
       <Card 
@@ -362,23 +380,34 @@ export function GroupCard({
               View Details
             </Button>
 
-            <Button
-              onClick={handleJoin}
-              disabled={isJoining || isAtCapacity || isUserAlreadyMember || hasPendingRequest}
-              size="sm"
-              className="rounded-lg font-medium w-full sm:w-auto"
-            >
-              {hasPendingRequest
-                ? "Pending Request"
-                : isUserAlreadyMember 
-                  ? "Already a Member" 
-                  : isJoining 
-                    ? "Joining..." 
-                    : group.privacy === "PUBLIC" 
-                      ? "Join Now" 
-                      : "Request to Join"}
-              {!isUserAlreadyMember && !hasPendingRequest && <ArrowRight className="ml-1.5 size-3.5" />}
-            </Button>
+            {!isSignedIn ? (
+              <Button
+                onClick={handleSignIn}
+                size="sm"
+                className="rounded-lg font-medium w-full sm:w-auto"
+              >
+                <LogIn className="mr-1.5 size-3.5" />
+                Sign In to Join
+              </Button>
+            ) : (
+              <Button
+                onClick={handleJoin}
+                disabled={isJoining || isAtCapacity || isUserAlreadyMember || hasPendingRequest}
+                size="sm"
+                className="rounded-lg font-medium w-full sm:w-auto"
+              >
+                {hasPendingRequest
+                  ? "Pending Request"
+                  : isUserAlreadyMember 
+                    ? "Already a Member" 
+                    : isJoining 
+                      ? "Joining..." 
+                      : group.privacy === "PUBLIC" 
+                        ? "Join Now" 
+                        : "Request to Join"}
+                {!isUserAlreadyMember && !hasPendingRequest && <ArrowRight className="ml-1.5 size-3.5" />}
+              </Button>
+            )}
           </div>
         </div>
       </Card>
@@ -546,23 +575,34 @@ export function GroupCard({
             Details
           </Button>
 
-          <Button
-            onClick={handleJoin}
-            disabled={isJoining || isAtCapacity || isUserAlreadyMember || hasPendingRequest}
-            size="sm"
-            className="flex-1 rounded-lg font-medium text-xs sm:text-sm h-9 sm:h-10"
-          >
-            {hasPendingRequest
-              ? "Pending Request"
-              : isUserAlreadyMember
-                ? "Already a Member"
-                : isJoining
-                  ? "Joining..."
-                  : group.privacy === "PUBLIC"
-                    ? "Join This Group"
-                    : "Request to Join"}
-            {!isUserAlreadyMember && !hasPendingRequest && <ArrowRight className="ml-1 sm:ml-1.5 size-3.5 sm:size-4" />}
-          </Button>
+          {!isSignedIn ? (
+            <Button
+              onClick={handleSignIn}
+              size="sm"
+              className="flex-1 rounded-lg font-medium text-xs sm:text-sm h-9 sm:h-10"
+            >
+              <LogIn className="mr-1 sm:mr-1.5 size-3.5 sm:size-4" />
+              Sign In
+            </Button>
+          ) : (
+            <Button
+              onClick={handleJoin}
+              disabled={isJoining || isAtCapacity || isUserAlreadyMember || hasPendingRequest}
+              size="sm"
+              className="flex-1 rounded-lg font-medium text-xs sm:text-sm h-9 sm:h-10"
+            >
+              {hasPendingRequest
+                ? "Pending Request"
+                : isUserAlreadyMember
+                  ? "Already a Member"
+                  : isJoining
+                    ? "Joining..."
+                    : group.privacy === "PUBLIC"
+                      ? "Join This Group"
+                      : "Request to Join"}
+              {!isUserAlreadyMember && !hasPendingRequest && <ArrowRight className="ml-1 sm:ml-1.5 size-3.5 sm:size-4" />}
+            </Button>
+          )}
         </div>
       </Card>
 
@@ -658,22 +698,32 @@ export function GroupCard({
           </div>
 
           <DialogFooter>
-            <Button 
-              onClick={handleJoin} 
-              disabled={isJoining || isAtCapacity || isUserAlreadyMember || hasPendingRequest} 
-              className="w-full rounded-lg font-medium"
-            >
-              {hasPendingRequest
-                ? "Pending Request"
-                : isUserAlreadyMember
-                  ? "Already a Member"
-                  : isJoining
-                    ? "Joining..."
-                    : group.privacy === "PUBLIC"
-                      ? "Join This Group"
-                      : "Request to Join"}
-              {!isUserAlreadyMember && !hasPendingRequest && <ArrowRight className="ml-2 size-4" />}
-            </Button>
+            {!isSignedIn ? (
+              <Button 
+                onClick={handleSignIn} 
+                className="w-full rounded-lg font-medium"
+              >
+                <LogIn className="mr-2 size-4" />
+                Sign In to Join
+              </Button>
+            ) : (
+              <Button 
+                onClick={handleJoin} 
+                disabled={isJoining || isAtCapacity || isUserAlreadyMember || hasPendingRequest} 
+                className="w-full rounded-lg font-medium"
+              >
+                {hasPendingRequest
+                  ? "Pending Request"
+                  : isUserAlreadyMember
+                    ? "Already a Member"
+                    : isJoining
+                      ? "Joining..."
+                      : group.privacy === "PUBLIC"
+                        ? "Join This Group"
+                        : "Request to Join"}
+                {!isUserAlreadyMember && !hasPendingRequest && <ArrowRight className="ml-2 size-4" />}
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -8,12 +8,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import Widget from "@/components/voice/Widget"
 import { VoiceNavigator } from "@/components/voice/voice-navigator"
 import { useLanguage } from "@/contexts/LanguageContext"
+import { usePathname } from "next/navigation"
 
 export default function BottomNavigator() {
   const { language, languages, isTranslating, handleLanguageChange, isDropdownOpen, setIsDropdownOpen } = useLanguage()
   const [showWidget, setShowWidget] = useState(false)
   const [currentTime, setCurrentTime] = useState("")
   const [isMounted, setIsMounted] = useState(false)
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
 
   const handleVoiceClick = () => {
     // Trigger the VoiceNavigator button click programmatically
@@ -127,57 +130,59 @@ export default function BottomNavigator() {
                   </TooltipContent>
                 </Tooltip>
 
-                {/* Language Switcher */}
-                <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex flex-col items-center gap-2 group">
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="relative rounded-full h-16 md:h-[4.5rem] px-5 md:px-6 bg-card border-[3px] border-border hover:border-primary shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
-                          >
-                            <div className="absolute inset-0 rounded-full bg-muted/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <Globe className="h-5 w-5 md:h-6 md:w-6 mr-2.5 text-foreground group-hover:text-primary relative z-10 transition-colors duration-300" />
-                            <span className="text-sm md:text-base font-bold text-foreground relative z-10">
-                              {languages.find((l) => l.code === language)?.name.substring(0, 3)}
-                            </span>
-                            {isTranslating ? (
-                              <Loader2 className="h-4 w-4 md:h-5 md:w-5 ml-2.5 animate-spin text-primary relative z-10" />
-                            ) : (
-                              <ChevronDown className="h-4 w-4 md:h-5 md:w-5 ml-2.5 text-muted-foreground group-hover:text-primary relative z-10 transition-colors duration-300" />
-                            )}
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-foreground group-hover:text-primary transition-colors duration-300">
-                          Language
-                        </span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-popover text-popover-foreground border-border shadow-2xl font-semibold px-4 py-2">
-                      <p>Change Language</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <DropdownMenuContent
-                    align="end"
-                    className="w-48 bg-popover/98 backdrop-blur-2xl border-border shadow-2xl rounded-2xl p-1.5"
-                  >
-                    {languages.map((lang) => (
-                      <DropdownMenuItem
-                        key={lang.code}
-                        onClick={() => handleLanguageChange(lang.code)}
-                        className={`cursor-pointer rounded-xl px-3 py-2.5 transition-all duration-200 ${
-                          language === lang.code
-                            ? "bg-primary/15 text-primary font-bold shadow-sm"
-                            : "hover:bg-accent text-foreground font-medium"
-                        }`}
-                      >
-                        {lang.name}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {/* Language Switcher - Only visible on home page */}
+                {isHomePage && (
+                  <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="flex flex-col items-center gap-2 group">
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="relative rounded-full h-16 md:h-[4.5rem] px-5 md:px-6 bg-card border-[3px] border-border hover:border-primary shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+                            >
+                              <div className="absolute inset-0 rounded-full bg-muted/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                              <Globe className="h-5 w-5 md:h-6 md:w-6 mr-2.5 text-foreground group-hover:text-primary relative z-10 transition-colors duration-300" />
+                              <span className="text-sm md:text-base font-bold text-foreground relative z-10">
+                                {languages.find((l) => l.code === language)?.name.substring(0, 3)}
+                              </span>
+                              {isTranslating ? (
+                                <Loader2 className="h-4 w-4 md:h-5 md:w-5 ml-2.5 animate-spin text-primary relative z-10" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4 md:h-5 md:w-5 ml-2.5 text-muted-foreground group-hover:text-primary relative z-10 transition-colors duration-300" />
+                              )}
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-foreground group-hover:text-primary transition-colors duration-300">
+                            Language
+                          </span>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-popover text-popover-foreground border-border shadow-2xl font-semibold px-4 py-2">
+                        <p>Change Language</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <DropdownMenuContent
+                      align="end"
+                      className="w-48 bg-popover/98 backdrop-blur-2xl border-border shadow-2xl rounded-2xl p-1.5"
+                    >
+                      {languages.map((lang) => (
+                        <DropdownMenuItem
+                          key={lang.code}
+                          onClick={() => handleLanguageChange(lang.code)}
+                          className={`cursor-pointer rounded-xl px-3 py-2.5 transition-all duration-200 ${
+                            language === lang.code
+                              ? "bg-primary/15 text-primary font-bold shadow-sm"
+                              : "hover:bg-accent text-foreground font-medium"
+                          }`}
+                        >
+                          {lang.name}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
               </TooltipProvider>
             )}
           </div>
