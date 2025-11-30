@@ -18,7 +18,8 @@ const isPublicRoute = createRouteMatcher([
   "/blog(.*)",  // Matches /blog and /blog/[id] and any other blog routes
   "/contact",
   "/api/celo/balance(.*)",
-  "/api/aave(.*)"
+  "/api/aave(.*)",
+  "/Groups"
 ]);
 
 // Define routes that should be ignored
