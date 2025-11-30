@@ -19,7 +19,9 @@ const isPublicRoute = createRouteMatcher([
   "/contact",
   "/api/celo/balance(.*)",
   "/api/aave(.*)",
-  "/Groups"
+  "/Groups",
+  "/api/groups/browse",
+  "/api/Frontend(.*)"
 ]);
 
 // Define routes that should be ignored
