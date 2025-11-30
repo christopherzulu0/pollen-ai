@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, ChevronDown } from "lucide-react"
+import { Menu, X, ChevronDown, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ThemeToggle from "@/components/theme-toggle"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -166,6 +166,15 @@ export default function Navbar() {
                 } transition-colors`}
             >
               Contact
+            </Link>
+            <Link
+              href="/Groups"
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
+                } transition-colors`}
+            >
+             Groups
             </Link>
           </nav>
 
@@ -335,6 +344,16 @@ export default function Navbar() {
                 </svg>
               </span>
               Contact
+            </Link>
+            <Link
+              href="/Groups"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <Users className="h-5 w-5 text-[#00CC66]" />
+              </span>
+              Groups
             </Link>
 
             <div className="pt-4 space-y-2">

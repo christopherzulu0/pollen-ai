@@ -84,6 +84,11 @@ export type SavingsGoal = $Result.DefaultSelection<Prisma.$SavingsGoalPayload>
  */
 export type SavingsTransaction = $Result.DefaultSelection<Prisma.$SavingsTransactionPayload>
 /**
+ * Model AIGoalAnalysis
+ * 
+ */
+export type AIGoalAnalysis = $Result.DefaultSelection<Prisma.$AIGoalAnalysisPayload>
+/**
  * Model Meeting
  * 
  */
@@ -612,6 +617,16 @@ export class PrismaClient<
     * ```
     */
   get savingsTransaction(): Prisma.SavingsTransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aIGoalAnalysis`: Exposes CRUD operations for the **AIGoalAnalysis** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AIGoalAnalyses
+    * const aIGoalAnalyses = await prisma.aIGoalAnalysis.findMany()
+    * ```
+    */
+  get aIGoalAnalysis(): Prisma.AIGoalAnalysisDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.meeting`: Exposes CRUD operations for the **Meeting** model.
@@ -1217,6 +1232,7 @@ export namespace Prisma {
     PersonalSavings: 'PersonalSavings',
     SavingsGoal: 'SavingsGoal',
     SavingsTransaction: 'SavingsTransaction',
+    AIGoalAnalysis: 'AIGoalAnalysis',
     Meeting: 'Meeting',
     MeetingAttendee: 'MeetingAttendee',
     Vote: 'Vote',
@@ -1250,7 +1266,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "meeting" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan" | "contactMessage" | "meetingRequest"
+      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "aIGoalAnalysis" | "meeting" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan" | "contactMessage" | "meetingRequest"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2287,6 +2303,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SavingsTransactionCountArgs<ExtArgs>
             result: $Utils.Optional<SavingsTransactionCountAggregateOutputType> | number
+          }
+        }
+      }
+      AIGoalAnalysis: {
+        payload: Prisma.$AIGoalAnalysisPayload<ExtArgs>
+        fields: Prisma.AIGoalAnalysisFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AIGoalAnalysisFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AIGoalAnalysisFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>
+          }
+          findFirst: {
+            args: Prisma.AIGoalAnalysisFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AIGoalAnalysisFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>
+          }
+          findMany: {
+            args: Prisma.AIGoalAnalysisFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>[]
+          }
+          create: {
+            args: Prisma.AIGoalAnalysisCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>
+          }
+          createMany: {
+            args: Prisma.AIGoalAnalysisCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AIGoalAnalysisCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>[]
+          }
+          delete: {
+            args: Prisma.AIGoalAnalysisDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>
+          }
+          update: {
+            args: Prisma.AIGoalAnalysisUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>
+          }
+          deleteMany: {
+            args: Prisma.AIGoalAnalysisDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AIGoalAnalysisUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AIGoalAnalysisUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>[]
+          }
+          upsert: {
+            args: Prisma.AIGoalAnalysisUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIGoalAnalysisPayload>
+          }
+          aggregate: {
+            args: Prisma.AIGoalAnalysisAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAIGoalAnalysis>
+          }
+          groupBy: {
+            args: Prisma.AIGoalAnalysisGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AIGoalAnalysisGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AIGoalAnalysisCountArgs<ExtArgs>
+            result: $Utils.Optional<AIGoalAnalysisCountAggregateOutputType> | number
           }
         }
       }
@@ -3510,6 +3600,7 @@ export namespace Prisma {
     personalSavings?: PersonalSavingsOmit
     savingsGoal?: SavingsGoalOmit
     savingsTransaction?: SavingsTransactionOmit
+    aIGoalAnalysis?: AIGoalAnalysisOmit
     meeting?: MeetingOmit
     meetingAttendee?: MeetingAttendeeOmit
     vote?: VoteOmit
@@ -3941,10 +4032,12 @@ export namespace Prisma {
 
   export type SavingsGoalCountOutputType = {
     transactions: number
+    aiAnalyses: number
   }
 
   export type SavingsGoalCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transactions?: boolean | SavingsGoalCountOutputTypeCountTransactionsArgs
+    aiAnalyses?: boolean | SavingsGoalCountOutputTypeCountAiAnalysesArgs
   }
 
   // Custom InputTypes
@@ -3963,6 +4056,13 @@ export namespace Prisma {
    */
   export type SavingsGoalCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SavingsTransactionWhereInput
+  }
+
+  /**
+   * SavingsGoalCountOutputType without action
+   */
+  export type SavingsGoalCountOutputTypeCountAiAnalysesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AIGoalAnalysisWhereInput
   }
 
 
@@ -18960,6 +19060,7 @@ export namespace Prisma {
     isCompleted?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | SavingsGoal$transactionsArgs<ExtArgs>
+    aiAnalyses?: boolean | SavingsGoal$aiAnalysesArgs<ExtArgs>
     _count?: boolean | SavingsGoalCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["savingsGoal"]>
 
@@ -19005,6 +19106,7 @@ export namespace Prisma {
   export type SavingsGoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | SavingsGoal$transactionsArgs<ExtArgs>
+    aiAnalyses?: boolean | SavingsGoal$aiAnalysesArgs<ExtArgs>
     _count?: boolean | SavingsGoalCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SavingsGoalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19019,6 +19121,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       transactions: Prisma.$SavingsTransactionPayload<ExtArgs>[]
+      aiAnalyses: Prisma.$AIGoalAnalysisPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19426,6 +19529,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transactions<T extends SavingsGoal$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, SavingsGoal$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavingsTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    aiAnalyses<T extends SavingsGoal$aiAnalysesArgs<ExtArgs> = {}>(args?: Subset<T, SavingsGoal$aiAnalysesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19881,6 +19985,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SavingsTransactionScalarFieldEnum | SavingsTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * SavingsGoal.aiAnalyses
+   */
+  export type SavingsGoal$aiAnalysesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    where?: AIGoalAnalysisWhereInput
+    orderBy?: AIGoalAnalysisOrderByWithRelationInput | AIGoalAnalysisOrderByWithRelationInput[]
+    cursor?: AIGoalAnalysisWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AIGoalAnalysisScalarFieldEnum | AIGoalAnalysisScalarFieldEnum[]
   }
 
   /**
@@ -21017,6 +21145,1261 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SavingsTransactionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AIGoalAnalysis
+   */
+
+  export type AggregateAIGoalAnalysis = {
+    _count: AIGoalAnalysisCountAggregateOutputType | null
+    _avg: AIGoalAnalysisAvgAggregateOutputType | null
+    _sum: AIGoalAnalysisSumAggregateOutputType | null
+    _min: AIGoalAnalysisMinAggregateOutputType | null
+    _max: AIGoalAnalysisMaxAggregateOutputType | null
+  }
+
+  export type AIGoalAnalysisAvgAggregateOutputType = {
+    creditScore: number | null
+    confidence: number | null
+    progressPercentage: Decimal | null
+    avgMonthlyContribution: Decimal | null
+    requiredMonthlyContribution: Decimal | null
+    daysUntilDeadline: number | null
+    remainingAmount: Decimal | null
+  }
+
+  export type AIGoalAnalysisSumAggregateOutputType = {
+    creditScore: number | null
+    confidence: number | null
+    progressPercentage: Decimal | null
+    avgMonthlyContribution: Decimal | null
+    requiredMonthlyContribution: Decimal | null
+    daysUntilDeadline: number | null
+    remainingAmount: Decimal | null
+  }
+
+  export type AIGoalAnalysisMinAggregateOutputType = {
+    id: string | null
+    savingsGoalId: string | null
+    creditScore: number | null
+    scoreCategory: string | null
+    riskLevel: string | null
+    analysis: string | null
+    predictedCompletionDate: Date | null
+    onTrack: boolean | null
+    confidence: number | null
+    progressPercentage: Decimal | null
+    avgMonthlyContribution: Decimal | null
+    requiredMonthlyContribution: Decimal | null
+    daysUntilDeadline: number | null
+    remainingAmount: Decimal | null
+    createdAt: Date | null
+  }
+
+  export type AIGoalAnalysisMaxAggregateOutputType = {
+    id: string | null
+    savingsGoalId: string | null
+    creditScore: number | null
+    scoreCategory: string | null
+    riskLevel: string | null
+    analysis: string | null
+    predictedCompletionDate: Date | null
+    onTrack: boolean | null
+    confidence: number | null
+    progressPercentage: Decimal | null
+    avgMonthlyContribution: Decimal | null
+    requiredMonthlyContribution: Decimal | null
+    daysUntilDeadline: number | null
+    remainingAmount: Decimal | null
+    createdAt: Date | null
+  }
+
+  export type AIGoalAnalysisCountAggregateOutputType = {
+    id: number
+    savingsGoalId: number
+    creditScore: number
+    scoreCategory: number
+    riskLevel: number
+    analysis: number
+    recommendations: number
+    predictedCompletionDate: number
+    onTrack: number
+    confidence: number
+    progressPercentage: number
+    avgMonthlyContribution: number
+    requiredMonthlyContribution: number
+    daysUntilDeadline: number
+    remainingAmount: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AIGoalAnalysisAvgAggregateInputType = {
+    creditScore?: true
+    confidence?: true
+    progressPercentage?: true
+    avgMonthlyContribution?: true
+    requiredMonthlyContribution?: true
+    daysUntilDeadline?: true
+    remainingAmount?: true
+  }
+
+  export type AIGoalAnalysisSumAggregateInputType = {
+    creditScore?: true
+    confidence?: true
+    progressPercentage?: true
+    avgMonthlyContribution?: true
+    requiredMonthlyContribution?: true
+    daysUntilDeadline?: true
+    remainingAmount?: true
+  }
+
+  export type AIGoalAnalysisMinAggregateInputType = {
+    id?: true
+    savingsGoalId?: true
+    creditScore?: true
+    scoreCategory?: true
+    riskLevel?: true
+    analysis?: true
+    predictedCompletionDate?: true
+    onTrack?: true
+    confidence?: true
+    progressPercentage?: true
+    avgMonthlyContribution?: true
+    requiredMonthlyContribution?: true
+    daysUntilDeadline?: true
+    remainingAmount?: true
+    createdAt?: true
+  }
+
+  export type AIGoalAnalysisMaxAggregateInputType = {
+    id?: true
+    savingsGoalId?: true
+    creditScore?: true
+    scoreCategory?: true
+    riskLevel?: true
+    analysis?: true
+    predictedCompletionDate?: true
+    onTrack?: true
+    confidence?: true
+    progressPercentage?: true
+    avgMonthlyContribution?: true
+    requiredMonthlyContribution?: true
+    daysUntilDeadline?: true
+    remainingAmount?: true
+    createdAt?: true
+  }
+
+  export type AIGoalAnalysisCountAggregateInputType = {
+    id?: true
+    savingsGoalId?: true
+    creditScore?: true
+    scoreCategory?: true
+    riskLevel?: true
+    analysis?: true
+    recommendations?: true
+    predictedCompletionDate?: true
+    onTrack?: true
+    confidence?: true
+    progressPercentage?: true
+    avgMonthlyContribution?: true
+    requiredMonthlyContribution?: true
+    daysUntilDeadline?: true
+    remainingAmount?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AIGoalAnalysisAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AIGoalAnalysis to aggregate.
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIGoalAnalyses to fetch.
+     */
+    orderBy?: AIGoalAnalysisOrderByWithRelationInput | AIGoalAnalysisOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AIGoalAnalysisWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIGoalAnalyses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIGoalAnalyses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AIGoalAnalyses
+    **/
+    _count?: true | AIGoalAnalysisCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AIGoalAnalysisAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AIGoalAnalysisSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AIGoalAnalysisMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AIGoalAnalysisMaxAggregateInputType
+  }
+
+  export type GetAIGoalAnalysisAggregateType<T extends AIGoalAnalysisAggregateArgs> = {
+        [P in keyof T & keyof AggregateAIGoalAnalysis]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAIGoalAnalysis[P]>
+      : GetScalarType<T[P], AggregateAIGoalAnalysis[P]>
+  }
+
+
+
+
+  export type AIGoalAnalysisGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AIGoalAnalysisWhereInput
+    orderBy?: AIGoalAnalysisOrderByWithAggregationInput | AIGoalAnalysisOrderByWithAggregationInput[]
+    by: AIGoalAnalysisScalarFieldEnum[] | AIGoalAnalysisScalarFieldEnum
+    having?: AIGoalAnalysisScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AIGoalAnalysisCountAggregateInputType | true
+    _avg?: AIGoalAnalysisAvgAggregateInputType
+    _sum?: AIGoalAnalysisSumAggregateInputType
+    _min?: AIGoalAnalysisMinAggregateInputType
+    _max?: AIGoalAnalysisMaxAggregateInputType
+  }
+
+  export type AIGoalAnalysisGroupByOutputType = {
+    id: string
+    savingsGoalId: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations: string[]
+    predictedCompletionDate: Date
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal
+    avgMonthlyContribution: Decimal
+    requiredMonthlyContribution: Decimal
+    daysUntilDeadline: number
+    remainingAmount: Decimal
+    createdAt: Date
+    _count: AIGoalAnalysisCountAggregateOutputType | null
+    _avg: AIGoalAnalysisAvgAggregateOutputType | null
+    _sum: AIGoalAnalysisSumAggregateOutputType | null
+    _min: AIGoalAnalysisMinAggregateOutputType | null
+    _max: AIGoalAnalysisMaxAggregateOutputType | null
+  }
+
+  type GetAIGoalAnalysisGroupByPayload<T extends AIGoalAnalysisGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AIGoalAnalysisGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AIGoalAnalysisGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AIGoalAnalysisGroupByOutputType[P]>
+            : GetScalarType<T[P], AIGoalAnalysisGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AIGoalAnalysisSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    savingsGoalId?: boolean
+    creditScore?: boolean
+    scoreCategory?: boolean
+    riskLevel?: boolean
+    analysis?: boolean
+    recommendations?: boolean
+    predictedCompletionDate?: boolean
+    onTrack?: boolean
+    confidence?: boolean
+    progressPercentage?: boolean
+    avgMonthlyContribution?: boolean
+    requiredMonthlyContribution?: boolean
+    daysUntilDeadline?: boolean
+    remainingAmount?: boolean
+    createdAt?: boolean
+    savingsGoal?: boolean | SavingsGoalDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aIGoalAnalysis"]>
+
+  export type AIGoalAnalysisSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    savingsGoalId?: boolean
+    creditScore?: boolean
+    scoreCategory?: boolean
+    riskLevel?: boolean
+    analysis?: boolean
+    recommendations?: boolean
+    predictedCompletionDate?: boolean
+    onTrack?: boolean
+    confidence?: boolean
+    progressPercentage?: boolean
+    avgMonthlyContribution?: boolean
+    requiredMonthlyContribution?: boolean
+    daysUntilDeadline?: boolean
+    remainingAmount?: boolean
+    createdAt?: boolean
+    savingsGoal?: boolean | SavingsGoalDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aIGoalAnalysis"]>
+
+  export type AIGoalAnalysisSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    savingsGoalId?: boolean
+    creditScore?: boolean
+    scoreCategory?: boolean
+    riskLevel?: boolean
+    analysis?: boolean
+    recommendations?: boolean
+    predictedCompletionDate?: boolean
+    onTrack?: boolean
+    confidence?: boolean
+    progressPercentage?: boolean
+    avgMonthlyContribution?: boolean
+    requiredMonthlyContribution?: boolean
+    daysUntilDeadline?: boolean
+    remainingAmount?: boolean
+    createdAt?: boolean
+    savingsGoal?: boolean | SavingsGoalDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aIGoalAnalysis"]>
+
+  export type AIGoalAnalysisSelectScalar = {
+    id?: boolean
+    savingsGoalId?: boolean
+    creditScore?: boolean
+    scoreCategory?: boolean
+    riskLevel?: boolean
+    analysis?: boolean
+    recommendations?: boolean
+    predictedCompletionDate?: boolean
+    onTrack?: boolean
+    confidence?: boolean
+    progressPercentage?: boolean
+    avgMonthlyContribution?: boolean
+    requiredMonthlyContribution?: boolean
+    daysUntilDeadline?: boolean
+    remainingAmount?: boolean
+    createdAt?: boolean
+  }
+
+  export type AIGoalAnalysisOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "savingsGoalId" | "creditScore" | "scoreCategory" | "riskLevel" | "analysis" | "recommendations" | "predictedCompletionDate" | "onTrack" | "confidence" | "progressPercentage" | "avgMonthlyContribution" | "requiredMonthlyContribution" | "daysUntilDeadline" | "remainingAmount" | "createdAt", ExtArgs["result"]["aIGoalAnalysis"]>
+  export type AIGoalAnalysisInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    savingsGoal?: boolean | SavingsGoalDefaultArgs<ExtArgs>
+  }
+  export type AIGoalAnalysisIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    savingsGoal?: boolean | SavingsGoalDefaultArgs<ExtArgs>
+  }
+  export type AIGoalAnalysisIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    savingsGoal?: boolean | SavingsGoalDefaultArgs<ExtArgs>
+  }
+
+  export type $AIGoalAnalysisPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AIGoalAnalysis"
+    objects: {
+      savingsGoal: Prisma.$SavingsGoalPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      savingsGoalId: string
+      creditScore: number
+      scoreCategory: string
+      riskLevel: string
+      analysis: string
+      recommendations: string[]
+      predictedCompletionDate: Date
+      onTrack: boolean
+      confidence: number
+      progressPercentage: Prisma.Decimal
+      avgMonthlyContribution: Prisma.Decimal
+      requiredMonthlyContribution: Prisma.Decimal
+      daysUntilDeadline: number
+      remainingAmount: Prisma.Decimal
+      createdAt: Date
+    }, ExtArgs["result"]["aIGoalAnalysis"]>
+    composites: {}
+  }
+
+  type AIGoalAnalysisGetPayload<S extends boolean | null | undefined | AIGoalAnalysisDefaultArgs> = $Result.GetResult<Prisma.$AIGoalAnalysisPayload, S>
+
+  type AIGoalAnalysisCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AIGoalAnalysisFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AIGoalAnalysisCountAggregateInputType | true
+    }
+
+  export interface AIGoalAnalysisDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AIGoalAnalysis'], meta: { name: 'AIGoalAnalysis' } }
+    /**
+     * Find zero or one AIGoalAnalysis that matches the filter.
+     * @param {AIGoalAnalysisFindUniqueArgs} args - Arguments to find a AIGoalAnalysis
+     * @example
+     * // Get one AIGoalAnalysis
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AIGoalAnalysisFindUniqueArgs>(args: SelectSubset<T, AIGoalAnalysisFindUniqueArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AIGoalAnalysis that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AIGoalAnalysisFindUniqueOrThrowArgs} args - Arguments to find a AIGoalAnalysis
+     * @example
+     * // Get one AIGoalAnalysis
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AIGoalAnalysisFindUniqueOrThrowArgs>(args: SelectSubset<T, AIGoalAnalysisFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AIGoalAnalysis that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisFindFirstArgs} args - Arguments to find a AIGoalAnalysis
+     * @example
+     * // Get one AIGoalAnalysis
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AIGoalAnalysisFindFirstArgs>(args?: SelectSubset<T, AIGoalAnalysisFindFirstArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AIGoalAnalysis that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisFindFirstOrThrowArgs} args - Arguments to find a AIGoalAnalysis
+     * @example
+     * // Get one AIGoalAnalysis
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AIGoalAnalysisFindFirstOrThrowArgs>(args?: SelectSubset<T, AIGoalAnalysisFindFirstOrThrowArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AIGoalAnalyses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AIGoalAnalyses
+     * const aIGoalAnalyses = await prisma.aIGoalAnalysis.findMany()
+     * 
+     * // Get first 10 AIGoalAnalyses
+     * const aIGoalAnalyses = await prisma.aIGoalAnalysis.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aIGoalAnalysisWithIdOnly = await prisma.aIGoalAnalysis.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AIGoalAnalysisFindManyArgs>(args?: SelectSubset<T, AIGoalAnalysisFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AIGoalAnalysis.
+     * @param {AIGoalAnalysisCreateArgs} args - Arguments to create a AIGoalAnalysis.
+     * @example
+     * // Create one AIGoalAnalysis
+     * const AIGoalAnalysis = await prisma.aIGoalAnalysis.create({
+     *   data: {
+     *     // ... data to create a AIGoalAnalysis
+     *   }
+     * })
+     * 
+     */
+    create<T extends AIGoalAnalysisCreateArgs>(args: SelectSubset<T, AIGoalAnalysisCreateArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AIGoalAnalyses.
+     * @param {AIGoalAnalysisCreateManyArgs} args - Arguments to create many AIGoalAnalyses.
+     * @example
+     * // Create many AIGoalAnalyses
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AIGoalAnalysisCreateManyArgs>(args?: SelectSubset<T, AIGoalAnalysisCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AIGoalAnalyses and returns the data saved in the database.
+     * @param {AIGoalAnalysisCreateManyAndReturnArgs} args - Arguments to create many AIGoalAnalyses.
+     * @example
+     * // Create many AIGoalAnalyses
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AIGoalAnalyses and only return the `id`
+     * const aIGoalAnalysisWithIdOnly = await prisma.aIGoalAnalysis.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AIGoalAnalysisCreateManyAndReturnArgs>(args?: SelectSubset<T, AIGoalAnalysisCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AIGoalAnalysis.
+     * @param {AIGoalAnalysisDeleteArgs} args - Arguments to delete one AIGoalAnalysis.
+     * @example
+     * // Delete one AIGoalAnalysis
+     * const AIGoalAnalysis = await prisma.aIGoalAnalysis.delete({
+     *   where: {
+     *     // ... filter to delete one AIGoalAnalysis
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AIGoalAnalysisDeleteArgs>(args: SelectSubset<T, AIGoalAnalysisDeleteArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AIGoalAnalysis.
+     * @param {AIGoalAnalysisUpdateArgs} args - Arguments to update one AIGoalAnalysis.
+     * @example
+     * // Update one AIGoalAnalysis
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AIGoalAnalysisUpdateArgs>(args: SelectSubset<T, AIGoalAnalysisUpdateArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AIGoalAnalyses.
+     * @param {AIGoalAnalysisDeleteManyArgs} args - Arguments to filter AIGoalAnalyses to delete.
+     * @example
+     * // Delete a few AIGoalAnalyses
+     * const { count } = await prisma.aIGoalAnalysis.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AIGoalAnalysisDeleteManyArgs>(args?: SelectSubset<T, AIGoalAnalysisDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AIGoalAnalyses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AIGoalAnalyses
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AIGoalAnalysisUpdateManyArgs>(args: SelectSubset<T, AIGoalAnalysisUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AIGoalAnalyses and returns the data updated in the database.
+     * @param {AIGoalAnalysisUpdateManyAndReturnArgs} args - Arguments to update many AIGoalAnalyses.
+     * @example
+     * // Update many AIGoalAnalyses
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AIGoalAnalyses and only return the `id`
+     * const aIGoalAnalysisWithIdOnly = await prisma.aIGoalAnalysis.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AIGoalAnalysisUpdateManyAndReturnArgs>(args: SelectSubset<T, AIGoalAnalysisUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AIGoalAnalysis.
+     * @param {AIGoalAnalysisUpsertArgs} args - Arguments to update or create a AIGoalAnalysis.
+     * @example
+     * // Update or create a AIGoalAnalysis
+     * const aIGoalAnalysis = await prisma.aIGoalAnalysis.upsert({
+     *   create: {
+     *     // ... data to create a AIGoalAnalysis
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AIGoalAnalysis we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AIGoalAnalysisUpsertArgs>(args: SelectSubset<T, AIGoalAnalysisUpsertArgs<ExtArgs>>): Prisma__AIGoalAnalysisClient<$Result.GetResult<Prisma.$AIGoalAnalysisPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AIGoalAnalyses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisCountArgs} args - Arguments to filter AIGoalAnalyses to count.
+     * @example
+     * // Count the number of AIGoalAnalyses
+     * const count = await prisma.aIGoalAnalysis.count({
+     *   where: {
+     *     // ... the filter for the AIGoalAnalyses we want to count
+     *   }
+     * })
+    **/
+    count<T extends AIGoalAnalysisCountArgs>(
+      args?: Subset<T, AIGoalAnalysisCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AIGoalAnalysisCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AIGoalAnalysis.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AIGoalAnalysisAggregateArgs>(args: Subset<T, AIGoalAnalysisAggregateArgs>): Prisma.PrismaPromise<GetAIGoalAnalysisAggregateType<T>>
+
+    /**
+     * Group by AIGoalAnalysis.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIGoalAnalysisGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AIGoalAnalysisGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AIGoalAnalysisGroupByArgs['orderBy'] }
+        : { orderBy?: AIGoalAnalysisGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AIGoalAnalysisGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAIGoalAnalysisGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AIGoalAnalysis model
+   */
+  readonly fields: AIGoalAnalysisFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AIGoalAnalysis.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AIGoalAnalysisClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    savingsGoal<T extends SavingsGoalDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SavingsGoalDefaultArgs<ExtArgs>>): Prisma__SavingsGoalClient<$Result.GetResult<Prisma.$SavingsGoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AIGoalAnalysis model
+   */
+  interface AIGoalAnalysisFieldRefs {
+    readonly id: FieldRef<"AIGoalAnalysis", 'String'>
+    readonly savingsGoalId: FieldRef<"AIGoalAnalysis", 'String'>
+    readonly creditScore: FieldRef<"AIGoalAnalysis", 'Int'>
+    readonly scoreCategory: FieldRef<"AIGoalAnalysis", 'String'>
+    readonly riskLevel: FieldRef<"AIGoalAnalysis", 'String'>
+    readonly analysis: FieldRef<"AIGoalAnalysis", 'String'>
+    readonly recommendations: FieldRef<"AIGoalAnalysis", 'String[]'>
+    readonly predictedCompletionDate: FieldRef<"AIGoalAnalysis", 'DateTime'>
+    readonly onTrack: FieldRef<"AIGoalAnalysis", 'Boolean'>
+    readonly confidence: FieldRef<"AIGoalAnalysis", 'Int'>
+    readonly progressPercentage: FieldRef<"AIGoalAnalysis", 'Decimal'>
+    readonly avgMonthlyContribution: FieldRef<"AIGoalAnalysis", 'Decimal'>
+    readonly requiredMonthlyContribution: FieldRef<"AIGoalAnalysis", 'Decimal'>
+    readonly daysUntilDeadline: FieldRef<"AIGoalAnalysis", 'Int'>
+    readonly remainingAmount: FieldRef<"AIGoalAnalysis", 'Decimal'>
+    readonly createdAt: FieldRef<"AIGoalAnalysis", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AIGoalAnalysis findUnique
+   */
+  export type AIGoalAnalysisFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * Filter, which AIGoalAnalysis to fetch.
+     */
+    where: AIGoalAnalysisWhereUniqueInput
+  }
+
+  /**
+   * AIGoalAnalysis findUniqueOrThrow
+   */
+  export type AIGoalAnalysisFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * Filter, which AIGoalAnalysis to fetch.
+     */
+    where: AIGoalAnalysisWhereUniqueInput
+  }
+
+  /**
+   * AIGoalAnalysis findFirst
+   */
+  export type AIGoalAnalysisFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * Filter, which AIGoalAnalysis to fetch.
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIGoalAnalyses to fetch.
+     */
+    orderBy?: AIGoalAnalysisOrderByWithRelationInput | AIGoalAnalysisOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AIGoalAnalyses.
+     */
+    cursor?: AIGoalAnalysisWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIGoalAnalyses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIGoalAnalyses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AIGoalAnalyses.
+     */
+    distinct?: AIGoalAnalysisScalarFieldEnum | AIGoalAnalysisScalarFieldEnum[]
+  }
+
+  /**
+   * AIGoalAnalysis findFirstOrThrow
+   */
+  export type AIGoalAnalysisFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * Filter, which AIGoalAnalysis to fetch.
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIGoalAnalyses to fetch.
+     */
+    orderBy?: AIGoalAnalysisOrderByWithRelationInput | AIGoalAnalysisOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AIGoalAnalyses.
+     */
+    cursor?: AIGoalAnalysisWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIGoalAnalyses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIGoalAnalyses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AIGoalAnalyses.
+     */
+    distinct?: AIGoalAnalysisScalarFieldEnum | AIGoalAnalysisScalarFieldEnum[]
+  }
+
+  /**
+   * AIGoalAnalysis findMany
+   */
+  export type AIGoalAnalysisFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * Filter, which AIGoalAnalyses to fetch.
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIGoalAnalyses to fetch.
+     */
+    orderBy?: AIGoalAnalysisOrderByWithRelationInput | AIGoalAnalysisOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AIGoalAnalyses.
+     */
+    cursor?: AIGoalAnalysisWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIGoalAnalyses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIGoalAnalyses.
+     */
+    skip?: number
+    distinct?: AIGoalAnalysisScalarFieldEnum | AIGoalAnalysisScalarFieldEnum[]
+  }
+
+  /**
+   * AIGoalAnalysis create
+   */
+  export type AIGoalAnalysisCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AIGoalAnalysis.
+     */
+    data: XOR<AIGoalAnalysisCreateInput, AIGoalAnalysisUncheckedCreateInput>
+  }
+
+  /**
+   * AIGoalAnalysis createMany
+   */
+  export type AIGoalAnalysisCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AIGoalAnalyses.
+     */
+    data: AIGoalAnalysisCreateManyInput | AIGoalAnalysisCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AIGoalAnalysis createManyAndReturn
+   */
+  export type AIGoalAnalysisCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * The data used to create many AIGoalAnalyses.
+     */
+    data: AIGoalAnalysisCreateManyInput | AIGoalAnalysisCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AIGoalAnalysis update
+   */
+  export type AIGoalAnalysisUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AIGoalAnalysis.
+     */
+    data: XOR<AIGoalAnalysisUpdateInput, AIGoalAnalysisUncheckedUpdateInput>
+    /**
+     * Choose, which AIGoalAnalysis to update.
+     */
+    where: AIGoalAnalysisWhereUniqueInput
+  }
+
+  /**
+   * AIGoalAnalysis updateMany
+   */
+  export type AIGoalAnalysisUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AIGoalAnalyses.
+     */
+    data: XOR<AIGoalAnalysisUpdateManyMutationInput, AIGoalAnalysisUncheckedUpdateManyInput>
+    /**
+     * Filter which AIGoalAnalyses to update
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * Limit how many AIGoalAnalyses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AIGoalAnalysis updateManyAndReturn
+   */
+  export type AIGoalAnalysisUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * The data used to update AIGoalAnalyses.
+     */
+    data: XOR<AIGoalAnalysisUpdateManyMutationInput, AIGoalAnalysisUncheckedUpdateManyInput>
+    /**
+     * Filter which AIGoalAnalyses to update
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * Limit how many AIGoalAnalyses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AIGoalAnalysis upsert
+   */
+  export type AIGoalAnalysisUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AIGoalAnalysis to update in case it exists.
+     */
+    where: AIGoalAnalysisWhereUniqueInput
+    /**
+     * In case the AIGoalAnalysis found by the `where` argument doesn't exist, create a new AIGoalAnalysis with this data.
+     */
+    create: XOR<AIGoalAnalysisCreateInput, AIGoalAnalysisUncheckedCreateInput>
+    /**
+     * In case the AIGoalAnalysis was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AIGoalAnalysisUpdateInput, AIGoalAnalysisUncheckedUpdateInput>
+  }
+
+  /**
+   * AIGoalAnalysis delete
+   */
+  export type AIGoalAnalysisDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
+    /**
+     * Filter which AIGoalAnalysis to delete.
+     */
+    where: AIGoalAnalysisWhereUniqueInput
+  }
+
+  /**
+   * AIGoalAnalysis deleteMany
+   */
+  export type AIGoalAnalysisDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AIGoalAnalyses to delete
+     */
+    where?: AIGoalAnalysisWhereInput
+    /**
+     * Limit how many AIGoalAnalyses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AIGoalAnalysis without action
+   */
+  export type AIGoalAnalysisDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIGoalAnalysis
+     */
+    select?: AIGoalAnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AIGoalAnalysis
+     */
+    omit?: AIGoalAnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIGoalAnalysisInclude<ExtArgs> | null
   }
 
 
@@ -29935,6 +31318,7 @@ export namespace Prisma {
     userId: string | null
     balance: Decimal | null
     celoAddress: string | null
+    privateKey: string | null
     celoBalance: string | null
     cusdBalance: string | null
     ceurBalance: string | null
@@ -29950,6 +31334,7 @@ export namespace Prisma {
     userId: string | null
     balance: Decimal | null
     celoAddress: string | null
+    privateKey: string | null
     celoBalance: string | null
     cusdBalance: string | null
     ceurBalance: string | null
@@ -29965,6 +31350,7 @@ export namespace Prisma {
     userId: number
     balance: number
     celoAddress: number
+    privateKey: number
     celoBalance: number
     cusdBalance: number
     ceurBalance: number
@@ -29990,6 +31376,7 @@ export namespace Prisma {
     userId?: true
     balance?: true
     celoAddress?: true
+    privateKey?: true
     celoBalance?: true
     cusdBalance?: true
     ceurBalance?: true
@@ -30005,6 +31392,7 @@ export namespace Prisma {
     userId?: true
     balance?: true
     celoAddress?: true
+    privateKey?: true
     celoBalance?: true
     cusdBalance?: true
     ceurBalance?: true
@@ -30020,6 +31408,7 @@ export namespace Prisma {
     userId?: true
     balance?: true
     celoAddress?: true
+    privateKey?: true
     celoBalance?: true
     cusdBalance?: true
     ceurBalance?: true
@@ -30122,6 +31511,7 @@ export namespace Prisma {
     userId: string
     balance: Decimal
     celoAddress: string | null
+    privateKey: string | null
     celoBalance: string | null
     cusdBalance: string | null
     ceurBalance: string | null
@@ -30156,6 +31546,7 @@ export namespace Prisma {
     userId?: boolean
     balance?: boolean
     celoAddress?: boolean
+    privateKey?: boolean
     celoBalance?: boolean
     cusdBalance?: boolean
     ceurBalance?: boolean
@@ -30174,6 +31565,7 @@ export namespace Prisma {
     userId?: boolean
     balance?: boolean
     celoAddress?: boolean
+    privateKey?: boolean
     celoBalance?: boolean
     cusdBalance?: boolean
     ceurBalance?: boolean
@@ -30190,6 +31582,7 @@ export namespace Prisma {
     userId?: boolean
     balance?: boolean
     celoAddress?: boolean
+    privateKey?: boolean
     celoBalance?: boolean
     cusdBalance?: boolean
     ceurBalance?: boolean
@@ -30206,6 +31599,7 @@ export namespace Prisma {
     userId?: boolean
     balance?: boolean
     celoAddress?: boolean
+    privateKey?: boolean
     celoBalance?: boolean
     cusdBalance?: boolean
     ceurBalance?: boolean
@@ -30216,7 +31610,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "balance" | "celoAddress" | "celoBalance" | "cusdBalance" | "ceurBalance" | "network" | "isConnected" | "connectedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
+  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "balance" | "celoAddress" | "privateKey" | "celoBalance" | "cusdBalance" | "ceurBalance" | "network" | "isConnected" | "connectedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
   export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | Wallet$transactionsArgs<ExtArgs>
@@ -30240,6 +31634,7 @@ export namespace Prisma {
       userId: string
       balance: Prisma.Decimal
       celoAddress: string | null
+      privateKey: string | null
       celoBalance: string | null
       cusdBalance: string | null
       ceurBalance: string | null
@@ -30677,6 +32072,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Wallet", 'String'>
     readonly balance: FieldRef<"Wallet", 'Decimal'>
     readonly celoAddress: FieldRef<"Wallet", 'String'>
+    readonly privateKey: FieldRef<"Wallet", 'String'>
     readonly celoBalance: FieldRef<"Wallet", 'String'>
     readonly cusdBalance: FieldRef<"Wallet", 'String'>
     readonly ceurBalance: FieldRef<"Wallet", 'String'>
@@ -38341,6 +39737,28 @@ export namespace Prisma {
   export type SavingsTransactionScalarFieldEnum = (typeof SavingsTransactionScalarFieldEnum)[keyof typeof SavingsTransactionScalarFieldEnum]
 
 
+  export const AIGoalAnalysisScalarFieldEnum: {
+    id: 'id',
+    savingsGoalId: 'savingsGoalId',
+    creditScore: 'creditScore',
+    scoreCategory: 'scoreCategory',
+    riskLevel: 'riskLevel',
+    analysis: 'analysis',
+    recommendations: 'recommendations',
+    predictedCompletionDate: 'predictedCompletionDate',
+    onTrack: 'onTrack',
+    confidence: 'confidence',
+    progressPercentage: 'progressPercentage',
+    avgMonthlyContribution: 'avgMonthlyContribution',
+    requiredMonthlyContribution: 'requiredMonthlyContribution',
+    daysUntilDeadline: 'daysUntilDeadline',
+    remainingAmount: 'remainingAmount',
+    createdAt: 'createdAt'
+  };
+
+  export type AIGoalAnalysisScalarFieldEnum = (typeof AIGoalAnalysisScalarFieldEnum)[keyof typeof AIGoalAnalysisScalarFieldEnum]
+
+
   export const MeetingScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -38460,6 +39878,7 @@ export namespace Prisma {
     userId: 'userId',
     balance: 'balance',
     celoAddress: 'celoAddress',
+    privateKey: 'privateKey',
     celoBalance: 'celoBalance',
     cusdBalance: 'cusdBalance',
     ceurBalance: 'ceurBalance',
@@ -40038,6 +41457,7 @@ export namespace Prisma {
     isCompleted?: BoolFilter<"SavingsGoal"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     transactions?: SavingsTransactionListRelationFilter
+    aiAnalyses?: AIGoalAnalysisListRelationFilter
   }
 
   export type SavingsGoalOrderByWithRelationInput = {
@@ -40052,6 +41472,7 @@ export namespace Prisma {
     isCompleted?: SortOrder
     user?: UserOrderByWithRelationInput
     transactions?: SavingsTransactionOrderByRelationAggregateInput
+    aiAnalyses?: AIGoalAnalysisOrderByRelationAggregateInput
   }
 
   export type SavingsGoalWhereUniqueInput = Prisma.AtLeast<{
@@ -40069,6 +41490,7 @@ export namespace Prisma {
     isCompleted?: BoolFilter<"SavingsGoal"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     transactions?: SavingsTransactionListRelationFilter
+    aiAnalyses?: AIGoalAnalysisListRelationFilter
   }, "id">
 
   export type SavingsGoalOrderByWithAggregationInput = {
@@ -40168,6 +41590,118 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"SavingsTransaction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"SavingsTransaction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SavingsTransaction"> | Date | string
+  }
+
+  export type AIGoalAnalysisWhereInput = {
+    AND?: AIGoalAnalysisWhereInput | AIGoalAnalysisWhereInput[]
+    OR?: AIGoalAnalysisWhereInput[]
+    NOT?: AIGoalAnalysisWhereInput | AIGoalAnalysisWhereInput[]
+    id?: StringFilter<"AIGoalAnalysis"> | string
+    savingsGoalId?: StringFilter<"AIGoalAnalysis"> | string
+    creditScore?: IntFilter<"AIGoalAnalysis"> | number
+    scoreCategory?: StringFilter<"AIGoalAnalysis"> | string
+    riskLevel?: StringFilter<"AIGoalAnalysis"> | string
+    analysis?: StringFilter<"AIGoalAnalysis"> | string
+    recommendations?: StringNullableListFilter<"AIGoalAnalysis">
+    predictedCompletionDate?: DateTimeFilter<"AIGoalAnalysis"> | Date | string
+    onTrack?: BoolFilter<"AIGoalAnalysis"> | boolean
+    confidence?: IntFilter<"AIGoalAnalysis"> | number
+    progressPercentage?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFilter<"AIGoalAnalysis"> | number
+    remainingAmount?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"AIGoalAnalysis"> | Date | string
+    savingsGoal?: XOR<SavingsGoalScalarRelationFilter, SavingsGoalWhereInput>
+  }
+
+  export type AIGoalAnalysisOrderByWithRelationInput = {
+    id?: SortOrder
+    savingsGoalId?: SortOrder
+    creditScore?: SortOrder
+    scoreCategory?: SortOrder
+    riskLevel?: SortOrder
+    analysis?: SortOrder
+    recommendations?: SortOrder
+    predictedCompletionDate?: SortOrder
+    onTrack?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
+    createdAt?: SortOrder
+    savingsGoal?: SavingsGoalOrderByWithRelationInput
+  }
+
+  export type AIGoalAnalysisWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AIGoalAnalysisWhereInput | AIGoalAnalysisWhereInput[]
+    OR?: AIGoalAnalysisWhereInput[]
+    NOT?: AIGoalAnalysisWhereInput | AIGoalAnalysisWhereInput[]
+    savingsGoalId?: StringFilter<"AIGoalAnalysis"> | string
+    creditScore?: IntFilter<"AIGoalAnalysis"> | number
+    scoreCategory?: StringFilter<"AIGoalAnalysis"> | string
+    riskLevel?: StringFilter<"AIGoalAnalysis"> | string
+    analysis?: StringFilter<"AIGoalAnalysis"> | string
+    recommendations?: StringNullableListFilter<"AIGoalAnalysis">
+    predictedCompletionDate?: DateTimeFilter<"AIGoalAnalysis"> | Date | string
+    onTrack?: BoolFilter<"AIGoalAnalysis"> | boolean
+    confidence?: IntFilter<"AIGoalAnalysis"> | number
+    progressPercentage?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFilter<"AIGoalAnalysis"> | number
+    remainingAmount?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"AIGoalAnalysis"> | Date | string
+    savingsGoal?: XOR<SavingsGoalScalarRelationFilter, SavingsGoalWhereInput>
+  }, "id">
+
+  export type AIGoalAnalysisOrderByWithAggregationInput = {
+    id?: SortOrder
+    savingsGoalId?: SortOrder
+    creditScore?: SortOrder
+    scoreCategory?: SortOrder
+    riskLevel?: SortOrder
+    analysis?: SortOrder
+    recommendations?: SortOrder
+    predictedCompletionDate?: SortOrder
+    onTrack?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
+    createdAt?: SortOrder
+    _count?: AIGoalAnalysisCountOrderByAggregateInput
+    _avg?: AIGoalAnalysisAvgOrderByAggregateInput
+    _max?: AIGoalAnalysisMaxOrderByAggregateInput
+    _min?: AIGoalAnalysisMinOrderByAggregateInput
+    _sum?: AIGoalAnalysisSumOrderByAggregateInput
+  }
+
+  export type AIGoalAnalysisScalarWhereWithAggregatesInput = {
+    AND?: AIGoalAnalysisScalarWhereWithAggregatesInput | AIGoalAnalysisScalarWhereWithAggregatesInput[]
+    OR?: AIGoalAnalysisScalarWhereWithAggregatesInput[]
+    NOT?: AIGoalAnalysisScalarWhereWithAggregatesInput | AIGoalAnalysisScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AIGoalAnalysis"> | string
+    savingsGoalId?: StringWithAggregatesFilter<"AIGoalAnalysis"> | string
+    creditScore?: IntWithAggregatesFilter<"AIGoalAnalysis"> | number
+    scoreCategory?: StringWithAggregatesFilter<"AIGoalAnalysis"> | string
+    riskLevel?: StringWithAggregatesFilter<"AIGoalAnalysis"> | string
+    analysis?: StringWithAggregatesFilter<"AIGoalAnalysis"> | string
+    recommendations?: StringNullableListFilter<"AIGoalAnalysis">
+    predictedCompletionDate?: DateTimeWithAggregatesFilter<"AIGoalAnalysis"> | Date | string
+    onTrack?: BoolWithAggregatesFilter<"AIGoalAnalysis"> | boolean
+    confidence?: IntWithAggregatesFilter<"AIGoalAnalysis"> | number
+    progressPercentage?: DecimalWithAggregatesFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalWithAggregatesFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalWithAggregatesFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntWithAggregatesFilter<"AIGoalAnalysis"> | number
+    remainingAmount?: DecimalWithAggregatesFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"AIGoalAnalysis"> | Date | string
   }
 
   export type MeetingWhereInput = {
@@ -40768,6 +42302,7 @@ export namespace Prisma {
     userId?: StringFilter<"Wallet"> | string
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     celoAddress?: StringNullableFilter<"Wallet"> | string | null
+    privateKey?: StringNullableFilter<"Wallet"> | string | null
     celoBalance?: StringNullableFilter<"Wallet"> | string | null
     cusdBalance?: StringNullableFilter<"Wallet"> | string | null
     ceurBalance?: StringNullableFilter<"Wallet"> | string | null
@@ -40785,6 +42320,7 @@ export namespace Prisma {
     userId?: SortOrder
     balance?: SortOrder
     celoAddress?: SortOrderInput | SortOrder
+    privateKey?: SortOrderInput | SortOrder
     celoBalance?: SortOrderInput | SortOrder
     cusdBalance?: SortOrderInput | SortOrder
     ceurBalance?: SortOrderInput | SortOrder
@@ -40805,6 +42341,7 @@ export namespace Prisma {
     OR?: WalletWhereInput[]
     NOT?: WalletWhereInput | WalletWhereInput[]
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    privateKey?: StringNullableFilter<"Wallet"> | string | null
     celoBalance?: StringNullableFilter<"Wallet"> | string | null
     cusdBalance?: StringNullableFilter<"Wallet"> | string | null
     ceurBalance?: StringNullableFilter<"Wallet"> | string | null
@@ -40822,6 +42359,7 @@ export namespace Prisma {
     userId?: SortOrder
     balance?: SortOrder
     celoAddress?: SortOrderInput | SortOrder
+    privateKey?: SortOrderInput | SortOrder
     celoBalance?: SortOrderInput | SortOrder
     cusdBalance?: SortOrderInput | SortOrder
     ceurBalance?: SortOrderInput | SortOrder
@@ -40845,6 +42383,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Wallet"> | string
     balance?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     celoAddress?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
+    privateKey?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
     celoBalance?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
     cusdBalance?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
     ceurBalance?: StringNullableWithAggregatesFilter<"Wallet"> | string | null
@@ -42695,6 +44234,7 @@ export namespace Prisma {
     isCompleted?: boolean
     user: UserCreateNestedOneWithoutSavingsGoalsInput
     transactions?: SavingsTransactionCreateNestedManyWithoutSavingsGoalInput
+    aiAnalyses?: AIGoalAnalysisCreateNestedManyWithoutSavingsGoalInput
   }
 
   export type SavingsGoalUncheckedCreateInput = {
@@ -42708,6 +44248,7 @@ export namespace Prisma {
     userId: string
     isCompleted?: boolean
     transactions?: SavingsTransactionUncheckedCreateNestedManyWithoutSavingsGoalInput
+    aiAnalyses?: AIGoalAnalysisUncheckedCreateNestedManyWithoutSavingsGoalInput
   }
 
   export type SavingsGoalUpdateInput = {
@@ -42721,6 +44262,7 @@ export namespace Prisma {
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutSavingsGoalsNestedInput
     transactions?: SavingsTransactionUpdateManyWithoutSavingsGoalNestedInput
+    aiAnalyses?: AIGoalAnalysisUpdateManyWithoutSavingsGoalNestedInput
   }
 
   export type SavingsGoalUncheckedUpdateInput = {
@@ -42734,6 +44276,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
     transactions?: SavingsTransactionUncheckedUpdateManyWithoutSavingsGoalNestedInput
+    aiAnalyses?: AIGoalAnalysisUncheckedUpdateManyWithoutSavingsGoalNestedInput
   }
 
   export type SavingsGoalCreateManyInput = {
@@ -42838,6 +44381,138 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIGoalAnalysisCreateInput = {
+    id?: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations?: AIGoalAnalysisCreaterecommendationsInput | string[]
+    predictedCompletionDate: Date | string
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution: Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution: Decimal | DecimalJsLike | number | string
+    daysUntilDeadline: number
+    remainingAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    savingsGoal: SavingsGoalCreateNestedOneWithoutAiAnalysesInput
+  }
+
+  export type AIGoalAnalysisUncheckedCreateInput = {
+    id?: string
+    savingsGoalId: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations?: AIGoalAnalysisCreaterecommendationsInput | string[]
+    predictedCompletionDate: Date | string
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution: Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution: Decimal | DecimalJsLike | number | string
+    daysUntilDeadline: number
+    remainingAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type AIGoalAnalysisUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    savingsGoal?: SavingsGoalUpdateOneRequiredWithoutAiAnalysesNestedInput
+  }
+
+  export type AIGoalAnalysisUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    savingsGoalId?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIGoalAnalysisCreateManyInput = {
+    id?: string
+    savingsGoalId: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations?: AIGoalAnalysisCreaterecommendationsInput | string[]
+    predictedCompletionDate: Date | string
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution: Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution: Decimal | DecimalJsLike | number | string
+    daysUntilDeadline: number
+    remainingAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type AIGoalAnalysisUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIGoalAnalysisUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    savingsGoalId?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MeetingCreateInput = {
@@ -43470,6 +45145,7 @@ export namespace Prisma {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -43487,6 +45163,7 @@ export namespace Prisma {
     userId: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -43502,6 +45179,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43519,6 +45197,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43535,6 +45214,7 @@ export namespace Prisma {
     userId: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -43549,6 +45229,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43564,6 +45245,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45478,7 +47160,17 @@ export namespace Prisma {
     none?: SavingsTransactionWhereInput
   }
 
+  export type AIGoalAnalysisListRelationFilter = {
+    every?: AIGoalAnalysisWhereInput
+    some?: AIGoalAnalysisWhereInput
+    none?: AIGoalAnalysisWhereInput
+  }
+
   export type SavingsTransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AIGoalAnalysisOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -45569,6 +47261,81 @@ export namespace Prisma {
 
   export type SavingsTransactionSumOrderByAggregateInput = {
     amount?: SortOrder
+  }
+
+  export type AIGoalAnalysisCountOrderByAggregateInput = {
+    id?: SortOrder
+    savingsGoalId?: SortOrder
+    creditScore?: SortOrder
+    scoreCategory?: SortOrder
+    riskLevel?: SortOrder
+    analysis?: SortOrder
+    recommendations?: SortOrder
+    predictedCompletionDate?: SortOrder
+    onTrack?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AIGoalAnalysisAvgOrderByAggregateInput = {
+    creditScore?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
+  }
+
+  export type AIGoalAnalysisMaxOrderByAggregateInput = {
+    id?: SortOrder
+    savingsGoalId?: SortOrder
+    creditScore?: SortOrder
+    scoreCategory?: SortOrder
+    riskLevel?: SortOrder
+    analysis?: SortOrder
+    predictedCompletionDate?: SortOrder
+    onTrack?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AIGoalAnalysisMinOrderByAggregateInput = {
+    id?: SortOrder
+    savingsGoalId?: SortOrder
+    creditScore?: SortOrder
+    scoreCategory?: SortOrder
+    riskLevel?: SortOrder
+    analysis?: SortOrder
+    predictedCompletionDate?: SortOrder
+    onTrack?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AIGoalAnalysisSumOrderByAggregateInput = {
+    creditScore?: SortOrder
+    confidence?: SortOrder
+    progressPercentage?: SortOrder
+    avgMonthlyContribution?: SortOrder
+    requiredMonthlyContribution?: SortOrder
+    daysUntilDeadline?: SortOrder
+    remainingAmount?: SortOrder
   }
 
   export type MeetingCountOrderByAggregateInput = {
@@ -45969,6 +47736,7 @@ export namespace Prisma {
     userId?: SortOrder
     balance?: SortOrder
     celoAddress?: SortOrder
+    privateKey?: SortOrder
     celoBalance?: SortOrder
     cusdBalance?: SortOrder
     ceurBalance?: SortOrder
@@ -45988,6 +47756,7 @@ export namespace Prisma {
     userId?: SortOrder
     balance?: SortOrder
     celoAddress?: SortOrder
+    privateKey?: SortOrder
     celoBalance?: SortOrder
     cusdBalance?: SortOrder
     ceurBalance?: SortOrder
@@ -46003,6 +47772,7 @@ export namespace Prisma {
     userId?: SortOrder
     balance?: SortOrder
     celoAddress?: SortOrder
+    privateKey?: SortOrder
     celoBalance?: SortOrder
     cusdBalance?: SortOrder
     ceurBalance?: SortOrder
@@ -47891,11 +49661,25 @@ export namespace Prisma {
     connect?: SavingsTransactionWhereUniqueInput | SavingsTransactionWhereUniqueInput[]
   }
 
+  export type AIGoalAnalysisCreateNestedManyWithoutSavingsGoalInput = {
+    create?: XOR<AIGoalAnalysisCreateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput> | AIGoalAnalysisCreateWithoutSavingsGoalInput[] | AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput[]
+    connectOrCreate?: AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput | AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput[]
+    createMany?: AIGoalAnalysisCreateManySavingsGoalInputEnvelope
+    connect?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+  }
+
   export type SavingsTransactionUncheckedCreateNestedManyWithoutSavingsGoalInput = {
     create?: XOR<SavingsTransactionCreateWithoutSavingsGoalInput, SavingsTransactionUncheckedCreateWithoutSavingsGoalInput> | SavingsTransactionCreateWithoutSavingsGoalInput[] | SavingsTransactionUncheckedCreateWithoutSavingsGoalInput[]
     connectOrCreate?: SavingsTransactionCreateOrConnectWithoutSavingsGoalInput | SavingsTransactionCreateOrConnectWithoutSavingsGoalInput[]
     createMany?: SavingsTransactionCreateManySavingsGoalInputEnvelope
     connect?: SavingsTransactionWhereUniqueInput | SavingsTransactionWhereUniqueInput[]
+  }
+
+  export type AIGoalAnalysisUncheckedCreateNestedManyWithoutSavingsGoalInput = {
+    create?: XOR<AIGoalAnalysisCreateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput> | AIGoalAnalysisCreateWithoutSavingsGoalInput[] | AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput[]
+    connectOrCreate?: AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput | AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput[]
+    createMany?: AIGoalAnalysisCreateManySavingsGoalInputEnvelope
+    connect?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutSavingsGoalsNestedInput = {
@@ -47920,6 +49704,20 @@ export namespace Prisma {
     deleteMany?: SavingsTransactionScalarWhereInput | SavingsTransactionScalarWhereInput[]
   }
 
+  export type AIGoalAnalysisUpdateManyWithoutSavingsGoalNestedInput = {
+    create?: XOR<AIGoalAnalysisCreateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput> | AIGoalAnalysisCreateWithoutSavingsGoalInput[] | AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput[]
+    connectOrCreate?: AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput | AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput[]
+    upsert?: AIGoalAnalysisUpsertWithWhereUniqueWithoutSavingsGoalInput | AIGoalAnalysisUpsertWithWhereUniqueWithoutSavingsGoalInput[]
+    createMany?: AIGoalAnalysisCreateManySavingsGoalInputEnvelope
+    set?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    disconnect?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    delete?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    connect?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    update?: AIGoalAnalysisUpdateWithWhereUniqueWithoutSavingsGoalInput | AIGoalAnalysisUpdateWithWhereUniqueWithoutSavingsGoalInput[]
+    updateMany?: AIGoalAnalysisUpdateManyWithWhereWithoutSavingsGoalInput | AIGoalAnalysisUpdateManyWithWhereWithoutSavingsGoalInput[]
+    deleteMany?: AIGoalAnalysisScalarWhereInput | AIGoalAnalysisScalarWhereInput[]
+  }
+
   export type SavingsTransactionUncheckedUpdateManyWithoutSavingsGoalNestedInput = {
     create?: XOR<SavingsTransactionCreateWithoutSavingsGoalInput, SavingsTransactionUncheckedCreateWithoutSavingsGoalInput> | SavingsTransactionCreateWithoutSavingsGoalInput[] | SavingsTransactionUncheckedCreateWithoutSavingsGoalInput[]
     connectOrCreate?: SavingsTransactionCreateOrConnectWithoutSavingsGoalInput | SavingsTransactionCreateOrConnectWithoutSavingsGoalInput[]
@@ -47934,6 +49732,20 @@ export namespace Prisma {
     deleteMany?: SavingsTransactionScalarWhereInput | SavingsTransactionScalarWhereInput[]
   }
 
+  export type AIGoalAnalysisUncheckedUpdateManyWithoutSavingsGoalNestedInput = {
+    create?: XOR<AIGoalAnalysisCreateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput> | AIGoalAnalysisCreateWithoutSavingsGoalInput[] | AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput[]
+    connectOrCreate?: AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput | AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput[]
+    upsert?: AIGoalAnalysisUpsertWithWhereUniqueWithoutSavingsGoalInput | AIGoalAnalysisUpsertWithWhereUniqueWithoutSavingsGoalInput[]
+    createMany?: AIGoalAnalysisCreateManySavingsGoalInputEnvelope
+    set?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    disconnect?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    delete?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    connect?: AIGoalAnalysisWhereUniqueInput | AIGoalAnalysisWhereUniqueInput[]
+    update?: AIGoalAnalysisUpdateWithWhereUniqueWithoutSavingsGoalInput | AIGoalAnalysisUpdateWithWhereUniqueWithoutSavingsGoalInput[]
+    updateMany?: AIGoalAnalysisUpdateManyWithWhereWithoutSavingsGoalInput | AIGoalAnalysisUpdateManyWithWhereWithoutSavingsGoalInput[]
+    deleteMany?: AIGoalAnalysisScalarWhereInput | AIGoalAnalysisScalarWhereInput[]
+  }
+
   export type SavingsGoalCreateNestedOneWithoutTransactionsInput = {
     create?: XOR<SavingsGoalCreateWithoutTransactionsInput, SavingsGoalUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: SavingsGoalCreateOrConnectWithoutTransactionsInput
@@ -47946,6 +49758,29 @@ export namespace Prisma {
     upsert?: SavingsGoalUpsertWithoutTransactionsInput
     connect?: SavingsGoalWhereUniqueInput
     update?: XOR<XOR<SavingsGoalUpdateToOneWithWhereWithoutTransactionsInput, SavingsGoalUpdateWithoutTransactionsInput>, SavingsGoalUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type AIGoalAnalysisCreaterecommendationsInput = {
+    set: string[]
+  }
+
+  export type SavingsGoalCreateNestedOneWithoutAiAnalysesInput = {
+    create?: XOR<SavingsGoalCreateWithoutAiAnalysesInput, SavingsGoalUncheckedCreateWithoutAiAnalysesInput>
+    connectOrCreate?: SavingsGoalCreateOrConnectWithoutAiAnalysesInput
+    connect?: SavingsGoalWhereUniqueInput
+  }
+
+  export type AIGoalAnalysisUpdaterecommendationsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type SavingsGoalUpdateOneRequiredWithoutAiAnalysesNestedInput = {
+    create?: XOR<SavingsGoalCreateWithoutAiAnalysesInput, SavingsGoalUncheckedCreateWithoutAiAnalysesInput>
+    connectOrCreate?: SavingsGoalCreateOrConnectWithoutAiAnalysesInput
+    upsert?: SavingsGoalUpsertWithoutAiAnalysesInput
+    connect?: SavingsGoalWhereUniqueInput
+    update?: XOR<XOR<SavingsGoalUpdateToOneWithWhereWithoutAiAnalysesInput, SavingsGoalUpdateWithoutAiAnalysesInput>, SavingsGoalUncheckedUpdateWithoutAiAnalysesInput>
   }
 
   export type GroupCreateNestedOneWithoutMeetingsInput = {
@@ -49212,6 +51047,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     isCompleted?: boolean
     transactions?: SavingsTransactionCreateNestedManyWithoutSavingsGoalInput
+    aiAnalyses?: AIGoalAnalysisCreateNestedManyWithoutSavingsGoalInput
   }
 
   export type SavingsGoalUncheckedCreateWithoutUserInput = {
@@ -49224,6 +51060,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     isCompleted?: boolean
     transactions?: SavingsTransactionUncheckedCreateNestedManyWithoutSavingsGoalInput
+    aiAnalyses?: AIGoalAnalysisUncheckedCreateNestedManyWithoutSavingsGoalInput
   }
 
   export type SavingsGoalCreateOrConnectWithoutUserInput = {
@@ -49334,6 +51171,7 @@ export namespace Prisma {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -49349,6 +51187,7 @@ export namespace Prisma {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -49844,6 +51683,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49859,6 +51699,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51827,6 +53668,7 @@ export namespace Prisma {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -51843,6 +53685,7 @@ export namespace Prisma {
     userId: string
     balance?: Decimal | DecimalJsLike | number | string
     celoAddress?: string | null
+    privateKey?: string | null
     celoBalance?: string | null
     cusdBalance?: string | null
     ceurBalance?: string | null
@@ -52087,6 +53930,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52103,6 +53947,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     celoAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    privateKey?: NullableStringFieldUpdateOperationsInput | string | null
     celoBalance?: NullableStringFieldUpdateOperationsInput | string | null
     cusdBalance?: NullableStringFieldUpdateOperationsInput | string | null
     ceurBalance?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52404,6 +54249,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AIGoalAnalysisCreateWithoutSavingsGoalInput = {
+    id?: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations?: AIGoalAnalysisCreaterecommendationsInput | string[]
+    predictedCompletionDate: Date | string
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution: Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution: Decimal | DecimalJsLike | number | string
+    daysUntilDeadline: number
+    remainingAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput = {
+    id?: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations?: AIGoalAnalysisCreaterecommendationsInput | string[]
+    predictedCompletionDate: Date | string
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution: Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution: Decimal | DecimalJsLike | number | string
+    daysUntilDeadline: number
+    remainingAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type AIGoalAnalysisCreateOrConnectWithoutSavingsGoalInput = {
+    where: AIGoalAnalysisWhereUniqueInput
+    create: XOR<AIGoalAnalysisCreateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput>
+  }
+
+  export type AIGoalAnalysisCreateManySavingsGoalInputEnvelope = {
+    data: AIGoalAnalysisCreateManySavingsGoalInput | AIGoalAnalysisCreateManySavingsGoalInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutSavingsGoalsInput = {
     update: XOR<UserUpdateWithoutSavingsGoalsInput, UserUncheckedUpdateWithoutSavingsGoalsInput>
     create: XOR<UserCreateWithoutSavingsGoalsInput, UserUncheckedCreateWithoutSavingsGoalsInput>
@@ -52500,6 +54391,44 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SavingsTransaction"> | Date | string
   }
 
+  export type AIGoalAnalysisUpsertWithWhereUniqueWithoutSavingsGoalInput = {
+    where: AIGoalAnalysisWhereUniqueInput
+    update: XOR<AIGoalAnalysisUpdateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedUpdateWithoutSavingsGoalInput>
+    create: XOR<AIGoalAnalysisCreateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedCreateWithoutSavingsGoalInput>
+  }
+
+  export type AIGoalAnalysisUpdateWithWhereUniqueWithoutSavingsGoalInput = {
+    where: AIGoalAnalysisWhereUniqueInput
+    data: XOR<AIGoalAnalysisUpdateWithoutSavingsGoalInput, AIGoalAnalysisUncheckedUpdateWithoutSavingsGoalInput>
+  }
+
+  export type AIGoalAnalysisUpdateManyWithWhereWithoutSavingsGoalInput = {
+    where: AIGoalAnalysisScalarWhereInput
+    data: XOR<AIGoalAnalysisUpdateManyMutationInput, AIGoalAnalysisUncheckedUpdateManyWithoutSavingsGoalInput>
+  }
+
+  export type AIGoalAnalysisScalarWhereInput = {
+    AND?: AIGoalAnalysisScalarWhereInput | AIGoalAnalysisScalarWhereInput[]
+    OR?: AIGoalAnalysisScalarWhereInput[]
+    NOT?: AIGoalAnalysisScalarWhereInput | AIGoalAnalysisScalarWhereInput[]
+    id?: StringFilter<"AIGoalAnalysis"> | string
+    savingsGoalId?: StringFilter<"AIGoalAnalysis"> | string
+    creditScore?: IntFilter<"AIGoalAnalysis"> | number
+    scoreCategory?: StringFilter<"AIGoalAnalysis"> | string
+    riskLevel?: StringFilter<"AIGoalAnalysis"> | string
+    analysis?: StringFilter<"AIGoalAnalysis"> | string
+    recommendations?: StringNullableListFilter<"AIGoalAnalysis">
+    predictedCompletionDate?: DateTimeFilter<"AIGoalAnalysis"> | Date | string
+    onTrack?: BoolFilter<"AIGoalAnalysis"> | boolean
+    confidence?: IntFilter<"AIGoalAnalysis"> | number
+    progressPercentage?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFilter<"AIGoalAnalysis"> | number
+    remainingAmount?: DecimalFilter<"AIGoalAnalysis"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"AIGoalAnalysis"> | Date | string
+  }
+
   export type SavingsGoalCreateWithoutTransactionsInput = {
     id?: string
     name: string
@@ -52510,6 +54439,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     isCompleted?: boolean
     user: UserCreateNestedOneWithoutSavingsGoalsInput
+    aiAnalyses?: AIGoalAnalysisCreateNestedManyWithoutSavingsGoalInput
   }
 
   export type SavingsGoalUncheckedCreateWithoutTransactionsInput = {
@@ -52522,6 +54452,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     isCompleted?: boolean
+    aiAnalyses?: AIGoalAnalysisUncheckedCreateNestedManyWithoutSavingsGoalInput
   }
 
   export type SavingsGoalCreateOrConnectWithoutTransactionsInput = {
@@ -52550,6 +54481,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutSavingsGoalsNestedInput
+    aiAnalyses?: AIGoalAnalysisUpdateManyWithoutSavingsGoalNestedInput
   }
 
   export type SavingsGoalUncheckedUpdateWithoutTransactionsInput = {
@@ -52562,6 +54494,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    aiAnalyses?: AIGoalAnalysisUncheckedUpdateManyWithoutSavingsGoalNestedInput
+  }
+
+  export type SavingsGoalCreateWithoutAiAnalysesInput = {
+    id?: string
+    name: string
+    targetAmount: Decimal | DecimalJsLike | number | string
+    currentAmount?: Decimal | DecimalJsLike | number | string
+    deadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isCompleted?: boolean
+    user: UserCreateNestedOneWithoutSavingsGoalsInput
+    transactions?: SavingsTransactionCreateNestedManyWithoutSavingsGoalInput
+  }
+
+  export type SavingsGoalUncheckedCreateWithoutAiAnalysesInput = {
+    id?: string
+    name: string
+    targetAmount: Decimal | DecimalJsLike | number | string
+    currentAmount?: Decimal | DecimalJsLike | number | string
+    deadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    isCompleted?: boolean
+    transactions?: SavingsTransactionUncheckedCreateNestedManyWithoutSavingsGoalInput
+  }
+
+  export type SavingsGoalCreateOrConnectWithoutAiAnalysesInput = {
+    where: SavingsGoalWhereUniqueInput
+    create: XOR<SavingsGoalCreateWithoutAiAnalysesInput, SavingsGoalUncheckedCreateWithoutAiAnalysesInput>
+  }
+
+  export type SavingsGoalUpsertWithoutAiAnalysesInput = {
+    update: XOR<SavingsGoalUpdateWithoutAiAnalysesInput, SavingsGoalUncheckedUpdateWithoutAiAnalysesInput>
+    create: XOR<SavingsGoalCreateWithoutAiAnalysesInput, SavingsGoalUncheckedCreateWithoutAiAnalysesInput>
+    where?: SavingsGoalWhereInput
+  }
+
+  export type SavingsGoalUpdateToOneWithWhereWithoutAiAnalysesInput = {
+    where?: SavingsGoalWhereInput
+    data: XOR<SavingsGoalUpdateWithoutAiAnalysesInput, SavingsGoalUncheckedUpdateWithoutAiAnalysesInput>
+  }
+
+  export type SavingsGoalUpdateWithoutAiAnalysesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutSavingsGoalsNestedInput
+    transactions?: SavingsTransactionUpdateManyWithoutSavingsGoalNestedInput
+  }
+
+  export type SavingsGoalUncheckedUpdateWithoutAiAnalysesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    transactions?: SavingsTransactionUncheckedUpdateManyWithoutSavingsGoalNestedInput
   }
 
   export type GroupCreateWithoutMeetingsInput = {
@@ -55706,6 +57707,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
     transactions?: SavingsTransactionUpdateManyWithoutSavingsGoalNestedInput
+    aiAnalyses?: AIGoalAnalysisUpdateManyWithoutSavingsGoalNestedInput
   }
 
   export type SavingsGoalUncheckedUpdateWithoutUserInput = {
@@ -55718,6 +57720,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
     transactions?: SavingsTransactionUncheckedUpdateManyWithoutSavingsGoalNestedInput
+    aiAnalyses?: AIGoalAnalysisUncheckedUpdateManyWithoutSavingsGoalNestedInput
   }
 
   export type SavingsGoalUncheckedUpdateManyWithoutUserInput = {
@@ -56663,6 +58666,24 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type AIGoalAnalysisCreateManySavingsGoalInput = {
+    id?: string
+    creditScore: number
+    scoreCategory: string
+    riskLevel: string
+    analysis: string
+    recommendations?: AIGoalAnalysisCreaterecommendationsInput | string[]
+    predictedCompletionDate: Date | string
+    onTrack: boolean
+    confidence: number
+    progressPercentage: Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution: Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution: Decimal | DecimalJsLike | number | string
+    daysUntilDeadline: number
+    remainingAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
   export type SavingsTransactionUpdateWithoutSavingsGoalInput = {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
@@ -56688,6 +58709,60 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIGoalAnalysisUpdateWithoutSavingsGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIGoalAnalysisUncheckedUpdateWithoutSavingsGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIGoalAnalysisUncheckedUpdateManyWithoutSavingsGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    creditScore?: IntFieldUpdateOperationsInput | number
+    scoreCategory?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    analysis?: StringFieldUpdateOperationsInput | string
+    recommendations?: AIGoalAnalysisUpdaterecommendationsInput | string[]
+    predictedCompletionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    onTrack?: BoolFieldUpdateOperationsInput | boolean
+    confidence?: IntFieldUpdateOperationsInput | number
+    progressPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    avgMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requiredMonthlyContribution?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    daysUntilDeadline?: IntFieldUpdateOperationsInput | number
+    remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MeetingAttendeeCreateManyMeetingInput = {

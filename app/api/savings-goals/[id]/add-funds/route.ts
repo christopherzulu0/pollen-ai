@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { triggerBackgroundAnalysis } from "@/lib/ai-analysis-helper";
 
 export async function POST(
   req: Request,
@@ -86,6 +87,10 @@ export async function POST(
         }
       })
     ]);
+
+    // Trigger AI analysis in background after funds added
+    triggerBackgroundAnalysis(id);
+    console.log(`🤖 AI analysis triggered after adding K${amount} to goal: ${goal.name}`);
 
     return NextResponse.json(updatedGoal);
   } catch (error) {

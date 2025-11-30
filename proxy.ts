@@ -17,7 +17,8 @@ const isPublicRoute = createRouteMatcher([
   "/api/voice-commands", // Allow public access to voice commands API
   "/blog(.*)",  // Matches /blog and /blog/[id] and any other blog routes
   "/contact",
-  "/api/celo/balance(.*)"
+  "/api/celo/balance(.*)",
+  "/api/aave(.*)"
 ]);
 
 // Define routes that should be ignored

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { triggerBackgroundAnalysis } from "@/lib/ai-analysis-helper";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId: clerkUserId } = await auth();
@@ -12,10 +13,13 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Await params (Next.js 15+)
+    const { id } = await params;
+
     // Get the user's savings goal
     const goal = await prisma.savingsGoal.findFirst({
       where: {
-        id: params.id,
+        id: id,
         user: {
           clerkUserId
         }
@@ -51,7 +55,7 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -59,13 +63,16 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Await params (Next.js 15+)
+    const { id } = await params;
+
     const { amount, type } = await req.json();
     if (!amount || !type) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
     const goal = await prisma.savingsGoal.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!goal) {
@@ -78,7 +85,7 @@ export async function POST(
 
     const transaction = await prisma.savingsTransaction.create({
       data: {
-        savingsGoalId: params.id,
+        savingsGoalId: id,
         amount,
         type,
         description: `${type === "DEPOSIT" ? "Deposit" : "Withdrawal"} of $${amount.toFixed(2)}`,
@@ -86,7 +93,7 @@ export async function POST(
     });
 
     const updatedGoal = await prisma.savingsGoal.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         currentAmount: {
           increment: type === "DEPOSIT" ? amount : -amount,
@@ -99,6 +106,10 @@ export async function POST(
         },
       },
     });
+
+    // Trigger AI analysis in background after transaction
+    triggerBackgroundAnalysis(id);
+    console.log(`🤖 AI analysis triggered after ${type} transaction of K${amount} on goal: ${goal.name}`);
 
     return NextResponse.json(updatedGoal);
   } catch (error) {

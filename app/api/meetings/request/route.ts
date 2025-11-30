@@ -309,7 +309,7 @@ export async function POST(request: NextRequest) {
         }
 
         const finalVideoLink = videoMeetingLink || googleMeetLink || '';
-        
+
         return NextResponse.json(
             {
                 success: true,

@@ -94,7 +94,7 @@ export function VoiceNavigator() {
   const [audioDetected, setAudioDetected] = useState(false)
   const [speechDetected, setSpeechDetected] = useState(false)
   const [showBanner, setShowBanner] = useState(false)
-  const [bannerDismissed, setBannerDismissed] = useState(false)
+  const [bannerDismissed, setBannerDismissed] = useState(true)
 
   useEffect(() => {
     if (!SpeechRecognition) {

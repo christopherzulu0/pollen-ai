@@ -25,8 +25,7 @@ export async function POST(req: Request) {
           name: clerkUser?.firstName && clerkUser?.lastName 
             ? `${clerkUser.firstName} ${clerkUser.lastName}` 
             : clerkUser?.username || "User" + Date.now(),
-          email: clerkUser?.emailAddresses[0]?.emailAddress || `${clerkUserId}@example.com`,
-          password: "clerk-auth", // This is a placeholder since we're using Clerk for auth
+          email: clerkUser?.emailAddresses[0]?.emailAddress || `${clerkUserId}@example.com`, // This is a placeholder since we're using Clerk for auth
           avatar: clerkUser?.imageUrl || null,
         }
       });

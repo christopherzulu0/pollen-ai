@@ -264,6 +264,7 @@ model SavingsGoal {
   user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   isCompleted   Boolean              @default(false)
   transactions  SavingsTransaction[]
+  aiAnalyses    AIGoalAnalysis[]
 }
 
 model SavingsTransaction {
@@ -278,6 +279,30 @@ model SavingsTransaction {
   savingsGoal SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
 
   @@index([savingsGoalId])
+}
+
+model AIGoalAnalysis {
+  id                          String   @id @default(cuid())
+  savingsGoalId               String
+  creditScore                 Int // 0-100
+  scoreCategory               String // 'Excellent' | 'Good' | 'Fair' | 'Poor'
+  riskLevel                   String // 'Low' | 'Medium' | 'High'
+  analysis                    String   @db.Text
+  recommendations             String[] // Array of recommendations
+  predictedCompletionDate     DateTime
+  onTrack                     Boolean
+  confidence                  Int // 0-100
+  progressPercentage          Decimal
+  avgMonthlyContribution      Decimal
+  requiredMonthlyContribution Decimal
+  daysUntilDeadline           Int
+  remainingAmount             Decimal
+  createdAt                   DateTime @default(now())
+
+  savingsGoal SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
+
+  @@index([savingsGoalId])
+  @@index([createdAt])
 }
 
 model Meeting {
@@ -394,6 +419,7 @@ model Wallet {
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   balance      Decimal       @default(0) // Off-chain balance
   celoAddress  String?       @unique // Celo blockchain address
+  privateKey   String? // Encrypted private key for server-side signing (⚠️ Encrypt in production!)
   celoBalance  String?       @default("0") // CELO balance (wei)
   cusdBalance  String?       @default("0") // cUSD balance (wei)
   ceurBalance  String?       @default("0") // cEUR balance (wei)

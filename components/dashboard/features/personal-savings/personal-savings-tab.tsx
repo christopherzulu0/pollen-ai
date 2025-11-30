@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -38,11 +38,13 @@ import {
   AlertCircle,
   CheckCircle2,
   Sparkles,
+  Brain,
+  Loader2,
+  Info,
 } from "lucide-react"
 import { motion } from "framer-motion"
 import { useToast } from "@/hooks/use-toast"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { toast } from "sonner"
 import { format } from "date-fns"
 
 interface SavingsGoal {
@@ -52,7 +54,7 @@ interface SavingsGoal {
   currentAmount: number
   deadline: Date
   isCompleted: boolean
-  transactions: {
+  transactions?: {
     id: string
     amount: number
     type: string
@@ -66,11 +68,33 @@ interface PersonalSavings {
   balance: number
 }
 
+interface AIAnalysis {
+  creditScore: number
+  scoreCategory: 'Excellent' | 'Good' | 'Fair' | 'Poor'
+  riskLevel: 'Low' | 'Medium' | 'High'
+  analysis: string
+  recommendations: string[]
+  predictedCompletionDate: string
+  onTrack: boolean
+  confidence: number
+  goalId: string
+  analyzedAt: string
+  metrics: {
+    progressPercentage: string
+    avgMonthlyContribution: string
+    requiredMonthlyContribution: string
+    daysUntilDeadline: number
+    remainingAmount: number
+  }
+}
+
 export function PersonalSavingsTab() {
   const [showNewGoalDialog, setShowNewGoalDialog] = useState(false)
   const [showDetailsDialog, setShowDetailsDialog] = useState(false)
   const [showAddFundsDialog, setShowAddFundsDialog] = useState(false)
+  const [showAIAnalysisDialog, setShowAIAnalysisDialog] = useState(false)
   const [selectedGoal, setSelectedGoal] = useState<SavingsGoal | null>(null)
+  const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null)
   const [amount, setAmount] = useState("")
   const [isDeposit, setIsDeposit] = useState(true)
   const { toast } = useToast()
@@ -164,12 +188,64 @@ export function PersonalSavingsTab() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["savings-goals"] });
-      toast.success("Transaction completed successfully");
+      toast({
+        title: "Success",
+        description: "Transaction completed successfully",
+      });
       setAmount("");
       setSelectedGoal(null);
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // AI Analysis Mutation - Fetch latest analysis
+  const aiAnalysisMutation = useMutation({
+    mutationFn: async (goalId: string) => {
+      // First try to GET the latest analysis
+      let response = await fetch(`/api/savings-goals/${goalId}/ai-analysis`, {
+        method: "GET",
+      });
+      
+      let isNewAnalysis = false;
+      // If no analysis exists yet, generate a new one
+      if (!response.ok) {
+        isNewAnalysis = true;
+        response = await fetch(`/api/savings-goals/${goalId}/ai-analysis`, {
+          method: "POST",
+        });
+      }
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to get AI analysis");
+      }
+      const data = await response.json();
+      return { ...data, isNewAnalysis };
+    },
+    onSuccess: (data) => {
+      setAiAnalysis(data.data);
+      setShowAIAnalysisDialog(true);
+      
+      if (data.isNewAnalysis) {
+        toast({
+          title: "Analysis Generated",
+          description: "New AI analysis has been created for this goal",
+        });
+      }
+      // Don't show toast for existing analysis - just open dialog
+    },
+    onError: (error) => {
+      toast({
+        title: "Analysis Unavailable",
+        description: error.message || "Analysis will be available shortly after goal creation",
+        variant: "destructive",
+      });
     },
   });
 
@@ -206,7 +282,11 @@ export function PersonalSavingsTab() {
 
   const handleTransaction = (goal: SavingsGoal) => {
     if (!amount || isNaN(Number(amount))) {
-      toast.error("Please enter a valid amount");
+      toast({
+        title: "Error",
+        description: "Please enter a valid amount",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -215,6 +295,24 @@ export function PersonalSavingsTab() {
       amount: Number(amount),
       type: isDeposit ? "DEPOSIT" : "WITHDRAWAL",
     });
+  };
+
+  const handleAIAnalysis = (goal: SavingsGoal) => {
+    setSelectedGoal(goal);
+    aiAnalysisMutation.mutate(goal.id);
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return "text-emerald-600 bg-emerald-50 border-emerald-200";
+    if (score >= 60) return "text-blue-600 bg-blue-50 border-blue-200";
+    if (score >= 40) return "text-amber-600 bg-amber-50 border-amber-200";
+    return "text-red-600 bg-red-50 border-red-200";
+  };
+
+  const getRiskColor = (risk: string) => {
+    if (risk === "Low") return "text-emerald-600 bg-emerald-50";
+    if (risk === "Medium") return "text-amber-600 bg-amber-50";
+    return "text-red-600 bg-red-50";
   };
 
   const personalSavings = data?.personalSavings || null
@@ -659,28 +757,57 @@ export function PersonalSavingsTab() {
                           </div>
                         </div>
                       </CardContent>
-                      <CardFooter className="flex flex-col sm:flex-row justify-between gap-2 p-4 sm:p-6">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full sm:w-auto text-xs sm:text-sm"
-                          onClick={() => {
-                            setSelectedGoal(goal)
-                            setShowDetailsDialog(true)
-                          }}
-                        >
-                          Details
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="bg-gradient-to-r from-emerald-500 to-teal-600 w-full sm:w-auto text-xs sm:text-sm"
-                          onClick={() => {
-                            setSelectedGoal(goal)
-                            setShowAddFundsDialog(true)
-                          }}
-                        >
-                          Add Funds
-                        </Button>
+                      <CardFooter className="flex flex-col gap-2 p-4 sm:p-6">
+                        <div className="flex gap-2 w-full">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 text-xs sm:text-sm"
+                            onClick={() => {
+                              setSelectedGoal(goal)
+                              setShowDetailsDialog(true)
+                            }}
+                          >
+                            Details
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-xs sm:text-sm"
+                            onClick={() => {
+                              setSelectedGoal(goal)
+                              setShowAddFundsDialog(true)
+                            }}
+                          >
+                            Add Funds
+                          </Button>
+                        </div>
+                        <div className="w-full">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full text-xs sm:text-sm border-purple-200 hover:bg-purple-50 hover:text-purple-700 relative"
+                            onClick={() => handleAIAnalysis(goal)}
+                            disabled={aiAnalysisMutation.isPending}
+                          >
+                            {aiAnalysisMutation.isPending && selectedGoal?.id === goal.id ? (
+                              <>
+                                <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                                Loading...
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles className="mr-2 h-3 w-3" />
+                                View AI Analysis
+                                <span className="ml-2 px-1.5 py-0.5 text-[10px] bg-purple-100 text-purple-700 rounded-full">
+                                  Auto
+                                </span>
+                              </>
+                            )}
+                          </Button>
+                          <p className="text-[10px] text-muted-foreground text-center mt-1">
+                            Updates automatically
+                          </p>
+                        </div>
                       </CardFooter>
                     </Card>
                   </motion.div>
@@ -1018,6 +1145,200 @@ export function PersonalSavingsTab() {
                 </Button>
               </DialogFooter>
             </form>
+          </DialogContent>
+        </Dialog>
+
+        {/* AI Analysis Dialog */}
+        <Dialog open={showAIAnalysisDialog} onOpenChange={setShowAIAnalysisDialog}>
+          <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <div className="flex items-center justify-between">
+                <DialogTitle className="flex items-center gap-2">
+                  <Brain className="h-5 w-5 text-purple-600" />
+                  AI Credit Score Analysis
+                </DialogTitle>
+                <Badge className="bg-purple-100 text-purple-700 border-purple-200">
+                  Auto-Generated
+                </Badge>
+              </div>
+              <DialogDescription>
+                Intelligent analysis of your savings goal: {selectedGoal?.name}
+                {aiAnalysis && (
+                  <span className="block mt-1 text-xs">
+                    Last updated: {format(new Date(aiAnalysis.analyzedAt), 'MMM d, yyyy \'at\' h:mm a')}
+                  </span>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+
+            {aiAnalysis && (
+              <div className="space-y-6 py-4">
+                {/* Credit Score Card */}
+                <Card className={`border-2 ${getScoreColor(aiAnalysis.creditScore)}`}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Credit Score</p>
+                        <div className="flex items-baseline gap-2">
+                          <h3 className="text-4xl font-bold">{aiAnalysis.creditScore}</h3>
+                          <span className="text-lg text-muted-foreground">/ 100</span>
+                        </div>
+                        <Badge className="mt-2" variant="outline">
+                          {aiAnalysis.scoreCategory}
+                        </Badge>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-muted-foreground">Risk Level</p>
+                        <Badge className={`mt-2 ${getRiskColor(aiAnalysis.riskLevel)}`}>
+                          {aiAnalysis.riskLevel}
+                        </Badge>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {aiAnalysis.confidence}% confident
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Progress Indicator */}
+                    <div className="mt-4">
+                      <Progress value={aiAnalysis.creditScore} className="h-3" />
+                    </div>
+
+                    {/* On Track Status */}
+                    <div className="mt-4 flex items-center gap-2">
+                      {aiAnalysis.onTrack ? (
+                        <>
+                          <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                          <span className="text-sm font-medium text-emerald-600">On Track to Meet Goal</span>
+                        </>
+                      ) : (
+                        <>
+                          <AlertCircle className="h-5 w-5 text-amber-600" />
+                          <span className="text-sm font-medium text-amber-600">Requires Attention</span>
+                        </>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Analysis */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    <Info className="h-4 w-4" />
+                    Analysis
+                  </h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed bg-muted/50 p-4 rounded-lg">
+                    {aiAnalysis.analysis}
+                  </p>
+                </div>
+
+                {/* Metrics Grid */}
+                <div className="grid grid-cols-2 gap-3">
+                  <Card>
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground">Current Progress</p>
+                      <p className="text-lg font-bold text-foreground">{aiAnalysis.metrics.progressPercentage}%</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground">Days Remaining</p>
+                      <p className="text-lg font-bold text-foreground">{aiAnalysis.metrics.daysUntilDeadline}</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground">Avg. Monthly</p>
+                      <p className="text-lg font-bold text-foreground">K{aiAnalysis.metrics.avgMonthlyContribution}</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground">Required Monthly</p>
+                      <p className="text-lg font-bold text-foreground">K{aiAnalysis.metrics.requiredMonthlyContribution}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Predicted Completion */}
+                <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Predicted Completion</p>
+                        <p className="text-xl font-bold text-foreground">
+                          {format(new Date(aiAnalysis.predictedCompletionDate), 'MMM d, yyyy')}
+                        </p>
+                      </div>
+                      <Calendar className="h-8 w-8 text-purple-600" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Recommendations */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    <Target className="h-4 w-4" />
+                    AI Recommendations
+                  </h4>
+                  <div className="space-y-2">
+                    {aiAnalysis.recommendations.map((rec, index) => (
+                      <Card key={index} className="border-l-4 border-l-emerald-500">
+                        <CardContent className="p-4">
+                          <div className="flex items-start gap-3">
+                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold flex-shrink-0 mt-0.5">
+                              {index + 1}
+                            </div>
+                            <p className="text-sm text-foreground leading-relaxed">{rec}</p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Info Banner */}
+                <Card className="bg-purple-50 border-purple-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <Info className="h-4 w-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                      <div className="text-xs text-purple-800">
+                        <p className="font-medium mb-1">Automatic Analysis</p>
+                        <p className="text-purple-700">
+                          This analysis was automatically generated when you created or updated your goal. 
+                          New analyses are generated automatically whenever you add funds or make transactions.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Powered by AI */}
+                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-2">
+                  <Sparkles className="h-3 w-3" />
+                  <span>Powered by OpenAI GPT-4</span>
+                </div>
+              </div>
+            )}
+
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setShowAIAnalysisDialog(false)}
+              >
+                Close
+              </Button>
+              <Button
+                className="bg-gradient-to-r from-emerald-500 to-teal-600"
+                onClick={() => {
+                  setShowAIAnalysisDialog(false)
+                  if (selectedGoal) {
+                    setShowAddFundsDialog(true)
+                  }
+                }}
+              >
+                Add Funds Now
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>

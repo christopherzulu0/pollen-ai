@@ -36,7 +36,7 @@ export async function POST(req: Request) {
             ? `${clerkUser.firstName} ${clerkUser.lastName}` 
             : clerkUser?.username || "User" + Date.now(), // Make sure name is unique
           email: clerkUser?.emailAddresses[0]?.emailAddress || `${session?.userId}@example.com`,
-          password: "clerk-auth", // This is a placeholder since we're using Clerk for auth
+          // This is a placeholder since we're using Clerk for auth
           avatar: clerkUser?.imageUrl || null,
         }
       });

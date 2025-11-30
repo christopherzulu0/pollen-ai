@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
             },
         })
 
-            // Send Knock notifications
+        // Send Knock notifications
         try {
             console.log('=== Starting Knock notification process ===')
             
@@ -187,10 +187,10 @@ export async function POST(request: NextRequest) {
                 // Try with just email string first to test if workflow exists
                 console.log('Attempting to trigger workflow...')
                 
-                const departmentNotification = await knock.workflows.trigger("contact", {
+            const departmentNotification = await knock.workflows.trigger("contact", {
                     recipients: [departmentRecipient],
-                    data: notificationData,
-                })
+                data: notificationData,
+            })
 
                 console.log('✓ Department notification triggered successfully!')
                 console.log('Response:', JSON.stringify(departmentNotification, null, 2))
@@ -231,9 +231,9 @@ export async function POST(request: NextRequest) {
 
                     const userNotification = await knock.workflows.trigger("contact", {
                         recipients: [userRecipient],
-                        data: {
-                            ...notificationData,
-                            userName: validatedData.name,
+                    data: {
+                        ...notificationData,
+                        userName: validatedData.name,
                             isUserConfirmation: true,
                         },
                     })

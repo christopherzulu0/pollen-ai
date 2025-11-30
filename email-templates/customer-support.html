@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Customer Support Request</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; line-height: 1.6;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f8fafc;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" style="width: 100%; max-width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); overflow: hidden;">
+          
+          <!-- Header with accent bar -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); padding: 4px 0;">
+            </td>
+          </tr>
+          
+          <!-- Logo and Title Section -->
+          <tr>
+            <td style="padding: 40px 40px 32px 40px;">
+              <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td>
+                    <div style="background-color: #f3f4f6; width: 56px; height: 56px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                      <span style="font-size: 28px; color: #8b5cf6;">🎧</span>
+                    </div>
+                    <h1 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em;">Customer Support Request</h1>
+                    <p style="margin: 0; font-size: 15px; color: #64748b; font-weight: 500;">A new support ticket requires your attention</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Priority Badge -->
+          <tr>
+            <td style="padding: 0 40px 24px 40px;">
+              <div style="display: inline-block; padding: 6px 14px; background-color: #fef3c7; border-radius: 9999px; border: 1px solid #fde68a;">
+                <span style="font-size: 13px; font-weight: 600; color: #92400e; text-transform: uppercase; letter-spacing: 0.05em;">Priority: {{priority}}</span>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Customer Information Card -->
+          <tr>
+            <td style="padding: 0 40px 32px 40px;">
+              <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f8fafc; border-radius: 12px; padding: 24px; border: 1px solid #e2e8f0;">
+                <tr>
+                  <td>
+                    <p style="margin: 0 0 16px 0; font-size: 13px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Customer Details</p>
+                    
+                    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                      <tr>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                          <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Name</p>
+                          <p style="margin: 0; font-size: 15px; font-weight: 600; color: #0f172a;">{{name}}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                          <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Email</p>
+                          <p style="margin: 0; font-size: 15px; font-weight: 600; color: #8b5cf6;">{{email}}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 0;">
+                          <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Phone</p>
+                          <p style="margin: 0; font-size: 15px; font-weight: 600; color: #0f172a;">{{phone}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Subject Section -->
+          <tr>
+            <td style="padding: 0 40px 24px 40px;">
+              <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Subject</p>
+              <p style="margin: 0; font-size: 18px; font-weight: 600; color: #0f172a; line-height: 1.4;">{{subject}}</p>
+            </td>
+          </tr>
+          
+          <!-- Message Section -->
+          <tr>
+            <td style="padding: 0 40px 32px 40px;">
+              <p style="margin: 0 0 12px 0; font-size: 13px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Message</p>
+              <div style="background-color: #ffffff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                <p style="margin: 0; font-size: 15px; color: #334155; line-height: 1.7; white-space: pre-wrap;">{{message}}</p>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Metadata -->
+          <tr>
+            <td style="padding: 0 40px 40px 40px;">
+              <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f8fafc; border-radius: 12px; padding: 20px;">
+                <tr>
+                  <td>
+                    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                      <tr>
+                        <td style="width: 50%; padding-right: 12px;">
+                          <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 500; color: #64748b;">Submitted</p>
+                          <p style="margin: 0; font-size: 14px; font-weight: 600; color: #0f172a;">{{submitted_at}}</p>
+                        </td>
+                        <td style="width: 50%; padding-left: 12px;">
+                          <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 500; color: #64748b;">Request ID</p>
+                          <p style="margin: 0; font-size: 14px; font-weight: 600; color: #0f172a;">#{{id}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f8fafc; padding: 32px 40px; border-top: 1px solid #e2e8f0;">
+              <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b; text-align: center;">Knock Labs Customer Support</p>
+              <p style="margin: 0; font-size: 13px; color: #94a3b8; text-align: center;">Respond promptly to maintain excellent customer satisfaction</p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

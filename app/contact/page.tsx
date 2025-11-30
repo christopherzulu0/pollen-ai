@@ -296,10 +296,10 @@ export default function ContactPage() {
           toast.error("Time Slot Already Booked", {
             description: data.message || "This time is already taken. Please choose a different time slot.",
           })
-        } else {
-          toast.error("Failed to schedule meeting", {
-            description: data.message || "Please try again later.",
-          })
+      } else {
+        toast.error("Failed to schedule meeting", {
+          description: data.message || "Please try again later.",
+        })
         }
       }
     } catch (error) {
@@ -896,14 +896,14 @@ export default function ContactPage() {
                   <CardContent className="p-6">
                     {!meetingScheduled ? (
                       <>
-                        <div className="mb-6">
-                          <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
-                            Schedule a Meeting
-                          </h2>
-                          <p className="text-gray-600">
-                            Fill in your details and select a date and time that works for you.
-                          </p>
-                        </div>
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                        Schedule a Meeting
+                      </h2>
+                      <p className="text-gray-600">
+                        Fill in your details and select a date and time that works for you.
+                      </p>
+                    </div>
                       </>
                     ) : (
                       <div className="text-center py-8 animate-in fade-in duration-500">
@@ -1045,8 +1045,8 @@ export default function ContactPage() {
                     
                     {!meetingScheduled && (
                       <>
-                        {/* Contact Information Form */}
-                        <div className="mb-8 space-y-4">
+                    {/* Contact Information Form */}
+                    <div className="mb-8 space-y-4">
                       <h3 className="text-lg font-semibold text-[#003366] mb-4">Your Information</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
