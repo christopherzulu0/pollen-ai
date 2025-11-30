@@ -111,6 +111,21 @@ export async function POST(req: Request) {
         )
       }
       if (existingMembership.status === "INACTIVE") {
+        // Before resubmitting, check group limit
+        const activeGroupCount = await prisma.membership.count({
+          where: {
+            userId: dbUser.id,
+            status: "ACTIVE",
+          },
+        })
+
+        if (activeGroupCount >= 2) {
+          return NextResponse.json(
+            { error: "You can only be a member of 2 groups at a time. Please leave a group before joining another." },
+            { status: 400 }
+          )
+        }
+
         // Allow reapplication after becoming inactive
         await prisma.membership.update({
           where: { id: existingMembership.id },
@@ -131,6 +146,21 @@ export async function POST(req: Request) {
           },
         })
       }
+    }
+
+    // Check if user has reached the limit of 2 active groups
+    const activeGroupCount = await prisma.membership.count({
+      where: {
+        userId: dbUser.id,
+        status: "ACTIVE",
+      },
+    })
+
+    if (activeGroupCount >= 2) {
+      return NextResponse.json(
+        { error: "You can only be a member of 2 groups at a time. Please leave a group before joining another." },
+        { status: 400 }
+      )
     }
 
     // Check if group is at capacity

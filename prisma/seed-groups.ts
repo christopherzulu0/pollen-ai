@@ -2,7 +2,7 @@ import { PrismaClient } from "../lib/generated/prisma"
 
 const prisma = new PrismaClient()
 
-const USER_ID = "cmidbcgl00000s3bbkhqvbfr5"
+const USER_ID = "cmim3wh7w0000s3liasex09hr"
 
 const sampleGroups = [
   {

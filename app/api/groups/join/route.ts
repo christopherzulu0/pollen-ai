@@ -56,6 +56,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Already a member of this group" }, { status: 400 });
     }
 
+    // Check if user has reached the limit of 2 active groups
+    const activeGroupCount = await prisma.membership.count({
+      where: {
+        userId: dbUser.id,
+        status: "ACTIVE",
+      },
+    });
+
+    if (activeGroupCount >= 2) {
+      return NextResponse.json(
+        { error: "You can only be a member of 2 groups at a time. Please leave a group before joining another." },
+        { status: 400 }
+      );
+    }
+
     // Create new membership
     const membership = await prisma.membership.create({
       data: {
