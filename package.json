@@ -57,6 +57,7 @@
     "@tremor/react": "^3.18.7",
     "@uploadthing/react": "^7.1.1",
     "@vapi-ai/web": "^2.5.0",
+    "@vercel/analytics": "^1.6.1",
     "autoprefixer": "^10.4.20",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",

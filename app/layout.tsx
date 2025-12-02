@@ -9,6 +9,7 @@ import LayoutClient from "@/components/layout-client"
 import UserSync from "@/components/UserSync"
 import BottomNavigator from "@/components/Navigator/BottomNavigator"
 import { LanguageProvider } from "@/contexts/LanguageContext"
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,6 +32,7 @@ export default function RootLayout({
           <SettingsProvider>
             <Providers>
               <LanguageProvider>
+              <Analytics/>
                 <LayoutClient>
                   {children}
                 </LayoutClient>

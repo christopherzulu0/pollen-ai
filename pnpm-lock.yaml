@@ -146,6 +146,9 @@ importers:
       '@vapi-ai/web':
         specifier: ^2.5.0
         version: 2.5.1
+      '@vercel/analytics':
+        specifier: ^1.6.1
+        version: 1.6.1(next@16.0.3(@babel/core@7.28.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.22(postcss@8.5.6)
@@ -2416,6 +2419,32 @@ packages:
   '@vapi-ai/web@2.5.1':
     resolution: {integrity: sha512-FCVdM08L1bRzIiCBCEOUPW59CkhmXN1wPA7G+qSo/FayMbRZTJju8ucnyz39l22utYb6j2DgeDw6dhUqexMQAw==}
     engines: {node: '>=18.0.0'}
+
+  '@vercel/analytics@1.6.1':
+    resolution: {integrity: sha512-oH9He/bEM+6oKlv3chWuOOcp8Y6fo6/PSro8hEkgCW3pu9/OiCXiUpRUogDh3Fs3LH2sosDrx8CxeOLBEE+afg==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@walletconnect/browser-utils@1.8.0':
     resolution: {integrity: sha512-Wcqqx+wjxIo9fv6eBUFHPsW1y/bGWWRboni5dfD8PtOmrihrEpOCmvRJe4rfl7xgJW8Ea9UqKEaq0bIRLHlK4A==}
@@ -8260,6 +8289,11 @@ snapshots:
       '@daily-co/daily-js': 0.85.0
       events: 3.3.0
 
+  '@vercel/analytics@1.6.1(next@16.0.3(@babel/core@7.28.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
+    optionalDependencies:
+      next: 16.0.3(@babel/core@7.28.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react: 19.2.0
+
   '@walletconnect/browser-utils@1.8.0':
     dependencies:
       '@walletconnect/safe-json': 1.0.0
@@ -8272,8 +8306,8 @@ snapshots:
     dependencies:
       '@walletconnect/core': 1.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@walletconnect/iso-crypto': 1.8.0
-      '@walletconnect/types': 1.6.6
-      '@walletconnect/utils': 1.6.6
+      '@walletconnect/types': 1.8.0
+      '@walletconnect/utils': 1.8.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -8350,7 +8384,7 @@ snapshots:
       '@walletconnect/browser-utils': 1.8.0
       '@walletconnect/encoding': 1.0.2
       '@walletconnect/jsonrpc-utils': 1.0.8
-      '@walletconnect/types': 1.6.6
+      '@walletconnect/types': 1.8.0
       bn.js: 4.11.8
       js-sha3: 0.8.0
       query-string: 6.13.5
