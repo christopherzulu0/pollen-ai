@@ -10,6 +10,7 @@ import { format } from 'date-fns'
 import { Input } from './ui/input'
 import { useCeloWallet } from '@/lib/celo/context'
 import { Skeleton } from './ui/skeleton'
+import { formatErrorForToast } from '@/lib/error-messages'
 
 interface Group {
   id: string
@@ -44,12 +45,12 @@ export default function ViewBalances() {
     isLoading: isCeloLoading
   } = useCeloWallet()
 
-  const { data: balanceData, isLoading } = useQuery<BalanceData>({
+  const { data: balanceData, isLoading, error: balanceError } = useQuery<BalanceData>({
     queryKey: ['balances'],
     queryFn: async () => {
-      const response = await fetch('/api/balances')
-      if (!response.ok) {
-        try {
+      try {
+        const response = await fetch('/api/balances')
+        if (!response.ok) {
           const contentType = response.headers.get("content-type");
           if (contentType && contentType.includes("application/json")) {
             const errorData = await response.json();
@@ -58,17 +59,19 @@ export default function ViewBalances() {
             const errorText = await response.text();
             throw new Error(errorText || 'Failed to fetch balances');
           }
-        } catch (parseError) {
-          if (parseError instanceof Error) {
-            throw parseError;
-          }
-          throw new Error('Failed to fetch balances');
         }
+        const data = await response.json()
+        return data
+      } catch (err) {
+        const errorInfo = formatErrorForToast(err, 'balance-fetch');
+        toast.error(errorInfo.title, {
+          description: errorInfo.description
+        });
+        throw err;
       }
-      const data = await response.json()
-      console.log('Balance data:', data)
-      return data
-    }
+    },
+    retry: 1,
+    retryDelay: 1000
   })
 
   // Use balance from wallet context (fetched client-side via MetaMask)
@@ -123,26 +126,60 @@ export default function ViewBalances() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount })
       })
-      if (!response.ok) throw new Error('Failed to make contribution')
+      
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || errorData.error || 'Failed to make contribution');
+        } else {
+          const errorText = await response.text();
+          throw new Error(errorText || 'Failed to make contribution');
+        }
+      }
+      
       return response.json()
     },
     onSuccess: () => {
-      toast.success('Contribution made successfully')
+      toast.success('Contribution Successful', {
+        description: 'Your contribution has been added to the group successfully.'
+      })
       setContributionAmount('')
       queryClient.invalidateQueries({ queryKey: ['balances'] })
     },
     onError: (error) => {
-      toast.error(error.message)
+      const errorInfo = formatErrorForToast(error, 'contribution');
+      toast.error(errorInfo.title, {
+        description: errorInfo.description
+      })
     }
   })
 
   const handleContribution = () => {
-    if (!selectedGroup || !contributionAmount) return
-    const amount = parseFloat(contributionAmount)
-    if (isNaN(amount) || amount <= 0) {
-      toast.error('Please enter a valid amount')
+    if (!selectedGroup || !contributionAmount) {
+      toast.error('Missing Information', {
+        description: 'Please select a group and enter a contribution amount.'
+      })
       return
     }
+    
+    const amount = parseFloat(contributionAmount)
+    
+    if (isNaN(amount) || amount <= 0) {
+      toast.error('Invalid Amount', {
+        description: 'Please enter a valid positive amount for your contribution.'
+      })
+      return
+    }
+    
+    // Check if user has sufficient balance
+    if (balanceData?.walletBalance && amount > Number(balanceData.walletBalance)) {
+      toast.error('Insufficient Balance', {
+        description: `You need K ${amount.toFixed(2)} but only have K ${Number(balanceData.walletBalance).toFixed(2)} in your wallet.`
+      })
+      return
+    }
+    
     makeContribution.mutate({ groupId: selectedGroup.id, amount })
   }
 

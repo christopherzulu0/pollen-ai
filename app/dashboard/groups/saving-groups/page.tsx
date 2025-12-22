@@ -12,7 +12,8 @@ import MembersWithLoans from "@/components/loans/members-with-loans"
 import GroupMembers from "@/components/loans/group-members"
 import DashboardHeader from "@/components/loans/dashboard-header"
 import FinancialMetrics from "@/components/loans/financial-metrics"
-import ActivityFeed from "@/components/loans/activity-feed"
+import { ActivityFeedData } from "@/components/loans/activity-feed-data"
+import { ActivityFeedSkeleton } from "@/components/loans/activity-feed-skeleton"
 import LoanStatistics from "@/components/loans/loan-statistics"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MobileNav } from "@/components/loans/mobile-nav"
@@ -69,8 +70,8 @@ function LoansPageContent() {
                                 </div>
 
                                 <div className="col-span-1 md:col-span-2">
-                                    <Suspense fallback={<Skeleton className="h-[300px] w-full rounded-xl" />}>
-                                        <ActivityFeed />
+                                    <Suspense fallback={<ActivityFeedSkeleton />}>
+                                        <ActivityFeedData />
                                     </Suspense>
                                 </div>
                             </div>

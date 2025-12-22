@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { toast } from "sonner"
+import { formatErrorForToast } from "@/lib/error-messages"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -100,34 +101,11 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
                 setMyGroups(formattedGroups)
             } catch (error) {
                 console.error('Error fetching groups:', error)
-                setGroupsError("Failed to load groups. Please try again.")
-                // Fallback to mock data if API fails
-                setMyGroups([
-                    {
-                        id: "group1",
-                        name: "Savings Group A",
-                        maxLoanAmount: 1000,
-                        memberCount: 12,
-                        availableFunds: 5000,
-                        interestRate: 4,
-                    },
-                    {
-                        id: "group2",
-                        name: "Investment Club B",
-                        maxLoanAmount: 2000,
-                        memberCount: 8,
-                        availableFunds: 8000,
-                        interestRate: 5,
-                    },
-                    {
-                        id: "group3",
-                        name: "Community Cooperative",
-                        maxLoanAmount: 1500,
-                        memberCount: 15,
-                        availableFunds: 7500,
-                        interestRate: 3,
-                    },
-                ])
+                const errorInfo = formatErrorForToast(error, 'group')
+                toast.error(errorInfo.title, {
+                    description: errorInfo.description
+                })
+                setGroupsError(errorInfo.description)
             } finally {
                 setIsLoadingGroups(false)
             }
@@ -173,6 +151,20 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
     })
 
     const selectedGroup = myGroups.find((group) => group.id === watchGroupId)
+
+    // Auto-set interest rate when group is selected
+    useEffect(() => {
+        if (selectedGroup && selectedGroup.interestRate !== undefined) {
+            // Only auto-set if the current interest rate is 0 (default) or different from group's rate
+            const currentRate = form.getValues("interestRate")
+            if (currentRate === 0 || currentRate !== selectedGroup.interestRate) {
+                form.setValue("interestRate", selectedGroup.interestRate, {
+                    shouldValidate: true,
+                    shouldDirty: true
+                })
+            }
+        }
+    }, [selectedGroup, form])
 
     // Fetch total contributions when selected group changes
     useEffect(() => {
@@ -269,7 +261,10 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
             }
         } catch (error) {
             console.error("Error submitting loan request:", error);
-            toast.error(error instanceof Error ? error.message : "Failed to submit loan request. Please try again.")
+            const errorInfo = formatErrorForToast(error, 'loan')
+            toast.error(errorInfo.title, {
+                description: errorInfo.description
+            })
         } finally {
             setIsSubmitting(false)
         }
@@ -579,31 +574,45 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
                                                         <FormLabel className="flex items-center gap-2">
                                                             <DollarSign className="h-4 w-4" />
                                                             Interest Rate (%)
+                                                            {selectedGroup && (
+                                                                <TooltipProvider>
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger asChild>
+                                                                            <Badge variant="outline" className="ml-auto text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 cursor-help">
+                                                                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                                                                                Fixed Rate
+                                                                            </Badge>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent>
+                                                                            <p className="max-w-xs">
+                                                                                This is your group's fixed interest rate. All loans in this group use this rate.
+                                                                            </p>
+                                                                        </TooltipContent>
+                                                                    </Tooltip>
+                                                                </TooltipProvider>
+                                                            )}
                                                         </FormLabel>
                                                         <FormControl>
-                                                            <div className="space-y-2">
-                                                                <div className="flex justify-between text-xs text-muted-foreground">
-                                                                    <span>0%</span>
-                                                                    <span>10%</span>
-                                                                </div>
-                                                                <Slider
-                                                                    min={0}
-                                                                    max={10}
-                                                                    step={0.5}
-                                                                    value={[field.value]}
-                                                                    onValueChange={(value) => field.onChange(value[0])}
+                                                            <div className="relative">
+                                                                <Input
+                                                                    type="text"
+                                                                    value={`${field.value}%`}
+                                                                    readOnly
+                                                                    disabled
+                                                                    className="text-center font-semibold text-lg cursor-not-allowed bg-muted"
                                                                 />
-                                                                <div className="text-center font-medium">{field.value}%</div>
+                                                                {!selectedGroup && (
+                                                                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
+                                                                        Select a group first
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         </FormControl>
-                                                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
-                                                            <FormDescription>Proposed interest rate</FormDescription>
-                                                            {selectedGroup && (
-                                                                <span className="text-xs text-muted-foreground">
-                                                                    Recommended: {selectedGroup.interestRate}%
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                        <FormDescription>
+                                                            {selectedGroup 
+                                                                ? "This is your group's standard interest rate for all loans" 
+                                                                : "Interest rate will be set based on your selected group"}
+                                                        </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
                                                 )}
@@ -776,18 +785,27 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
                                     </div>
 
                                     <div>
-                                        <label className="text-sm font-medium">Interest Rate (%)</label>
-                                        <div className="flex items-center gap-4 mt-1.5">
-                                            <div className="w-full max-w-[200px]">
-                                                <Slider
-                                                    min={0}
-                                                    max={10}
-                                                    step={0.5}
-                                                    value={[watchInterestRate || 0]}
-                                                    onValueChange={(value) => form.setValue("interestRate", value[0])}
-                                                />
-                                            </div>
-                                            <span className="font-medium min-w-[40px] text-right">{watchInterestRate || 0}%</span>
+                                        <label className="text-sm font-medium flex items-center gap-2">
+                                            Interest Rate (%)
+                                            {selectedGroup && (
+                                                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                                                    Fixed
+                                                </Badge>
+                                            )}
+                                        </label>
+                                        <div className="mt-1.5">
+                                            <Input
+                                                type="text"
+                                                value={`${watchInterestRate || 0}%`}
+                                                readOnly
+                                                disabled
+                                                className="max-w-[200px] text-center font-semibold cursor-not-allowed bg-muted"
+                                            />
+                                            {selectedGroup && (
+                                                <p className="text-xs text-muted-foreground mt-1">
+                                                    Set by {selectedGroup.name}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
 

@@ -23,18 +23,20 @@ export async function POST(req: Request) {
 
     const data = await req.json();
 
-    {/** Validate the group exists and user is a member */}
-    const membership = await prisma.membership.findUnique({
+    {/** Validate the group exists and user is an ACTIVE member */}
+    const membership = await prisma.membership.findFirst({
       where: {
-        userId_groupId: {
-          userId: dbUser.id,
-          groupId: data.groupId
-        }
+        userId: dbUser.id,
+        groupId: data.groupId,
+        status: "ACTIVE" // Only active members can request loans
       }
     });
 
     if (!membership) {
-      return NextResponse.json({error:"You are not a member of this group"},{status:403})
+      return NextResponse.json(
+        { error: "You must be an active member of this group to request a loan" },
+        { status: 403 }
+      )
     }
 
     // Create the loan request
@@ -63,10 +65,11 @@ export async function POST(req: Request) {
       }
     });
 
-    // Create notifications for all group members
+    // Create notifications for all ACTIVE group members (OWNER, ADMIN, MEMBER)
     const groupMembers = await prisma.membership.findMany({
       where: {
         groupId: data.groupId,
+        status: "ACTIVE", // Only notify active members
         userId: {
           not: dbUser.id // Exclude the requester
         }
@@ -164,17 +167,23 @@ export async function GET(req: Request) {
         }
       });
     } else if (tab === 'pending') {
-      // Get pending loan requests for groups the user is a member of
+      // Get pending loan requests for groups where the user is an ACTIVE member (any role: OWNER, ADMIN, or MEMBER)
       const userMemberships = await prisma.membership.findMany({
         where: {
-          userId: dbUser.id
+          userId: dbUser.id,
+          status: "ACTIVE" // Only active memberships
         },
         select: {
-          groupId: true
+          groupId: true,
+          role: true
         }
       });
 
       const groupIds = userMemberships.map(m => m.groupId);
+
+      if (groupIds.length === 0) {
+        return NextResponse.json([]);
+      }
 
       loanRequests = await prisma.loanRequest.findMany({
         where: {
@@ -210,7 +219,22 @@ export async function GET(req: Request) {
         }
       });
     } else if (groupId) {
-      // Get loan requests for a specific group
+      // Get loan requests for a specific group (only if user is an ACTIVE member)
+      const membership = await prisma.membership.findFirst({
+        where: {
+          userId: dbUser.id,
+          groupId: groupId,
+          status: "ACTIVE" // Only active members
+        }
+      });
+
+      if (!membership) {
+        return NextResponse.json(
+          { error: "You must be an active member of this group to view loan requests" },
+          { status: 403 }
+        );
+      }
+
       loanRequests = await prisma.loanRequest.findMany({
         where: {
           groupId: groupId
@@ -242,17 +266,23 @@ export async function GET(req: Request) {
         }
       });
     } else if (status) {
-      // Get loan requests with specific status for groups the user is a member of
+      // Get loan requests with specific status for groups where the user is an ACTIVE member (any role: OWNER, ADMIN, or MEMBER)
       const userMemberships = await prisma.membership.findMany({
         where: {
-          userId: dbUser.id
+          userId: dbUser.id,
+          status: "ACTIVE" // Only active memberships
         },
         select: {
-          groupId: true
+          groupId: true,
+          role: true
         }
       });
 
       const groupIds = userMemberships.map(m => m.groupId);
+
+      if (groupIds.length === 0) {
+        return NextResponse.json([]);
+      }
 
       loanRequests = await prisma.loanRequest.findMany({
         where: {
@@ -288,17 +318,23 @@ export async function GET(req: Request) {
         }
       });
     } else {
-      // Get all loan requests for groups the user is a member of
+      // Get all loan requests for groups where the user is an ACTIVE member (any role: OWNER, ADMIN, or MEMBER)
       const userMemberships = await prisma.membership.findMany({
         where: {
-          userId: dbUser.id
+          userId: dbUser.id,
+          status: "ACTIVE" // Only active memberships
         },
         select: {
-          groupId: true
+          groupId: true,
+          role: true
         }
       });
 
       const groupIds = userMemberships.map(m => m.groupId);
+
+      if (groupIds.length === 0) {
+        return NextResponse.json([]);
+      }
 
       loanRequests = await prisma.loanRequest.findMany({
         where: {
@@ -413,18 +449,20 @@ export async function PATCH(req: Request) {
       return NextResponse.json({error:"Loan request not found"},{status:404})
     }
 
-    // Check if user is a member of the group
-    const membership = await prisma.membership.findUnique({
+    // Check if user is an ACTIVE member of the group (OWNER, ADMIN, or MEMBER can vote)
+    const membership = await prisma.membership.findFirst({
       where: {
-        userId_groupId: {
-          userId: dbUser.id,
-          groupId: loanRequest.groupId
-        }
+        userId: dbUser.id,
+        groupId: loanRequest.groupId,
+        status: "ACTIVE" // Only active members can vote
       }
     });
 
     if (!membership) {
-      return NextResponse.json({error:"You are not a member of this group"},{status:403})
+      return NextResponse.json(
+        { error: "You must be an active member of this group to vote on loan requests" },
+        { status: 403 }
+      )
     }
 
     // Check if user has already voted
@@ -519,13 +557,21 @@ export async function PATCH(req: Request) {
       }
     });
 
-    // Only update status when all members have voted
-    if (allVotes.length === totalMembers) {
-      const approvalVotes = allVotes.filter(v => v.vote).length;
-      const rejectionVotes = allVotes.filter(v => !v.vote).length;
+    // Calculate majority threshold: floor(totalMembers / 2) + 1
+    const majorityThreshold = Math.floor(totalMembers / 2) + 1;
+    const approvalVotes = allVotes.filter(v => v.vote).length;
+    const rejectionVotes = allVotes.filter(v => !v.vote).length;
 
-      // Update loan request status based on votes
-      if (approvalVotes > rejectionVotes) {
+    // Update status when majority is reached (not waiting for all votes)
+    if (approvalVotes >= majorityThreshold) {
+      // Majority approved
+      const currentStatus = await prisma.loanRequest.findUnique({
+        where: { id: loanRequestId },
+        select: { status: true }
+      });
+
+      // Only process if not already approved (prevent duplicate processing)
+      if (currentStatus?.status !== "APPROVED") {
         // Update loan request status to APPROVED
         const approvedLoan = await prisma.loanRequest.update({
           where: {
@@ -562,11 +608,11 @@ export async function PATCH(req: Request) {
             }
           });
 
-          // Create a transaction record for the loan
+          // Create a transaction record for the loan disbursement
           await prisma.transaction.create({
             data: {
               amount: loanRequest.amount,
-              type: "LOAN",
+              type: "LOAN_DISBURSEMENT",
               status: "COMPLETED",
               userId: loanRequest.userId,
               walletId: userWallet.id,

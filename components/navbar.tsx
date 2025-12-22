@@ -147,7 +147,15 @@ export default function Navbar() {
             >
               Services
             </button>
-
+               <Link
+              href="/Groups"
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
+                } transition-colors`}
+            >
+             Groups
+            </Link>
             <Link
               href="/blog"
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
@@ -157,7 +165,7 @@ export default function Navbar() {
             >
               Blog
             </Link>
-
+           
             <Link
               href="/contact"
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
@@ -167,15 +175,7 @@ export default function Navbar() {
             >
               Contact
             </Link>
-            <Link
-              href="/Groups"
-              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
-                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-                : "text-white/80 hover:text-white"
-                } transition-colors`}
-            >
-             Groups
-            </Link>
+           
           </nav>
 
           <div className="hidden lg:flex items-center space-x-2 lg:space-x-4">
@@ -303,7 +303,16 @@ export default function Navbar() {
               </span>
               Services
             </Link>
-
+              <Link
+              href="/Groups"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <Users className="h-5 w-5 text-[#00CC66]" />
+              </span>
+              Groups
+            </Link>
             <Link
               href="/blog"
               className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
@@ -326,6 +335,7 @@ export default function Navbar() {
               </span>
               Blog
             </Link>
+            
 
             <Link
               href="/contact"
@@ -345,17 +355,7 @@ export default function Navbar() {
               </span>
               Contact
             </Link>
-            <Link
-              href="/Groups"
-              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
-                <Users className="h-5 w-5 text-[#00CC66]" />
-              </span>
-              Groups
-            </Link>
-
+            
             <div className="pt-4 space-y-2">
               <SignedOut>
                 <Button

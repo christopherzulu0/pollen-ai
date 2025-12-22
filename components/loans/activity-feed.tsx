@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { ArrowUpCircle, CheckCircle, XCircle, Clock, User, RefreshCw, Filter, Bell } from "lucide-react"
+import { ArrowUpCircle, CheckCircle, XCircle, Clock, User, RefreshCw, Filter, Bell, AlertCircle } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -8,13 +8,59 @@ import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ActivityFeedSkeleton } from "./activity-feed-skeleton"
 
-export default function ActivityFeed() {
+interface Activity {
+  id: string | number
+  type: string
+  user: {
+    name: string
+    avatar: string | null
+  }
+  description: string
+  time: string
+  status: string
+  group: string
+}
+
+interface ActivityFeedProps {
+  activities: Activity[]
+  isLoading?: boolean
+  error?: string
+}
+
+export default function ActivityFeed({ activities, isLoading, error }: ActivityFeedProps) {
   const [activeTab, setActiveTab] = useState("all")
   const [filter, setFilter] = useState("all")
 
-  // Mock data - in a real app, fetch from API
-  const activities = [
+  // Show skeleton while loading
+  if (isLoading) {
+    return <ActivityFeedSkeleton />
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900">
+        <CardContent className="flex flex-col items-center justify-center py-10 space-y-4">
+          <AlertCircle className="h-12 w-12 text-destructive" />
+          <div className="text-center space-y-2">
+            <h3 className="font-semibold text-lg">Unable to Load Activities</h3>
+            <p className="text-muted-foreground max-w-md">{error}</p>
+          </div>
+          <Button variant="outline" onClick={() => window.location.reload()}>
+            Try Again
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Get unique groups from activities
+  const uniqueGroups = Array.from(new Set(activities.map((a) => a.group)))
+
+  // Mock data kept as fallback - in a real app, fetch from API
+  const mockActivities = [
     {
       id: 1,
       type: "LOAN_REQUEST",
@@ -174,8 +220,11 @@ export default function ActivityFeed() {
     }
   }
 
+  // Use provided activities or fallback to mock
+  const displayActivities = activities.length > 0 ? activities : mockActivities
+
   // Filter activities based on tab and filter
-  const filteredActivities = activities.filter((activity) => {
+  const filteredActivities = displayActivities.filter((activity) => {
     if (activeTab !== "all" && activity.type !== activeTab) {
       return false
     }
@@ -207,11 +256,21 @@ export default function ActivityFeed() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setFilter("all")}>All Groups</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilter("Savings Group A")}>Savings Group A</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilter("Investment Club B")}>Investment Club B</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilter("Community Cooperative")}>
-                  Community Cooperative
-                </DropdownMenuItem>
+                {uniqueGroups.length > 0 ? (
+                  uniqueGroups.map((group) => (
+                    <DropdownMenuItem key={group} onClick={() => setFilter(group)}>
+                      {group}
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <>
+                    <DropdownMenuItem onClick={() => setFilter("Savings Group A")}>Savings Group A</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setFilter("Investment Club B")}>Investment Club B</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setFilter("Community Cooperative")}>
+                      Community Cooperative
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
             <Button

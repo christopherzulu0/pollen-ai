@@ -51,6 +51,8 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"
+import { toast } from "sonner"
+import { formatErrorForToast } from "@/lib/error-messages"
 
 // Default values for loan requests
 const defaultLoanRequest = {
@@ -136,6 +138,9 @@ export default function PendingLoanRequests() {
 
       // Vote successful
       setVoteSuccess(true);
+      toast.success("Vote Recorded", {
+        description: "Your vote has been recorded successfully. The loan status will update when majority is reached."
+      });
 
       // Update the local state to reflect the vote and updated loan request
       setLoanRequests(prevRequests => 
@@ -174,7 +179,11 @@ export default function PendingLoanRequests() {
 
     } catch (err) {
       console.error('Error voting on loan request:', err);
-      setVoteError(err.message);
+      const errorInfo = formatErrorForToast(err, 'vote');
+      toast.error(errorInfo.title, {
+        description: errorInfo.description
+      });
+      setVoteError(errorInfo.description);
     } finally {
       setIsVoting(false);
       setVotingLoanId(null);
@@ -247,7 +256,11 @@ export default function PendingLoanRequests() {
       setLoanRequests(transformedData)
     } catch (err) {
       console.error('Error fetching loan requests:', err)
-      setError(err.message)
+      const errorInfo = formatErrorForToast(err, 'fetch');
+      toast.error(errorInfo.title, {
+        description: errorInfo.description
+      });
+      setError(errorInfo.description)
     } finally {
       setIsLoading(false)
     }
@@ -410,12 +423,15 @@ export default function PendingLoanRequests() {
   if (error) {
     return (
       <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900">
-        <CardContent className="flex flex-col items-center justify-center py-10">
-          <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
-          <p className="text-slate-600 dark:text-slate-400 text-center">
-            Error loading loan requests: {error}
-          </p>
-          <Button variant="outline" className="mt-4 rounded-md" onClick={() => window.location.reload()}>
+        <CardContent className="flex flex-col items-center justify-center py-10 space-y-4">
+          <AlertCircle className="h-12 w-12 text-destructive" />
+          <div className="text-center space-y-2">
+            <h3 className="font-semibold text-lg">Unable to Load Requests</h3>
+            <p className="text-muted-foreground max-w-md">
+              {error}
+            </p>
+          </div>
+          <Button variant="outline" className="mt-4 rounded-md" onClick={() => fetchLoanRequests()}>
             Try Again
           </Button>
         </CardContent>

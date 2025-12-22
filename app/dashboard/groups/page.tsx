@@ -13,14 +13,74 @@ import { LogIn, Plus, ChevronRight, FileText, Clock } from "lucide-react"
 import { useEffect, useState } from "react"
 import LoanRequestForm from "@/components/loans/loan-request-form"
 
+interface GroupDetail {
+  id: string
+  name: string
+  description?: string
+  logo?: string
+  status: string
+  createdAt: string
+  contributionAmount: number
+  contributionFrequency: string
+  depositGoal?: number
+  latePenaltyFee: number
+  gracePeriod: number
+  interestRate: number
+  allowEarlyWithdrawal: boolean
+  earlyWithdrawalFee: number
+  votingThreshold: number
+  maxMembers?: number
+  meetingFrequency: string
+  groupRules?: string
+  privacy: string
+  governanceType: string
+  owner: {
+    id: string
+    name?: string
+    email: string
+  }
+  memberships?: {
+    id: string
+    role: string
+    status: string
+    balance: number
+    totalContributed: number
+    joinedAt: string
+    user: {
+      id: string
+      name?: string
+      email: string
+    }
+  }[]
+  contributions?: {
+    id: string
+    amount: number
+    status: string
+    createdAt: string
+  }[]
+  loanRequests?: {
+    id: string
+    amount: number
+    purpose: string
+    status: string
+    createdAt: string
+  }[]
+  meetings?: {
+    id: string
+    title: string
+    date: string
+    location?: string
+  }[]
+}
+
 // Define Group type
 interface Group {
-  id: string;
-  name: string;
-  status: string;
-  createdAt: string;
-  contributionAmount: number;
-  memberships?: { id: string }[];
+  id: string
+  name: string
+  status: string
+  createdAt: string
+  contributionAmount: number
+  memberships?: { id: string }[]
 }
 
 export default function GroupsPage() {
@@ -33,49 +93,53 @@ export default function GroupsPage() {
     isLoading: isLoadingGroups,
     error: groupsError,
     refetch: refetchGroups,
-    isError
+    isError,
   } = useQuery<Group[]>({
-    queryKey: ['groups'],
+    queryKey: ["groups"],
     queryFn: async () => {
-      console.log('Fetching groups...');
+      console.log("Fetching groups...")
       try {
-        const response = await fetch('/api/groups');
-        console.log('Groups API response status:', response.status);
+        const response = await fetch("/api/groups")
+        console.log("Groups API response status:", response.status)
 
         // Handle HTTP error statuses
         if (response.status === 401) {
-          throw new Error('Authentication required. Please sign in again.');
+          throw new Error("Authentication required. Please sign in again.")
         }
 
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || 'Failed to fetch groups');
+          const errorData = await response.json().catch(() => ({}))
+          throw new Error(errorData.error || "Failed to fetch groups")
         }
 
-        const data = await response.json();
-        console.log('Groups data:', data);
-        return data;
+        const data = await response.json()
+        console.log("Groups data:", data)
+        return data
       } catch (error) {
-        console.error('Error in queryFn:', error);
-        throw error;
+        console.error("Error in queryFn:", error)
+        throw error
       }
     },
     retry: 1,
     retryDelay: 1000,
     refetchOnWindowFocus: false,
-  });
+  })
 
   // Show error toast if groups fetch fails
   useEffect(() => {
     if (isError && groupsError) {
-      console.error('Error fetching groups:', groupsError);
+      console.error("Error fetching groups:", groupsError)
       toast({
         title: "Error loading groups",
         description: groupsError instanceof Error ? groupsError.message : "Failed to load groups. Please try again.",
         variant: "destructive",
-      });
+      })
     }
-  }, [isError, groupsError, toast]);
+  }, [isError, groupsError, toast])
+
+  const handleViewDetails = (groupId: string) => {
+    window.location.href = `/dashboard/groups/details/${groupId}`
+  }
 
   return (
     <div className="space-y-6">
@@ -123,7 +187,7 @@ export default function GroupsPage() {
                 <div className="flex flex-col items-center text-center">
                   <FileText className="h-10 w-10 text-red-500/50" />
                   <p className="mt-2 text-red-500">Error loading groups</p>
-                  <Button variant="outline" className="mt-4" onClick={() => refetchGroups()}>
+                  <Button variant="outline" className="mt-4 bg-transparent" onClick={() => refetchGroups()}>
                     Try Again
                   </Button>
                 </div>
@@ -160,7 +224,11 @@ export default function GroupsPage() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" className="w-full justify-between">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-between bg-transparent"
+                      onClick={() => handleViewDetails(group.id)}
+                    >
                       View Details
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -175,7 +243,7 @@ export default function GroupsPage() {
                   <FileText className="h-10 w-10 text-muted-foreground/50" />
                   <p className="mt-2 text-muted-foreground">No groups found</p>
                   <Link href="/dashboard/groups/create" passHref>
-                    <Button variant="outline" className="mt-4">
+                    <Button variant="outline" className="mt-4 bg-transparent">
                       Create a Group
                     </Button>
                   </Link>
@@ -191,7 +259,7 @@ export default function GroupsPage() {
                 <Clock className="h-10 w-10 text-muted-foreground/50" />
                 <p className="mt-2 text-muted-foreground">No pending groups</p>
                 <Link href="/dashboard/groups/join" passHref>
-                  <Button variant="outline" className="mt-4">
+                  <Button variant="outline" className="mt-4 bg-transparent">
                     Join a Group
                   </Button>
                 </Link>
@@ -216,13 +284,9 @@ export default function GroupsPage() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create Loan Request</DialogTitle>
-            <DialogDescription>
-              Submit a new loan request to your savings group for approval.
-            </DialogDescription>
+            <DialogDescription>Submit a new loan request to your savings group for approval.</DialogDescription>
           </DialogHeader>
-          <LoanRequestForm
-            onSuccess={() => setIsLoanDialogOpen(false)}
-          />
+          <LoanRequestForm onSuccess={() => setIsLoanDialogOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

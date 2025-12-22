@@ -213,6 +213,7 @@ model Membership {
   balance          Decimal           @default(0)
   totalContributed Decimal           @default(0)
   lastContribution DateTime?
+  
   votes            Vote[]
   meetingAttendees MeetingAttendee[] // Added this relation
   voteResults      VoteResult[] // Added this relation
@@ -515,6 +516,9 @@ enum MembershipStatus {
   PENDING
   ACTIVE
   SUSPENDED
+  DECLINED
+  ACCEPTED
+  APPROVED
   INACTIVE
 }
 
@@ -569,6 +573,7 @@ enum GroupStatus {
   COMPLETED
   ARCHIVED
 }
+
 
 enum LoanStatus {
   PENDING

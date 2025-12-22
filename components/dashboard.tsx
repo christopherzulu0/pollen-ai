@@ -268,7 +268,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 <div className="px-2 py-2 mt-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Groups</p>
                 </div>
-                <Link href="/dashboard/groups" passHref>
+                {/* <Link href="/dashboard/groups" passHref>
                   <Button
                     variant={pathname === "/dashboard/groups" ? "secondary" : "ghost"}
                     className="w-full justify-start gap-3"
@@ -276,7 +276,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     <Users className="h-4 w-4" />
                     <span>My Groups</span>
                   </Button>
-                </Link>
+                </Link> */}
                 <Link href="/dashboard/groups/create" passHref>
                   <Button
                     variant={pathname === "/dashboard/groups/create" ? "secondary" : "ghost"}
@@ -284,6 +284,15 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   >
                     <Plus className="h-4 w-4" />
                     <span>Create Group</span>
+                  </Button>
+                </Link>
+                 <Link href="/dashboard/groups/create" passHref>
+                  <Button
+                    variant={pathname === "/dashboard/requests" ? "secondary" : "ghost"}
+                    className="w-full justify-start gap-3"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>Group Requests</span>
                   </Button>
                 </Link>
                 <Link href="/dashboard/groups/join" passHref>
@@ -604,14 +613,14 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   <CollapsibleContent>
                     <SidebarGroupContent>
                       <SidebarMenu>
-                        <SidebarMenuItem>
+                        {/* <SidebarMenuItem>
                           <Link href="/dashboard/groups" passHref>
                             <SidebarMenuButton isActive={pathname === "/dashboard/groups"}>
                               <Users className="h-5 w-5 text-gray-500 dark:text-white" />
                               <span className="text-gray-500 dark:text-white">My Groups</span>
                             </SidebarMenuButton>
                           </Link>
-                        </SidebarMenuItem>
+                        </SidebarMenuItem> */}
 
                         <SidebarMenuItem>
                           <Link href="/dashboard/groups/create" passHref>
@@ -620,6 +629,17 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                             >
                               <Plus className="h-5 w-5 text-gray-500 dark:text-white" />
                               <span className="text-gray-500 dark:text-white">Create Group</span>
+                            </SidebarMenuButton>
+                          </Link>
+                        </SidebarMenuItem>
+
+                        <SidebarMenuItem>
+                          <Link href="/dashboard/requests" passHref>
+                            <SidebarMenuButton
+                              isActive={pathname === "/dashboard/requests"}
+                            >
+                              <Plus className="h-5 w-5 text-gray-500 dark:text-white" />
+                              <span className="text-gray-500 dark:text-white">Group Requests</span>
                             </SidebarMenuButton>
                           </Link>
                         </SidebarMenuItem>

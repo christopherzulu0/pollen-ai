@@ -48,6 +48,8 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import LoanRequestForm from "@/components/loans/loan-request-form"
 import axios from "axios"
+import { toast } from "sonner"
+import { formatErrorForToast } from "@/lib/error-messages"
 
 const LoanStatusTab = () => {
     const [timeRange, setTimeRange] = useState<string>("year")
@@ -84,6 +86,7 @@ const LoanStatusTab = () => {
     const fetchGroups = async () => {
         try {
             setLoading(true)
+            setError(null)
             const response = await axios.get('/api/groups')
             setGroups(response.data)
 
@@ -95,7 +98,11 @@ const LoanStatusTab = () => {
             }
         } catch (err) {
             console.error('Error fetching groups:', err)
-            setError('Failed to fetch groups')
+            const errorInfo = formatErrorForToast(err, 'group')
+            toast.error(errorInfo.title, {
+                description: errorInfo.description
+            })
+            setError(errorInfo.description)
             setLoading(false)
         }
     }
@@ -135,7 +142,11 @@ const LoanStatusTab = () => {
             setLoading(false)
         } catch (err) {
             console.error('Error fetching loan data:', err)
-            setError('Failed to fetch loan data')
+            const errorInfo = formatErrorForToast(err, 'fetch')
+            toast.error(errorInfo.title, {
+                description: errorInfo.description
+            })
+            setError(errorInfo.description)
             setLoading(false)
         }
     }

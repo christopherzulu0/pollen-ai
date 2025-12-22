@@ -201,17 +201,18 @@ model Group {
 }
 
 model Membership {
-  id               String            @id @default(cuid())
+  id               String           @id @default(cuid())
   userId           String
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   groupId          String
-  group            Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  role             MembershipRole    @default(MEMBER)
-  joinedAt         DateTime          @default(now())
-  status           MembershipStatus  @default(ACTIVE)
-  balance          Decimal           @default(0)
-  totalContributed Decimal           @default(0)
+  group            Group            @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  role             MembershipRole   @default(MEMBER)
+  joinedAt         DateTime         @default(now())
+  status           MembershipStatus @default(ACTIVE)
+  balance          Decimal          @default(0)
+  totalContributed Decimal          @default(0)
   lastContribution DateTime?
+
   votes            Vote[]
   meetingAttendees MeetingAttendee[] // Added this relation
   voteResults      VoteResult[] // Added this relation
@@ -514,6 +515,9 @@ enum MembershipStatus {
   PENDING
   ACTIVE
   SUSPENDED
+  DECLINED
+  ACCEPTED
+  APPROVED
   INACTIVE
 }
 

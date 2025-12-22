@@ -50,14 +50,13 @@ export async function GET() {
             include: {
                 memberships: {
                     where: {
-                        status: 'ACTIVE' // Only include active memberships
+                        status: 'ACTIVE', // Only include active memberships
+                        group: {
+                            status: 'ACTIVE' // Only active groups
+                        }
                     },
                     include: {
-                        group: {
-                            where: {
-                                status: 'ACTIVE' // Only active groups
-                            }
-                        }
+                        group: true
                     }
                 }
             }

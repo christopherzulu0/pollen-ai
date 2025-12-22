@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "@/components/ui/use-toast"
+import { formatErrorForToast } from "@/lib/error-messages"
 import {
   Dialog,
   DialogContent,
@@ -166,9 +167,10 @@ export default function MyLoanRequests() {
       })
     } catch (error) {
       console.error('Error withdrawing loan request:', error)
+      const errorInfo = formatErrorForToast(error);
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to withdraw your request. Please try again.",
+        title: errorInfo.title,
+        description: errorInfo.description,
         variant: "destructive",
       })
     } finally {
@@ -192,14 +194,19 @@ export default function MyLoanRequests() {
 
   // Handle error state
   if (isError) {
+    const errorInfo = formatErrorForToast(error, 'fetch');
     return (
       <Card>
-        <CardContent className="flex flex-col items-center justify-center py-10">
-          <p className="text-destructive text-center">
-            {error instanceof Error ? error.message : "Failed to load loan requests. Please try again."}
-          </p>
+        <CardContent className="flex flex-col items-center justify-center py-10 space-y-4">
+          <AlertCircle className="h-12 w-12 text-destructive" />
+          <div className="text-center space-y-2">
+            <h3 className="font-semibold text-lg">{errorInfo.title}</h3>
+            <p className="text-muted-foreground max-w-md">
+              {errorInfo.description}
+            </p>
+          </div>
           <Button className="mt-4" variant="outline" onClick={() => refetch()}>
-            Retry
+            Try Again
           </Button>
         </CardContent>
       </Card>
