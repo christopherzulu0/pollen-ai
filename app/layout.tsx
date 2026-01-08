@@ -37,7 +37,7 @@ export default function RootLayout({
                   {children}
                 </LayoutClient>
                 <UserSync/>
-                {/* <BottomNavigator/> */}
+                <BottomNavigator/>
               </LanguageProvider>
             </Providers>
           </SettingsProvider>

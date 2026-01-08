@@ -64,7 +64,9 @@ const nextConfig = {
       //      ''
       //],
     unoptimized: true,
+   
   },
+  optimizeFonts: false,
 }
 
 // Merge user config if it exists

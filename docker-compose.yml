@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: pollen
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Build-time args for public environment variables
+        # These get embedded in the Next.js build
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY: ${NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY}
+        NEXT_PUBLIC_VAPI_ASSISTANT_ID: ${NEXT_PUBLIC_VAPI_ASSISTANT_ID}
+        NEXT_PUBLIC_VAPI_API_KEY: ${NEXT_PUBLIC_VAPI_API_KEY}
+        NEXT_PUBLIC_CELO_NETWORK: ${NEXT_PUBLIC_CELO_NETWORK}
+    restart: always
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    environment:
+      # Runtime environment variables (override build-time values if needed)
+      # Database connection (Neon)
+      - DATABASE_URL=${DATABASE_URL}
+      - POSTGRES_PRISMA_URL=${POSTGRES_PRISMA_URL:-${DATABASE_URL}}
+      
+      # Clerk Authentication
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+      
+      # VAPI (Voice AI)
+      - NEXT_PUBLIC_VAPI_ASSISTANT_ID=${NEXT_PUBLIC_VAPI_ASSISTANT_ID}
+      - NEXT_PUBLIC_VAPI_API_KEY=${NEXT_PUBLIC_VAPI_API_KEY}
+      
+      # Knock Labs (Notifications)
+      - NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY=${NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY}
+      - KNOCK_SECRET_API_KEY=${KNOCK_SECRET_API_KEY}
+      - KNOCK_SIGNING_SECRET=${KNOCK_SIGNING_SECRET}
+      
+      # Uploadthing
+      - UPLOADTHING_TOKEN=${UPLOADTHING_TOKEN}
+      - UPLOADTHING_SECRET=${UPLOADTHING_SECRET}
+      
+      # Celo Blockchain
+      - CELO_RPC_URL=${CELO_RPC_URL}
+      - NEXT_PUBLIC_CELO_NETWORK=${NEXT_PUBLIC_CELO_NETWORK}
+      
+      # OpenAI
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Support
+      - SUPPORT_TEAM_EMAIL=${SUPPORT_TEAM_EMAIL}
+      
+      # Zoom Integration
+      - ZOOM_CLIENT_SECRET=${ZOOM_CLIENT_SECRET}
+      - ZOOM_CLIENT_ID=${ZOOM_CLIENT_ID}
+      - ZOOM_ACCOUNT_ID=${ZOOM_ACCOUNT_ID}
+      
+      # Google Calendar Integration
+      - ENABLE_GOOGLE_CALENDAR=${ENABLE_GOOGLE_CALENDAR}
+      - GOOGLE_CALENDAR_ID=${GOOGLE_CALENDAR_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+      
+      # Node environment
+      - NODE_ENV=production
+    volumes:
+      # Mount Google Calendar credentials file
+      - ./pollenblockchain-firebase-adminsdk-fbsvc-731021d8f2.json:/app/pollenblockchain-firebase-adminsdk-fbsvc-731021d8f2.json:ro
+    # extra_hosts only needed if using local database instead of Neon
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway" 
