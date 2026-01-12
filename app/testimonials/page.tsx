@@ -35,7 +35,7 @@ const TestimonialCarousel = ({ testimonials }: { testimonials: any[] }) => {
 
   return (
     <div className="relative w-full max-w-4xl mx-auto">
-      <div className="overflow-hidden rounded-xl bg-white shadow-lg border-2 border-[#003366]/10">
+      <div className="overflow-hidden rounded-xl bg-white shadow-lg border-2 border-primary/10">
         <div className="relative p-8 md:p-12">
           <div className="absolute top-6 right-6 flex">
             {[...Array(5)].map((_, i) => (
@@ -48,7 +48,7 @@ const TestimonialCarousel = ({ testimonials }: { testimonials: any[] }) => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#00CC66] flex-shrink-0">
+            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#00CC66] shrink-0">
               <Image
                 src={testimonials[activeIndex].image || "/placeholder.svg"}
                 alt={testimonials[activeIndex].name}
@@ -61,7 +61,7 @@ const TestimonialCarousel = ({ testimonials }: { testimonials: any[] }) => {
               <Quote className="h-10 w-10 text-[#00CC66] mb-4 opacity-50" />
               <p className="text-gray-700 italic text-lg md:text-xl mb-6">"{testimonials[activeIndex].quote}"</p>
               <div>
-                <h3 className="text-xl font-bold text-[#003366]">{testimonials[activeIndex].name}</h3>
+                <h3 className="text-xl font-bold text-primary">{testimonials[activeIndex].name}</h3>
                 <p className="text-[#00CC66] font-medium">{testimonials[activeIndex].role}</p>
                 <div className="flex items-center mt-2">
                   <MapPin className="h-4 w-4 text-gray-500 mr-1" />
@@ -78,9 +78,9 @@ const TestimonialCarousel = ({ testimonials }: { testimonials: any[] }) => {
           variant="outline"
           size="icon"
           onClick={prevSlide}
-          className="rounded-full border-2 border-[#003366]/20 hover:border-[#003366] hover:bg-[#003366]/5"
+          className="rounded-full border-2 border-primary/20 hover:border-primary hover:bg-primary/5"
         >
-          <ChevronLeft className="h-5 w-5 text-[#003366]" />
+          <ChevronLeft className="h-5 w-5 text-primary" />
         </Button>
         <div className="flex items-center gap-2">
           {testimonials.map((_, index) => (
@@ -88,7 +88,7 @@ const TestimonialCarousel = ({ testimonials }: { testimonials: any[] }) => {
               key={index}
               onClick={() => setActiveIndex(index)}
               className={`w-2.5 h-2.5 rounded-full transition-all ${
-                index === activeIndex ? "bg-[#003366] w-6" : "bg-[#003366]/30"
+                index === activeIndex ? "bg-primary w-6" : "bg-primary/30"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -98,9 +98,9 @@ const TestimonialCarousel = ({ testimonials }: { testimonials: any[] }) => {
           variant="outline"
           size="icon"
           onClick={nextSlide}
-          className="rounded-full border-2 border-[#003366]/20 hover:border-[#003366] hover:bg-[#003366]/5"
+          className="rounded-full border-2 border-primary/20 hover:border-primary hover:bg-primary/5"
         >
-          <ChevronRight className="h-5 w-5 text-[#003366]" />
+          <ChevronRight className="h-5 w-5 text-primary" />
         </Button>
       </div>
     </div>
@@ -184,7 +184,7 @@ export default function TestimonialsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section with Animation */}
-      <section className="relative py-20 md:py-28 bg-[#003366] text-white overflow-hidden">
+      <section className="relative py-20 md:py-28 bg-primary text-white overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#00CC66]/20 rounded-full blur-3xl"></div>
           <div className="absolute top-1/2 -right-20 w-60 h-60 bg-[#00CC66]/10 rounded-full blur-3xl"></div>
@@ -221,19 +221,19 @@ export default function TestimonialsPage() {
         <div className="container px-4 md:px-6 mx-auto">
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
             <div className="flex items-center">
-              <ThumbsUp className="h-6 w-6 text-[#003366] mr-2" />
+              <ThumbsUp className="h-6 w-6 text-primary mr-2" />
               <span className="text-gray-700 font-medium">4.8/5 Average Rating</span>
             </div>
             <div className="flex items-center">
-              <Users className="h-6 w-6 text-[#003366] mr-2" />
+              <Users className="h-6 w-6 text-primary mr-2" />
               <span className="text-gray-700 font-medium">25,000+ Satisfied Users</span>
             </div>
             <div className="flex items-center">
-              <Award className="h-6 w-6 text-[#003366] mr-2" />
+              <Award className="h-6 w-6 text-primary mr-2" />
               <span className="text-gray-700 font-medium">Financial Inclusion Award 2023</span>
             </div>
             <div className="flex items-center">
-              <TrendingUp className="h-6 w-6 text-[#003366] mr-2" />
+              <TrendingUp className="h-6 w-6 text-primary mr-2" />
               <span className="text-gray-700 font-medium">98% Recommend Us</span>
             </div>
           </div>
@@ -244,10 +244,10 @@ export default function TestimonialsPage() {
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-2 bg-[#003366]/10 text-[#003366] border-none px-3 py-1 text-sm">
+            <Badge className="mb-2 bg-primary/10 text-primary border-none px-3 py-1 text-sm">
               Featured Stories
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Hear From Our Community</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Hear From Our Community</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Real stories from real people whose lives have been transformed by Pollen AI's financial solutions.
             </p>
@@ -261,10 +261,10 @@ export default function TestimonialsPage() {
       <section className="py-16 md:py-24 bg-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-2 bg-[#003366]/10 text-[#003366] border-none px-3 py-1 text-sm">
+            <Badge className="mb-2 bg-primary/10 text-primary border-none px-3 py-1 text-sm">
               Browse By Category
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">
               Success Stories By Service
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
@@ -277,25 +277,25 @@ export default function TestimonialsPage() {
               <TabsList className="bg-gray-100 p-1">
                 <TabsTrigger
                   value="business"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Business Loans
                 </TabsTrigger>
                 <TabsTrigger
                   value="agriculture"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Agriculture
                 </TabsTrigger>
                 <TabsTrigger
                   value="savings"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Savings
                 </TabsTrigger>
                 <TabsTrigger
                   value="personal"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Personal
                 </TabsTrigger>
@@ -309,7 +309,7 @@ export default function TestimonialsPage() {
                   .map((testimonial, index) => (
                     <Card
                       key={index}
-                      className="border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all overflow-hidden"
+                      className="border-2 border-primary/10 hover:border-primary/30 transition-all overflow-hidden"
                     >
                       <CardContent className="p-0">
                         <div className="flex flex-col md:flex-row">
@@ -328,7 +328,7 @@ export default function TestimonialsPage() {
                             <Quote className="h-6 w-6 text-[#00CC66] mb-2" />
                             <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
                             <div>
-                              <h3 className="text-lg font-bold text-[#003366]">{testimonial.name}</h3>
+                              <h3 className="text-lg font-bold text-primary">{testimonial.name}</h3>
                               <p className="text-[#00CC66]">{testimonial.role}</p>
                               <div className="flex items-center mt-1">
                                 <MapPin className="h-3 w-3 text-gray-500 mr-1" />
@@ -350,7 +350,7 @@ export default function TestimonialsPage() {
                   .map((testimonial, index) => (
                     <Card
                       key={index}
-                      className="border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all overflow-hidden"
+                      className="border-2 border-primary/10 hover:border-primary/30 transition-all overflow-hidden"
                     >
                       <CardContent className="p-0">
                         <div className="flex flex-col md:flex-row">
@@ -369,7 +369,7 @@ export default function TestimonialsPage() {
                             <Quote className="h-6 w-6 text-[#00CC66] mb-2" />
                             <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
                             <div>
-                              <h3 className="text-lg font-bold text-[#003366]">{testimonial.name}</h3>
+                              <h3 className="text-lg font-bold text-primary">{testimonial.name}</h3>
                               <p className="text-[#00CC66]">{testimonial.role}</p>
                               <div className="flex items-center mt-1">
                                 <MapPin className="h-3 w-3 text-gray-500 mr-1" />
@@ -391,7 +391,7 @@ export default function TestimonialsPage() {
                   .map((testimonial, index) => (
                     <Card
                       key={index}
-                      className="border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all overflow-hidden"
+                      className="border-2 border-primary/10 hover:border-primary/30 transition-all overflow-hidden"
                     >
                       <CardContent className="p-0">
                         <div className="flex flex-col md:flex-row">
@@ -410,7 +410,7 @@ export default function TestimonialsPage() {
                             <Quote className="h-6 w-6 text-[#00CC66] mb-2" />
                             <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
                             <div>
-                              <h3 className="text-lg font-bold text-[#003366]">{testimonial.name}</h3>
+                              <h3 className="text-lg font-bold text-primary">{testimonial.name}</h3>
                               <p className="text-[#00CC66]">{testimonial.role}</p>
                               <div className="flex items-center mt-1">
                                 <MapPin className="h-3 w-3 text-gray-500 mr-1" />
@@ -432,7 +432,7 @@ export default function TestimonialsPage() {
                   .map((testimonial, index) => (
                     <Card
                       key={index}
-                      className="border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all overflow-hidden"
+                      className="border-2 border-primary/10 hover:border-primary/30 transition-all overflow-hidden"
                     >
                       <CardContent className="p-0">
                         <div className="flex flex-col md:flex-row">
@@ -451,7 +451,7 @@ export default function TestimonialsPage() {
                             <Quote className="h-6 w-6 text-[#00CC66] mb-2" />
                             <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
                             <div>
-                              <h3 className="text-lg font-bold text-[#003366]">{testimonial.name}</h3>
+                              <h3 className="text-lg font-bold text-primary">{testimonial.name}</h3>
                               <p className="text-[#00CC66]">{testimonial.role}</p>
                               <div className="flex items-center mt-1">
                                 <MapPin className="h-3 w-3 text-gray-500 mr-1" />
@@ -473,8 +473,8 @@ export default function TestimonialsPage() {
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-2 bg-[#003366]/10 text-[#003366] border-none px-3 py-1 text-sm">Watch & Listen</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Video Testimonials</h2>
+            <Badge className="mb-2 bg-primary/10 text-primary border-none px-3 py-1 text-sm">Watch & Listen</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Video Testimonials</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Watch our users share their experiences with Pollen AI in their own words.
             </p>
@@ -522,7 +522,7 @@ export default function TestimonialsPage() {
                   </div>
                 </div>
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-[#003366] line-clamp-1">{video.title}</h3>
+                  <h3 className="text-lg font-bold text-primary line-clamp-1">{video.title}</h3>
                   <p className="text-[#00CC66] mt-1">{video.person}</p>
                   <div className="flex items-center justify-between mt-3">
                     <div className="flex items-center text-sm text-gray-500">
@@ -531,7 +531,7 @@ export default function TestimonialsPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-[#003366] hover:text-[#003366] hover:bg-[#003366]/10"
+                      className="text-primary hover:text-primary hover:bg-primary/10"
                     >
                       Watch Now
                     </Button>
@@ -542,7 +542,7 @@ export default function TestimonialsPage() {
           </div>
 
           <div className="text-center mt-10">
-            <Button className="bg-[#003366] hover:bg-[#002244]">
+            <Button className="bg-primary hover:bg-[#002244]">
               View All Videos
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -553,14 +553,14 @@ export default function TestimonialsPage() {
       {/* Impact Metrics Section with Animation */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] opacity-5"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-white via-white/95 to-white"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <div className="text-center mb-12">
-            <Badge className="mb-2 bg-[#003366]/10 text-[#003366] border-none px-3 py-1 text-sm">
+            <Badge className="mb-2 bg-primary/10 text-primary border-none px-3 py-1 text-sm">
               Measurable Results
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Our Impact in Numbers</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Our Impact in Numbers</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               The statistics that showcase our commitment to financial inclusion and community development.
             </p>
@@ -595,13 +595,13 @@ export default function TestimonialsPage() {
             ].map((metric, index) => (
               <Card
                 key={index}
-                className="border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all hover:shadow-lg hover:-translate-y-1"
+                className="border-2 border-primary/10 hover:border-primary/30 transition-all hover:shadow-lg hover:-translate-y-1"
               >
                 <CardContent className="p-6 text-center">
-                  <div className="mb-4 mx-auto bg-[#003366]/5 w-20 h-20 rounded-full flex items-center justify-center">
+                  <div className="mb-4 mx-auto bg-primary/5 w-20 h-20 rounded-full flex items-center justify-center">
                     {metric.icon}
                   </div>
-                  <p className="text-4xl font-bold text-[#003366]">{metric.value}</p>
+                  <p className="text-4xl font-bold text-primary">{metric.value}</p>
                   <p className="text-[#00CC66] font-semibold mt-2">{metric.label}</p>
                   <p className="text-gray-600 text-sm mt-2">{metric.description}</p>
                 </CardContent>
@@ -615,34 +615,34 @@ export default function TestimonialsPage() {
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-2 bg-[#003366]/10 text-[#003366] border-none px-3 py-1 text-sm">Global Reach</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Community Impact Map</h2>
+            <Badge className="mb-2 bg-primary/10 text-primary border-none px-3 py-1 text-sm">Global Reach</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Community Impact Map</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Explore how Pollen AI is transforming communities across Zambia and beyond.
             </p>
           </div>
 
           <div className="relative h-[500px] rounded-xl overflow-hidden shadow-xl mb-8">
-            <div className="absolute inset-0 bg-[#003366]/5 flex items-center justify-center">
+            <div className="absolute inset-0 bg-primary/5 flex items-center justify-center">
               <Image src="/placeholder.svg?height=1000&width=1600" alt="Impact Map" fill className="object-cover" />
               <div className="absolute inset-0">
                 {/* Map pins would be placed here in a real implementation */}
                 <div className="absolute top-[30%] left-[25%] animate-pulse">
                   <div className="relative">
                     <MapPin className="h-8 w-8 text-[#00CC66]" />
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#003366] rounded-full border-2 border-white"></div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-white"></div>
                   </div>
                 </div>
                 <div className="absolute top-[45%] left-[40%] animate-pulse">
                   <div className="relative">
                     <MapPin className="h-8 w-8 text-[#00CC66]" />
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#003366] rounded-full border-2 border-white"></div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-white"></div>
                   </div>
                 </div>
                 <div className="absolute top-[60%] left-[30%] animate-pulse">
                   <div className="relative">
                     <MapPin className="h-8 w-8 text-[#00CC66]" />
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#003366] rounded-full border-2 border-white"></div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-white"></div>
                   </div>
                 </div>
               </div>
@@ -657,14 +657,14 @@ export default function TestimonialsPage() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-6">
+              <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-6">
                 <Badge className="mb-2 bg-[#00CC66] border-none w-fit">Agriculture</Badge>
                 <h3 className="text-2xl font-bold text-white">Choma Village Solar Project</h3>
                 <p className="text-white/80 mt-2">50 farmers equipped with solar irrigation</p>
               </div>
             </div>
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-[#003366]">Choma Village Solar Project</h3>
+              <h3 className="text-2xl font-bold text-primary">Choma Village Solar Project</h3>
               <p className="text-gray-600">
                 In Choma Village, 50 farmers received financing for solar irrigation equipment through Pollen AI's
                 climate financing program. The results have been transformative:
@@ -696,11 +696,11 @@ export default function TestimonialsPage() {
                   className="rounded-full border-2 border-[#00CC66]"
                 />
                 <div>
-                  <p className="font-medium text-[#003366]">"My life has completely changed."</p>
+                  <p className="font-medium text-primary">"My life has completely changed."</p>
                   <p className="text-gray-600 text-sm">- James Mwanza, Lead Farmer</p>
                 </div>
               </div>
-              <Button className="bg-[#003366] hover:bg-[#002244] mt-4">
+              <Button className="bg-primary hover:bg-[#002244] mt-4">
                 Read Full Case Study
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -709,7 +709,7 @@ export default function TestimonialsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 order-2 md:order-1">
-              <h3 className="text-2xl font-bold text-[#003366]">Lusaka Women Entrepreneurs Network</h3>
+              <h3 className="text-2xl font-bold text-primary">Lusaka Women Entrepreneurs Network</h3>
               <p className="text-gray-600">
                 Pollen AI provided microloans to 200 women entrepreneurs in Lusaka who were previously unable to access
                 traditional financing. The impact has been significant:
@@ -743,11 +743,11 @@ export default function TestimonialsPage() {
                   className="rounded-full border-2 border-[#00CC66]"
                 />
                 <div>
-                  <p className="font-medium text-[#003366]">"I can now send all my children to school."</p>
+                  <p className="font-medium text-primary">"I can now send all my children to school."</p>
                   <p className="text-gray-600 text-sm">- Grace Mulenga, Business Owner</p>
                 </div>
               </div>
-              <Button className="bg-[#003366] hover:bg-[#002244] mt-4">
+              <Button className="bg-primary hover:bg-[#002244] mt-4">
                 Read Full Case Study
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -759,7 +759,7 @@ export default function TestimonialsPage() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-6">
+              <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-6">
                 <Badge className="mb-2 bg-[#00CC66] border-none w-fit">Business</Badge>
                 <h3 className="text-2xl font-bold text-white">Women Entrepreneurs Network</h3>
                 <p className="text-white/80 mt-2">200 women-led businesses financed</p>
@@ -772,16 +772,16 @@ export default function TestimonialsPage() {
       {/* Submit Your Testimonial */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container px-4 md:px-6 mx-auto">
-          <div className="max-w-4xl mx-auto bg-[#003366]/5 rounded-2xl p-8 md:p-12 relative overflow-hidden">
+          <div className="max-w-4xl mx-auto bg-primary/5 rounded-2xl p-8 md:p-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-40 h-40 bg-[#00CC66]/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#003366]/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-primary/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
 
             <div className="relative z-10">
               <div className="text-center mb-8">
-                <Badge className="mb-2 bg-[#003366]/10 text-[#003366] border-none px-3 py-1 text-sm">
+                <Badge className="mb-2 bg-primary/10 text-primary border-none px-3 py-1 text-sm">
                   Share Your Experience
                 </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">
                   Submit Your Success Story
                 </h2>
                 <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
@@ -798,7 +798,7 @@ export default function TestimonialsPage() {
                     <input
                       type="text"
                       id="name"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#003366] focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="Your name"
                     />
                   </div>
@@ -809,7 +809,7 @@ export default function TestimonialsPage() {
                     <input
                       type="email"
                       id="email"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#003366] focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="Your email"
                     />
                   </div>
@@ -819,7 +819,7 @@ export default function TestimonialsPage() {
                     </label>
                     <select
                       id="service"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#003366] focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
                       <option value="">Select a service</option>
                       <option value="business">Business Loan</option>
@@ -837,7 +837,7 @@ export default function TestimonialsPage() {
                     <textarea
                       id="story"
                       rows={5}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#003366] focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="Share how Pollen AI has impacted your life..."
                     ></textarea>
                   </div>
@@ -845,7 +845,7 @@ export default function TestimonialsPage() {
                     <input
                       type="checkbox"
                       id="consent"
-                      className="h-4 w-4 text-[#003366] focus:ring-[#003366] border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
                     <label htmlFor="consent" className="ml-2 block text-sm text-gray-700">
                       I consent to having my story and photo shared on the Pollen AI website
@@ -866,7 +866,7 @@ export default function TestimonialsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-[#003366] relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-[#00CC66]/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#00CC66]/10 rounded-full blur-3xl"></div>

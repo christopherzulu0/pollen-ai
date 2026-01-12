@@ -197,7 +197,7 @@ export default function GroupsPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {groups.map((group) => (
                 <Card key={group.id} className="overflow-hidden transition-all hover:shadow-md">
-                  <div className="h-3 bg-gradient-to-r from-teal-400 to-emerald-600"></div>
+                  <div className="h-3 bg-linear-to-r from-teal-400 to-emerald-600"></div>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle>{group.name}</CardTitle>

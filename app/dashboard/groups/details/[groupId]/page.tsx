@@ -145,7 +145,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 p-6">
+      <div className="min-h-screen bg-linear-to-br from-background via-background to-accent/5 p-6">
         <div className="container mx-auto space-y-8">
           <Skeleton className="h-48 w-full rounded-2xl" />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -161,8 +161,8 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
 
   if (!groupDetails) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
-        <div className="rounded-full bg-gradient-to-br from-destructive/20 to-destructive/5 p-8 mb-6 shadow-lg">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-linear-to-br from-background via-background to-accent/5">
+        <div className="rounded-full bg-linear-to-br from-destructive/20 to-destructive/5 p-8 mb-6 shadow-lg">
           <AlertCircle className="h-16 w-16 text-destructive" />
         </div>
         <h2 className="text-3xl font-bold mb-3 text-balance">Group not found</h2>
@@ -189,24 +189,24 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
     groupDetails.loanRequests?.filter((l) => l.status === "APPROVED").reduce((sum, l) => sum + l.amount, 0) || 0
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
+    <div className="min-h-screen bg-linear-to-br from-background via-background to-accent/5">
       <div className="container mx-auto p-6 space-y-8 max-w-7xl">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary/90 to-primary/80 border-2 border-primary/30">
+        <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-primary via-primary/90 to-primary/80 border-2 border-primary/30">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wIDI0YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00ek0xMiAxNmMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHptMCAyNGMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHp6TTMyIDE2YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wIDI0YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00ek00OCAxNmMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHptMCAyNGMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
           <div className="relative p-8 md:p-12">
             <div className="flex items-start justify-between mb-6">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => router.push("/dashboard/groups")}
-                className="bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground backdrop-blur-sm border border-primary-foreground/20 transition-all"
+                className="bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground backdrop-blur-xs border border-primary-foreground/20 transition-all"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <Badge
                 variant={groupDetails.status === "ACTIVE" ? "default" : "secondary"}
-                className="text-sm px-4 py-2 font-semibold bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground backdrop-blur-sm border border-primary-foreground/30"
+                className="text-sm px-4 py-2 font-semibold bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground backdrop-blur-xs border border-primary-foreground/30"
               >
                 {groupDetails.status}
               </Badge>
@@ -216,15 +216,15 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                 {groupDetails.name}
               </h1>
               <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm text-primary-foreground/90">
-                <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary-foreground/20">
+                <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-xs rounded-full px-4 py-2 border border-primary-foreground/20">
                   <Calendar className="h-4 w-4" />
                   <span className="font-medium">Created {new Date(groupDetails.createdAt).toLocaleDateString()}</span>
                 </div>
-                <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary-foreground/20">
+                <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-xs rounded-full px-4 py-2 border border-primary-foreground/20">
                   <Users className="h-4 w-4" />
                   <span className="font-medium">{activeMembers} active members</span>
                 </div>
-                <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary-foreground/20">
+                <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-xs rounded-full px-4 py-2 border border-primary-foreground/20">
                   <Activity className="h-4 w-4" />
                   <span className="font-medium">{groupDetails.contributionFrequency}</span>
                 </div>
@@ -234,11 +234,11 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent">
+          <Card className="relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-primary/10 via-primary/5 to-transparent">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Active Members</CardTitle>
-              <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/90 p-3 border-2 border-primary/30">
+              <div className="rounded-2xl bg-linear-to-br from-primary to-primary/90 p-3 border-2 border-primary/30">
                 <Users className="h-5 w-5 text-primary-foreground" />
               </div>
             </CardHeader>
@@ -253,11 +253,11 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden border-2 border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-secondary/10 via-secondary/5 to-transparent">
+          <Card className="relative overflow-hidden border-2 border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-secondary/10 via-secondary/5 to-transparent">
             <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl" />
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Total Savings</CardTitle>
-              <div className="rounded-2xl bg-gradient-to-br from-secondary to-secondary/90 p-3 border-2 border-secondary/30">
+              <div className="rounded-2xl bg-linear-to-br from-secondary to-secondary/90 p-3 border-2 border-secondary/30">
                 <Wallet className="h-5 w-5 text-secondary-foreground" />
               </div>
             </CardHeader>
@@ -277,11 +277,11 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden border-2 border-accent/20 hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent">
+          <Card className="relative overflow-hidden border-2 border-accent/20 hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-accent/10 via-accent/5 to-transparent">
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl" />
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Active Loans</CardTitle>
-              <div className="rounded-2xl bg-gradient-to-br from-accent to-accent/90 p-3 border-2 border-accent/30">
+              <div className="rounded-2xl bg-linear-to-br from-accent to-accent/90 p-3 border-2 border-accent/30">
                 <DollarSign className="h-5 w-5 text-accent-foreground" />
               </div>
             </CardHeader>
@@ -296,11 +296,11 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden border-2 border-muted/40 hover:border-muted/60 transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-muted/10 via-muted/5 to-transparent">
+          <Card className="relative overflow-hidden border-2 border-muted/40 hover:border-muted/60 transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-muted/10 via-muted/5 to-transparent">
             <div className="absolute top-0 right-0 w-32 h-32 bg-muted/10 rounded-full blur-3xl" />
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Interest Rate</CardTitle>
-              <div className="rounded-2xl bg-gradient-to-br from-muted to-muted/90 p-3 border-2 border-muted/30">
+              <div className="rounded-2xl bg-linear-to-br from-muted to-muted/90 p-3 border-2 border-muted/30">
                 <TrendingUp className="h-5 w-5 text-muted-foreground" />
               </div>
             </CardHeader>
@@ -318,13 +318,13 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
           <TabsList className="grid w-full grid-cols-5 h-auto p-1.5 bg-white/60 dark:bg-accent/60 backdrop-blur-xl border-2 border-accent/30 rounded-2xl">
             <TabsTrigger
               value="overview"
-              className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
+              className="data-[state=active]:bg-linear-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
             >
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="members"
-              className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
+              className="data-[state=active]:bg-linear-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
             >
               Members
               <Badge className="ml-2 bg-primary-foreground/20 hover:bg-primary-foreground/30 border-0" variant="secondary">
@@ -333,13 +333,13 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
             </TabsTrigger>
             <TabsTrigger
               value="contributions"
-              className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
+              className="data-[state=active]:bg-linear-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
             >
               Contributions
             </TabsTrigger>
             <TabsTrigger
               value="loans"
-              className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
+              className="data-[state=active]:bg-linear-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
             >
               Loans
               {pendingLoans > 0 && (
@@ -348,7 +348,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
             </TabsTrigger>
             <TabsTrigger
               value="settings"
-              className="data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
+              className="data-[state=active]:bg-linear-to-br data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-primary/30 rounded-xl font-semibold transition-all"
             >
               Settings
             </TabsTrigger>
@@ -357,10 +357,10 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
           {/* Overview Tab */}
           <TabsContent value="overview" className="mt-8 space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
-              <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-white/80 dark:bg-accent/80 backdrop-blur-sm">
+              <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-white/80 dark:bg-accent/80 backdrop-blur-xs">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
-                    <div className="rounded-2xl bg-gradient-to-br from-primary to-primary p-3 border-2 border-accent/30">
+                    <div className="rounded-2xl bg-linear-to-br from-primary to-primary p-3 border-2 border-accent/30">
                       <FileText className="h-6 w-6 text-primary-foreground" />
                     </div>
                     About This Group
@@ -377,17 +377,17 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                   </div>
                   <Separator />
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-gradient-to-r from-accent/50 to-accent/20 border border-accent/30">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-linear-to-r from-accent/50 to-accent/20 border border-accent/30">
                       <span className="text-sm font-medium text-muted-foreground">Owner</span>
                       <span className="text-sm font-bold">{groupDetails.owner.name || groupDetails.owner.email}</span>
                     </div>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-gradient-to-r from-accent/50 to-accent/20 border border-accent/30">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-linear-to-r from-accent/50 to-accent/20 border border-accent/30">
                       <span className="text-sm font-medium text-muted-foreground">Privacy</span>
                       <Badge variant="outline" className="font-semibold bg-white dark:bg-accent border-2">
                         {groupDetails.privacy}
                       </Badge>
                     </div>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-gradient-to-r from-accent/50 to-accent/20 border border-accent/30">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-linear-to-r from-accent/50 to-accent/20 border border-accent/30">
                       <span className="text-sm font-medium text-muted-foreground">Governance</span>
                       <Badge variant="outline" className="font-semibold bg-white dark:bg-accent border-2">
                         {groupDetails.governanceType}
@@ -397,42 +397,42 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-gradient-to-br from-secondary/10 to-primary/10 dark:from-secondary/20 dark:to-primary/20 backdrop-blur-sm">
+              <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-linear-to-br from-secondary/10 to-primary/10 dark:from-secondary/20 dark:to-primary/20 backdrop-blur-xs">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
-                    <div className="rounded-2xl bg-gradient-to-br from-secondary to-secondary p-3 border-2 border-accent/30">
+                    <div className="rounded-2xl bg-linear-to-br from-secondary to-secondary p-3 border-2 border-accent/30">
                       <Wallet className="h-6 w-6 text-primary-foreground" />
                     </div>
                     Financial Details
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 border-2 border-accent/30">
+                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-linear-to-br from-secondary/20 to-secondary/10 border-2 border-accent/30">
                     <span className="text-sm font-medium text-muted-foreground">Contribution Amount</span>
                     <span className="text-lg font-bold text-foreground dark:text-foreground">
                       ZMW {groupDetails.contributionAmount}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm">
+                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs">
                     <span className="text-sm font-medium text-muted-foreground">Frequency</span>
                     <span className="text-sm font-bold">{groupDetails.contributionFrequency}</span>
                   </div>
                   {groupDetails.depositGoal && (
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs">
                       <span className="text-sm font-medium text-muted-foreground">Deposit Goal</span>
                       <span className="text-sm font-bold">ZMW {groupDetails.depositGoal.toLocaleString()}</span>
                     </div>
                   )}
                   <Separator />
-                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm">
+                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs">
                     <span className="text-sm font-medium text-muted-foreground">Late Penalty Fee</span>
                     <span className="text-sm font-bold">ZMW {groupDetails.latePenaltyFee}</span>
                   </div>
-                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm">
+                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs">
                     <span className="text-sm font-medium text-muted-foreground">Grace Period</span>
                     <span className="text-sm font-bold">{groupDetails.gracePeriod} days</span>
                   </div>
-                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm">
+                  <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs">
                     <span className="text-sm font-medium text-muted-foreground">Early Withdrawal Fee</span>
                     <span className="text-sm font-bold">
                       {groupDetails.allowEarlyWithdrawal ? `ZMW ${groupDetails.earlyWithdrawalFee}` : "Not Allowed"}
@@ -442,10 +442,10 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
               </Card>
             </div>
 
-            <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-white/80 dark:bg-accent/80 backdrop-blur-sm">
+            <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-white/80 dark:bg-accent/80 backdrop-blur-xs">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-2xl">
-                  <div className="rounded-2xl bg-gradient-to-br from-primary to-muted p-3 border-2 border-accent/30">
+                  <div className="rounded-2xl bg-linear-to-br from-primary to-muted p-3 border-2 border-accent/30">
                     <Calendar className="h-6 w-6 text-primary-foreground" />
                   </div>
                   Upcoming Meetings
@@ -460,7 +460,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                     {groupDetails.meetings.slice(0, 3).map((meeting) => (
                       <div
                         key={meeting.id}
-                        className="flex items-start justify-between rounded-2xl border-2 border-accent/30 p-6 hover:border-primary/50 hover:bg-gradient-to-r hover:from-primary/50 hover:to-muted/50 dark:hover:from-primary/30 dark:hover:to-muted/30 transition-all duration-300 bg-white/60 dark:bg-accent/60 backdrop-blur-sm"
+                        className="flex items-start justify-between rounded-2xl border-2 border-accent/30 p-6 hover:border-primary/50 hover:bg-linear-to-r hover:from-primary/50 hover:to-muted/50 dark:hover:from-primary/30 dark:hover:to-muted/30 transition-all duration-300 bg-white/60 dark:bg-accent/60 backdrop-blur-xs"
                       >
                         <div className="space-y-2 flex-1">
                           <p className="font-bold text-lg">{meeting.title}</p>
@@ -475,7 +475,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                           )}
                         </div>
                         <div className="text-right ml-6">
-                          <div className="rounded-2xl bg-gradient-to-br from-primary to-muted px-4 py-3 border-2 border-accent/30">
+                          <div className="rounded-2xl bg-linear-to-br from-primary to-muted px-4 py-3 border-2 border-accent/30">
                             <p className="text-sm font-bold text-primary-foreground">
                               {new Date(meeting.date).toLocaleDateString()}
                             </p>
@@ -489,7 +489,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="rounded-full bg-gradient-to-br from-primary to-muted dark:from-primary dark:to-muted p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
+                    <div className="rounded-full bg-linear-to-br from-primary to-muted dark:from-primary dark:to-muted p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
                       <Calendar className="h-10 w-10 text-foreground dark:text-foreground" />
                     </div>
                     <p className="text-muted-foreground font-medium text-lg">No upcoming meetings</p>
@@ -500,10 +500,10 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
             </Card>
 
             {groupDetails.groupRules && (
-              <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-gradient-to-br from-accent/10 to-accent/10 dark:from-accent/20 dark:to-accent/20 backdrop-blur-sm">
+              <Card className="border-2 border-accent/30 hover:border-primary/50 transition-all duration-300 bg-linear-to-br from-accent/10 to-accent/10 dark:from-accent/20 dark:to-accent/20 backdrop-blur-xs">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
-                    <div className="rounded-2xl bg-gradient-to-br from-accent to-accent p-3 border-2 border-accent/30">
+                    <div className="rounded-2xl bg-linear-to-br from-accent to-accent p-3 border-2 border-accent/30">
                       <Shield className="h-6 w-6 text-primary-foreground" />
                     </div>
                     Group Rules
@@ -522,7 +522,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
 
           {/* Members Tab */}
           <TabsContent value="members" className="mt-8">
-            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-sm">
+            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-xs">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -532,7 +532,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                       {groupDetails.maxMembers && ` of ${groupDetails.maxMembers} maximum`}
                     </CardDescription>
                   </div>
-                  <Button className="transition-all bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground border-2 border-primary/30">
+                  <Button className="transition-all bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground border-2 border-primary/30">
                     <UserPlus className="mr-2 h-5 w-5" />
                     Invite Member
                   </Button>
@@ -544,11 +544,11 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                     {groupDetails.memberships.map((membership) => (
                       <div
                         key={membership.id}
-                        className="flex items-center justify-between rounded-2xl border-2 border-accent/30 p-6 hover:border-primary/50 transition-all duration-300 bg-gradient-to-br from-primary/50 via-white to-secondary/50 dark:from-primary/20 dark:via-slate-800 dark:to-secondary/20 backdrop-blur-sm"
+                        className="flex items-center justify-between rounded-2xl border-2 border-accent/30 p-6 hover:border-primary/50 transition-all duration-300 bg-linear-to-br from-primary/50 via-white to-secondary/50 dark:from-primary/20 dark:via-slate-800 dark:to-secondary/20 backdrop-blur-xs"
                       >
                         <div className="space-y-3 flex-1">
                           <div className="flex items-center gap-3">
-                            <div className="rounded-2xl bg-gradient-to-br from-primary to-primary p-3 border-2 border-accent/30">
+                            <div className="rounded-2xl bg-linear-to-br from-primary to-primary p-3 border-2 border-accent/30">
                               <Users className="h-5 w-5 text-primary-foreground" />
                             </div>
                             <p className="font-bold text-lg">{membership.user.name || membership.user.email}</p>
@@ -561,7 +561,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                               variant={membership.status === "ACTIVE" ? "default" : "secondary"}
                               className={
                                 membership.status === "ACTIVE"
-                                  ? "bg-gradient-to-r from-secondary to-secondary text-primary-foreground border-0"
+                                  ? "bg-linear-to-r from-secondary to-secondary text-primary-foreground border-0"
                                   : ""
                               }
                             >
@@ -574,7 +574,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                           </p>
                         </div>
                         <div className="text-right space-y-2 ml-6">
-                          <p className="text-3xl font-bold bg-gradient-to-br from-secondary to-secondary dark:from-secondary dark:to-secondary bg-clip-text text-transparent">
+                          <p className="text-3xl font-bold bg-linear-to-br from-secondary to-secondary dark:from-secondary dark:to-secondary bg-clip-text text-transparent">
                             ZMW {membership.totalContributed.toLocaleString()}
                           </p>
                           <p className="text-sm text-muted-foreground">
@@ -587,7 +587,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="rounded-full bg-gradient-to-br from-primary to-secondary dark:from-primary dark:to-secondary p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
+                    <div className="rounded-full bg-linear-to-br from-primary to-secondary dark:from-primary dark:to-secondary p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
                       <Users className="h-10 w-10 text-foreground dark:text-foreground" />
                     </div>
                     <p className="text-muted-foreground font-medium text-lg">No members yet</p>
@@ -600,7 +600,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
 
           {/* Contributions Tab */}
           <TabsContent value="contributions" className="mt-8">
-            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-sm">
+            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-xs">
               <CardHeader>
                 <CardTitle className="text-3xl">Contribution History</CardTitle>
                 <CardDescription className="text-base">Track all contributions made to this group</CardDescription>
@@ -611,11 +611,11 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                     {groupDetails.contributions.map((contribution) => (
                       <div
                         key={contribution.id}
-                        className="flex items-center justify-between rounded-2xl border-2 border-accent/30 p-5 hover:border-primary/50 hover:bg-gradient-to-r hover:from-secondary/50 hover:to-primary/50 dark:hover:from-secondary/30 dark:hover:to-primary/30 transition-all duration-300"
+                        className="flex items-center justify-between rounded-2xl border-2 border-accent/30 p-5 hover:border-primary/50 hover:bg-linear-to-r hover:from-secondary/50 hover:to-primary/50 dark:hover:from-secondary/30 dark:hover:to-primary/30 transition-all duration-300"
                       >
                         <div className="space-y-2 flex-1">
                           <div className="flex items-center gap-3">
-                            <div className="rounded-2xl bg-gradient-to-br from-secondary to-secondary p-3 border-2 border-accent/30">
+                            <div className="rounded-2xl bg-linear-to-br from-secondary to-secondary p-3 border-2 border-accent/30">
                               <Wallet className="h-5 w-5 text-primary-foreground" />
                             </div>
                             <p className="font-bold text-lg">
@@ -629,7 +629,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                           </p>
                         </div>
                         <div className="text-right flex items-center gap-4">
-                          <p className="text-3xl font-bold bg-gradient-to-br from-secondary to-secondary dark:from-secondary dark:to-secondary bg-clip-text text-transparent">
+                          <p className="text-3xl font-bold bg-linear-to-br from-secondary to-secondary dark:from-secondary dark:to-secondary bg-clip-text text-transparent">
                             ZMW {contribution.amount.toLocaleString()}
                           </p>
                           <Badge
@@ -641,7 +641,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                                   : "destructive"
                             }
                             className={`flex items-center gap-2 py-2 px-4 font-semibold ${contribution.status === "COMPLETED"
-                              ? "bg-gradient-to-r from-secondary to-secondary text-primary-foreground border-0"
+                              ? "bg-linear-to-r from-secondary to-secondary text-primary-foreground border-0"
                               : ""
                               }`}
                           >
@@ -656,7 +656,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="rounded-full bg-gradient-to-br from-secondary to-primary dark:from-secondary dark:to-primary p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
+                    <div className="rounded-full bg-linear-to-br from-secondary to-primary dark:from-secondary dark:to-primary p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
                       <Activity className="h-10 w-10 text-foreground dark:text-foreground" />
                     </div>
                     <p className="text-muted-foreground font-medium text-lg">No contributions recorded yet</p>
@@ -671,14 +671,14 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
 
           {/* Loans Tab */}
           <TabsContent value="loans" className="mt-8">
-            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-sm">
+            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-xs">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-3xl">Loan Requests</CardTitle>
                     <CardDescription className="mt-2 text-base">View and manage loan requests</CardDescription>
                   </div>
-                  {/* <Button className="transition-all bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground border-2 border-accent/30">
+                  {/* <Button className="transition-all bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground border-2 border-accent/30">
                     <FileText className="mr-2 h-5 w-5" />
                     New Loan Request
                   </Button> */}
@@ -690,12 +690,12 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                     {groupDetails.loanRequests.map((loan) => (
                       <div
                         key={loan.id}
-                        className="rounded-2xl border-2 border-accent/30 p-6 hover:border-primary/50 transition-all duration-300 bg-gradient-to-br from-accent/50 via-white to-accent/50 dark:from-accent/20 dark:via-slate-800 dark:to-accent/20 backdrop-blur-sm"
+                        className="rounded-2xl border-2 border-accent/30 p-6 hover:border-primary/50 transition-all duration-300 bg-linear-to-br from-accent/50 via-white to-accent/50 dark:from-accent/20 dark:via-slate-800 dark:to-accent/20 backdrop-blur-xs"
                       >
                         <div className="flex items-start justify-between mb-5">
                           <div className="space-y-2 flex-1">
                             <div className="flex items-center gap-3">
-                              <div className="rounded-2xl bg-gradient-to-br from-accent to-accent p-3 border-2 border-accent/30">
+                              <div className="rounded-2xl bg-linear-to-br from-accent to-accent p-3 border-2 border-accent/30">
                                 <DollarSign className="h-5 w-5 text-primary-foreground" />
                               </div>
                               <p className="font-bold text-lg">{loan.user?.name || loan.user?.email || "Unknown"}</p>
@@ -712,12 +712,12 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                                   ? "secondary"
                                   : loan.status === "REJECTED"
                                     ? "destructive"
-                                    : "outline"
+                                    : "outline-solid"
                             }
                             className={`flex items-center gap-2 py-2 px-4 font-semibold ${loan.status === "APPROVED"
-                              ? "bg-gradient-to-r from-secondary to-secondary text-primary-foreground border-0"
+                              ? "bg-linear-to-r from-secondary to-secondary text-primary-foreground border-0"
                               : loan.status === "PENDING"
-                                ? "bg-gradient-to-r from-accent to-accent text-primary-foreground border-0"
+                                ? "bg-linear-to-r from-accent to-accent text-primary-foreground border-0"
                                 : ""
                               }`}
                           >
@@ -729,7 +729,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 border-t-2 border-accent/30 pt-5">
-                          <div className="py-3 px-4 rounded-xl bg-gradient-to-br from-accent/20 to-accent/10 border-2 border-accent/30">
+                          <div className="py-3 px-4 rounded-xl bg-linear-to-br from-accent/20 to-accent/10 border-2 border-accent/30">
                             <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wide font-semibold">
                               Loan Amount
                             </p>
@@ -737,7 +737,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                               ZMW {loan.amount.toLocaleString()}
                             </p>
                           </div>
-                          <div className="py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm">
+                          <div className="py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs">
                             <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wide font-semibold">
                               Interest Rate
                             </p>
@@ -745,7 +745,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                           </div>
                           {loan.repaymentTerms && (
                             <>
-                              <div className="py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm col-span-2">
+                              <div className="py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs col-span-2">
                                 <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wide font-semibold">
                                   Repayment Terms
                                 </p>
@@ -753,7 +753,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                               </div>
                             </>
                           )}
-                          <div className="py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-sm col-span-2">
+                          <div className="py-3 px-4 rounded-xl bg-white/60 dark:bg-accent/60 backdrop-blur-xs col-span-2">
                             <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wide font-semibold">
                               Requested On
                             </p>
@@ -769,7 +769,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="rounded-full bg-gradient-to-br from-accent to-accent dark:from-accent dark:to-accent p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
+                    <div className="rounded-full bg-linear-to-br from-accent to-accent dark:from-accent dark:to-accent p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center border-2 border-accent/50 dark:border-accent/50">
                       <DollarSign className="h-10 w-10 text-foreground dark:text-foreground" />
                     </div>
                     <p className="text-muted-foreground font-medium text-lg">No loan requests yet</p>
@@ -784,10 +784,10 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
 
           {/* Settings Tab */}
           <TabsContent value="settings" className="mt-8">
-            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-sm">
+            <Card className="border-2 border-accent/30 bg-white/80 dark:bg-accent/80 backdrop-blur-xs">
               <CardHeader>
                 <CardTitle className="text-3xl flex items-center gap-3">
-                  <div className="rounded-2xl bg-gradient-to-br from-muted to-muted p-3 border-2 border-accent/30">
+                  <div className="rounded-2xl bg-linear-to-br from-muted to-muted p-3 border-2 border-accent/30">
                     <Settings className="h-6 w-6 text-primary-foreground" />
                   </div>
                   Group Settings
@@ -795,14 +795,14 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                 <CardDescription className="text-base">Manage group configuration and permissions</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="rounded-2xl border-2 border-accent/30 p-6 bg-gradient-to-br from-accent/20 to-transparent">
+                <div className="rounded-2xl border-2 border-accent/30 p-6 bg-linear-to-br from-accent/20 to-transparent">
                   <h3 className="font-bold text-xl mb-4">Governance</h3>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-sm border border-accent/20">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-xs border border-accent/20">
                       <span className="text-sm font-medium text-muted-foreground">Voting Threshold</span>
                       <span className="text-sm font-bold">{groupDetails.votingThreshold}%</span>
                     </div>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-sm border border-accent/20">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-xs border border-accent/20">
                       <span className="text-sm font-medium text-muted-foreground">Governance Type</span>
                       <Badge variant="outline" className="font-semibold bg-white dark:bg-accent border-2">
                         {groupDetails.governanceType}
@@ -811,18 +811,18 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border-2 border-accent/30 p-6 bg-gradient-to-br from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20">
+                <div className="rounded-2xl border-2 border-accent/30 p-6 bg-linear-to-br from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20">
                   <h3 className="font-bold text-xl mb-4">Financial Policies</h3>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-sm border border-accent/20">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-xs border border-accent/20">
                       <span className="text-sm font-medium text-muted-foreground">Late Penalty Fee</span>
                       <span className="text-sm font-bold">ZMW {groupDetails.latePenaltyFee}</span>
                     </div>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-sm border border-accent/20">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-xs border border-accent/20">
                       <span className="text-sm font-medium text-muted-foreground">Grace Period</span>
                       <span className="text-sm font-bold">{groupDetails.gracePeriod} days</span>
                     </div>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-sm border border-accent/20">
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-xs border border-accent/20">
                       <span className="text-sm font-medium text-muted-foreground">Early Withdrawal</span>
                       <Badge
                         variant={groupDetails.allowEarlyWithdrawal ? "default" : "secondary"}
@@ -832,7 +832,7 @@ export default function GroupDetailsPage({ params }: GroupDetailsPageProps) {
                       </Badge>
                     </div>
                     {groupDetails.allowEarlyWithdrawal && (
-                      <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-sm border border-accent/20">
+                      <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-white/80 dark:bg-accent/80 backdrop-blur-xs border border-accent/20">
                         <span className="text-sm font-medium text-muted-foreground">Early Withdrawal Fee</span>
                         <span className="text-sm font-bold">ZMW {groupDetails.earlyWithdrawalFee}</span>
                       </div>

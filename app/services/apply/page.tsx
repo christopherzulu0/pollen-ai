@@ -241,27 +241,27 @@ function LoanCalculator({ service, amount, period }: { service: Service; amount:
         <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
                 <Calculator className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
-                <h4 className="font-semibold text-[#003366] dark:text-white">Loan Calculation</h4>
+                <h4 className="font-semibold text-primary dark:text-white">Loan Calculation</h4>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gradient-to-br from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-[#003366]/10 dark:border-blue-800/30">
+                <div className="bg-linear-to-br from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-primary/10 dark:border-blue-800/30">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Monthly Payment</p>
-                    <p className="text-xl font-bold text-[#003366] dark:text-white">
+                    <p className="text-xl font-bold text-primary dark:text-white">
                         K{monthlyPayment.toFixed(2)}
                     </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-[#003366]/10 dark:border-blue-800/30">
+                <div className="bg-linear-to-br from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-primary/10 dark:border-blue-800/30">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Interest</p>
-                    <p className="text-xl font-bold text-[#003366] dark:text-white">
+                    <p className="text-xl font-bold text-primary dark:text-white">
                         K{totalInterest.toFixed(2)}
                     </p>
                 </div>
 
-                <div className="col-span-2 bg-gradient-to-br from-[#00CC66]/10 to-[#003366]/5 dark:from-emerald-900/30 dark:to-blue-900/20 p-4 rounded-lg border border-[#00CC66]/20 dark:border-emerald-800/30">
+                <div className="col-span-2 bg-linear-to-br from-[#00CC66]/10 to-primary/5 dark:from-emerald-900/30 dark:to-blue-900/20 p-4 rounded-lg border border-[#00CC66]/20 dark:border-emerald-800/30">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Repayment</p>
-                    <p className="text-2xl font-bold text-[#003366] dark:text-white">
+                    <p className="text-2xl font-bold text-primary dark:text-white">
                         K{totalPayment.toFixed(2)}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -350,7 +350,7 @@ function EligibilityChecker({ service, formData }: { service: Service; formData:
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
-                    <h4 className="font-semibold text-[#003366] dark:text-white">Eligibility Score</h4>
+                    <h4 className="font-semibold text-primary dark:text-white">Eligibility Score</h4>
                 </div>
                 <Badge className={`${getScoreColor()} bg-transparent border`}>
                     {getScoreLabel()}
@@ -375,9 +375,9 @@ function EligibilityChecker({ service, formData }: { service: Service; formData:
                         className="flex items-start gap-2"
                     >
                         {check.passed ? (
-                            <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
                         ) : (
-                            <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
+                            <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mt-0.5 shrink-0" />
                         )}
                         <div className="flex-1">
                             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{check.label}</p>
@@ -895,10 +895,10 @@ function ApplicationForm({ service }: { service: Service }) {
     return (
         <div className="space-y-6">
             {/* Progress Bar */}
-            <div className="bg-gradient-to-r from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-[#003366]/10 dark:border-blue-800/30">
+            <div className="bg-linear-to-r from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-primary/10 dark:border-blue-800/30">
                 <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Application Progress</span>
-                    <span className="text-sm font-bold text-[#003366] dark:text-white">{Math.round(formProgress)}%</span>
+                    <span className="text-sm font-bold text-primary dark:text-white">{Math.round(formProgress)}%</span>
                 </div>
                 <Progress value={formProgress} className="h-2" />
             </div>
@@ -908,7 +908,7 @@ function ApplicationForm({ service }: { service: Service }) {
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800/30"
+                    className="bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800/30"
                 >
                     <div className="flex items-center gap-2 mb-3">
                         <Brain className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -982,7 +982,7 @@ function ApplicationForm({ service }: { service: Service }) {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="mt-4 p-3 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-lg border border-emerald-200 dark:border-emerald-800/30"
+                            className="mt-4 p-3 bg-linear-to-r from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-lg border border-emerald-200 dark:border-emerald-800/30"
                         >
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
@@ -1093,7 +1093,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                     <div className="p-2 rounded-lg bg-[#00CC66]/10 dark:bg-emerald-900/30">
                                         <DollarSign className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Loan Details</h3>
+                                    <h3 className="text-lg font-semibold text-primary dark:text-white">Loan Details</h3>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1107,7 +1107,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     Loan Amount (ZMK)
                                                 </FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" placeholder="5000" {...field} className="border-[#003366]/20 focus:border-[#00CC66]" />
+                                                    <Input type="number" placeholder="5000" {...field} className="border-primary/20 focus:border-[#00CC66]" />
                                                 </FormControl>
                                                 <FormDescription>Enter the amount you wish to borrow</FormDescription>
                                                 <FormMessage />
@@ -1126,7 +1126,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                 </FormLabel>
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                     <FormControl>
-                                                        <SelectTrigger className="border-[#003366]/20 focus:border-[#00CC66]">
+                                                        <SelectTrigger className="border-primary/20 focus:border-[#00CC66]">
                                                             <SelectValue placeholder="Select period" />
                                                         </SelectTrigger>
                                                     </FormControl>
@@ -1156,7 +1156,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                             <FormControl>
                                                 <Textarea
                                                     placeholder="Explain in detail how you plan to use this loan..."
-                                                    className="resize-none min-h-[100px] border-[#003366]/20 focus:border-[#00CC66]"
+                                                    className="resize-none min-h-[100px] border-primary/20 focus:border-[#00CC66]"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -1179,10 +1179,10 @@ function ApplicationForm({ service }: { service: Service }) {
                                         className="space-y-4"
                                     >
                                         <div className="flex items-center gap-2 mb-4">
-                                            <div className="p-2 rounded-lg bg-[#003366]/10 dark:bg-blue-900/30">
-                                                <Building className="h-5 w-5 text-[#003366] dark:text-blue-400" />
+                                            <div className="p-2 rounded-lg bg-primary/10 dark:bg-blue-900/30">
+                                                <Building className="h-5 w-5 text-primary dark:text-blue-400" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Employment & Income</h3>
+                                            <h3 className="text-lg font-semibold text-primary dark:text-white">Employment & Income</h3>
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1197,7 +1197,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         </FormLabel>
                                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                             <FormControl>
-                                                                <SelectTrigger className="border-[#003366]/20 focus:border-[#00CC66]">
+                                                                <SelectTrigger className="border-primary/20 focus:border-[#00CC66]">
                                                                     <SelectValue placeholder="Select status" />
                                                                 </SelectTrigger>
                                                             </FormControl>
@@ -1224,7 +1224,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                             Monthly Income (ZMK)
                                                         </FormLabel>
                                                         <FormControl>
-                                                            <Input type="number" placeholder="3000" {...field} className="border-[#003366]/20 focus:border-[#00CC66]" />
+                                                            <Input type="number" placeholder="3000" {...field} className="border-primary/20 focus:border-[#00CC66]" />
                                                         </FormControl>
                                                         <FormDescription>Optional</FormDescription>
                                                         <FormMessage />
@@ -1245,7 +1245,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     <FormControl>
                                                         <Textarea
                                                             placeholder="If self-employed or farmer, describe your business or farming activities..."
-                                                            className="resize-none border-[#003366]/20 focus:border-[#00CC66]"
+                                                            className="resize-none border-primary/20 focus:border-[#00CC66]"
                                                             {...field}
                                                         />
                                                     </FormControl>
@@ -1273,12 +1273,12 @@ function ApplicationForm({ service }: { service: Service }) {
                                             <div className="p-2 rounded-lg bg-[#00CC66]/10 dark:bg-emerald-900/30">
                                                 <Building className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Select Your Group</h3>
+                                            <h3 className="text-lg font-semibold text-primary dark:text-white">Select Your Group</h3>
                                         </div>
 
                                         {isLoadingGroups ? (
                                             <div className="flex items-center justify-center py-8">
-                                                <Loader2 className="h-8 w-8 animate-spin text-[#003366] dark:text-blue-400" />
+                                                <Loader2 className="h-8 w-8 animate-spin text-primary dark:text-blue-400" />
                                                 <span className="ml-2 text-gray-600 dark:text-gray-400">Loading your groups...</span>
                                             </div>
                                         ) : groupsError ? (
@@ -1292,7 +1292,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                         ) : groups.length === 0 ? (
                                             <Alert className="border-[#00CC66]/20 bg-[#00CC66]/5 dark:bg-emerald-900/10">
                                                 <Info className="h-4 w-4 text-[#00CC66] dark:text-emerald-400" />
-                                                <AlertTitle className="text-[#003366] dark:text-white">No Groups Found</AlertTitle>
+                                                <AlertTitle className="text-primary dark:text-white">No Groups Found</AlertTitle>
                                                 <AlertDescription className="text-gray-600 dark:text-gray-400">
                                                     You need to be a member of a village banking group to apply for this loan.
                                                     <br />
@@ -1344,12 +1344,12 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                                             className="w-10 h-10 rounded-full object-cover"
                                                                                         />
                                                                                     ) : (
-                                                                                        <div className="w-10 h-10 rounded-full bg-[#003366]/10 dark:bg-blue-900/30 flex items-center justify-center">
-                                                                                            <Building className="h-5 w-5 text-[#003366] dark:text-blue-400" />
+                                                                                        <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-blue-900/30 flex items-center justify-center">
+                                                                                            <Building className="h-5 w-5 text-primary dark:text-blue-400" />
                                                                                         </div>
                                                                                     )}
                                                                                     <div>
-                                                                                        <h4 className="font-semibold text-[#003366] dark:text-white">
+                                                                                        <h4 className="font-semibold text-primary dark:text-white">
                                                                                             {group.name}
                                                                                         </h4>
                                                                                         <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -1411,10 +1411,10 @@ function ApplicationForm({ service }: { service: Service }) {
                                             <div className="p-2 rounded-lg bg-[#00CC66]/10 dark:bg-emerald-900/30">
                                                 <Upload className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Required Documents</h3>
+                                            <h3 className="text-lg font-semibold text-primary dark:text-white">Required Documents</h3>
                                         </div>
 
-                                        <Alert className="border-[#003366]/20 dark:border-blue-800/30">
+                                        <Alert className="border-primary/20 dark:border-blue-800/30">
                                             <Info className="h-4 w-4" />
                                             <AlertTitle>Document Requirements</AlertTitle>
                                             <AlertDescription>
@@ -1430,7 +1430,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     NRC (Front)
                                                 </label>
                                                 {!uploadedFiles.nrcFront ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'nrcFront' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1446,7 +1446,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                 toast.error(`Upload failed: ${error.message}`)
                                                             }}
                                                             appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                 allowedContent: "text-gray-500 dark:text-gray-400"
                                                             }}
                                                             content={{
@@ -1456,7 +1456,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1486,7 +1486,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     NRC (Back)
                                                 </label>
                                                 {!uploadedFiles.nrcBack ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'nrcBack' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1502,7 +1502,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                 toast.error(`Upload failed: ${error.message}`)
                                                             }}
                                                             appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                 allowedContent: "text-gray-500 dark:text-gray-400"
                                                             }}
                                                             content={{
@@ -1512,7 +1512,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1543,7 +1543,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                 Recent Payslip
                                             </label>
                                             {!uploadedFiles.payslip ? (
-                                                <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                     {uploadingField === 'payslip' ? (
                                                         <div className="flex flex-col items-center justify-center py-4">
                                                             <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1559,7 +1559,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                 toast.error(`Upload failed: ${error.message}`)
                                                             }}
                                                             appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                 allowedContent: "text-gray-500 dark:text-gray-400"
                                                             }}
                                                             content={{
@@ -1569,7 +1569,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     )}
                                                 </div>
                                             ) : (
-                                                <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                     <div className="flex items-center justify-between">
                                                         <div className="flex items-center gap-2">
                                                             <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1610,7 +1610,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         Proof of Address (Optional)
                                                     </label>
                                                     {!uploadedFiles.proofOfAddress ? (
-                                                        <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                        <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                             {uploadingField === 'proofOfAddress' ? (
                                                                 <div className="flex flex-col items-center justify-center py-4">
                                                                     <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1626,7 +1626,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                         toast.error(`Upload failed: ${error.message}`)
                                                                     }}
                                                                     appearance={{
-                                                                        button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                        button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                         allowedContent: "text-gray-500 dark:text-gray-400"
                                                                     }}
                                                                     content={{
@@ -1636,7 +1636,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                        <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                             <div className="flex items-center justify-between">
                                                                 <div className="flex items-center gap-2">
                                                                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1666,7 +1666,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         Live Selfie (Optional)
                                                     </label>
                                                     {!uploadedFiles.liveSelfie ? (
-                                                        <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                        <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                             {uploadingField === 'liveSelfie' ? (
                                                                 <div className="flex flex-col items-center justify-center py-4">
                                                                     <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1682,7 +1682,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                         toast.error(`Upload failed: ${error.message}`)
                                                                     }}
                                                                     appearance={{
-                                                                        button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                        button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                         allowedContent: "text-gray-500 dark:text-gray-400"
                                                                     }}
                                                                     content={{
@@ -1692,7 +1692,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                        <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                             <div className="flex items-center justify-between">
                                                                 <div className="flex items-center gap-2">
                                                                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1722,7 +1722,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         Bank Statement (Optional)
                                                     </label>
                                                     {!uploadedFiles.bankStatement ? (
-                                                        <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                        <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                             {uploadingField === 'bankStatement' ? (
                                                                 <div className="flex flex-col items-center justify-center py-4">
                                                                     <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1738,7 +1738,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                         toast.error(`Upload failed: ${error.message}`)
                                                                     }}
                                                                     appearance={{
-                                                                        button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                        button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                         allowedContent: "text-gray-500 dark:text-gray-400"
                                                                     }}
                                                                     content={{
@@ -1748,7 +1748,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                        <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                             <div className="flex items-center justify-between">
                                                                 <div className="flex items-center gap-2">
                                                                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1791,10 +1791,10 @@ function ApplicationForm({ service }: { service: Service }) {
                                             <div className="p-2 rounded-lg bg-[#00CC66]/10 dark:bg-emerald-900/30">
                                                 <Upload className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Required Documents</h3>
+                                            <h3 className="text-lg font-semibold text-primary dark:text-white">Required Documents</h3>
                                         </div>
 
-                                        <Alert className="border-[#003366]/20 dark:border-blue-800/30">
+                                        <Alert className="border-primary/20 dark:border-blue-800/30">
                                             <Info className="h-4 w-4" />
                                             <AlertTitle>Document Requirements for Solar Equipment</AlertTitle>
                                             <AlertDescription>
@@ -1810,7 +1810,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     NRC (Front)
                                                 </label>
                                                 {!uploadedFiles.nrcFront ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'nrcFront' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1826,7 +1826,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                 toast.error(`Upload failed: ${error.message}`)
                                                             }}
                                                             appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                 allowedContent: "text-gray-500 dark:text-gray-400"
                                                             }}
                                                             content={{
@@ -1836,7 +1836,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1866,7 +1866,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     NRC (Back)
                                                 </label>
                                                 {!uploadedFiles.nrcBack ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'nrcBack' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1882,7 +1882,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                 toast.error(`Upload failed: ${error.message}`)
                                                             }}
                                                             appearance={{
-                                                                button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                 allowedContent: "text-gray-500 dark:text-gray-400"
                                                             }}
                                                             content={{
@@ -1892,7 +1892,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1922,7 +1922,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     Land Ownership
                                                 </label>
                                                 {!uploadedFiles.landOwnership ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'landOwnership' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1938,7 +1938,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                     toast.error(`Upload failed: ${error.message}`)
                                                                 }}
                                                                 appearance={{
-                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                     allowedContent: "text-gray-500 dark:text-gray-400"
                                                                 }}
                                                                 content={{
@@ -1948,7 +1948,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -1978,7 +1978,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     Utility Bill
                                                 </label>
                                                 {!uploadedFiles.utilityBill ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'utilityBill' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -1994,7 +1994,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                     toast.error(`Upload failed: ${error.message}`)
                                                                 }}
                                                                 appearance={{
-                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                     allowedContent: "text-gray-500 dark:text-gray-400"
                                                                 }}
                                                                 content={{
@@ -2004,7 +2004,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -2034,7 +2034,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     Vendor Quotation
                                                 </label>
                                                 {!uploadedFiles.vendorQuotation ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'vendorQuotation' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -2050,7 +2050,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                     toast.error(`Upload failed: ${error.message}`)
                                                                 }}
                                                                 appearance={{
-                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                     allowedContent: "text-gray-500 dark:text-gray-400"
                                                                 }}
                                                                 content={{
@@ -2060,7 +2060,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -2090,7 +2090,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                     Subsidy Receipt
                                                 </label>
                                                 {!uploadedFiles.subsidyReceipt ? (
-                                                    <div className="border-2 border-dashed border-[#003366]/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
+                                                    <div className="border-2 border-dashed border-primary/20 dark:border-blue-800/30 rounded-lg p-6 text-center hover:border-[#00CC66] dark:hover:border-emerald-600 transition-colors">
                                                         {uploadingField === 'subsidyReceipt' ? (
                                                             <div className="flex flex-col items-center justify-center py-4">
                                                                 <Loader2 className="h-8 w-8 text-[#00CC66] animate-spin mb-2" />
@@ -2106,7 +2106,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                                     toast.error(`Upload failed: ${error.message}`)
                                                                 }}
                                                                 appearance={{
-                                                                    button: "bg-[#003366] text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
+                                                                    button: "bg-primary text-white hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800",
                                                                     allowedContent: "text-gray-500 dark:text-gray-400"
                                                                 }}
                                                                 content={{
@@ -2116,7 +2116,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-gradient-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
+                                                    <div className="relative border border-[#00CC66]/30 dark:border-emerald-800/30 rounded-lg p-4 bg-linear-to-br from-[#00CC66]/5 to-transparent dark:from-emerald-900/20">
                                                         <div className="flex items-center justify-between">
                                                             <div className="flex items-center gap-2">
                                                                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -2154,7 +2154,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                     type="button"
                                     variant="outline"
                                     onClick={() => router.back()}
-                                    className="w-full sm:w-auto border-[#003366]/20"
+                                    className="w-full sm:w-auto border-primary/20"
                                 >
                                     <ArrowLeft className="mr-2 h-4 w-4" />
                                     Back to Services
@@ -2162,7 +2162,7 @@ function ApplicationForm({ service }: { service: Service }) {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting || formProgress < 90}
-                                    className="w-full sm:flex-1 bg-gradient-to-r from-[#003366] to-[#00CC66] hover:from-[#003366]/90 hover:to-[#00CC66]/90 dark:from-blue-900 dark:to-emerald-700"
+                                    className="w-full sm:flex-1 bg-linear-to-r from-primary to-[#00CC66] hover:from-primary/90 hover:to-[#00CC66]/90 dark:from-blue-900 dark:to-emerald-700"
                                 >
                                     {isSubmitting ? (
                                         <>
@@ -2227,10 +2227,10 @@ function ServiceDetails({ service }: { service: Service }) {
             className="space-y-6"
         >
             {/* Service Header */}
-            <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-[#003366] to-[#00CC66] dark:from-blue-900 dark:to-emerald-700 p-6 text-white">
+            <div className="relative overflow-hidden rounded-lg bg-linear-to-br from-primary to-[#00CC66] dark:from-blue-900 dark:to-emerald-700 p-6 text-white">
                 <div className="relative z-10">
                     <div className="flex items-start gap-4 mb-4">
-                        <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm">
+                        <div className="p-3 rounded-full bg-white/20 backdrop-blur-xs">
                             {getServiceIcon(service.category, service.icon, "h-8 w-8 text-white")}
                         </div>
                         <div className="flex-1">
@@ -2253,7 +2253,7 @@ function ServiceDetails({ service }: { service: Service }) {
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
                 </div>
             )}
 
@@ -2264,7 +2264,7 @@ function ServiceDetails({ service }: { service: Service }) {
                 <div>
                     <div className="flex items-center gap-2 mb-3">
                         <Sparkles className="h-5 w-5 text-[#00CC66] dark:text-emerald-400" />
-                        <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Key Features</h3>
+                        <h3 className="text-lg font-semibold text-primary dark:text-white">Key Features</h3>
                     </div>
                     <ul className="space-y-3">
                         {service.keyFeatures.map((feature, index) => (
@@ -2273,9 +2273,9 @@ function ServiceDetails({ service }: { service: Service }) {
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-[#00CC66]/5 to-transparent dark:from-emerald-900/20 border border-[#00CC66]/10 dark:border-emerald-800/30"
+                                className="flex items-start gap-3 p-3 rounded-lg bg-linear-to-r from-[#00CC66]/5 to-transparent dark:from-emerald-900/20 border border-[#00CC66]/10 dark:border-emerald-800/30"
                             >
-                                <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                                <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mt-0.5 shrink-0" />
                                 <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
                             </motion.li>
                         ))}
@@ -2289,17 +2289,17 @@ function ServiceDetails({ service }: { service: Service }) {
             {service.requirements && service.requirements.length > 0 && (
                 <div>
                     <div className="flex items-center gap-2 mb-3">
-                        <AlertCircle className="h-5 w-5 text-[#003366] dark:text-blue-400" />
-                        <h3 className="text-lg font-semibold text-[#003366] dark:text-white">Requirements</h3>
+                        <AlertCircle className="h-5 w-5 text-primary dark:text-blue-400" />
+                        <h3 className="text-lg font-semibold text-primary dark:text-white">Requirements</h3>
                     </div>
-                    <Alert className="border-[#003366]/20 dark:border-blue-800/30">
+                    <Alert className="border-primary/20 dark:border-blue-800/30">
                         <Info className="h-4 w-4" />
                         <AlertTitle>What you'll need</AlertTitle>
                         <AlertDescription>
                             <ul className="space-y-2 mt-2">
                                 {service.requirements.map((requirement, index) => (
                                     <li key={index} className="flex items-start gap-2 text-sm">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#003366] dark:bg-blue-400 mt-1.5 flex-shrink-0" />
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary dark:bg-blue-400 mt-1.5 shrink-0" />
                                         <span>{requirement}</span>
                                     </li>
                                 ))}
@@ -2311,15 +2311,15 @@ function ServiceDetails({ service }: { service: Service }) {
 
             {/* Trust Indicators */}
             <div className="grid grid-cols-2 gap-3">
-                <div className="text-center p-4 rounded-lg bg-gradient-to-br from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 border border-[#003366]/10 dark:border-blue-800/30">
+                <div className="text-center p-4 rounded-lg bg-linear-to-br from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 border border-primary/10 dark:border-blue-800/30">
                     <Clock className="h-6 w-6 text-[#00CC66] dark:text-emerald-400 mx-auto mb-2" />
                     <p className="text-xs text-gray-500 dark:text-gray-400">Fast Approval</p>
-                    <p className="text-sm font-bold text-[#003366] dark:text-white">24-48 hours</p>
+                    <p className="text-sm font-bold text-primary dark:text-white">24-48 hours</p>
                 </div>
-                <div className="text-center p-4 rounded-lg bg-gradient-to-br from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 border border-[#003366]/10 dark:border-blue-800/30">
+                <div className="text-center p-4 rounded-lg bg-linear-to-br from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20 border border-primary/10 dark:border-blue-800/30">
                     <Shield className="h-6 w-6 text-[#00CC66] dark:text-emerald-400 mx-auto mb-2" />
                     <p className="text-xs text-gray-500 dark:text-gray-400">Secure Process</p>
-                    <p className="text-sm font-bold text-[#003366] dark:text-white">100% Safe</p>
+                    <p className="text-sm font-bold text-primary dark:text-white">100% Safe</p>
                 </div>
             </div>
         </motion.div>
@@ -2346,9 +2346,9 @@ function ApplyPageContent() {
                     animate={{ opacity: 1, scale: 1 }}
                 >
                     <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-[#003366] dark:text-white mb-2">No Service Selected</h2>
+                    <h2 className="text-2xl font-bold text-primary dark:text-white mb-2">No Service Selected</h2>
                     <p className="text-gray-600 dark:text-gray-300 mb-6">Please select a service to apply for a loan.</p>
-                    <Button onClick={() => router.push("/services")} className="bg-[#003366] hover:bg-[#003366]/80">
+                    <Button onClick={() => router.push("/services")} className="bg-primary hover:bg-primary/80">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Services
                     </Button>
@@ -2383,11 +2383,11 @@ function ApplyPageContent() {
                     animate={{ opacity: 1, scale: 1 }}
                 >
                     <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-[#003366] dark:text-white mb-2">Service Not Found</h2>
+                    <h2 className="text-2xl font-bold text-primary dark:text-white mb-2">Service Not Found</h2>
                     <p className="text-gray-600 dark:text-gray-300 mb-6">
                         {error instanceof Error ? error.message : "The requested service could not be found."}
                     </p>
-                    <Button onClick={() => router.push("/services")} className="bg-[#003366] hover:bg-[#003366]/80">
+                    <Button onClick={() => router.push("/services")} className="bg-primary hover:bg-primary/80">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Services
                     </Button>
@@ -2408,12 +2408,12 @@ function ApplyPageContent() {
                     <Button
                         variant="ghost"
                         onClick={() => router.push("/services")}
-                        className="mb-4 hover:bg-[#003366]/10"
+                        className="mb-4 hover:bg-primary/10"
                     >
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Services
                     </Button>
-                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#003366] to-[#00CC66] dark:from-blue-400 dark:to-emerald-400 bg-clip-text text-transparent">
+                    <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-primary to-[#00CC66] dark:from-blue-400 dark:to-emerald-400 bg-clip-text text-transparent">
                         Apply for {service.name}
                     </h1>
                     <p className="text-gray-600 dark:text-gray-300 mt-2">
@@ -2425,9 +2425,9 @@ function ApplyPageContent() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Application Form - Left Side (2/3 width) */}
                     <div className="lg:col-span-2">
-                        <Card className="shadow-xl border-[#003366]/10 dark:border-blue-800/30">
-                            <CardHeader className="bg-gradient-to-r from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20">
-                                <CardTitle className="text-xl text-[#003366] dark:text-white flex items-center gap-2">
+                        <Card className="shadow-xl border-primary/10 dark:border-blue-800/30">
+                            <CardHeader className="bg-linear-to-r from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20">
+                                <CardTitle className="text-xl text-primary dark:text-white flex items-center gap-2">
                                     <FileText className="h-5 w-5" />
                                     Application Form
                                 </CardTitle>
@@ -2442,9 +2442,9 @@ function ApplyPageContent() {
                     {/* Service Details - Right Side (1/3 width) */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-4">
-                            <Card className="shadow-xl border-[#003366]/10 dark:border-blue-800/30">
-                                <CardHeader className="bg-gradient-to-r from-[#003366]/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20">
-                                    <CardTitle className="text-xl text-[#003366] dark:text-white flex items-center gap-2">
+                            <Card className="shadow-xl border-primary/10 dark:border-blue-800/30">
+                                <CardHeader className="bg-linear-to-r from-primary/5 to-[#00CC66]/5 dark:from-blue-900/20 dark:to-emerald-900/20">
+                                    <CardTitle className="text-xl text-primary dark:text-white flex items-center gap-2">
                                         <Info className="h-5 w-5" />
                                         Service Details
                                     </CardTitle>
@@ -2464,11 +2464,11 @@ function ApplyPageContent() {
 // Main Page Component with Suspense
 export default function ApplyPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
             <Suspense
                 fallback={
                     <div className="container mx-auto px-4 py-16 text-center">
-                        <Loader2 className="h-16 w-16 animate-spin text-[#003366] dark:text-blue-400 mx-auto" />
+                        <Loader2 className="h-16 w-16 animate-spin text-primary dark:text-blue-400 mx-auto" />
                         <p className="mt-4 text-gray-600 dark:text-gray-300">Loading application form...</p>
                     </div>
                 }

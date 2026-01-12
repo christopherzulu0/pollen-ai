@@ -93,9 +93,9 @@ function PaymentModal({
   const canPayFull = amount >= (loan.nextPaymentAmount || 0)
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full max-h-[90vh] flex flex-col">
-        <CardHeader className="pb-3 flex-shrink-0">
+        <CardHeader className="pb-3 shrink-0">
           <div className="flex items-start justify-between">
             <div className="space-y-0.5">
               <CardTitle className="text-lg">Make Payment</CardTitle>
@@ -160,7 +160,7 @@ function PaymentModal({
             </div>
             {amount > 0 && amount < (loan.nextPaymentAmount || 0) && (
               <div className="flex items-start gap-2 p-2 rounded-lg bg-chart-3/10 border border-chart-3/20">
-                <Info className="h-3.5 w-3.5 text-chart-3 flex-shrink-0 mt-0.5" />
+                <Info className="h-3.5 w-3.5 text-chart-3 shrink-0 mt-0.5" />
                 <p className="text-xs text-muted-foreground">Minimum payment: K{loan.nextPaymentAmount?.toFixed(2)}</p>
               </div>
             )}
@@ -223,7 +223,7 @@ function PaymentModal({
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex gap-2 pt-3 flex-shrink-0 border-t">
+        <CardFooter className="flex gap-2 pt-3 shrink-0 border-t">
           <Button variant="outline" onClick={onClose} className="flex-1 bg-transparent">
             Cancel
           </Button>
@@ -423,7 +423,7 @@ export default function MyLoansPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-primary/10 via-background to-background border-primary/20">
+          <Card className="bg-linear-to-br from-primary/10 via-background to-background border-primary/20">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Total Borrowed</CardTitle>
@@ -438,7 +438,7 @@ export default function MyLoansPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-accent/10 via-background to-background border-accent/20">
+          <Card className="bg-linear-to-br from-accent/10 via-background to-background border-accent/20">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Total Repaid</CardTitle>
@@ -453,7 +453,7 @@ export default function MyLoansPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-chart-3/10 via-background to-background border-chart-3/20">
+          <Card className="bg-linear-to-br from-chart-3/10 via-background to-background border-chart-3/20">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Outstanding</CardTitle>
@@ -466,7 +466,7 @@ export default function MyLoansPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-chart-1/10 via-background to-background border-chart-1/20">
+          <Card className="bg-linear-to-br from-chart-1/10 via-background to-background border-chart-1/20">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Next Payment</CardTitle>
@@ -580,7 +580,7 @@ export default function MyLoansPage() {
 
         {/* Loan Detail Modal */}
         {selectedLoan && (
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
             <Card className="max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -745,7 +745,7 @@ function LoanCard({
         {loan.status === "COMPLETED" && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2 rounded-lg bg-accent/10 border border-accent/20">
-              <CheckCircle2 className="h-4 w-4 text-accent flex-shrink-0" />
+              <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-accent">Fully repaid</p>
                 <p className="text-xs text-muted-foreground">
@@ -763,7 +763,7 @@ function LoanCard({
         {loan.status === "REJECTED" && loan.votes && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2 rounded-lg bg-destructive/10 border border-destructive/20">
-              <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
+              <AlertCircle className="h-4 w-4 text-destructive shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-destructive">Request declined</p>
                 <p className="text-xs text-muted-foreground">Did not meet voting threshold</p>

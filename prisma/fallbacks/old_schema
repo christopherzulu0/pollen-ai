@@ -1,0 +1,661 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../lib/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "linux-arm64-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+model User {
+  id                  String                 @id @default(cuid())
+  name                String?
+  email               String                 @unique
+  phone               String?
+  clerkUserId         String?                @unique
+  avatar              String?
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  isAdmin             Boolean                @default(false)
+  memberships         Membership[]
+  ownedGroups         Group[]                @relation("GroupOwner")
+  transactions        Transaction[]
+  personalSavings     PersonalSavings?
+  savingsGoals        SavingsGoal[]
+  notifications       Notification[]
+  sentInvitations     GroupInvitation[]      @relation("SentInvitations")
+  receivedInvitations GroupInvitation[]      @relation("ReceivedInvitations")
+  wallet              Wallet?
+  contributions       Contribution[]
+  loanRequests        LoanRequest[]          @relation("UserLoanRequests")
+  loanVotes           LoanVote[]             @relation("UserLoanVotes")
+  personalDocuments   PersonalLoanDocuments?
+  solarDocuments      SolarLoanDocuments?
+  individualLoans     IndividualLoan[]
+  nationalId          String?
+  address             String?
+}
+
+model BlogPost {
+  id              String         @id @default(cuid())
+  title           String
+  Description     String
+  author          String
+  author_Position String
+  category        String?
+  status          String?        @default("draft")
+  Blog_image      String
+  blog_tags       String[]
+  read_time       String
+  likes           Int            @default(0)
+  views           Int            @default(0)
+  engagement      Float          @default(0)
+  posted_at       DateTime       @default(now())
+  updated_at_Date DateTime       @default(now())
+  blog_comments   BlogComment[]
+  blog_bookmarks  BlogBookmark[]
+  blog_likes      BlogLike[]
+}
+
+model BlogCategory {
+  id          String @id @default(cuid())
+  name        String
+  description String
+}
+
+model BlogComment {
+  id                   String    @id @default(cuid())
+  comment              String    @db.Text
+  comment_by           String
+  comment_at           DateTime  @default(now())
+  comment_likes        Int       @default(0)
+  blog_post_id         String
+  parent_id            String?   // For nested replies
+  audio_url            String?   // For voice comments
+  
+  // Sentiment Analysis Fields
+  sentiment            String?   // positive, negative, neutral
+  sentimentScore       Float?    // -1 to 1
+  sentimentConfidence  Float?    // 0 to 1
+  emotions             String[]  @default([])
+  analyzedAt           DateTime?
+  
+  // Content Moderation Fields
+  moderationStatus     String?   @default("pending") // pending, approved, rejected, flagged
+  moderationScore      Float?    // 0-100 confidence score
+  moderationFlags      String[]  @default([]) // Array of flagged categories
+  moderatedAt          DateTime?
+  moderatedBy          String?   // Admin who reviewed if manually moderated
+
+  blog_post            BlogPost  @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  parent               BlogComment? @relation("CommentReplies", fields: [parent_id], references: [id], onDelete: Cascade)
+  replies              BlogComment[] @relation("CommentReplies")
+
+  @@index([blog_post_id])
+  @@index([parent_id])
+  @@index([comment_by])
+  @@index([comment_at])
+  @@index([moderationStatus])
+}
+
+model BlogBookmark {
+  id           String   @id @default(cuid())
+  user_id      String // Clerk user ID
+  blog_post_id String
+  blog_post    BlogPost @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  created_at   DateTime @default(now())
+
+  @@unique([user_id, blog_post_id])
+  @@index([user_id])
+  @@index([blog_post_id])
+}
+
+model BlogLike {
+  id           String   @id @default(cuid())
+  user_id      String // Clerk user ID
+  blog_post_id String
+  blog_post    BlogPost @relation(fields: [blog_post_id], references: [id], onDelete: Cascade)
+  created_at   DateTime @default(now())
+
+  @@unique([user_id, blog_post_id])
+  @@index([user_id])
+  @@index([blog_post_id])
+}
+
+model UserFollow {
+  id          String   @id @default(cuid())
+  follower_id String // Clerk user ID of the follower
+  author_name String // Name of the author being followed
+  created_at  DateTime @default(now())
+
+  @@unique([follower_id, author_name])
+  @@index([follower_id])
+  @@index([author_name])
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  name         String
+  nameKey      String?
+  description  String
+  category     String
+  status       String   @default("active") // "active" | "inactive"
+  icon         String? // Lucide React icon name (e.g., "Wallet", "Users")
+  image        String? // Image URL
+  users        Int?     @default(0)
+  revenue      Int?     @default(0)
+  growth       Float?   @default(0)
+  keyFeatures  String[]
+  requirements String[]
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+}
+
+model Group {
+  id                    String                @id @default(cuid())
+  name                  String
+  description           String?
+  logo                  String?
+  groupCode             String?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  ownerId               String
+  owner                 User                  @relation("GroupOwner", fields: [ownerId], references: [id])
+  privacy               GroupPrivacy          @default(PRIVATE)
+  governanceType        GovernanceType        @default(ADMIN)
+  contributionAmount    Decimal               @default(0)
+  contributionFrequency ContributionFrequency @default(MONTHLY)
+  depositGoal           Decimal?
+  latePenaltyFee        Decimal               @default(0)
+  gracePeriod           Int                   @default(3) // Days
+  interestRate          Decimal               @default(0)
+  allowEarlyWithdrawal  Boolean               @default(false)
+  earlyWithdrawalFee    Decimal               @default(0)
+  requireApproval       Boolean               @default(true)
+  autoReminders         Boolean               @default(true)
+  votingThreshold       Int                   @default(50) // Percentage
+  allowLateJoining      Boolean               @default(true)
+  groupDuration         Int? // Duration in months
+  maxMembers            Int?
+  meetingFrequency      MeetingFrequency      @default(WEEKLY)
+  groupRules            String?               @db.Text
+  bylaws                String?               @db.Text
+  tags                  String?
+  status                GroupStatus           @default(ACTIVE)
+  memberships           Membership[]
+  transactions          Transaction[]
+  meetings              Meeting[]
+  invitations           GroupInvitation[]
+  contributions         Contribution[]
+  loanRequests          LoanRequest[]         @relation("GroupLoanRequests")
+}
+
+model Membership {
+  id               String            @id @default(cuid())
+  userId           String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId          String
+  group            Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  role             MembershipRole    @default(MEMBER)
+  joinedAt         DateTime          @default(now())
+  status           MembershipStatus  @default(ACTIVE)
+  balance          Decimal           @default(0)
+  totalContributed Decimal           @default(0)
+  lastContribution DateTime?
+  
+  votes            Vote[]
+  meetingAttendees MeetingAttendee[] // Added this relation
+  voteResults      VoteResult[] // Added this relation
+  loanVotes        LoanVote[]        @relation("MembershipLoanVotes")
+
+  @@unique([userId, groupId])
+}
+
+model Transaction {
+  id            String            @id @default(cuid())
+  amount        Decimal
+  type          TransactionType
+  status        TransactionStatus @default(PENDING)
+  description   String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId       String?
+  group         Group?            @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  momoNumber    String?
+  reference     String?           @unique
+  feeAmount     Decimal?
+  walletId      String?
+  wallet        Wallet?           @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  contribution  Contribution?
+  loanRequestId String?
+  loanRequest   LoanRequest?      @relation(fields: [loanRequestId], references: [id], onDelete: Cascade)
+}
+
+model PersonalSavings {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance   Decimal  @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SavingsGoal {
+  id            String               @id @default(cuid())
+  name          String
+  targetAmount  Decimal
+  currentAmount Decimal              @default(0)
+  deadline      DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  userId        String
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isCompleted   Boolean              @default(false)
+  transactions  SavingsTransaction[]
+  aiAnalyses    AIGoalAnalysis[]
+}
+
+model SavingsTransaction {
+  id            String   @id @default(cuid())
+  savingsGoalId String
+  amount        Float
+  type          String // 'DEPOSIT' or 'WITHDRAWAL'
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  savingsGoal SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
+
+  @@index([savingsGoalId])
+}
+
+model AIGoalAnalysis {
+  id                       String   @id @default(cuid())
+  savingsGoalId            String
+  creditScore              Int // 0-100
+  scoreCategory            String // 'Excellent' | 'Good' | 'Fair' | 'Poor'
+  riskLevel                String // 'Low' | 'Medium' | 'High'
+  analysis                 String   @db.Text
+  recommendations          String[] // Array of recommendations
+  predictedCompletionDate  DateTime
+  onTrack                  Boolean
+  confidence               Int // 0-100
+  progressPercentage       Decimal
+  avgMonthlyContribution   Decimal
+  requiredMonthlyContribution Decimal
+  daysUntilDeadline        Int
+  remainingAmount          Decimal
+  createdAt                DateTime @default(now())
+
+  savingsGoal SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
+
+  @@index([savingsGoalId])
+  @@index([createdAt])
+}
+
+model Meeting {
+  id          String            @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  location    String?
+  isVirtual   Boolean           @default(false)
+  meetingLink String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  groupId     String
+  group       Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  attendees   MeetingAttendee[]
+}
+
+model MeetingAttendee {
+  id           String           @id @default(cuid())
+  meetingId    String
+  meeting      Meeting          @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  membershipId String
+  membership   Membership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  status       AttendanceStatus @default(PENDING)
+
+  @@unique([meetingId, membershipId])
+}
+
+model Vote {
+  id           String       @id @default(cuid())
+  title        String
+  description  String?
+  options      Json
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  membershipId String
+  membership   Membership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  voteResults  VoteResult[]
+}
+
+model VoteResult {
+  id             String     @id @default(cuid())
+  voteId         String
+  vote           Vote       @relation(fields: [voteId], references: [id], onDelete: Cascade)
+  membershipId   String
+  membership     Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  selectedOption String
+  votedAt        DateTime   @default(now())
+
+  @@unique([voteId, membershipId])
+}
+
+model Notification {
+  id                   String           @id @default(cuid())
+  title                String
+  message              String
+  type                 NotificationType
+  isRead               Boolean          @default(false)
+  createdAt            DateTime         @default(now())
+  userId               String
+  user                 User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  relatedGroupId       String?
+  relatedTransactionId String?
+  relatedLoanRequestId String?
+}
+
+model PersonalLoanDocuments {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Nrcfront       String
+  NrcBack        String
+  PaySlip        String
+  ProofOfAddress String?
+  LiveSelfie     String?
+  BankStatement  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SolarLoanDocuments {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Nrcfront        String
+  NrcBack         String
+  LandOwnership   String
+  UtilityBill     String
+  VendorQuotation String
+  SubsidyReceipt  String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model GroupInvitation {
+  id        String           @id @default(cuid())
+  groupId   String
+  group     Group            @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  inviterId String
+  inviter   User             @relation("SentInvitations", fields: [inviterId], references: [id])
+  inviteeId String
+  invitee   User             @relation("ReceivedInvitations", fields: [inviteeId], references: [id])
+  status    InvitationStatus @default(PENDING)
+  code      String           @unique
+  createdAt DateTime         @default(now())
+  expiresAt DateTime?
+}
+
+model Wallet {
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance      Decimal       @default(0) // Off-chain balance
+  celoAddress  String?       @unique // Celo blockchain address
+  privateKey   String?       // Encrypted private key for server-side signing (⚠️ Encrypt in production!)
+  celoBalance  String?       @default("0") // CELO balance (wei)
+  cusdBalance  String?       @default("0") // cUSD balance (wei)
+  ceurBalance  String?       @default("0") // cEUR balance (wei)
+  network      String?       @default("alfajores") // Network: alfajores or mainnet
+  isConnected  Boolean       @default(false) // Wallet connection status
+  connectedAt  DateTime? // When wallet was connected
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+}
+
+model Contribution {
+  id            String            @id @default(cuid())
+  amount        Decimal
+  status        TransactionStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId       String
+  group         Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  transactionId String?           @unique
+  transaction   Transaction?      @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
+
+model LoanRequest {
+  id             String        @id @default(cuid())
+  amount         Decimal
+  purpose        String        @db.Text
+  repaymentDate  DateTime
+  repaymentTerms String        @db.Text
+  installments   Int           @default(1)
+  interestRate   Decimal       @default(0)
+  status         LoanStatus    @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  userId         String
+  user           User          @relation("UserLoanRequests", fields: [userId], references: [id], onDelete: Cascade)
+  groupId        String
+  group          Group         @relation("GroupLoanRequests", fields: [groupId], references: [id], onDelete: Cascade)
+  transactions   Transaction[]
+  votes          LoanVote[]    @relation("LoanRequestVotes")
+}
+
+model LoanVote {
+  id            String      @id @default(cuid())
+  vote          Boolean // true = approve, false = reject
+  comment       String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        String
+  user          User        @relation("UserLoanVotes", fields: [userId], references: [id], onDelete: Cascade)
+  loanRequestId String
+  loanRequest   LoanRequest @relation("LoanRequestVotes", fields: [loanRequestId], references: [id], onDelete: Cascade)
+  membershipId  String
+  membership    Membership  @relation("MembershipLoanVotes", fields: [membershipId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, loanRequestId])
+}
+
+enum GroupPrivacy {
+  PUBLIC
+  PRIVATE
+  INVITE_ONLY
+}
+
+enum GovernanceType {
+  ADMIN
+  MULTI_ADMIN
+  ONE_VOTE_PER_PERSON
+  ONE_VOTE_DEPOSIT
+}
+
+enum ContributionFrequency {
+  WEEKLY
+  BI_WEEKLY
+  MONTHLY
+}
+
+enum MeetingFrequency {
+  WEEKLY
+  BI_WEEKLY
+  MONTHLY
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  DECLINED
+  ACCEPTED
+  APPROVED
+  INACTIVE
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  CONTRIBUTION
+  INTEREST
+  FEE
+  PENALTY
+  LOAN_DISBURSEMENT
+  LOAN_REPAYMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum AttendanceStatus {
+  PENDING
+  PRESENT
+  ABSENT
+  EXCUSED
+}
+
+enum NotificationType {
+  PAYMENT_DUE
+  PAYMENT_RECEIVED
+  NEW_MEMBER
+  MEETING_REMINDER
+  WITHDRAWAL_REQUEST
+  LOAN_REQUEST
+  LOAN_APPROVED
+  LOAN_REJECTED
+  LOAN_REPAYMENT_DUE
+  SYSTEM
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum GroupStatus {
+  ACTIVE
+  INACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+
+enum LoanStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  DISBURSED
+  REPAYING
+  REPAID
+  DEFAULTED
+}
+
+model IndividualLoan {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Service Details
+  serviceType     String // "Personal Loan" or "Solar Equipment"
+  serviceName     String
+  serviceCategory String
+
+  // Application Details
+  amount          Decimal
+  purpose         String  @db.Text
+  repaymentPeriod String
+
+  // Personal/Employment Details (Snapshot)
+  fullName         String
+  email            String
+  phone            String
+  nationalId       String
+  address          String   @db.Text
+  employmentStatus String
+  monthlyIncome    Decimal?
+  businessDetails  String?  @db.Text
+
+  // Status
+  status LoanStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+model ContactMessage {
+  id               String   @id @default(cuid())
+  name             String
+  email            String
+  phone            String?
+  subject          String
+  message          String   @db.Text
+  department       String   // customer-support, sales, technical, billing, general
+  preferredContact String   @default("email") // email, phone, either
+  timeframe        String   @default("anytime") // urgent, standard, anytime
+  status           String   @default("new") // new, in-progress, resolved
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([department])
+  @@index([createdAt])
+}
+
+model MeetingRequest {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  meetingDate DateTime
+  meetingTime String
+  purpose     String?  @db.Text
+  status      String   @default("pending") // pending, confirmed, cancelled, completed
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([meetingDate])
+  @@index([createdAt])
+}
+

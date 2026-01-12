@@ -264,7 +264,7 @@ function BlogPostSkeleton() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section Skeleton */}
-      <section className="relative pt-16 pb-24 bg-gradient-to-br from-[#003366] to-[#002244] text-white overflow-hidden">
+      <section className="relative pt-16 pb-24 bg-linear-to-br from-primary to-[#002244] text-white overflow-hidden">
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <div className="max-w-4xl mx-auto">
             <Skeleton className="h-10 w-32 mb-6 bg-white/20" />
@@ -340,7 +340,7 @@ function EmojiPicker({ onEmojiSelect }: { onEmojiSelect: (emoji: string) => void
           type="button"
           variant="outline"
           size="icon"
-          className="h-9 w-9 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 shadow-sm z-10"
+          className="h-9 w-9 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 shadow-xs z-10"
           onClick={(e) => {
             e.preventDefault()
             setIsOpen(!isOpen)
@@ -566,7 +566,7 @@ function VoiceRecorder({
               size="sm"
               onClick={handleUpload}
               disabled={isUploading || isUploadThingUploading}
-              className="bg-[#003366] hover:bg-[#002244] text-white"
+              className="bg-primary hover:bg-[#002244] text-white"
             >
               {(isUploading || isUploadThingUploading) ? (
                 <>
@@ -1622,11 +1622,11 @@ function BlogPostContent() {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white dark:bg-gray-900">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-[#003366] dark:text-white">Post not found</h2>
+          <h2 className="text-2xl font-bold text-primary dark:text-white">Post not found</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             {error ? 'Failed to load blog post. Please try again later.' : "The article you're looking for doesn't exist or has been removed."}
           </p>
-          <Button onClick={() => router.push("/blog")} className="bg-[#003366] hover:bg-[#002244]">
+          <Button onClick={() => router.push("/blog")} className="bg-primary hover:bg-[#002244]">
             Back to Blog
           </Button>
         </div>
@@ -1642,7 +1642,7 @@ function BlogPostContent() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-24 bg-gradient-to-br from-[#003366] to-[#002244] text-white overflow-hidden">
+      <section className="relative pt-16 pb-24 bg-linear-to-br from-primary to-[#002244] text-white overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full bg-grid-white bg-grid-8 opacity-10"></div>
           <div className="absolute -top-[40%] -right-[10%] w-[70%] h-[140%] bg-[#00CC66]/10 rounded-full blur-3xl"></div>
@@ -1724,7 +1724,7 @@ function BlogPostContent() {
                 <Button
                   size="icon"
                   variant="outline"
-                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#003366] hover:text-white hover:border-[#003366] dark:hover:bg-[#003366] dark:hover:text-white dark:hover:border-[#003366]"
+                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white hover:border-primary dark:hover:bg-primary dark:hover:text-white dark:hover:border-primary"
                   onClick={() => handleShare("Facebook")}
                 >
                   <Facebook className="h-5 w-5" />
@@ -1732,7 +1732,7 @@ function BlogPostContent() {
                 <Button
                   size="icon"
                   variant="outline"
-                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#003366] hover:text-white hover:border-[#003366] dark:hover:bg-[#003366] dark:hover:text-white dark:hover:border-[#003366]"
+                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white hover:border-primary dark:hover:bg-primary dark:hover:text-white dark:hover:border-primary"
                   onClick={() => handleShare("Twitter")}
                 >
                   <Twitter className="h-5 w-5" />
@@ -1740,7 +1740,7 @@ function BlogPostContent() {
                 <Button
                   size="icon"
                   variant="outline"
-                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#003366] hover:text-white hover:border-[#003366] dark:hover:bg-[#003366] dark:hover:text-white dark:hover:border-[#003366]"
+                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white hover:border-primary dark:hover:bg-primary dark:hover:text-white dark:hover:border-primary"
                   onClick={() => handleShare("LinkedIn")}
                 >
                   <Linkedin className="h-5 w-5" />
@@ -1748,7 +1748,7 @@ function BlogPostContent() {
                 <Button
                   size="icon"
                   variant="outline"
-                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#003366] hover:text-white hover:border-[#003366] dark:hover:bg-[#003366] dark:hover:text-white dark:hover:border-[#003366]"
+                  className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white hover:border-primary dark:hover:bg-primary dark:hover:text-white dark:hover:border-primary"
                   onClick={() => handleShare("Copy Link")}
                 >
                   <Copy className="h-5 w-5" />
@@ -1764,10 +1764,10 @@ function BlogPostContent() {
                     <Share2 className="h-5 w-5" />
                   </Button>
                 )}
-                <Separator className="hidden lg:block w-8 h-[1px] my-2 bg-gray-200 dark:bg-gray-700" />
+                <Separator className="hidden lg:block w-8 h-px my-2 bg-gray-200 dark:bg-gray-700" />
                 <Button
                   size="icon"
-                  variant={isSaved ? "default" : "outline"}
+                  variant={isSaved ? "default" : "outline-solid"}
                   className={`rounded-full h-10 w-10 ${isSaved
                     ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
                     : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#00CC66] hover:text-white hover:border-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white dark:hover:border-[#00CC66]"
@@ -1785,7 +1785,7 @@ function BlogPostContent() {
                 </Button>
                 <Button
                   size="icon"
-                  variant={isLiked ? "default" : "outline"}
+                  variant={isLiked ? "default" : "outline-solid"}
                   className={`rounded-full h-10 w-10 ${isLiked
                     ? "bg-[#00CC66] hover:bg-[#00BB55] text-white border-[#00CC66]"
                     : "border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-[#00CC66] hover:text-white hover:border-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white dark:hover:border-[#00CC66]"
@@ -1808,13 +1808,13 @@ function BlogPostContent() {
                 <TabsList className="w-full grid grid-cols-2">
                   <TabsTrigger
                     value="article"
-                    className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                    className="data-[state=active]:bg-primary data-[state=active]:text-white"
                   >
                     Article
                   </TabsTrigger>
                   <TabsTrigger
                     value="comments"
-                    className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                    className="data-[state=active]:bg-primary data-[state=active]:text-white"
                   >
                     Comments ({comments.length})
                   </TabsTrigger>
@@ -1826,7 +1826,7 @@ function BlogPostContent() {
                     <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                       <div className="flex items-center justify-between gap-4 flex-wrap">
                         <div className="flex items-center gap-2">
-                          <Volume2 className="h-5 w-5 text-[#003366] dark:text-[#00CC66]" />
+                          <Volume2 className="h-5 w-5 text-primary dark:text-[#00CC66]" />
                           <span className="font-medium text-gray-900 dark:text-white">Listen to Article</span>
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -1852,7 +1852,7 @@ function BlogPostContent() {
                                   }
                                 }
                               }}
-                              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#003366]"
+                              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                             />
                             <span className="text-sm text-gray-600 dark:text-gray-400 w-8">
                               {speechRate.toFixed(1)}x
@@ -1861,7 +1861,7 @@ function BlogPostContent() {
                           {!isSpeaking && !isPaused && (
                             <Button
                               onClick={handleStartReading}
-                              className="bg-[#003366] hover:bg-[#002244] text-white"
+                              className="bg-primary hover:bg-[#002244] text-white"
                               size="sm"
                               disabled={typeof window === 'undefined' || !('speechSynthesis' in window)}
                             >
@@ -1874,7 +1874,7 @@ function BlogPostContent() {
                               onClick={handlePauseReading}
                               variant="outline"
                               size="sm"
-                              className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white"
+                              className="border-primary text-primary hover:bg-primary hover:text-white"
                             >
                               <Pause className="h-4 w-4 mr-2" />
                               Pause
@@ -1908,7 +1908,7 @@ function BlogPostContent() {
                   )}
 
                   <article className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-[#003366] dark:prose-headings:text-white prose-a:text-[#00CC66] dark:prose-a:text-[#00CC66] prose-a:no-underline hover:prose-a:underline prose-p:text-gray-700 dark:prose-p:text-gray-200 prose-strong:text-gray-900 dark:prose-strong:text-white prose-li:text-gray-700 dark:prose-li:text-gray-200 prose-ul:text-gray-700 dark:prose-ul:text-gray-200 prose-ol:text-gray-700 dark:prose-ol:text-gray-200 prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-200 prose-code:text-gray-900 dark:prose-code:text-gray-100 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800">
-                    <div className="text-gray-700 dark:text-gray-200 [&>p]:text-gray-700 dark:[&>p]:text-gray-200 [&>h1]:text-[#003366] dark:[&>h1]:text-white [&>h2]:text-[#003366] dark:[&>h2]:text-white [&>h3]:text-[#003366] dark:[&>h3]:text-white [&>h4]:text-[#003366] dark:[&>h4]:text-white [&>h5]:text-[#003366] dark:[&>h5]:text-white [&>h6]:text-[#003366] dark:[&>h6]:text-white [&>a]:text-[#00CC66] dark:[&>a]:text-[#00CC66] [&>strong]:text-gray-900 dark:[&>strong]:text-white [&>em]:text-gray-700 dark:[&>em]:text-gray-200 [&>li]:text-gray-700 dark:[&>li]:text-gray-200 [&>ul]:text-gray-700 dark:[&>ul]:text-gray-200 [&>ol]:text-gray-700 dark:[&>ol]:text-gray-200" dangerouslySetInnerHTML={{ __html: post.content }} />
+                    <div className="text-gray-700 dark:text-gray-200 [&>p]:text-gray-700 dark:[&>p]:text-gray-200 [&>h1]:text-primary dark:[&>h1]:text-white [&>h2]:text-primary dark:[&>h2]:text-white [&>h3]:text-primary dark:[&>h3]:text-white [&>h4]:text-primary dark:[&>h4]:text-white [&>h5]:text-primary dark:[&>h5]:text-white [&>h6]:text-primary dark:[&>h6]:text-white [&>a]:text-[#00CC66] dark:[&>a]:text-[#00CC66] [&>strong]:text-gray-900 dark:[&>strong]:text-white [&>em]:text-gray-700 dark:[&>em]:text-gray-200 [&>li]:text-gray-700 dark:[&>li]:text-gray-200 [&>ul]:text-gray-700 dark:[&>ul]:text-gray-200 [&>ol]:text-gray-700 dark:[&>ol]:text-gray-200" dangerouslySetInnerHTML={{ __html: post.content }} />
                   </article>
 
                   <div className="mt-12 flex flex-wrap gap-2">
@@ -1936,12 +1936,12 @@ function BlogPostContent() {
                         <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">{post.author.name}</h3>
+                        <h3 className="text-xl font-bold text-primary dark:text-white mb-2">{post.author.name}</h3>
                         {post.author.role && <p className="text-gray-600 dark:text-gray-400 mb-4">{post.author.role}</p>}
                         {post.author.bio && <p className="text-gray-700 dark:text-gray-300">{post.author.bio}</p>}
                         <div className="mt-4 flex gap-2">
                           <Button
-                            variant={isFollowing ? "default" : "outline"}
+                            variant={isFollowing ? "default" : "outline-solid"}
                             size="sm"
                             className={
                               isFollowing
@@ -1968,7 +1968,7 @@ function BlogPostContent() {
                               </>
                             )}
                           </Button>
-                          <Button size="sm" className="bg-[#003366] hover:bg-[#002244] text-white">
+                          <Button size="sm" className="bg-primary hover:bg-[#002244] text-white">
                             View All Articles
                           </Button>
                         </div>
@@ -1980,7 +1980,7 @@ function BlogPostContent() {
                 <TabsContent value="comments" className="mt-6">
                   {/* Comment Form */}
                   <div className="mb-6 md:mb-8">
-                    <h3 className="text-lg md:text-xl font-bold text-[#003366] dark:text-white mb-3 md:mb-4">Leave a Comment</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-primary dark:text-white mb-3 md:mb-4">Leave a Comment</h3>
                     {!user || !isUserLoaded ? (
                       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 md:p-6 text-center">
                         <MessageSquare className="h-10 w-10 md:h-12 md:w-12 mx-auto text-gray-400 mb-3 md:mb-4" />
@@ -1988,7 +1988,7 @@ function BlogPostContent() {
                         <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mb-3 md:mb-4">Please sign in to post a comment on this article.</p>
                         <Button
                           onClick={() => router.push('/sign-in')}
-                          className="bg-[#003366] hover:bg-[#002244] text-sm md:text-base"
+                          className="bg-primary hover:bg-[#002244] text-sm md:text-base"
                         >
                           Sign In
                         </Button>
@@ -2004,7 +2004,7 @@ function BlogPostContent() {
                         <div className="relative">
                           <textarea
                             ref={commentInputRef}
-                            className="w-full p-3 md:p-4 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm md:text-base"
+                            className="w-full p-3 md:p-4 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 text-gray-900! dark:text-gray-100! placeholder:text-gray-500 dark:placeholder:text-gray-400 text-sm md:text-base"
                             rows={4}
                             placeholder="Share your thoughts... 😊"
                             value={commentText}
@@ -2047,7 +2047,7 @@ function BlogPostContent() {
                         <div className="mt-2 md:mt-3 flex justify-end">
                           <Button
                             type="submit"
-                            className="h-9 md:h-10 px-4 md:px-6 text-sm md:text-base bg-[#003366] hover:bg-[#002244]"
+                            className="h-9 md:h-10 px-4 md:px-6 text-sm md:text-base bg-primary hover:bg-[#002244]"
                             disabled={(!commentText.trim() && !commentAudioUrl) || commentMutation.isPending}
                           >
                             {commentMutation.isPending ? (
@@ -2070,7 +2070,7 @@ function BlogPostContent() {
                       {[1, 2, 3].map((i) => (
                         <div key={i} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 md:p-6">
                           <div className="flex items-start gap-2 md:gap-4">
-                            <Skeleton className="h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0" />
+                            <Skeleton className="h-8 w-8 md:h-10 md:w-10 rounded-full shrink-0" />
                             <div className="flex-1 space-y-2 min-w-0">
                               <Skeleton className="h-4 w-24 md:w-32" />
                               <Skeleton className="h-4 w-full" />
@@ -2091,7 +2091,7 @@ function BlogPostContent() {
                       {comments.map((comment) => (
                         <div key={comment.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 md:p-6">
                           <div className="flex items-start gap-2 md:gap-4">
-                            <Avatar className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0">
+                            <Avatar className="h-8 w-8 md:h-10 md:w-10 shrink-0">
                               <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
                               <AvatarFallback className="text-xs md:text-sm">{comment.author.name.charAt(0)}</AvatarFallback>
                             </Avatar>
@@ -2099,13 +2099,13 @@ function BlogPostContent() {
                               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                                 <div className="flex flex-wrap items-center gap-1 md:gap-2 min-w-0">
                                   <span className="font-medium text-sm md:text-base text-gray-900 dark:text-white truncate">{comment.author.name}</span>
-                                  {comment.author.isAuthor && <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>}
+                                  {comment.author.isAuthor && <Badge className="bg-[#00CC66] text-xs shrink-0">Author</Badge>}
                                   <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{comment.date}</span>
                                 </div>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className={`h-7 md:h-8 px-2 text-xs md:text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(comment.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
+                                  className={`h-7 md:h-8 px-2 text-xs md:text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shrink-0 ${likedComments.has(comment.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
                                   onClick={() => handleLikeComment(comment.id)}
                                   disabled={likeCommentMutation.isPending}
                                 >
@@ -2113,7 +2113,7 @@ function BlogPostContent() {
                                   <span className="text-xs md:text-sm">{comment.likes}</span>
                                 </Button>
                               </div>
-                              <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{comment.content}</p>
+                              <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap wrap-break-word">{comment.content}</p>
                               {comment.audioUrl && (
                                 <div className="mt-3">
                                   <audio
@@ -2147,7 +2147,7 @@ function BlogPostContent() {
                                             replyInputRefs.current[comment.id] = el
                                           }
                                         }}
-                                        className="w-full p-2 md:p-3 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
+                                        className="w-full p-2 md:p-3 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 text-gray-900! dark:text-gray-100! placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
                                         rows={3}
                                         placeholder="Write a reply... 😊"
                                         value={replyText}
@@ -2173,7 +2173,7 @@ function BlogPostContent() {
                                       <Button
                                         type="submit"
                                         size="sm"
-                                        className="h-7 md:h-8 px-3 md:px-4 text-xs md:text-sm bg-[#003366] hover:bg-[#002244] w-full sm:w-auto"
+                                        className="h-7 md:h-8 px-3 md:px-4 text-xs md:text-sm bg-primary hover:bg-[#002244] w-full sm:w-auto"
                                         disabled={(!replyText.trim() && !(showReplyVoiceRecorder === comment.id && replyAudioUrl)) || commentMutation.isPending}
                                       >
                                         {commentMutation.isPending ? (
@@ -2225,7 +2225,7 @@ function BlogPostContent() {
                                   {comment.replies.map((reply) => (
                                     <div key={reply.id} className="bg-white dark:bg-gray-900 rounded-lg p-2 md:p-4">
                                       <div className="flex items-start gap-2 md:gap-3">
-                                        <Avatar className="h-7 w-7 md:h-8 md:w-8 flex-shrink-0">
+                                        <Avatar className="h-7 w-7 md:h-8 md:w-8 shrink-0">
                                           <AvatarImage src={reply.author.avatar} alt={reply.author.name} />
                                           <AvatarFallback className="text-xs">{reply.author.name.charAt(0)}</AvatarFallback>
                                         </Avatar>
@@ -2234,14 +2234,14 @@ function BlogPostContent() {
                                             <div className="flex flex-wrap items-center gap-1 md:gap-2 min-w-0">
                                               <span className="font-medium text-xs md:text-sm text-gray-900 dark:text-white truncate">{reply.author.name}</span>
                                               {reply.author.isAuthor && (
-                                                <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>
+                                                <Badge className="bg-[#00CC66] text-xs shrink-0">Author</Badge>
                                               )}
                                               <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{reply.date}</span>
                                             </div>
                                             <Button
                                               variant="ghost"
                                               size="sm"
-                                              className={`h-6 md:h-7 px-1.5 md:px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(reply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
+                                              className={`h-6 md:h-7 px-1.5 md:px-2 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shrink-0 ${likedComments.has(reply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
                                               onClick={() => handleLikeComment(reply.id)}
                                               disabled={likeCommentMutation.isPending}
                                             >
@@ -2249,7 +2249,7 @@ function BlogPostContent() {
                                               <span className="text-xs">{reply.likes}</span>
                                             </Button>
                                           </div>
-                                          <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{reply.content}</p>
+                                          <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap wrap-break-word">{reply.content}</p>
                                           {reply.audioUrl && (
                                             <div className="mt-2">
                                               <audio
@@ -2283,7 +2283,7 @@ function BlogPostContent() {
                                                         replyInputRefs.current[reply.id] = el
                                                       }
                                                     }}
-                                                    className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
+                                                    className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 text-gray-900! dark:text-gray-100! placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs md:text-sm"
                                                     rows={2}
                                                     placeholder="Write a reply... 😊"
                                                     value={replyText}
@@ -2309,7 +2309,7 @@ function BlogPostContent() {
                                                   <Button
                                                     type="submit"
                                                     size="sm"
-                                                    className="h-6 md:h-7 px-2 md:px-3 text-xs bg-[#003366] hover:bg-[#002244] text-white w-full sm:w-auto"
+                                                    className="h-6 md:h-7 px-2 md:px-3 text-xs bg-primary hover:bg-[#002244] text-white w-full sm:w-auto"
                                                     disabled={(!replyText.trim() && !(showReplyVoiceRecorder === reply.id && replyAudioUrl)) || commentMutation.isPending}
                                                   >
                                                     {commentMutation.isPending ? (
@@ -2361,7 +2361,7 @@ function BlogPostContent() {
                                               {reply.replies.map((nestedReply) => (
                                                 <div key={nestedReply.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-2 md:p-3">
                                                   <div className="flex items-start gap-1.5 md:gap-2">
-                                                    <Avatar className="h-6 w-6 md:h-7 md:w-7 flex-shrink-0">
+                                                    <Avatar className="h-6 w-6 md:h-7 md:w-7 shrink-0">
                                                       <AvatarImage src={nestedReply.author.avatar} alt={nestedReply.author.name} />
                                                       <AvatarFallback className="text-xs">{nestedReply.author.name.charAt(0)}</AvatarFallback>
                                                     </Avatar>
@@ -2370,14 +2370,14 @@ function BlogPostContent() {
                                                         <div className="flex flex-wrap items-center gap-1 min-w-0">
                                                           <span className="font-medium text-gray-900 dark:text-white text-xs md:text-sm truncate">{nestedReply.author.name}</span>
                                                           {nestedReply.author.isAuthor && (
-                                                            <Badge className="bg-[#00CC66] text-xs flex-shrink-0">Author</Badge>
+                                                            <Badge className="bg-[#00CC66] text-xs shrink-0">Author</Badge>
                                                           )}
                                                           <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{nestedReply.date}</span>
                                                         </div>
                                                         <Button
                                                           variant="ghost"
                                                           size="sm"
-                                                          className={`h-5 md:h-6 px-1 md:px-1.5 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0 ${likedComments.has(nestedReply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
+                                                          className={`h-5 md:h-6 px-1 md:px-1.5 text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shrink-0 ${likedComments.has(nestedReply.id) ? 'text-[#00CC66] dark:text-[#00CC66]' : ''}`}
                                                           onClick={() => handleLikeComment(nestedReply.id)}
                                                           disabled={likeCommentMutation.isPending}
                                                         >
@@ -2385,7 +2385,7 @@ function BlogPostContent() {
                                                           <span className="text-xs">{nestedReply.likes}</span>
                                                         </Button>
                                                       </div>
-                                                      <p className="text-gray-700 dark:text-gray-300 text-xs whitespace-pre-wrap break-words">{nestedReply.content}</p>
+                                                      <p className="text-gray-700 dark:text-gray-300 text-xs whitespace-pre-wrap wrap-break-word">{nestedReply.content}</p>
                                                       {nestedReply.audioUrl && (
                                                         <div className="mt-1.5 md:mt-2">
                                                           <audio
@@ -2419,7 +2419,7 @@ function BlogPostContent() {
                                                                     replyInputRefs.current[nestedReply.id] = el
                                                                   }
                                                                 }}
-                                                                className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 !text-gray-900 dark:!text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs"
+                                                                className="w-full p-2 pr-12 md:pr-14 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#00CC66] focus:border-transparent bg-white dark:bg-gray-800 text-gray-900! dark:text-gray-100! placeholder:text-gray-500 dark:placeholder:text-gray-400 text-xs"
                                                                 rows={2}
                                                                 placeholder="Write a reply... 😊"
                                                                 value={replyText}
@@ -2445,7 +2445,7 @@ function BlogPostContent() {
                                                               <Button
                                                                 type="submit"
                                                                 size="sm"
-                                                                className="h-6 px-2 md:px-3 text-xs bg-[#003366] hover:bg-[#002244] text-white w-full sm:w-auto"
+                                                                className="h-6 px-2 md:px-3 text-xs bg-primary hover:bg-[#002244] text-white w-full sm:w-auto"
                                                                 disabled={(!replyText.trim() && !(showReplyVoiceRecorder === nestedReply.id && replyAudioUrl)) || commentMutation.isPending}
                                                               >
                                                                 {commentMutation.isPending ? (
@@ -2516,7 +2516,7 @@ function BlogPostContent() {
             <div className="lg:col-span-3 order-3">
               <div className="lg:sticky lg:top-24 space-y-8">
                 <div>
-                  <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-4">Related Articles</h3>
+                  <h3 className="text-xl font-bold text-primary dark:text-white mb-4">Related Articles</h3>
                   <div className="space-y-4">
                     {relatedPosts.map((relatedPost) => (
                       <Card key={relatedPost.id} className="overflow-hidden hover:shadow-md transition-shadow bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -2534,7 +2534,7 @@ function BlogPostContent() {
                               {relatedPost.category}
                             </Badge>
                             <Link href={`/blog/${relatedPost.id}`}>
-                              <h4 className="font-medium text-[#003366] dark:text-white hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors line-clamp-2 text-sm">
+                              <h4 className="font-medium text-primary dark:text-white hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors line-clamp-2 text-sm">
                                 {relatedPost.title}
                               </h4>
                             </Link>
@@ -2550,7 +2550,7 @@ function BlogPostContent() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-4">Popular Tags</h3>
+                  <h3 className="text-xl font-bold text-primary dark:text-white mb-4">Popular Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {Array.from(new Set(allPosts.flatMap((p) => p.tags)))
                       .slice(0, 10)
@@ -2587,9 +2587,9 @@ function BlogPostContent() {
                 <>
                   {previousPost && (
                     <Link href={`/blog/${previousPost.id}`}>
-                      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col border border-gray-200 dark:border-gray-700">
+                      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xs hover:shadow-md transition-shadow h-full flex flex-col border border-gray-200 dark:border-gray-700">
                         <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">Previous Article</div>
-                        <h3 className="text-lg font-bold text-[#003366] dark:text-white mb-2 line-clamp-2">
+                        <h3 className="text-lg font-bold text-primary dark:text-white mb-2 line-clamp-2">
                           {previousPost.title}
                         </h3>
                         <div className="mt-auto flex items-center text-[#00CC66] dark:text-[#00CC66]">
@@ -2602,9 +2602,9 @@ function BlogPostContent() {
 
                   {nextPost && (
                     <Link href={`/blog/${nextPost.id}`}>
-                      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col border border-gray-200 dark:border-gray-700">
+                      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xs hover:shadow-md transition-shadow h-full flex flex-col border border-gray-200 dark:border-gray-700">
                         <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 text-right">Next Article</div>
-                        <h3 className="text-lg font-bold text-[#003366] dark:text-white mb-2 line-clamp-2 text-right">
+                        <h3 className="text-lg font-bold text-primary dark:text-white mb-2 line-clamp-2 text-right">
                           {nextPost.title}
                         </h3>
                         <div className="mt-auto flex items-center justify-end text-[#00CC66] dark:text-[#00CC66]">

@@ -715,7 +715,7 @@ function BlogContent() {
   return (
     <div className={`flex flex-col min-h-screen ${isDarkMode ? "dark" : ""}`}>
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 bg-gradient-to-br from-[#003366] to-[#002244] text-white overflow-hidden">
+      <section className="relative py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full bg-grid-white bg-grid-8 opacity-10"></div>
           <div className="absolute -top-[40%] -right-[10%] w-[70%] h-[140%] bg-[#00CC66]/10 rounded-full blur-3xl"></div>
@@ -888,7 +888,7 @@ function BlogContent() {
                           }}
                         >
                           <div className="flex gap-3">
-                            <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                            <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden">
                               <Image
                                 src={post.image || "/placeholder.svg"}
                                 alt={post.title}
@@ -1006,7 +1006,7 @@ function BlogContent() {
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-primary/80 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 p-6 w-full">
                     <Badge className="mb-2 bg-[#00CC66]">Featured</Badge>
                     <h3 className="text-xl font-bold text-white mb-2">{featuredPost.title}</h3>
@@ -1022,7 +1022,7 @@ function BlogContent() {
                   {blogPosts[2] && (
                 <div className="absolute top-10 -right-10 w-[60%] h-[60%] rotate-y-[-8deg] shadow-xl rounded-xl overflow-hidden transform-gpu preserve-3d">
                   <Image src={blogPosts[2].image || "/placeholder.svg"} alt="Blog post" fill className="object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-primary/80 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 p-4 w-full">
                     <h3 className="text-sm font-bold text-white">{blogPosts[2].title}</h3>
                   </div>
@@ -1056,7 +1056,7 @@ function BlogContent() {
               <div className="mb-4">
                 <Search className="h-12 w-12 mx-auto text-gray-400" />
               </div>
-              <h3 className="text-xl font-semibold text-[#003366] dark:text-white mb-2">No articles found</h3>
+              <h3 className="text-xl font-semibold text-primary dark:text-white mb-2">No articles found</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 No published blog posts available yet.
               </p>
@@ -1067,7 +1067,7 @@ function BlogContent() {
           <div className="mb-8 flex flex-col space-y-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center space-x-2">
-                <h2 className="text-2xl font-bold text-[#003366] dark:text-white">Blog Posts</h2>
+                <h2 className="text-2xl font-bold text-primary dark:text-white">Blog Posts</h2>
                 <Badge className="bg-[#00CC66]">{filteredPosts.length}</Badge>
               </div>
 
@@ -1084,7 +1084,7 @@ function BlogContent() {
                     className={cn(
                       "px-3 py-2 text-sm",
                       activeView === "grid"
-                        ? "bg-[#003366] text-white"
+                        ? "bg-primary text-white"
                         : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300",
                     )}
                     onClick={() => setActiveView("grid")}
@@ -1095,7 +1095,7 @@ function BlogContent() {
                     className={cn(
                       "px-3 py-2 text-sm",
                       activeView === "list"
-                        ? "bg-[#003366] text-white"
+                        ? "bg-primary text-white"
                         : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300",
                     )}
                     onClick={() => setActiveView("list")}
@@ -1130,16 +1130,16 @@ function BlogContent() {
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="w-full max-w-md mx-auto md:mx-0 grid grid-cols-3 bg-gray-100 dark:bg-gray-800">
-                <TabsTrigger value="all" className="data-[state=active]:bg-[#003366] data-[state=active]:text-white text-gray-700 dark:text-gray-300">
+                <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-white text-gray-700 dark:text-gray-300">
                   All Posts
                 </TabsTrigger>
                 <TabsTrigger
                   value="trending"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white text-gray-700 dark:text-gray-300"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white text-gray-700 dark:text-gray-300"
                 >
                   Trending
                 </TabsTrigger>
-                <TabsTrigger value="saved" className="data-[state=active]:bg-[#003366] data-[state=active]:text-white text-gray-700 dark:text-gray-300">
+                <TabsTrigger value="saved" className="data-[state=active]:bg-primary data-[state=active]:text-white text-gray-700 dark:text-gray-300">
                   Saved ({savedPosts.length})
                 </TabsTrigger>
               </TabsList>
@@ -1244,7 +1244,7 @@ function BlogContent() {
                       </Button>
                       <Button 
                         size="sm" 
-                        className="bg-[#003366] hover:bg-[#002244] text-white" 
+                        className="bg-primary hover:bg-[#002244] text-white" 
                         onClick={() => handleSearch(false)}
                       >
                         Apply Filters
@@ -1261,7 +1261,7 @@ function BlogContent() {
             <div className="mb-12">
               <div className="flex items-center mb-6">
                 <TrendingUp className="h-5 w-5 text-[#00CC66] mr-2" />
-                <h3 className="text-xl font-bold text-[#003366] dark:text-white">Trending Now</h3>
+                <h3 className="text-xl font-bold text-primary dark:text-white">Trending Now</h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1369,7 +1369,7 @@ function BlogContent() {
                         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
                           <Badge
                             variant="outline"
-                            className="mr-2 bg-[#003366]/10 text-[#003366] dark:bg-[#003366]/20 dark:text-[#00CC66] border-[#003366]/20"
+                            className="mr-2 bg-primary/10 text-primary dark:bg-primary/20 dark:text-[#00CC66] border-primary/20"
                           >
                             {post.category}
                           </Badge>
@@ -1379,7 +1379,7 @@ function BlogContent() {
                           </div>
                         </div>
                         <Link href={`/blog/${post.id}`}>
-                          <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-3 hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors">
+                          <h3 className="text-xl font-bold text-primary dark:text-white mb-3 hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors">
                             {post.title}
                           </h3>
                         </Link>
@@ -1439,7 +1439,7 @@ function BlogContent() {
                 <Search className="h-12 w-12 mx-auto text-gray-400" />
                 )}
               </div>
-              <h3 className="text-xl font-semibold text-[#003366] dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-primary dark:text-white mb-2">
                 {activeTab === "saved" 
                   ? !user || !isUserLoaded
                     ? "Sign in to view saved posts"
@@ -1455,7 +1455,7 @@ function BlogContent() {
               </p>
               {activeTab === "saved" && (!user || !isUserLoaded) ? (
                 <Button
-                  className="bg-[#003366] hover:bg-[#002244]"
+                  className="bg-primary hover:bg-[#002244]"
                   onClick={() => window.location.href = '/sign-in'}
                 >
                   Sign In
@@ -1589,7 +1589,7 @@ function BlogContent() {
                           <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
                             <Badge
                               variant="outline"
-                              className="mr-2 bg-[#003366]/10 text-[#003366] dark:bg-[#003366]/20 dark:text-[#00CC66] border-[#003366]/20"
+                              className="mr-2 bg-primary/10 text-primary dark:bg-primary/20 dark:text-[#00CC66] border-primary/20"
                             >
                               {post.category}
                             </Badge>
@@ -1599,7 +1599,7 @@ function BlogContent() {
                             </div>
                           </div>
                           <Link href={`/blog/${post.id}`}>
-                            <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-3 hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors">
+                            <h3 className="text-xl font-bold text-primary dark:text-white mb-3 hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors">
                               {post.title}
                             </h3>
                           </Link>
@@ -1672,7 +1672,7 @@ function BlogContent() {
                               <div className="flex items-center">
                                 <Badge
                                   variant="outline"
-                                  className="mr-2 bg-[#003366]/10 text-[#003366] dark:bg-[#003366]/20 dark:text-[#00CC66] border-[#003366]/20"
+                                  className="mr-2 bg-primary/10 text-primary dark:bg-primary/20 dark:text-[#00CC66] border-primary/20"
                                 >
                                   {post.category}
                                 </Badge>
@@ -1764,7 +1764,7 @@ function BlogContent() {
                               </div>
                             </div>
                             <Link href={`/blog/${post.id}`}>
-                              <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-3 hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors">
+                              <h3 className="text-xl font-bold text-primary dark:text-white mb-3 hover:text-[#00CC66] dark:hover:text-[#00CC66] transition-colors">
                                 {post.title}
                               </h3>
                             </Link>
@@ -1833,7 +1833,7 @@ function BlogContent() {
                 <div className="flex justify-center mt-8">
                   <Button
                     variant="outline"
-                    className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white dark:border-[#00CC66] dark:text-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white"
+                    className="border-primary text-primary hover:bg-primary hover:text-white dark:border-[#00CC66] dark:text-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white"
                     onClick={loadMorePosts}
                   >
                     Load More Articles
@@ -1879,7 +1879,7 @@ function BlogContent() {
               </div>
               <div className="md:col-span-2 text-center md:text-left">
                 <Badge className="mb-2 bg-[#00CC66]">Featured Author</Badge>
-                  <h3 className="text-2xl font-bold text-[#003366] dark:text-white mb-2">{featuredAuthor.name}</h3>
+                  <h3 className="text-2xl font-bold text-primary dark:text-white mb-2">{featuredAuthor.name}</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">
                     {featuredAuthor.bio}
                   </p>
@@ -1900,7 +1900,7 @@ function BlogContent() {
                 <div className="mt-4">
                   <Button
                     variant="outline"
-                    className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white dark:border-[#00CC66] dark:text-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white"
+                    className="border-primary text-primary hover:bg-primary hover:text-white dark:border-[#00CC66] dark:text-[#00CC66] dark:hover:bg-[#00CC66] dark:hover:text-white"
                       onClick={() => {
                         setSearchTerm(featuredAuthor.name)
                         handleSearch(true)
@@ -1954,7 +1954,7 @@ function BlogContent() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-[#003366] to-[#002244] text-white">
+      <section className="py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <motion.div
@@ -2002,7 +2002,7 @@ function BlogContent() {
       <section className="py-16 bg-white dark:bg-gray-900">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#003366] dark:text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary dark:text-white mb-4">
               Explore Related Topics
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -2032,7 +2032,7 @@ function BlogContent() {
                 >
                   <Link href={`/blog/topic/${topic.name.toLowerCase().replace(/\s+/g, "-")}`}>
                     <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center h-full flex flex-col items-center justify-center hover:shadow-md transition-all duration-300 border border-transparent hover:border-[#00CC66]/20">
-                      <h3 className="text-lg font-semibold text-[#003366] dark:text-white mb-2">{topic.name}</h3>
+                      <h3 className="text-lg font-semibold text-primary dark:text-white mb-2">{topic.name}</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         {topic.articleCount} {topic.articleCount === 1 ? 'article' : 'articles'}
                       </p>
@@ -2050,7 +2050,7 @@ function BlogContent() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-[#003366] to-[#002244] text-white">
+      <section className="py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <motion.div
@@ -2105,7 +2105,7 @@ export default function BlogPage() {
       fallback={
         <div className="flex flex-col min-h-screen">
           {/* Hero Section - Always visible */}
-          <section className="relative py-16 md:py-24 bg-gradient-to-br from-[#003366] to-[#002244] text-white overflow-hidden">
+          <section className="relative py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white overflow-hidden">
             <div className="container px-4 md:px-6 mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className="text-left">

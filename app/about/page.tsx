@@ -17,7 +17,7 @@ export default function AboutPage() {
             fill
             className="object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#003366]/90 to-[#003366]/70"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-primary/90 to-primary/70"></div>
         </div>
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
@@ -44,24 +44,24 @@ export default function AboutPage() {
         <div className="container px-4 md:px-6 mx-auto">
           <Tabs defaultValue="mission" className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <TabsList className="inline-flex flex-wrap h-auto bg-[#003366]/10">
+              <TabsList className="inline-flex flex-wrap h-auto bg-primary/10">
                 <TabsTrigger
                   value="mission"
-                  className="text-sm sm:text-base px-4 sm:px-6 py-2 data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="text-sm sm:text-base px-4 sm:px-6 py-2 data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Our Mission
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="vision"
-                  className="text-sm sm:text-base px-4 sm:px-6 py-2 data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="text-sm sm:text-base px-4 sm:px-6 py-2 data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Our Vision
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="core"
-                  className="text-sm sm:text-base px-4 sm:px-6 py-2 data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="text-sm sm:text-base px-4 sm:px-6 py-2 data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   Core Values
                 </TabsTrigger>
@@ -71,7 +71,7 @@ export default function AboutPage() {
             <TabsContent value="mission" className="mt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
-                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Our Mission</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Our Mission</h2>
                   <p className="text-gray-600 text-lg">
                     To democratize access to financial services for underserved communities through innovative
                     technology solutions that are secure, affordable, and accessible.
@@ -82,7 +82,7 @@ export default function AboutPage() {
                         <Users className="h-5 w-5 text-[#00CC66]" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-[#003366]">Inclusive Access</h3>
+                        <h3 className="text-lg font-semibold text-primary">Inclusive Access</h3>
                         <p className="text-gray-600">
                           Creating financial solutions that work for everyone, regardless of economic background or
                           location.
@@ -94,7 +94,7 @@ export default function AboutPage() {
                         <Shield className="h-5 w-5 text-[#00CC66]" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-[#003366]">Financial Security</h3>
+                        <h3 className="text-lg font-semibold text-primary">Financial Security</h3>
                         <p className="text-gray-600">
                           Building trust through transparent, secure systems that protect user data and assets.
                         </p>
@@ -105,7 +105,7 @@ export default function AboutPage() {
                         <Target className="h-5 w-5 text-[#00CC66]" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-[#003366]">Sustainable Impact</h3>
+                        <h3 className="text-lg font-semibold text-primary">Sustainable Impact</h3>
                         <p className="text-gray-600">
                           Creating solutions that drive long-term economic growth and freedom for all.
                         </p>
@@ -135,13 +135,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <div className="order-1 md:order-2 space-y-6">
-                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Our Vision</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Our Vision</h2>
                   <p className="text-gray-600 text-lg">
                     A financially inclusive world where everyone has access to opportunities regardless of their
                     economic background, creating pathways to prosperity for all communities.
                   </p>
-                  <div className="bg-[#003366]/5 p-6 rounded-lg">
-                    <h3 className="text-xl font-semibold text-[#003366] mb-4">By 2030, we aim to:</h3>
+                  <div className="bg-primary/5 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold text-primary mb-4">By 2030, we aim to:</h3>
                     <ul className="space-y-3">
                       <li className="flex items-start">
                         <span className="text-[#00CC66] mr-2 font-bold">•</span>
@@ -175,7 +175,7 @@ export default function AboutPage() {
 
             {/* <TabsContent value="story" className="mt-0">
               <div className="space-y-8">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366] text-center">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary text-center">
                   Our Journey
                 </h2>
                 <div className="relative">
@@ -232,10 +232,10 @@ export default function AboutPage() {
                             <Calendar className="h-6 w-6" />
                           </div>
                           <div
-                            className={`bg-white p-6 rounded-lg shadow-md border-2 border-[#003366]/10 ${index % 2 === 0 ? "md:text-right" : ""}`}
+                            className={`bg-white p-6 rounded-lg shadow-md border-2 border-primary/10 ${index % 2 === 0 ? "md:text-right" : ""}`}
                           >
                             <div className="text-[#00CC66] font-bold text-xl mb-2">{item.year}</div>
-                            <h3 className="text-xl font-bold text-[#003366] mb-2">{item.title}</h3>
+                            <h3 className="text-xl font-bold text-primary mb-2">{item.title}</h3>
                             <p className="text-gray-600">{item.description}</p>
                           </div>
                         </div>
@@ -257,7 +257,7 @@ export default function AboutPage() {
             <TabsContent value="core" className="mt-0">
               <div className="space-y-8">
                 <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">Our Core Values</h2>
+                  <h2 className="text-3xl font-bold tracking-tighter text-primary">Our Core Values</h2>
                   <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
                     The principles that guide our work and shape our approach to financial inclusion.
                   </p>
@@ -340,17 +340,17 @@ export default function AboutPage() {
                   ].map((value, index) => (
                     <Card
                       key={index}
-                      className="bg-gray-50 border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all group hover:shadow-lg"
+                      className="bg-gray-50 border-2 border-primary/10 hover:border-primary/30 transition-all group hover:shadow-lg"
                     >
                       <CardContent className="p-6 text-center">
                         <div className="flex justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300">
                           {value.icon}
                         </div>
-                        <h3 className="text-xl font-bold text-[#003366] mb-3">{value.title}</h3>
+                        <h3 className="text-xl font-bold text-primary mb-3">{value.title}</h3>
                         <p className="text-gray-600 mb-4">{value.description}</p>
 
-                        <div className="bg-[#003366]/5 p-4 rounded-lg mt-4 text-left opacity-0 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-[200px] transition-all duration-500">
-                          <h4 className="font-semibold text-[#003366] mb-2 text-sm">How We Apply This:</h4>
+                        <div className="bg-primary/5 p-4 rounded-lg mt-4 text-left opacity-0 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-[200px] transition-all duration-500">
+                          <h4 className="font-semibold text-primary mb-2 text-sm">How We Apply This:</h4>
                           <ul className="space-y-1">
                             {value.examples.map((example, i) => (
                               <li key={i} className="flex items-start">
@@ -371,7 +371,7 @@ export default function AboutPage() {
       </section>
 
       {/* Impact Statistics Section */}
-      {/* <section className="py-16 md:py-24 bg-[#003366] text-white">
+      {/* <section className="py-16 md:py-24 bg-primary text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">Our Impact in Numbers</h2>
@@ -429,7 +429,7 @@ export default function AboutPage() {
       {/* <section className="py-16 md:py-24 bg-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">What People Say About Us</h2>
+            <h2 className="text-3xl font-bold tracking-tighter text-primary">What People Say About Us</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Hear from the communities and individuals who have experienced the impact of our work.
             </p>
@@ -469,14 +469,14 @@ export default function AboutPage() {
               ].map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/1">
                   <div className="p-2">
-                    <Card className="border-2 border-[#003366]/10 hover:border-[#003366]/30 transition-all h-full">
+                    <Card className="border-2 border-primary/10 hover:border-primary/30 transition-all h-full">
                       <CardContent className="p-8 flex flex-col h-full">
                         <div className="mb-6">
                           <svg className="h-8 w-8 text-[#00CC66]" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                           </svg>
                         </div>
-                        <p className="text-white italic mb-6 flex-grow">{testimonial.quote}</p>
+                        <p className="text-white italic mb-6 grow">{testimonial.quote}</p>
                         <div className="flex items-center mt-auto">
                           <div className="relative h-12 w-12 rounded-full overflow-hidden mr-4">
                             <Image
@@ -509,7 +509,7 @@ export default function AboutPage() {
       {/* <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">Awards & Recognition</h2>
+            <h2 className="text-3xl font-bold tracking-tighter text-primary">Awards & Recognition</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Our commitment to innovation and impact has been recognized globally.
             </p>
@@ -554,7 +554,7 @@ export default function AboutPage() {
                 icon: <Award className="h-10 w-10 text-[#00CC66]" />,
               },
             ].map((item, index) => (
-              <Card key={index} className="border-2 border-[#003366]/10 hover:shadow-lg transition-all">
+              <Card key={index} className="border-2 border-primary/10 hover:shadow-lg transition-all">
                 <CardContent className="p-6">
                   <div className="flex items-start">
                     <div className="bg-[#00CC66]/10 p-3 rounded-full mr-4">{item.icon}</div>
@@ -572,7 +572,7 @@ export default function AboutPage() {
       </section> */}
 
       {/* Join Our Team Section */}
-      {/* <section className="py-16 md:py-24 bg-[#003366] text-white">
+      {/* <section className="py-16 md:py-24 bg-primary text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -618,7 +618,7 @@ export default function AboutPage() {
               </div>
               <div className="pt-4">
                 <Link href="/careers">
-                  <Button size="lg" className="bg-white text-[#003366] hover:bg-white/90">
+                  <Button size="lg" className="bg-white text-primary hover:bg-white/90">
                     View Open Positions
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

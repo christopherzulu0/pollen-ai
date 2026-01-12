@@ -193,15 +193,15 @@ export default function SettingsPage() {
                 <Label>Theme</Label>
                 <div className="grid grid-cols-3 gap-2">
                   <Button variant="outline" className="justify-start">
-                    <span className="mr-2 h-4 w-4 rounded-full bg-[#fff]"></span>
+                    <span className="mr-2 h-4 w-4 rounded-full bg-white"></span>
                     Light
                   </Button>
                   <Button variant="outline" className="justify-start">
-                    <span className="mr-2 h-4 w-4 rounded-full bg-[#000]"></span>
+                    <span className="mr-2 h-4 w-4 rounded-full bg-black"></span>
                     Dark
                   </Button>
                   <Button variant="outline" className="justify-start">
-                    <span className="mr-2 h-4 w-4 rounded-full bg-gradient-to-r from-[#fff] to-[#000]"></span>
+                    <span className="mr-2 h-4 w-4 rounded-full bg-linear-to-r from-white to-black"></span>
                     System
                   </Button>
                 </div>

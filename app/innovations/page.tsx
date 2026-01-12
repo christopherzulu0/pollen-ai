@@ -87,9 +87,9 @@ export default function InnovationsPage() {
 
   const impactMetrics = [
     { metric: "Users Served", value: 1250000, suffix: "+", color: "bg-[#00CC66]" },
-    { metric: "Loans Facilitated", value: 850000, suffix: "+", color: "bg-[#003366]" },
+    { metric: "Loans Facilitated", value: 850000, suffix: "+", color: "bg-primary" },
     { metric: "Transaction Costs Saved", value: 85, suffix: "%", color: "bg-[#00CC66]" },
-    { metric: "Carbon Emissions Reduced", value: 125000, suffix: " tons", color: "bg-[#003366]" },
+    { metric: "Carbon Emissions Reduced", value: 125000, suffix: " tons", color: "bg-primary" },
   ]
 
   const glossaryTerms = [
@@ -124,9 +124,9 @@ export default function InnovationsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section with 3D Effect and Particles */}
-      <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-[#002244] via-[#003366] to-[#004488]">
+      <section className="relative py-20 md:py-32 overflow-hidden bg-linear-to-br from-[#002244] via-primary to-[#004488]">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:40px_40px] opacity-50"></div>
+          <div className="absolute inset-0 bg-grid-white/[0.05] bg-size-[40px_40px] opacity-50"></div>
 
           {/* Animated particles/dots */}
           <div className="absolute inset-0">
@@ -150,7 +150,7 @@ export default function InnovationsPage() {
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1 text-center md:text-left">
-              <div className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+              <div className="inline-block bg-white/10 backdrop-blur-xs px-4 py-2 rounded-full mb-6">
                 <span className="text-[#00CC66] font-semibold">Pioneering Financial Technology</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 text-white">
@@ -174,7 +174,7 @@ export default function InnovationsPage() {
             <div className="flex-1 relative">
               <div className="relative h-[300px] md:h-[400px] w-full perspective-1000">
                 <div className="absolute inset-0 transform-style-3d rotate-y-12 rotate-x-12 animate-float-slow">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[#003366]/80 to-[#00CC66]/80 rounded-2xl backdrop-blur-sm border border-white/20 shadow-2xl"></div>
+                  <div className="absolute inset-0 bg-linear-to-tr from-primary/80 to-[#00CC66]/80 rounded-2xl backdrop-blur-xs border border-white/20 shadow-2xl"></div>
                   <Image
                     src="/placeholder.svg?height=800&width=800"
                     alt="Innovation Technology Visualization"
@@ -210,8 +210,8 @@ export default function InnovationsPage() {
       <section className="py-16 md:py-24 bg-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-[#003366]/10 text-[#003366] hover:bg-[#003366]/20">Our Journey</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Innovation Timeline</h2>
+            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">Our Journey</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Innovation Timeline</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Explore our journey of technological breakthroughs and milestones.
             </p>
@@ -219,7 +219,7 @@ export default function InnovationsPage() {
 
           <div className="relative mt-20 mb-10 mx-auto max-w-5xl">
             {/* Timeline line */}
-            <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-gradient-to-b from-[#003366] to-[#00CC66] transform -translate-x-1/2"></div>
+            <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-linear-to-b from-primary to-[#00CC66] transform -translate-x-1/2"></div>
 
             {/* Timeline events */}
             {milestones.map((milestone, index) => (
@@ -230,16 +230,16 @@ export default function InnovationsPage() {
                 {/* Year bubble */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-4 border-[#00CC66] shadow-lg">
-                    <span className="text-sm font-bold text-[#003366]">{milestone.year}</span>
+                    <span className="text-sm font-bold text-primary">{milestone.year}</span>
                   </div>
                 </div>
 
                 {/* Content card */}
                 <div className={`w-5/12 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}>
                   <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                    <div className="h-1 bg-gradient-to-r from-[#003366] to-[#00CC66]"></div>
+                    <div className="h-1 bg-linear-to-r from-primary to-[#00CC66]"></div>
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-bold text-[#003366] mb-2">{milestone.title}</h3>
+                      <h3 className="text-xl font-bold text-primary mb-2">{milestone.title}</h3>
                       <p className="text-gray-600">{milestone.description}</p>
                     </CardContent>
                   </Card>
@@ -255,7 +255,7 @@ export default function InnovationsPage() {
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
             <Badge className="mb-4 bg-[#00CC66]/10 text-[#00CC66] hover:bg-[#00CC66]/20">Interactive</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">
               Experience Our Technology
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
@@ -275,7 +275,7 @@ export default function InnovationsPage() {
                 />
 
                 {/* Overlay with controls */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-8">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-8">
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{demos[activeDemo].title}</h3>
                   <p className="text-white/80 mb-6 max-w-xl">{demos[activeDemo].description}</p>
 
@@ -341,8 +341,8 @@ export default function InnovationsPage() {
       <section className="py-16 md:py-24 bg-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-[#003366]/10 text-[#003366] hover:bg-[#003366]/20">Core Technologies</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Our Technology Stack</h2>
+            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">Core Technologies</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Our Technology Stack</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Explore the innovative technologies powering our financial inclusion platform.
             </p>
@@ -351,27 +351,27 @@ export default function InnovationsPage() {
           <Tabs defaultValue="ai" className="max-w-5xl mx-auto" onValueChange={setActiveTab}>
             <div className="flex justify-center mb-8">
               <TabsList className="grid grid-cols-3 md:grid-cols-4 w-full max-w-2xl">
-                <TabsTrigger value="ai" className="data-[state=active]:bg-[#003366] data-[state=active]:text-white">
+                <TabsTrigger value="ai" className="data-[state=active]:bg-primary data-[state=active]:text-white">
                   <Cpu className="h-4 w-4 mr-2" />
                   AI
                 </TabsTrigger>
                 <TabsTrigger
                   value="blockchain"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   <Database className="h-4 w-4 mr-2" />
                   Blockchain
                 </TabsTrigger>
                 <TabsTrigger
                   value="climate"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   <LineChart className="h-4 w-4 mr-2" />
                   Climate Tech
                 </TabsTrigger>
                 <TabsTrigger
                   value="security"
-                  className="data-[state=active]:bg-[#003366] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
                 >
                   <Shield className="h-4 w-4 mr-2" />
                   Security
@@ -383,7 +383,7 @@ export default function InnovationsPage() {
               <TabsContent value="ai" className="mt-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                   <div>
-                    <h3 className="text-2xl font-bold text-[#003366] mb-4">AI-Powered Credit Scoring</h3>
+                    <h3 className="text-2xl font-bold text-primary mb-4">AI-Powered Credit Scoring</h3>
                     <p className="text-gray-600 mb-6">
                       Our proprietary AI algorithms analyze alternative data points to create accurate credit profiles
                       for individuals without traditional credit histories.
@@ -415,7 +415,7 @@ export default function InnovationsPage() {
                       </li>
                     </ul>
                     <div className="mt-6">
-                      <Button className="bg-[#003366] hover:bg-[#002244]">
+                      <Button className="bg-primary hover:bg-[#002244]">
                         Learn More About Our AI
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -428,7 +428,7 @@ export default function InnovationsPage() {
                       fill
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent flex items-end p-6">
+                    <div className="absolute inset-0 bg-linear-to-t from-primary/80 to-transparent flex items-end p-6">
                       <div className="text-white">
                         <h4 className="text-lg font-semibold mb-2">AI Model Accuracy</h4>
                         <div className="space-y-2">
@@ -465,7 +465,7 @@ export default function InnovationsPage() {
                       fill
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent flex items-end p-6">
+                    <div className="absolute inset-0 bg-linear-to-t from-primary/80 to-transparent flex items-end p-6">
                       <div className="text-white">
                         <h4 className="text-lg font-semibold mb-2">Blockchain Performance</h4>
                         <div className="space-y-2">
@@ -491,7 +491,7 @@ export default function InnovationsPage() {
                     </div>
                   </div>
                   <div className="order-1 md:order-2">
-                    <h3 className="text-2xl font-bold text-[#003366] mb-4">Blockchain-Based Ledger</h3>
+                    <h3 className="text-2xl font-bold text-primary mb-4">Blockchain-Based Ledger</h3>
                     <p className="text-gray-600 mb-6">
                       Our blockchain infrastructure ensures all transactions are secure, transparent, and immutable,
                       building trust in communities where traditional banking has failed.
@@ -523,7 +523,7 @@ export default function InnovationsPage() {
                       </li>
                     </ul>
                     <div className="mt-6">
-                      <Button className="bg-[#003366] hover:bg-[#002244]">
+                      <Button className="bg-primary hover:bg-[#002244]">
                         Explore Our Blockchain
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -535,7 +535,7 @@ export default function InnovationsPage() {
               <TabsContent value="climate" className="mt-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                   <div>
-                    <h3 className="text-2xl font-bold text-[#003366] mb-4">Climate Financing Platform</h3>
+                    <h3 className="text-2xl font-bold text-primary mb-4">Climate Financing Platform</h3>
                     <p className="text-gray-600 mb-6">
                       Our climate financing platform connects climate-conscious investors with agricultural communities
                       seeking funding for sustainable technologies like solar irrigation.
@@ -561,7 +561,7 @@ export default function InnovationsPage() {
                       </li>
                     </ul>
                     <div className="mt-6">
-                      <Button className="bg-[#003366] hover:bg-[#002244]">
+                      <Button className="bg-primary hover:bg-[#002244]">
                         Learn About Climate Finance
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -574,7 +574,7 @@ export default function InnovationsPage() {
                       fill
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent flex items-end p-6">
+                    <div className="absolute inset-0 bg-linear-to-t from-primary/80 to-transparent flex items-end p-6">
                       <div className="text-white">
                         <h4 className="text-lg font-semibold mb-2">Climate Impact</h4>
                         <div className="space-y-2">
@@ -611,7 +611,7 @@ export default function InnovationsPage() {
                       fill
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent flex items-end p-6">
+                    <div className="absolute inset-0 bg-linear-to-t from-primary/80 to-transparent flex items-end p-6">
                       <div className="text-white">
                         <h4 className="text-lg font-semibold mb-2">Security Metrics</h4>
                         <div className="space-y-2">
@@ -637,7 +637,7 @@ export default function InnovationsPage() {
                     </div>
                   </div>
                   <div className="order-1 md:order-2">
-                    <h3 className="text-2xl font-bold text-[#003366] mb-4">Advanced Security Framework</h3>
+                    <h3 className="text-2xl font-bold text-primary mb-4">Advanced Security Framework</h3>
                     <p className="text-gray-600 mb-6">
                       Our multi-layered security framework ensures the highest level of protection for user data and
                       financial transactions, meeting global compliance standards.
@@ -663,7 +663,7 @@ export default function InnovationsPage() {
                       </li>
                     </ul>
                     <div className="mt-6">
-                      <Button className="bg-[#003366] hover:bg-[#002244]">
+                      <Button className="bg-primary hover:bg-[#002244]">
                         Our Security Approach
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -677,7 +677,7 @@ export default function InnovationsPage() {
       </section>
 
       {/* Impact Metrics Section with Animated Counters */}
-      <section className="py-16 md:py-24 bg-[#003366] text-white">
+      <section className="py-16 md:py-24 bg-primary text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
             <Badge className="mb-4 bg-white/10 text-white hover:bg-white/20">Real Impact</Badge>
@@ -715,8 +715,8 @@ export default function InnovationsPage() {
       <section className="py-16 md:py-24 bg-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-[#003366]/10 text-[#003366] hover:bg-[#003366]/20">Success Stories</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">Innovation in Action</h2>
+            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">Success Stories</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">Innovation in Action</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Real-world applications of our technology making a difference.
             </p>
@@ -731,14 +731,14 @@ export default function InnovationsPage() {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-4">
                     <Badge className="bg-[#00CC66] hover:bg-[#00BB55] text-white">Rural Banking</Badge>
                   </div>
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-[#003366] mb-2">Bringing Banking to Remote Villages</h3>
+                <h3 className="text-xl font-bold text-primary mb-2">Bringing Banking to Remote Villages</h3>
                 <p className="text-gray-600 mb-4">
                   How our mobile banking technology connected 200+ remote villages to the financial system for the first
                   time.
@@ -748,7 +748,7 @@ export default function InnovationsPage() {
                     <Calendar className="h-4 w-4 mr-1" />
                     <span>2023</span>
                   </div>
-                  <Button variant="ghost" className="text-[#003366] hover:text-[#002244] p-0 h-auto">
+                  <Button variant="ghost" className="text-primary hover:text-[#002244] p-0 h-auto">
                     Read Case Study
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </Button>
@@ -764,14 +764,14 @@ export default function InnovationsPage() {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-4">
                     <Badge className="bg-[#00CC66] hover:bg-[#00BB55] text-white">Climate Finance</Badge>
                   </div>
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-[#003366] mb-2">Solar Irrigation Financing Program</h3>
+                <h3 className="text-xl font-bold text-primary mb-2">Solar Irrigation Financing Program</h3>
                 <p className="text-gray-600 mb-4">
                   How our platform enabled 5,000 small-scale farmers to access solar irrigation technology.
                 </p>
@@ -780,7 +780,7 @@ export default function InnovationsPage() {
                     <Calendar className="h-4 w-4 mr-1" />
                     <span>2022</span>
                   </div>
-                  <Button variant="ghost" className="text-[#003366] hover:text-[#002244] p-0 h-auto">
+                  <Button variant="ghost" className="text-primary hover:text-[#002244] p-0 h-auto">
                     Read Case Study
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </Button>
@@ -796,14 +796,14 @@ export default function InnovationsPage() {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-4">
                     <Badge className="bg-[#00CC66] hover:bg-[#00BB55] text-white">Microfinance</Badge>
                   </div>
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-[#003366] mb-2">AI-Powered Microfinance Platform</h3>
+                <h3 className="text-xl font-bold text-primary mb-2">AI-Powered Microfinance Platform</h3>
                 <p className="text-gray-600 mb-4">
                   How our AI credit scoring enabled a 300% increase in loan approvals for women entrepreneurs.
                 </p>
@@ -812,7 +812,7 @@ export default function InnovationsPage() {
                     <Calendar className="h-4 w-4 mr-1" />
                     <span>2023</span>
                   </div>
-                  <Button variant="ghost" className="text-[#003366] hover:text-[#002244] p-0 h-auto">
+                  <Button variant="ghost" className="text-primary hover:text-[#002244] p-0 h-auto">
                     Read Case Study
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </Button>
@@ -827,8 +827,8 @@ export default function InnovationsPage() {
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-[#003366]/10 text-[#003366] hover:bg-[#003366]/20">Technology Stack</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">How Our Technology Works</h2>
+            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">Technology Stack</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">How Our Technology Works</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               A visual representation of our integrated technology stack.
             </p>
@@ -857,7 +857,7 @@ export default function InnovationsPage() {
               <div className="absolute top-[40%] left-[60%]">
                 <Button
                   size="icon"
-                  className="rounded-full bg-[#003366] hover:bg-[#002244] h-8 w-8 shadow-lg"
+                  className="rounded-full bg-primary hover:bg-[#002244] h-8 w-8 shadow-lg"
                   onClick={() => setActiveTab("blockchain")}
                 >
                   <Database className="h-4 w-4 text-white" />
@@ -877,7 +877,7 @@ export default function InnovationsPage() {
               <div className="absolute top-[50%] left-[75%]">
                 <Button
                   size="icon"
-                  className="rounded-full bg-[#003366] hover:bg-[#002244] h-8 w-8 shadow-lg"
+                  className="rounded-full bg-primary hover:bg-[#002244] h-8 w-8 shadow-lg"
                   onClick={() => setActiveTab("security")}
                 >
                   <Shield className="h-4 w-4 text-white" />
@@ -893,13 +893,13 @@ export default function InnovationsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-[#003366] border-[#003366]"
+                  className="text-primary border-primary"
                   onClick={() => setShowGlossary(!showGlossary)}
                 >
                   <Info className="h-4 w-4 mr-2" />
                   {showGlossary ? "Hide Glossary" : "View Tech Glossary"}
                 </Button>
-                <Button variant="outline" size="sm" className="text-[#003366] border-[#003366]">
+                <Button variant="outline" size="sm" className="text-primary border-primary">
                   <Download className="h-4 w-4 mr-2" />
                   Download Whitepaper
                 </Button>
@@ -909,11 +909,11 @@ export default function InnovationsPage() {
             {/* Tech Glossary */}
             {showGlossary && (
               <div className="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-[#003366] mb-4">Technology Glossary</h3>
+                <h3 className="text-xl font-bold text-primary mb-4">Technology Glossary</h3>
                 <Accordion type="single" collapsible className="w-full">
                   {glossaryTerms.map((item, index) => (
                     <AccordionItem key={index} value={`item-${index}`}>
-                      <AccordionTrigger className="text-[#003366] hover:text-[#00CC66]">{item.term}</AccordionTrigger>
+                      <AccordionTrigger className="text-primary hover:text-[#00CC66]">{item.term}</AccordionTrigger>
                       <AccordionContent className="text-gray-600">{item.definition}</AccordionContent>
                     </AccordionItem>
                   ))}
@@ -929,7 +929,7 @@ export default function InnovationsPage() {
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
             <Badge className="mb-4 bg-[#00CC66]/10 text-[#00CC66] hover:bg-[#00CC66]/20">Looking Ahead</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366]">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary">
               Future Innovation Roadmap
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
@@ -938,21 +938,21 @@ export default function InnovationsPage() {
           </div>
 
           <div className="relative max-w-5xl mx-auto">
-            <div className="absolute top-0 bottom-0 left-16 md:left-1/2 w-1 bg-gradient-to-b from-[#003366] to-[#00CC66] transform md:-translate-x-1/2"></div>
+            <div className="absolute top-0 bottom-0 left-16 md:left-1/2 w-1 bg-linear-to-b from-primary to-[#00CC66] transform md:-translate-x-1/2"></div>
 
             <div className="space-y-12">
               <div className="relative flex flex-col md:flex-row items-start">
                 <div className="flex items-center mb-4 md:mb-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10">
-                  <div className="w-12 h-12 rounded-full bg-[#003366] flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
                     <Lightbulb className="h-6 w-6 text-white" />
                   </div>
                 </div>
 
                 <div className="md:w-5/12 md:pr-16 md:text-right ml-16 md:ml-0">
-                  <h3 className="text-xl font-bold text-[#003366] mb-2">Q3 2024</h3>
+                  <h3 className="text-xl font-bold text-primary mb-2">Q3 2024</h3>
                   <Card className="border-none shadow-lg">
                     <CardContent className="p-6">
-                      <h4 className="font-semibold text-[#003366] mb-2">Advanced AI Credit Scoring 2.0</h4>
+                      <h4 className="font-semibold text-primary mb-2">Advanced AI Credit Scoring 2.0</h4>
                       <p className="text-gray-600">
                         Next-generation AI models with improved accuracy and expanded alternative data sources.
                       </p>
@@ -965,7 +965,7 @@ export default function InnovationsPage() {
 
               <div className="relative flex flex-col md:flex-row items-start">
                 <div className="flex items-center mb-4 md:mb-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10">
-                  <div className="w-12 h-12 rounded-full bg-[#003366] flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
                     <Award className="h-6 w-6 text-white" />
                   </div>
                 </div>
@@ -973,10 +973,10 @@ export default function InnovationsPage() {
                 <div className="md:w-5/12 md:pr-16 hidden md:block"></div>
 
                 <div className="md:w-5/12 md:pl-16 ml-16 md:ml-0">
-                  <h3 className="text-xl font-bold text-[#003366] mb-2">Q1 2025</h3>
+                  <h3 className="text-xl font-bold text-primary mb-2">Q1 2025</h3>
                   <Card className="border-none shadow-lg">
                     <CardContent className="p-6">
-                      <h4 className="font-semibold text-[#003366] mb-2">Quantum-Resistant Blockchain</h4>
+                      <h4 className="font-semibold text-primary mb-2">Quantum-Resistant Blockchain</h4>
                       <p className="text-gray-600">
                         Upgraded blockchain infrastructure with quantum-resistant cryptography for future-proof
                         security.
@@ -988,16 +988,16 @@ export default function InnovationsPage() {
 
               <div className="relative flex flex-col md:flex-row items-start">
                 <div className="flex items-center mb-4 md:mb-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10">
-                  <div className="w-12 h-12 rounded-full bg-[#003366] flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
                     <Zap className="h-6 w-6 text-white" />
                   </div>
                 </div>
 
                 <div className="md:w-5/12 md:pr-16 md:text-right ml-16 md:ml-0">
-                  <h3 className="text-xl font-bold text-[#003366] mb-2">Q3 2025</h3>
+                  <h3 className="text-xl font-bold text-primary mb-2">Q3 2025</h3>
                   <Card className="border-none shadow-lg">
                     <CardContent className="p-6">
-                      <h4 className="font-semibold text-[#003366] mb-2">Decentralized Identity Platform</h4>
+                      <h4 className="font-semibold text-primary mb-2">Decentralized Identity Platform</h4>
                       <p className="text-gray-600">
                         User-controlled digital identity system for secure, private, and portable financial credentials.
                       </p>
@@ -1018,10 +1018,10 @@ export default function InnovationsPage() {
                 <div className="md:w-5/12 md:pr-16 hidden md:block"></div>
 
                 <div className="md:w-5/12 md:pl-16 ml-16 md:ml-0">
-                  <h3 className="text-xl font-bold text-[#003366] mb-2">Q2 2026</h3>
+                  <h3 className="text-xl font-bold text-primary mb-2">Q2 2026</h3>
                   <Card className="border-none shadow-lg">
                     <CardContent className="p-6">
-                      <h4 className="font-semibold text-[#003366] mb-2">Global Climate Finance Network</h4>
+                      <h4 className="font-semibold text-primary mb-2">Global Climate Finance Network</h4>
                       <p className="text-gray-600">
                         Expanded climate finance platform connecting investors and projects across 50+ countries.
                       </p>
@@ -1035,7 +1035,7 @@ export default function InnovationsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-[#002244] via-[#003366] to-[#004488] text-white">
+      <section className="py-16 md:py-24 bg-linear-to-br from-[#002244] via-primary to-[#004488] text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
@@ -1062,7 +1062,7 @@ export default function InnovationsPage() {
             <div className="relative">
               <div className="relative h-[300px] md:h-[400px] perspective-1000">
                 <div className="absolute inset-0 transform-style-3d rotate-y-12 rotate-x-12 animate-float-slow">
-                  <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl"></div>
+                  <div className="absolute inset-0 bg-white/5 backdrop-blur-xs rounded-2xl border border-white/20 shadow-2xl"></div>
                   <div className="absolute inset-0 p-8 flex flex-col justify-between">
                     <div>
                       <h3 className="text-2xl font-bold mb-4">Innovation Newsletter</h3>
@@ -1076,7 +1076,7 @@ export default function InnovationsPage() {
                         <input
                           type="email"
                           placeholder="Enter your email"
-                          className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-[#00CC66]"
+                          className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-hidden focus:ring-2 focus:ring-[#00CC66]"
                         />
                         <Button className="bg-[#00CC66] hover:bg-[#00BB55] text-white">Subscribe</Button>
                       </div>

@@ -359,7 +359,7 @@ export default function ContactPage() {
       <div className="flex flex-col min-h-screen">
         {/* Hero Section with Parallax Effect */}
         <section className="relative py-20 md:py-32 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#002244] to-[#003366] z-0">
+          <div className="absolute inset-0 bg-linear-to-r from-[#002244] to-primary z-0">
             <div
               className="absolute inset-0 opacity-20"
               style={{
@@ -368,12 +368,12 @@ export default function ContactPage() {
                 backgroundPosition: "center",
               }}
             ></div>
-            <div className="absolute inset-0 bg-[#003366]/60"></div>
+            <div className="absolute inset-0 bg-primary/60"></div>
           </div>
 
           <div className="container px-4 md:px-6 mx-auto relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center justify-center bg-gradient-to-r from-[#00CC66]/80 to-[#00CC66]/60 rounded-full p-3 mb-6 shadow-lg shadow-[#00CC66]/20 animate-pulse">
+              <div className="inline-flex items-center justify-center bg-linear-to-r from-[#00CC66]/80 to-[#00CC66]/60 rounded-full p-3 mb-6 shadow-lg shadow-[#00CC66]/20 animate-pulse">
                 <Mail className="h-7 w-7 text-white" />
               </div>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 text-white">
@@ -444,19 +444,19 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                   <div className="lg:col-span-2">
                     <div className="sticky top-24">
-                      <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                      <h2 className="text-2xl font-bold text-primary mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
                         Contact Information
                       </h2>
 
                       <div className="space-y-4">
-                        <Card className="border-2 border-[#003366]/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
+                        <Card className="border-2 border-primary/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
                           <CardContent className="p-0">
                             <div className="flex">
                               <div className="bg-[#00CC66]/10 p-4 flex items-center justify-center">
                                 <MapPin className="h-6 w-6 text-[#00CC66]" />
                               </div>
                               <div className="p-4">
-                                <h3 className="font-semibold text-[#003366] mb-1">Our Office</h3>
+                                <h3 className="font-semibold text-primary mb-1">Our Office</h3>
                                 <p className="text-gray-600">123 Innovation Street</p>
                                 <p className="text-gray-600">Lusaka, Zambia</p>
                               </div>
@@ -464,14 +464,14 @@ export default function ContactPage() {
                           </CardContent>
                         </Card>
 
-                        <Card className="border-2 border-[#003366]/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
+                        <Card className="border-2 border-primary/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
                           <CardContent className="p-0">
                             <div className="flex">
                               <div className="bg-[#00CC66]/10 p-4 flex items-center justify-center">
                                 <Mail className="h-6 w-6 text-[#00CC66]" />
                               </div>
                               <div className="p-4">
-                                <h3 className="font-semibold text-[#003366] mb-1">Email Us</h3>
+                                <h3 className="font-semibold text-primary mb-1">Email Us</h3>
                                 <p className="text-gray-600">info@pollenai.com</p>
                                 <p className="text-gray-600">support@pollenai.com</p>
                               </div>
@@ -479,14 +479,14 @@ export default function ContactPage() {
                           </CardContent>
                         </Card>
 
-                        <Card className="border-2 border-[#003366]/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
+                        <Card className="border-2 border-primary/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
                           <CardContent className="p-0">
                             <div className="flex">
                               <div className="bg-[#00CC66]/10 p-4 flex items-center justify-center">
                                 <Phone className="h-6 w-6 text-[#00CC66]" />
                               </div>
                               <div className="p-4">
-                                <h3 className="font-semibold text-[#003366] mb-1">Call Us</h3>
+                                <h3 className="font-semibold text-primary mb-1">Call Us</h3>
                                 <p className="text-gray-600">+260 123 456 789</p>
                                 <p className="text-gray-600">+260 987 654 321</p>
                               </div>
@@ -494,14 +494,14 @@ export default function ContactPage() {
                           </CardContent>
                         </Card>
 
-                        <Card className="border-2 border-[#003366]/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
+                        <Card className="border-2 border-primary/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#00CC66]/50 hover:translate-y-[-2px]">
                           <CardContent className="p-0">
                             <div className="flex">
                               <div className="bg-[#00CC66]/10 p-4 flex items-center justify-center">
                                 <Clock className="h-6 w-6 text-[#00CC66]" />
                               </div>
                               <div className="p-4">
-                                <h3 className="font-semibold text-[#003366] mb-1">Office Hours</h3>
+                                <h3 className="font-semibold text-primary mb-1">Office Hours</h3>
                                 <p className="text-gray-600">Monday - Friday: 8:00 AM - 5:00 PM</p>
                                 <p className="text-gray-600">Saturday: 9:00 AM - 1:00 PM</p>
                                 <p className="text-gray-600">Sunday: Closed</p>
@@ -512,7 +512,7 @@ export default function ContactPage() {
                       </div>
 
                       <div className="mt-8">
-                        <h3 className="text-xl font-bold text-[#003366] mb-4">Connect With Us</h3>
+                        <h3 className="text-xl font-bold text-primary mb-4">Connect With Us</h3>
                         <div className="flex space-x-4">
                           <TooltipProvider>
                             <Tooltip>
@@ -587,12 +587,12 @@ export default function ContactPage() {
                   </div>
 
                   <div className="lg:col-span-3" id="contact-form">
-                    <Card className="border-2 border-[#003366]/10 shadow-sm hover:shadow-md transition-all duration-300">
+                    <Card className="border-2 border-primary/10 shadow-xs hover:shadow-md transition-all duration-300">
                       <CardContent className="p-6">
                         {!formSubmitted ? (
                           <>
                             <div className="mb-6">
-                              <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                              <h2 className="text-2xl font-bold text-primary mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
                                 Send Us a Message
                               </h2>
                               <p className="text-gray-600">
@@ -603,7 +603,7 @@ export default function ContactPage() {
                             {/* Progress bar */}
                             <div className="w-full bg-gray-200 h-2 rounded-full mb-8">
                               <div
-                                className="bg-gradient-to-r from-[#00CC66] to-[#00AA55] h-2 rounded-full transition-all duration-500 ease-in-out shadow-inner"
+                                className="bg-linear-to-r from-[#00CC66] to-[#00AA55] h-2 rounded-full transition-all duration-500 ease-in-out shadow-inner"
                                 style={{ width: `${formProgress}%` }}
                               ></div>
                             </div>
@@ -612,7 +612,7 @@ export default function ContactPage() {
                               {formStep === 1 && (
                                 <div className="space-y-6 animate-in fade-in duration-500">
                                   <div className="space-y-2">
-                                    <Label htmlFor="name" className="text-[#003366]">
+                                    <Label htmlFor="name" className="text-primary">
                                       Full Name <span className="text-red-500">*</span>
                                     </Label>
                                     <Input
@@ -627,7 +627,7 @@ export default function ContactPage() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <Label htmlFor="email" className="text-[#003366]">
+                                    <Label htmlFor="email" className="text-primary">
                                       Email Address <span className="text-red-500">*</span>
                                     </Label>
                                     <Input
@@ -645,7 +645,7 @@ export default function ContactPage() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <Label htmlFor="phone" className="text-[#003366]">
+                                    <Label htmlFor="phone" className="text-primary">
                                       Phone Number <span className="text-gray-400 font-normal">(Optional)</span>
                                     </Label>
                                     <Input
@@ -662,7 +662,7 @@ export default function ContactPage() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <Label className="text-[#003366]">Preferred Contact Method</Label>
+                                    <Label className="text-primary">Preferred Contact Method</Label>
                                     <div className="flex flex-wrap gap-4">
                                       {["email", "phone", "either"].map((method) => (
                                         <div
@@ -690,7 +690,7 @@ export default function ContactPage() {
                               {formStep === 2 && (
                                 <div className="space-y-6 animate-in fade-in duration-500">
                                   <div className="space-y-2">
-                                    <Label htmlFor="subject" className="text-[#003366]">
+                                    <Label htmlFor="subject" className="text-primary">
                                       Subject <span className="text-red-500">*</span>
                                     </Label>
                                     <Input
@@ -707,7 +707,7 @@ export default function ContactPage() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <Label htmlFor="department" className="text-[#003366]">
+                                    <Label htmlFor="department" className="text-primary">
                                       Department <span className="text-red-500">*</span>
                                     </Label>
                                     <Select
@@ -733,7 +733,7 @@ export default function ContactPage() {
                                   </div>
 
                                   <div className="space-y-2">
-                                    <Label className="text-[#003366]">Response Timeframe</Label>
+                                    <Label className="text-primary">Response Timeframe</Label>
                                     <div className="flex flex-wrap gap-4">
                                       {[
                                         {
@@ -771,7 +771,7 @@ export default function ContactPage() {
                               {formStep === 3 && (
                                 <div className="space-y-6 animate-in fade-in duration-500">
                                   <div className="space-y-2">
-                                    <Label htmlFor="message" className="text-[#003366]">
+                                    <Label htmlFor="message" className="text-primary">
                                       Message <span className="text-red-500">*</span>
                                     </Label>
                                     <Textarea
@@ -788,8 +788,8 @@ export default function ContactPage() {
                                     )}
                                   </div>
 
-                                  <div className="bg-[#003366]/5 p-4 rounded-lg">
-                                    <h4 className="font-medium text-[#003366] mb-2">Summary</h4>
+                                  <div className="bg-primary/5 p-4 rounded-lg">
+                                    <h4 className="font-medium text-primary mb-2">Summary</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                                       <div>
                                         <span className="text-gray-500">Name:</span> {formData.name}
@@ -828,7 +828,7 @@ export default function ContactPage() {
                                     type="button"
                                     variant="outline"
                                     onClick={prevStep}
-                                    className="border-[#003366] text-[#003366]"
+                                    className="border-primary text-primary"
                                   >
                                     Back
                                   </Button>
@@ -838,14 +838,14 @@ export default function ContactPage() {
                                   <Button
                                     type="button"
                                     onClick={nextStep}
-                                    className="bg-[#003366] hover:bg-[#002244] ml-auto"
+                                    className="bg-primary hover:bg-[#002244] ml-auto"
                                   >
                                     Continue
                                   </Button>
                                 ) : (
                                   <Button
                                     type="submit"
-                                    className="bg-gradient-to-r from-[#00CC66] to-[#00AA55] hover:from-[#00AA55] hover:to-[#009944] ml-auto shadow-md hover:shadow-lg transition-all"
+                                    className="bg-linear-to-r from-[#00CC66] to-[#00AA55] hover:from-[#00AA55] hover:to-[#009944] ml-auto shadow-md hover:shadow-lg transition-all"
                                     disabled={isSubmitting}
                                   >
                                     {isSubmitting ? (
@@ -869,7 +869,7 @@ export default function ContactPage() {
                             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#00CC66]/20 mb-6">
                               <CheckCircle className="h-8 w-8 text-[#00CC66]" />
                             </div>
-                            <h2 className="text-2xl font-bold text-[#003366] mb-4">Message Sent Successfully!</h2>
+                            <h2 className="text-2xl font-bold text-primary mb-4">Message Sent Successfully!</h2>
                             <p className="text-gray-600 mb-8">
                               Thank you for contacting us. We've received your message and will get back to you within{" "}
                               {formData.timeframe === "urgent"
@@ -879,7 +879,7 @@ export default function ContactPage() {
                                   : "a reasonable timeframe"}
                               .
                             </p>
-                            <Button onClick={resetForm} className="bg-[#003366] hover:bg-[#002244]">
+                            <Button onClick={resetForm} className="bg-primary hover:bg-[#002244]">
                               Send Another Message
                             </Button>
                           </div>
@@ -892,12 +892,12 @@ export default function ContactPage() {
 
               {/* Schedule Meeting Tab */}
               <TabsContent value="schedule" className="mt-0">
-                <Card className="border-2 border-[#003366]/10 shadow-sm hover:shadow-md transition-all duration-300">
+                <Card className="border-2 border-primary/10 shadow-xs hover:shadow-md transition-all duration-300">
                   <CardContent className="p-6">
                     {!meetingScheduled ? (
                       <>
                     <div className="mb-6">
-                      <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                      <h2 className="text-2xl font-bold text-primary mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
                         Schedule a Meeting
                       </h2>
                       <p className="text-gray-600">
@@ -910,21 +910,21 @@ export default function ContactPage() {
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#00CC66]/20 mb-6">
                           <CheckCircle className="h-8 w-8 text-[#00CC66]" />
                         </div>
-                        <h2 className="text-2xl font-bold text-[#003366] mb-4">Meeting Scheduled Successfully!</h2>
+                        <h2 className="text-2xl font-bold text-primary mb-4">Meeting Scheduled Successfully!</h2>
                         <p className="text-gray-600 mb-6">
                           We've scheduled your meeting and sent calendar invites to all participants.
                         </p>
                         
                         {/* Meeting Details Card */}
-                        <div className="bg-gradient-to-br from-[#003366]/5 to-[#00CC66]/5 border-2 border-[#00CC66] rounded-lg p-6 mb-6 text-left max-w-md mx-auto">
-                          <h3 className="text-lg font-semibold text-[#003366] mb-4 flex items-center">
+                        <div className="bg-linear-to-br from-primary/5 to-[#00CC66]/5 border-2 border-[#00CC66] rounded-lg p-6 mb-6 text-left max-w-md mx-auto">
+                          <h3 className="text-lg font-semibold text-primary mb-4 flex items-center">
                             <Calendar className="h-5 w-5 mr-2 text-[#00CC66]" />
                             Meeting Details
                           </h3>
                           <div className="space-y-3">
                             <div className="flex items-start">
                               <div className="w-24 text-gray-500 font-medium">Date:</div>
-                              <div className="flex-1 text-[#003366] font-semibold">
+                              <div className="flex-1 text-primary font-semibold">
                                 {meetingDetails?.meetingDate && new Date(meetingDetails.meetingDate).toLocaleDateString('en-US', {
                                   weekday: 'long',
                                   year: 'numeric',
@@ -935,22 +935,22 @@ export default function ContactPage() {
                             </div>
                             <div className="flex items-start">
                               <div className="w-24 text-gray-500 font-medium">Time:</div>
-                              <div className="flex-1 text-[#003366] font-semibold">
+                              <div className="flex-1 text-primary font-semibold">
                                 {meetingDetails?.meetingTime}
                               </div>
                             </div>
                             <div className="flex items-start">
                               <div className="w-24 text-gray-500 font-medium">Duration:</div>
-                              <div className="flex-1 text-[#003366]">1 hour</div>
+                              <div className="flex-1 text-primary">1 hour</div>
                             </div>
                           </div>
                         </div>
                         
                         {/* Video Conference Link */}
                         {meetingDetails?.videoMeetingLink || meetingDetails?.zoomMeetingLink || meetingDetails?.googleMeetLink ? (
-                          <div className="bg-white border-2 border-[#003366] rounded-lg p-6 mb-6 max-w-md mx-auto">
+                          <div className="bg-white border-2 border-primary rounded-lg p-6 mb-6 max-w-md mx-auto">
                             <div className="flex items-center justify-center mb-4">
-                              <div className="w-12 h-12 bg-gradient-to-br from-[#00CC66] to-[#00AA55] rounded-full flex items-center justify-center">
+                              <div className="w-12 h-12 bg-linear-to-br from-[#00CC66] to-[#00AA55] rounded-full flex items-center justify-center">
                                 {meetingDetails.videoPlatform === 'Zoom' ? (
                                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M2 9.5V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3.5l5.5 3.5V6L2 9.5z"/>
@@ -962,14 +962,14 @@ export default function ContactPage() {
                                 )}
                               </div>
                             </div>
-                            <h3 className="text-lg font-semibold text-[#003366] mb-3 text-center">
+                            <h3 className="text-lg font-semibold text-primary mb-3 text-center">
                               {meetingDetails.videoPlatform || 'Video'} Meeting Link
                             </h3>
                             <a
                               href={meetingDetails.videoMeetingLink || meetingDetails.zoomMeetingLink || meetingDetails.googleMeetLink}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block w-full bg-gradient-to-r from-[#00CC66] to-[#00AA55] text-white text-center py-3 px-4 rounded-lg font-semibold hover:from-[#00AA55] hover:to-[#009944] transition-all shadow-md hover:shadow-lg"
+                              className="block w-full bg-linear-to-r from-[#00CC66] to-[#00AA55] text-white text-center py-3 px-4 rounded-lg font-semibold hover:from-[#00AA55] hover:to-[#009944] transition-all shadow-md hover:shadow-lg"
                             >
                               Join {meetingDetails.videoPlatform || 'Meeting'}
                             </a>
@@ -1021,7 +1021,7 @@ export default function ContactPage() {
                               setSelectedTime("");
                             }}
                             variant="outline"
-                            className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white"
+                            className="border-primary text-primary hover:bg-primary hover:text-white"
                           >
                             Schedule Another Meeting
                           </Button>
@@ -1034,7 +1034,7 @@ export default function ContactPage() {
                                   description: `${meetingDetails.videoPlatform || 'Meeting'} link copied to clipboard`,
                                 });
                               }}
-                              className="bg-[#003366] hover:bg-[#002244]"
+                              className="bg-primary hover:bg-[#002244]"
                             >
                               Copy Meeting Link
                             </Button>
@@ -1047,10 +1047,10 @@ export default function ContactPage() {
                       <>
                     {/* Contact Information Form */}
                     <div className="mb-8 space-y-4">
-                      <h3 className="text-lg font-semibold text-[#003366] mb-4">Your Information</h3>
+                      <h3 className="text-lg font-semibold text-primary mb-4">Your Information</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="meeting-name" className="text-[#003366]">
+                          <Label htmlFor="meeting-name" className="text-primary">
                             Full Name <span className="text-red-500">*</span>
                           </Label>
                           <Input
@@ -1065,7 +1065,7 @@ export default function ContactPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="meeting-email" className="text-[#003366]">
+                          <Label htmlFor="meeting-email" className="text-primary">
                             Email Address <span className="text-red-500">*</span>
                           </Label>
                           <Input
@@ -1081,7 +1081,7 @@ export default function ContactPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="meeting-phone" className="text-[#003366]">
+                          <Label htmlFor="meeting-phone" className="text-primary">
                             Phone Number <span className="text-gray-400 font-normal">(Optional)</span>
                           </Label>
                           <Input
@@ -1096,7 +1096,7 @@ export default function ContactPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="meeting-purpose" className="text-[#003366]">
+                          <Label htmlFor="meeting-purpose" className="text-primary">
                             Purpose <span className="text-gray-400 font-normal">(Optional)</span>
                           </Label>
                           <Input
@@ -1114,7 +1114,7 @@ export default function ContactPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div>
-                        <h3 className="text-lg font-semibold text-[#003366] mb-4">Select a Date</h3>
+                        <h3 className="text-lg font-semibold text-primary mb-4">Select a Date</h3>
                         <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
                           {/* Month/Year Navigation */}
                           <div className="flex items-center justify-between mb-4">
@@ -1122,18 +1122,18 @@ export default function ContactPage() {
                               variant="outline"
                               size="sm"
                               onClick={previousMonth}
-                              className="hover:bg-[#003366]/10"
+                              className="hover:bg-primary/10"
                             >
                               <ChevronDown className="h-4 w-4 rotate-90" />
                             </Button>
-                            <h4 className="text-base font-semibold text-[#003366]">
+                            <h4 className="text-base font-semibold text-primary">
                               {monthNames[currentMonth]} {currentYear}
                             </h4>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={nextMonth}
-                              className="hover:bg-[#003366]/10"
+                              className="hover:bg-primary/10"
                             >
                               <ChevronDown className="h-4 w-4 -rotate-90" />
                             </Button>
@@ -1190,8 +1190,8 @@ export default function ContactPage() {
 
                         {selectedDate && (
                           <div className="mt-4">
-                            <h3 className="text-lg font-semibold text-[#003366] mb-4">Selected Date</h3>
-                            <div className="bg-[#003366]/5 p-4 rounded-lg">
+                            <h3 className="text-lg font-semibold text-primary mb-4">Selected Date</h3>
+                            <div className="bg-primary/5 p-4 rounded-lg">
                               <p className="font-medium">
                                 {new Date(selectedDate).toLocaleDateString("en-US", {
                                   weekday: "long",
@@ -1206,7 +1206,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-semibold text-[#003366] mb-4">Select a Time</h3>
+                        <h3 className="text-lg font-semibold text-primary mb-4">Select a Time</h3>
                         <div className="grid grid-cols-2 gap-3">
                           {availableTimes.map((time, index) => (
                             <div
@@ -1214,7 +1214,7 @@ export default function ContactPage() {
                               className={`
                                 border-2 p-3 rounded-md text-center cursor-pointer transition-all
                                 ${selectedTime === time
-                                  ? "border-[#00CC66] bg-[#00CC66]/10 text-[#003366] font-medium"
+                                  ? "border-[#00CC66] bg-[#00CC66]/10 text-primary font-medium"
                                   : "border-gray-200 hover:border-gray-300"
                                 }
                               `}
@@ -1245,8 +1245,8 @@ export default function ContactPage() {
                               )}
                             </Button>
 
-                            <div className="mt-4 bg-[#003366]/5 p-4 rounded-lg">
-                              <h4 className="font-medium text-[#003366] mb-2">Meeting Summary</h4>
+                            <div className="mt-4 bg-primary/5 p-4 rounded-lg">
+                              <h4 className="font-medium text-primary mb-2">Meeting Summary</h4>
                               <div className="space-y-1 text-sm text-gray-600">
                                 <p>
                                   <span className="font-medium">Name:</span> {meetingFormData.name || "Not provided"}
@@ -1284,10 +1284,10 @@ export default function ContactPage() {
 
               {/* Directory Tab */}
               <TabsContent value="directory" className="mt-0">
-                <Card className="border-2 border-[#003366]/10 shadow-sm hover:shadow-md transition-all duration-300">
+                <Card className="border-2 border-primary/10 shadow-xs hover:shadow-md transition-all duration-300">
                   <CardContent className="p-6">
                     <div className="mb-6">
-                      <h2 className="text-2xl font-bold text-[#003366] mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                      <h2 className="text-2xl font-bold text-primary mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
                         Contact Directory
                       </h2>
                       <p className="text-gray-600">
@@ -1346,7 +1346,7 @@ export default function ContactPage() {
                                   {department.id === "technical" && <AlertCircle className="h-5 w-5 text-[#00CC66]" />}
                                   {department.id === "management" && <Users className="h-5 w-5 text-[#00CC66]" />}
                                 </div>
-                                <span className="font-medium text-[#003366]">{department.title}</span>
+                                <span className="font-medium text-primary">{department.title}</span>
                               </div>
                             </AccordionTrigger>
                             <AccordionContent className="pb-4">
@@ -1356,7 +1356,7 @@ export default function ContactPage() {
                                   {department.contacts.map((contact, index) => (
                                     <Card key={index} className="border border-gray-200">
                                       <CardContent className="p-4">
-                                        <h4 className="font-medium text-[#003366] mb-2">{contact.name}</h4>
+                                        <h4 className="font-medium text-primary mb-2">{contact.name}</h4>
                                         <div className="space-y-2 text-sm">
                                           <div className="flex items-center">
                                             <Mail className="h-4 w-4 text-gray-500 mr-2" />
@@ -1395,7 +1395,7 @@ export default function ContactPage() {
         <section className="py-16 md:py-24 bg-gray-50">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">Find Us</h2>
+              <h2 className="text-3xl font-bold tracking-tighter text-primary">Find Us</h2>
               <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
                 Visit our office to learn more about our services and how we can help you.
               </p>
@@ -1405,18 +1405,18 @@ export default function ContactPage() {
               <div className="mb-4 flex justify-between items-center">
                 <div className="flex space-x-2">
                   <Button
-                    variant={mapView === "standard" ? "default" : "outline"}
+                    variant={mapView === "standard" ? "default" : "outline-solid"}
                     size="sm"
                     onClick={() => setMapView("standard")}
-                    className={mapView === "standard" ? "bg-[#003366] hover:bg-[#002244]" : ""}
+                    className={mapView === "standard" ? "bg-primary hover:bg-[#002244]" : ""}
                   >
                     Standard
                   </Button>
                   <Button
-                    variant={mapView === "satellite" ? "default" : "outline"}
+                    variant={mapView === "satellite" ? "default" : "outline-solid"}
                     size="sm"
                     onClick={() => setMapView("satellite")}
-                    className={mapView === "satellite" ? "bg-[#003366] hover:bg-[#002244]" : ""}
+                    className={mapView === "satellite" ? "bg-primary hover:bg-[#002244]" : ""}
                   >
                     Satellite
                   </Button>
@@ -1426,7 +1426,7 @@ export default function ContactPage() {
                 </Button>
               </div>
 
-              <div className="aspect-[16/9] w-full bg-gray-200 rounded-lg overflow-hidden relative">
+              <div className="aspect-video w-full bg-gray-200 rounded-lg overflow-hidden relative">
                 <iframe
                   src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61293.30566999788!2d28.266886399999998!3d-15.4139224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19408b0b2e0a9a09%3A0x9e33fda14878f47e!2sLusaka%2C%20Zambia!5e${mapView === "satellite" ? "1" : "0"}!3m2!1sen!2sus!4v1647356518000!5m2!1sen!2sus`}
                   width="100%"
@@ -1453,7 +1453,7 @@ export default function ContactPage() {
                   <CardContent className="p-4 flex items-center">
                     <MapPin className="h-5 w-5 text-[#00CC66] mr-3" />
                     <div>
-                      <h4 className="font-medium text-[#003366]">Address</h4>
+                      <h4 className="font-medium text-primary">Address</h4>
                       <p className="text-sm text-gray-600">123 Innovation Street, Lusaka, Zambia</p>
                     </div>
                   </CardContent>
@@ -1463,7 +1463,7 @@ export default function ContactPage() {
                   <CardContent className="p-4 flex items-center">
                     <Clock className="h-5 w-5 text-[#00CC66] mr-3" />
                     <div>
-                      <h4 className="font-medium text-[#003366]">Office Hours</h4>
+                      <h4 className="font-medium text-primary">Office Hours</h4>
                       <p className="text-sm text-gray-600">Mon-Fri: 8AM-5PM, Sat: 9AM-1PM</p>
                     </div>
                   </CardContent>
@@ -1473,7 +1473,7 @@ export default function ContactPage() {
                   <CardContent className="p-4 flex items-center">
                     <Phone className="h-5 w-5 text-[#00CC66] mr-3" />
                     <div>
-                      <h4 className="font-medium text-[#003366]">Phone</h4>
+                      <h4 className="font-medium text-primary">Phone</h4>
                       <p className="text-sm text-gray-600">+260 123 456 789</p>
                     </div>
                   </CardContent>
@@ -1487,7 +1487,7 @@ export default function ContactPage() {
         <section className="py-16 md:py-24 bg-white">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">Frequently Asked Questions</h2>
+              <h2 className="text-3xl font-bold tracking-tighter text-primary">Frequently Asked Questions</h2>
               <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
                 Find quick answers to common questions about contacting us.
               </p>
@@ -1529,7 +1529,7 @@ export default function ContactPage() {
                 ].map((faq, index) => (
                   <AccordionItem key={index} value={`item-${index}`} className="border-b-2">
                     <AccordionTrigger className="hover:text-[#00CC66] hover:no-underline py-4">
-                      <span className="font-medium text-[#003366] text-left">{faq.question}</span>
+                      <span className="font-medium text-primary text-left">{faq.question}</span>
                     </AccordionTrigger>
                     <AccordionContent className="pb-4 text-gray-600">{faq.answer}</AccordionContent>
                   </AccordionItem>
@@ -1544,7 +1544,7 @@ export default function ContactPage() {
                     formElement?.scrollIntoView({ behavior: "smooth" })
                     setActiveTab("contact")
                   }}
-                  className="bg-[#003366] hover:bg-[#002244]"
+                  className="bg-primary hover:bg-[#002244]"
                 >
                   Contact Us
                 </Button>
@@ -1555,8 +1555,8 @@ export default function ContactPage() {
 
         {/* Live Chat Widget */}
         {showChatbot && (
-          <div className="fixed bottom-6 right-6 w-80 md:w-96 bg-white rounded-lg shadow-xl z-50 overflow-hidden border-2 border-[#003366]/10 animate-in slide-in-from-right-10 duration-300">
-            <div className="bg-gradient-to-r from-[#003366] to-[#002244] text-white p-4 flex justify-between items-center">
+          <div className="fixed bottom-6 right-6 w-80 md:w-96 bg-white rounded-lg shadow-xl z-50 overflow-hidden border-2 border-primary/10 animate-in slide-in-from-right-10 duration-300">
+            <div className="bg-linear-to-r from-primary to-[#002244] text-white p-4 flex justify-between items-center">
               <div className="flex items-center">
                 <MessageSquare className="h-5 w-5 mr-2" />
                 <h3 className="font-semibold">Live Chat</h3>
@@ -1578,7 +1578,7 @@ export default function ContactPage() {
                     className={`
                       max-w-[80%] rounded-lg p-3 
                       ${msg.sender === "user"
-                        ? "bg-[#003366] text-white rounded-tr-none"
+                        ? "bg-primary text-white rounded-tr-none"
                         : "bg-white border border-gray-200 rounded-tl-none"
                       }
                     `}
@@ -1612,7 +1612,7 @@ export default function ContactPage() {
         {!showChatbot && (
           <Button
             onClick={toggleChatbot}
-            className="fixed bottom-6 right-6 bg-gradient-to-r from-[#00CC66] to-[#00AA55] hover:from-[#00AA55] hover:to-[#009944] shadow-lg hover:shadow-xl rounded-full h-14 w-14 p-0 flex items-center justify-center animate-in fade-in duration-300 hover:scale-105 transition-all"
+            className="fixed bottom-6 right-6 bg-linear-to-r from-[#00CC66] to-[#00AA55] hover:from-[#00AA55] hover:to-[#009944] shadow-lg hover:shadow-xl rounded-full h-14 w-14 p-0 flex items-center justify-center animate-in fade-in duration-300 hover:scale-105 transition-all"
           >
             <div className="absolute inset-0 bg-[#00CC66] rounded-full animate-ping opacity-30"></div>
             <MessageSquare className="h-6 w-6 relative z-10" />

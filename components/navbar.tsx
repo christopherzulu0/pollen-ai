@@ -81,7 +81,7 @@ export default function Navbar() {
   const handleDashboardClick = () => {
     console.log("Dashboard click - userRole:", userRole)
     if (userRole === 'org:admin' || userRole === 'admin') {
-      router.push('/admin')
+      router.push('/Super-user')
     } else if (userRole === 'org:member' || userRole === 'member') {
       router.push('/dashboard')
     } else {
@@ -100,7 +100,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
+      className={`sticky top-0 z-[100] w-full transition-all duration-300 ${isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
         }`}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -165,7 +165,15 @@ export default function Navbar() {
             >
               Blog
             </Link>
-           
+            <Link
+              href="/kyc/submit"
+              className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
+                ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+                : "text-white/80 hover:text-white"
+                } transition-colors`}
+            >
+             Kyc Submissions
+            </Link>
             <Link
               href="/contact"
               className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium ${isScrolled
@@ -337,6 +345,24 @@ export default function Navbar() {
             </Link>
             
 
+            <Link
+              href="/kyc/submit"
+              className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-[#00CC66]"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+              </span>
+              Kyc Submission
+            </Link>
             <Link
               href="/contact"
               className="text-lg font-medium p-3 text-white hover:bg-white/10 rounded-xl flex items-center transition-colors"

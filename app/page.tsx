@@ -108,7 +108,7 @@ export default function HomePage() {
       {/* Language Switcher - Floating Top Right */}
       {/* Mobile: Below navbar (top-24 = 96px), Desktop: Near top, offset to avoid navbar buttons */}
       {isMounted && (
-        <div className="fixed top-24 left-4 md:top-6 md:left-auto md:right-[180px] lg:right-[200px] z-[100]">
+        <div className="fixed top-24 left-4 md:top-6 md:left-auto md:right-[180px] lg:right-[200px] z-100">
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <Button
@@ -132,7 +132,7 @@ export default function HomePage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-[100] min-w-[180px]"
+              className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-100 min-w-[180px]"
               onCloseAutoFocus={(e) => e.preventDefault()}
               onInteractOutside={(e) => {
                 // Allow closing on outside click
@@ -200,10 +200,10 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-[9999] flex items-center justify-center overflow-hidden"
+            className="fixed inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-9999 flex items-center justify-center overflow-hidden"
           >
             {/* Animated Background Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#4C4EFB]/5 via-transparent to-[#00CC66]/5 dark:from-[#4C4EFB]/10 dark:via-transparent dark:to-[#00CC66]/10 animate-pulse" />
+            <div className="absolute inset-0 bg-linear-to-br from-[#4C4EFB]/5 via-transparent to-[#00CC66]/5 dark:from-[#4C4EFB]/10 dark:via-transparent dark:to-[#00CC66]/10 animate-pulse" />
 
             <div className="w-full h-full flex flex-col items-center justify-center relative px-4 py-8">
               {/* Main Loading Indicator - Prominent */}
@@ -227,7 +227,7 @@ export default function HomePage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#4C4EFB] to-[#00CC66] bg-clip-text text-transparent"
+                    className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#4C4EFB] to-[#00CC66] bg-clip-text text-transparent"
                   >
                     Translating content...
                   </motion.p>
@@ -253,8 +253,8 @@ export default function HomePage() {
                     className="space-y-4"
                   >
                     <Skeleton className="h-4 w-32 mx-auto bg-[#4C4EFB]/20 dark:bg-[#4C4EFB]/30" />
-                    <Skeleton className="h-12 md:h-16 w-3/4 mx-auto bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700" />
-                    <Skeleton className="h-12 md:h-16 w-2/3 mx-auto bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700" />
+                    <Skeleton className="h-12 md:h-16 w-3/4 mx-auto bg-linear-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700" />
+                    <Skeleton className="h-12 md:h-16 w-2/3 mx-auto bg-linear-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700" />
                     <Skeleton className="h-6 md:h-8 w-1/2 mx-auto bg-gray-200/80 dark:bg-gray-700/80" />
                     <div className="flex justify-center gap-4 mt-6">
                       <Skeleton className="h-10 md:h-12 w-28 md:w-32 bg-[#00CC66]/20 dark:bg-[#00CC66]/30" />
@@ -326,7 +326,7 @@ export default function HomePage() {
           >
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 max-w-md w-full">
               <div className="flex items-start">
-                <div className="flex-shrink-0 hidden sm:block">
+                <div className="shrink-0 hidden sm:block">
                   <div className="w-10 h-10 rounded-full bg-[#4C4EFB]/20 flex items-center justify-center">
                     <Bell className="h-5 w-5 text-[#4C4EFB]" />
                   </div>
@@ -357,9 +357,9 @@ export default function HomePage() {
                     </Button>
                   </div>
                 </div>
-                <div className="ml-4 flex-shrink-0 flex">
+                <div className="ml-4 shrink-0 flex">
                   <button
-                    className="bg-white dark:bg-gray-800 rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="bg-white dark:bg-gray-800 rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-hidden"
                     onClick={() => setShowNotification(false)}
                   >
                     <span className="sr-only">Close</span>
@@ -391,7 +391,7 @@ export default function HomePage() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-80 p-0" align="end">
-                <div className="bg-[#003366] p-4 text-white rounded-t-lg">
+                <div className="bg-primary p-4 text-white rounded-t-lg">
                   <h3 className="font-semibold">Quick Actions</h3>
                 </div>
                 <div className="p-4 space-y-2">
@@ -419,7 +419,7 @@ export default function HomePage() {
                     <span>Chat with AI Assistant</span>
                   </button>
                   <div className="pt-2 border-t border-gray-200 dark:border-gray-700 mt-2">
-                    <Button className="w-full bg-[#003366] hover:bg-[#002244]">Get Started</Button>
+                    <Button className="w-full bg-primary hover:bg-[#002244]">Get Started</Button>
                   </div>
                 </div>
               </PopoverContent>
@@ -431,7 +431,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 2xl:py-32 -mt-20 overflow-hidden bg-gradient-to-br from-[#001122] via-[#003366] to-[#002244]"
+        className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 2xl:py-32 -mt-20 overflow-hidden bg-linear-to-br from-[#001122] via-primary to-[#002244]"
       >
         <div className="absolute inset-0 overflow-hidden">
           {/* Enhanced animated gradient orbs with vibrant colors */}
@@ -447,7 +447,7 @@ export default function HomePage() {
               repeat: Number.POSITIVE_INFINITY,
               repeatType: "reverse",
             }}
-            className="absolute -top-[30%] -right-[5%] w-[80%] h-[150%] bg-gradient-to-br from-[#4C4EFB]/30 via-[#00CC66]/20 to-[#4C4EFB]/15 rounded-full blur-3xl"
+            className="absolute -top-[30%] -right-[5%] w-[80%] h-[150%] bg-linear-to-br from-[#4C4EFB]/30 via-[#00CC66]/20 to-[#4C4EFB]/15 rounded-full blur-3xl"
           />
           <motion.div
             animate={{
@@ -462,7 +462,7 @@ export default function HomePage() {
               repeatType: "reverse",
               delay: 1.5,
             }}
-            className="absolute -bottom-[30%] -left-[5%] w-[80%] h-[150%] bg-gradient-to-tr from-[#FFC000]/25 via-[#4C4EFB]/20 to-[#00CC66]/15 rounded-full blur-3xl"
+            className="absolute -bottom-[30%] -left-[5%] w-[80%] h-[150%] bg-linear-to-tr from-[#FFC000]/25 via-[#4C4EFB]/20 to-[#00CC66]/15 rounded-full blur-3xl"
           />
           <motion.div
             animate={{
@@ -475,7 +475,7 @@ export default function HomePage() {
               repeat: Number.POSITIVE_INFINITY,
               ease: "linear",
             }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-gradient-to-r from-[#00CC66]/15 via-[#4C4EFB]/20 to-[#FFC000]/10 rounded-full blur-3xl"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-linear-to-r from-[#00CC66]/15 via-[#4C4EFB]/20 to-[#FFC000]/10 rounded-full blur-3xl"
           />
           {/* Additional accent orbs */}
           <motion.div
@@ -489,7 +489,7 @@ export default function HomePage() {
               repeatType: "reverse",
               delay: 0.5,
             }}
-            className="absolute top-[20%] right-[20%] w-[40%] h-[40%] bg-gradient-to-br from-[#FFC000]/20 to-[#00CC66]/10 rounded-full blur-2xl"
+            className="absolute top-[20%] right-[20%] w-[40%] h-[40%] bg-linear-to-br from-[#FFC000]/20 to-[#00CC66]/10 rounded-full blur-2xl"
           />
           <motion.div
             animate={{
@@ -502,10 +502,10 @@ export default function HomePage() {
               repeatType: "reverse",
               delay: 2.5,
             }}
-            className="absolute bottom-[25%] left-[25%] w-[35%] h-[35%] bg-gradient-to-tl from-[#4C4EFB]/15 to-[#FFC000]/10 rounded-full blur-2xl"
+            className="absolute bottom-[25%] left-[25%] w-[35%] h-[35%] bg-linear-to-tl from-[#4C4EFB]/15 to-[#FFC000]/10 rounded-full blur-2xl"
           />
           {/* Enhanced grid pattern overlay */}
-          <div className="absolute inset-0 bg-grid-white/[0.1] bg-grid-8 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
+          <div className="absolute inset-0 bg-grid-white/[0.1] bg-grid-8 mask-[radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
           {/* Radial gradient overlay for depth */}
           <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_0%,rgba(0,51,102,0.1)_50%,rgba(0,17,34,0.3)_100%)]"></div>
           {/* Shimmer effect */}
@@ -518,7 +518,7 @@ export default function HomePage() {
               repeat: Number.POSITIVE_INFINITY,
               ease: "linear",
             }}
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent w-1/3 skew-x-12"
+            className="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent w-1/3 skew-x-12"
           />
         </div>
 
@@ -552,7 +552,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-xs sm:text-sm font-medium w-fit"
+                className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-white/90 text-xs sm:text-sm font-medium w-fit"
               >
                 <span className="flex h-2 w-2 rounded-full bg-[#4C4EFB] mr-2"></span>
                 <span className="animate-pulse">{t.hero.badge}</span>
@@ -608,7 +608,7 @@ export default function HomePage() {
                 </Button>
                 <Button
                   size="lg"
-                  className="text-white border border-white/30 bg-transparent hover:bg-white/10 rounded-full backdrop-blur-sm text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6"
+                  className="text-white border border-white/30 bg-transparent hover:bg-white/10 rounded-full backdrop-blur-xs text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6"
                 >
                   <Play className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   {t.hero.cta_secondary}
@@ -625,7 +625,7 @@ export default function HomePage() {
                 initial={{ rotateY: -15 }}
                 whileHover={{ rotateY: 0 }}
                 transition={{ duration: 0.7 }}
-                className="relative z-10 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-[#003366]/20 border border-white/10 backdrop-blur-sm transform max-w-[700px] mx-auto"
+                className="relative z-10 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 border border-white/10 backdrop-blur-xs transform max-w-[700px] mx-auto"
               >
                 <Image
                   src='/home.jpg'
@@ -677,7 +677,7 @@ export default function HomePage() {
                     <Zap className="h-5 w-5 text-[#4C4EFB]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#003366]">Instant Approval</p>
+                    <p className="text-sm font-semibold text-primary">Instant Approval</p>
                     <p className="text-xs text-gray-500">AI-powered decisions</p>
                   </div>
                 </div>
@@ -690,11 +690,11 @@ export default function HomePage() {
                 className="absolute bottom-1/4 -left-12 bg-white rounded-2xl shadow-xl p-4 max-w-[200px] transform rotate-y-[-8deg] hover:rotate-y-0 transition-transform duration-700 animate-float animation-delay-1000"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-[#003366]/20 flex items-center justify-center">
-                    <Shield className="h-5 w-5 text-[#003366]" />
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Shield className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#003366]">Secure Transactions</p>
+                    <p className="text-sm font-semibold text-primary">Secure Transactions</p>
                     <p className="text-xs text-gray-500">Blockchain protected</p>
                   </div>
                 </div>
@@ -708,7 +708,7 @@ export default function HomePage() {
       {/* <section className="py-12 bg-white dark:bg-gray-900">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-8">
-            <p className="text-[#003366]/60 dark:text-white/60 font-medium">TRUSTED BY LEADING ORGANIZATIONS</p>
+            <p className="text-primary/60 dark:text-white/60 font-medium">TRUSTED BY LEADING ORGANIZATIONS</p>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -734,7 +734,7 @@ export default function HomePage() {
       </section> */}
 
       {/* Overview Section */}
-      <ParallaxSection className="py-20 md:py-32 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <ParallaxSection className="py-20 md:py-32 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
         <div className="container px-4 md:px-6 mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -743,11 +743,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               {t.mission.badge}
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               {t.mission.title_prefix}{" "}
               <span className="relative inline-block text-[#4C4EFB]">
                 {t.mission.title_highlight}
@@ -776,21 +776,21 @@ export default function HomePage() {
                 icon: <Zap className="h-10 w-10 text-white" />,
                 title: t.features.loans.title,
                 description: t.features.loans.description,
-                iconBg: "bg-gradient-to-br from-[#4C4EFB] to-[#00AA44]",
+                iconBg: "bg-linear-to-br from-[#4C4EFB] to-[#00AA44]",
                 delay: 0,
               },
               {
                 icon: <Shield className="h-10 w-10 text-white" />,
                 title: t.features.village_bank.title,
                 description: t.features.village_bank.description,
-                iconBg: "bg-gradient-to-br from-[#003366] to-[#002244]",
+                iconBg: "bg-linear-to-br from-primary to-[#002244]",
                 delay: 0.2,
               },
               {
                 icon: <BarChart3 className="h-10 w-10 text-white" />,
                 title: t.features.credit_scoring.title,
                 description: t.features.credit_scoring.description,
-                iconBg: "bg-gradient-to-br from-[#4C4EFB] to-[#00AA44]",
+                iconBg: "bg-linear-to-br from-[#4C4EFB] to-[#00AA44]",
                 delay: 0.4,
               },
             ].map((feature, index) => (
@@ -816,7 +816,7 @@ export default function HomePage() {
       {/* Shortfalls Section */}
       <section className="py-20 md:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -826,11 +826,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               {t.challenges.badge}
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               {t.challenges.title_prefix} <span className="text-[#4C4EFB]">{t.challenges.title_highlight}</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -858,7 +858,7 @@ export default function HomePage() {
                     <BookOpen key="book" className="h-6 w-6 text-[#4C4EFB]" />
                   ][index] || <Zap className="h-6 w-6 text-[#4C4EFB]" />}
                 </div>
-                <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">{item.title}</h3>
+                <h3 className="text-xl font-bold text-primary dark:text-white mb-2">{item.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{item.description}</p>
                 <ul className="space-y-2">
                   {item.list.map((listItem: string, idx: number) => (
@@ -880,7 +880,7 @@ export default function HomePage() {
       {/* Virtual Card Section */}
       {/* <section className="py-20 md:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -890,11 +890,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               New Feature
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Virtual <span className="text-[#4C4EFB]">Financial Card</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -920,11 +920,11 @@ export default function HomePage() {
             >
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <Shield className="h-6 w-6 text-[#4C4EFB]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">Enhanced Security</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">Enhanced Security</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Advanced encryption and blockchain verification protect your transactions and personal data.
                     </p>
@@ -932,11 +932,11 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <Wallet className="h-6 w-6 text-[#4C4EFB]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">Instant Transactions</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">Instant Transactions</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Send and receive money instantly with minimal fees, even across international borders.
                     </p>
@@ -944,11 +944,11 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <PieChart className="h-6 w-6 text-[#4C4EFB]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">Spending Analytics</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">Spending Analytics</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Track your spending patterns with AI-powered analytics and receive personalized insights.
                     </p>
@@ -956,11 +956,11 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <TrendingUp className="h-6 w-6 text-[#4C4EFB]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">Rewards Program</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">Rewards Program</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Earn points on every transaction that can be redeemed for discounts or converted to
                       cryptocurrency.
@@ -971,7 +971,7 @@ export default function HomePage() {
                 <div className="mt-8">
                   <Button
                     size="lg"
-                    className="bg-[#003366] hover:bg-[#002244] text-white rounded-full group transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#003366]/20"
+                    className="bg-primary hover:bg-[#002244] text-white rounded-full group transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-primary/20"
                   >
                     Apply for Virtual Card
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -986,7 +986,7 @@ export default function HomePage() {
       {/* Team Section */}
       {/* <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -996,11 +996,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Our Leadership
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Meet the <span className="text-[#4C4EFB]">Experts</span> Behind Pollen AI
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1017,7 +1017,7 @@ export default function HomePage() {
 
       {/* Statistics Section */}
       {/* <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#003366] dark:bg-gray-800">
+        <div className="absolute inset-0 bg-primary dark:bg-gray-800">
           <div className="absolute inset-0 bg-grid-white/[0.05] bg-grid-8"></div>
           <motion.div
             animate={{
@@ -1055,7 +1055,7 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-white/90 text-sm font-medium">
               <span className="flex h-2 w-2 rounded-full bg-[#4C4EFB] mr-2"></span>
               The Challenge
             </div>
@@ -1073,28 +1073,28 @@ export default function HomePage() {
                 value: 70,
                 suffix: "%",
                 label: "of Zambians lack access to financial services",
-                color: "bg-gradient-to-br from-[#4C4EFB] to-[#00AA44]",
+                color: "bg-linear-to-br from-[#4C4EFB] to-[#00AA44]",
                 delay: 0,
               },
               {
                 value: 2.5,
                 suffix: "B",
                 label: "people globally are unbanked or underbanked",
-                color: "bg-gradient-to-br from-[#003366] to-[#002244]",
+                color: "bg-linear-to-br from-primary to-[#002244]",
                 delay: 0.2,
               },
               {
                 value: 80,
                 suffix: "%",
                 label: "of small businesses can't access needed financing",
-                color: "bg-gradient-to-br from-[#4C4EFB] to-[#00AA44]",
+                color: "bg-linear-to-br from-[#4C4EFB] to-[#00AA44]",
                 delay: 0.4,
               },
               {
                 value: 40,
                 suffix: "%",
                 label: "higher costs for financial services in underserved areas",
-                color: "bg-gradient-to-br from-[#003366] to-[#002244]",
+                color: "bg-linear-to-br from-primary to-[#002244]",
                 delay: 0.6,
               },
             ].map((stat, index) => (
@@ -1117,7 +1117,7 @@ export default function HomePage() {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="mt-20"
           >
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8">
+            <div className="bg-white/5 backdrop-blur-xs rounded-2xl p-6 md:p-8">
               <h3 className="text-2xl font-bold text-white mb-6 text-center">Financial Inclusion Progress</h3>
               <div className="h-[300px] w-full">
                 <ChartContainer
@@ -1144,7 +1144,7 @@ export default function HomePage() {
                     <ChartLine dataKey="pollenai" className="stroke-[#4C4EFB]" />
                     <ChartTooltip>
                       {({ dataPoint }) => (
-                        <ChartTooltipContent className="bg-[#003366] border-[#4C4EFB]">
+                        <ChartTooltipContent className="bg-primary border-[#4C4EFB]">
                           <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
                               <div className="h-1.5 w-1.5 rounded-full bg-white/70" />
@@ -1173,7 +1173,7 @@ export default function HomePage() {
       {/* Currency Converter Section */}
       {/* <section id="currency-converter" className="py-20 md:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -1183,11 +1183,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Global Transfers
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Currency <span className="text-[#4C4EFB]">Converter</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1210,7 +1210,7 @@ export default function HomePage() {
       {/* Goal Tracker Section */}
       {/* <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -1220,11 +1220,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Financial Planning
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Track Your <span className="text-[#4C4EFB]">Financial Goals</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1247,7 +1247,7 @@ export default function HomePage() {
       {/* Loan Calculator Section */}
       {/* <section id="loan-calculator" className="py-20 md:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -1257,11 +1257,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Try It Yourself
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Calculate Your <span className="text-[#4C4EFB]">Potential Savings</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1292,7 +1292,7 @@ export default function HomePage() {
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                      <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-6">
+                      <h3 className="text-xl font-bold text-primary dark:text-white mb-6">
                         Savings Growth Calculator
                       </h3>
                       <div className="space-y-4">
@@ -1383,7 +1383,7 @@ export default function HomePage() {
                     </div>
 
                     <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-                      <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-6">Projected Growth</h3>
+                      <h3 className="text-xl font-bold text-primary dark:text-white mb-6">Projected Growth</h3>
                       <div className="h-[200px] mb-6">
                         <ChartContainer
                           data={[
@@ -1453,7 +1453,7 @@ export default function HomePage() {
       {/* AI Chatbot Section */}
       {/* <section id="ai-assistant" className="py-20 md:py-32 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -1466,7 +1466,7 @@ export default function HomePage() {
             >
               <div className="relative max-w-md mx-auto lg:mr-0">
                 <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
-                  <div className="bg-[#003366] p-4 flex items-center">
+                  <div className="bg-primary p-4 flex items-center">
                     <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1486,7 +1486,7 @@ export default function HomePage() {
 
                   <div className="h-96 overflow-y-auto p-4 space-y-4">
                     <div className="flex items-start">
-                      <div className="w-8 h-8 rounded-full bg-[#003366] flex items-center justify-center flex-shrink-0 mr-3">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 mr-3">
                         <span className="text-white text-xs font-bold">AI</span>
                       </div>
                       <motion.div
@@ -1512,13 +1512,13 @@ export default function HomePage() {
                           I'm interested in getting a loan for my small business.
                         </p>
                       </motion.div>
-                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0 ml-3">
+                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center shrink-0 ml-3">
                         <span className="text-gray-600 dark:text-gray-300 text-xs font-bold">You</span>
                       </div>
                     </div>
 
                     <div className="flex items-start">
-                      <div className="w-8 h-8 rounded-full bg-[#003366] flex items-center justify-center flex-shrink-0 mr-3">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 mr-3">
                         <span className="text-white text-xs font-bold">AI</span>
                       </div>
                       <motion.div
@@ -1545,13 +1545,13 @@ export default function HomePage() {
                           I run a small tailoring shop and need about $5,000 to buy new equipment.
                         </p>
                       </motion.div>
-                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0 ml-3">
+                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center shrink-0 ml-3">
                         <span className="text-gray-600 dark:text-gray-300 text-xs font-bold">You</span>
                       </div>
                     </div>
 
                     <div className="flex items-start">
-                      <div className="w-8 h-8 rounded-full bg-[#003366] flex items-center justify-center flex-shrink-0 mr-3">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 mr-3">
                         <span className="text-white text-xs font-bold">AI</span>
                       </div>
                       <motion.div
@@ -1586,13 +1586,13 @@ export default function HomePage() {
                           Yes, that sounds great! How long will the application process take?
                         </p>
                       </motion.div>
-                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0 ml-3">
+                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center shrink-0 ml-3">
                         <span className="text-gray-600 dark:text-gray-300 text-xs font-bold">You</span>
                       </div>
                     </div>
 
                     <div className="flex items-start">
-                      <div className="w-8 h-8 rounded-full bg-[#003366] flex items-center justify-center flex-shrink-0 mr-3">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 mr-3">
                         <span className="text-white text-xs font-bold">AI</span>
                       </div>
                       <motion.div
@@ -1618,7 +1618,7 @@ export default function HomePage() {
                       <input
                         type="text"
                         placeholder="Type your message..."
-                        className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#4C4EFB] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-hidden focus:ring-2 focus:ring-[#4C4EFB] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       />
                       <button className="bg-[#4C4EFB] text-white p-2 rounded-r-lg">
                         <svg
@@ -1661,7 +1661,7 @@ export default function HomePage() {
                     repeatType: "reverse",
                     delay: 1,
                   }}
-                  className="absolute -top-6 -left-6 w-32 h-32 bg-[#003366]/20 rounded-full blur-2xl -z-10"
+                  className="absolute -top-6 -left-6 w-32 h-32 bg-primary/20 rounded-full blur-2xl -z-10"
                 />
               </div>
             </motion.div>
@@ -1673,11 +1673,11 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="order-1 lg:order-2"
             >
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium mb-6">
-                <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium mb-6">
+                <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
                 24/7 Support
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white mb-6">
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white mb-6">
                 AI-Powered <span className="text-[#4C4EFB]">Financial Assistant</span>
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg">
@@ -1692,7 +1692,7 @@ export default function HomePage() {
                   transition={{ delay: 0.4, duration: 0.6 }}
                   className="flex items-start"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 text-[#4C4EFB]"
@@ -1709,7 +1709,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">24/7 Availability</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">24/7 Availability</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Get answers to your questions and support whenever you need it, day or night.
                     </p>
@@ -1723,7 +1723,7 @@ export default function HomePage() {
                   transition={{ delay: 0.6, duration: 0.6 }}
                   className="flex items-start"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 text-[#4C4EFB]"
@@ -1740,7 +1740,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">Personalized Guidance</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">Personalized Guidance</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Receive tailored financial advice based on your unique situation and goals.
                     </p>
@@ -1754,7 +1754,7 @@ export default function HomePage() {
                   transition={{ delay: 0.8, duration: 0.6 }}
                   className="flex items-start"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-[#4C4EFB]/10 flex items-center justify-center mr-4 mt-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 text-[#4C4EFB]"
@@ -1771,7 +1771,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#003366] dark:text-white mb-2">Instant Responses</h3>
+                    <h3 className="text-xl font-bold text-primary dark:text-white mb-2">Instant Responses</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       No waiting in queues or on hold. Get immediate answers to your questions.
                     </p>
@@ -1811,7 +1811,7 @@ export default function HomePage() {
       {/* Transaction History Section */}
       {/* <section className="py-20 md:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -1821,11 +1821,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Transaction Tracking
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Monitor Your <span className="text-[#4C4EFB]">Financial Activity</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1848,7 +1848,7 @@ export default function HomePage() {
       {/* Financial Health Score Section */}
       {/* <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -1858,11 +1858,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Financial Wellness
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Understand Your <span className="text-[#4C4EFB]">Financial Health</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1885,7 +1885,7 @@ export default function HomePage() {
       {/* Budget Planner Section */}
       {/* <section className="py-20 md:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
           <motion.div
@@ -1895,11 +1895,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center text-center space-y-4 mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#003366]/10 dark:bg-[#003366]/30 text-[#003366] dark:text-white text-sm font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[#003366] dark:bg-[#4C4EFB] mr-2"></span>
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/30 text-primary dark:text-white text-sm font-medium">
+              <span className="flex h-2 w-2 rounded-full bg-primary dark:bg-[#4C4EFB] mr-2"></span>
               Budget Management
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-[#003366] dark:text-white max-w-3xl">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-primary dark:text-white max-w-3xl">
               Plan and Track Your <span className="text-[#4C4EFB]">Budget</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-[800px] md:text-lg mt-4">
@@ -1923,7 +1923,7 @@ export default function HomePage() {
       {/* <section className="py-16 md:py-24 bg-gray-50">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tighter text-[#003366]">The Challenge We're Addressing</h2>
+            <h2 className="text-3xl font-bold tracking-tighter text-primary">The Challenge We're Addressing</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Financial exclusion remains a significant barrier to economic development in many regions.
             </p>
@@ -1932,7 +1932,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-[#00CC66]">
-                <h3 className="text-xl font-semibold text-[#003366] mb-4">The Global Challenge</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">The Global Challenge</h3>
                 <p className="text-gray-600">
                   Despite global advances in technology, financial exclusion remains a significant barrier to economic
                   development in many regions. In Zambia alone, 70% of the population lacks access to basic financial
@@ -1941,7 +1941,7 @@ export default function HomePage() {
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-[#00CC66]">
-                <h3 className="text-xl font-semibold text-[#003366] mb-4">Conventional Banking Limitation</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">Conventional Banking Limitation</h3>
                 <p className="text-gray-600">
                   Traditional banking systems often fail to serve those without formal employment, credit history, or
                   collateral. This creates a cycle of exclusion that disproportionately affects rural communities,
@@ -1950,7 +1950,7 @@ export default function HomePage() {
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-[#00CC66]">
-                <h3 className="text-xl font-semibold text-[#003366] mb-4">Shortfalls of Existing Banking Services</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">Shortfalls of Existing Banking Services</h3>
                 <p className="text-gray-600 mb-4">
                   Many banks in Zambia still rely on traditional banking models that require physical presence, extensive paperwork, and formal identification. This excludes individuals without proper documentation, such as rural farmers and youth.
                 </p>
@@ -1964,7 +1964,7 @@ export default function HomePage() {
 
             <div>
               <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold text-[#003366] mb-6">Financial Exclusion by the Numbers</h3>
+                <h3 className="text-xl font-semibold text-primary mb-6">Financial Exclusion by the Numbers</h3>
 
                
                 <div className="space-y-6">
@@ -2001,7 +2001,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h4 className="font-semibold text-[#003366] mb-3">Impact on Economic Growth</h4>
+                  <h4 className="font-semibold text-primary mb-3">Impact on Economic Growth</h4>
                   <p className="text-gray-600 text-sm">
                     Studies show that increasing financial inclusion by 10% can boost a country's GDP by up to 2.5%,
                     highlighting the critical importance of addressing this challenge.
@@ -2018,7 +2018,7 @@ export default function HomePage() {
       {/* Blog Section */}
       {/* <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#4C4EFB]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#003366]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-3xl"></div>
 
         <div className="container px-4 md:px-6 mx-auto relative z-10">
   
@@ -2027,7 +2027,7 @@ export default function HomePage() {
       </section> */}
 
       {/* CTA Section */}
-      {/* <section className="py-20 md:py-32 bg-gradient-to-br from-[#002244] via-[#003366] to-[#004488] relative overflow-hidden">
+      {/* <section className="py-20 md:py-32 bg-linear-to-br from-[#002244] via-primary to-[#004488] relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             animate={{
@@ -2082,7 +2082,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-white border-white/30 hover:bg-white/10 rounded-full backdrop-blur-sm"
+                className="text-white border-white/30 hover:bg-white/10 rounded-full backdrop-blur-xs"
               >
                 Contact Our Team
               </Button>
@@ -2105,8 +2105,8 @@ export default function HomePage() {
 //       <div className={`h-2 ${color}`}></div>
 //       <CardContent className="p-8">
 //         <div className="flex items-baseline mb-2">
-//           <AnimatedCounter value={value} className="text-5xl font-bold text-[#003366] dark:text-white" />
-//           <span className="text-3xl font-bold text-[#003366] dark:text-white ml-1">{suffix}</span>
+//           <AnimatedCounter value={value} className="text-5xl font-bold text-primary dark:text-white" />
+//           <span className="text-3xl font-bold text-primary dark:text-white ml-1">{suffix}</span>
 //         </div>
 //         <p className="text-gray-600 dark:text-gray-300">{label}</p>
 //       </CardContent>

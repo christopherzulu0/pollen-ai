@@ -251,7 +251,7 @@ export function LoanRequestDetail({ request, onMutationSuccess }: LoanRequestDet
 
                                 {request.votes.approve >= majorityNeeded ? (
                                     <div className="flex items-start gap-2 p-3 rounded-lg bg-accent/10 border border-accent/20">
-                                        <CheckCircle2 className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
+                                        <CheckCircle2 className="h-4 w-4 text-accent mt-0.5 shrink-0" />
                                         <div>
                                             <p className="text-sm font-medium text-accent">✅ Majority approval reached!</p>
                                             <p className="text-xs text-muted-foreground mt-1">
@@ -261,7 +261,7 @@ export function LoanRequestDetail({ request, onMutationSuccess }: LoanRequestDet
                                     </div>
                                 ) : request.votes.reject >= majorityNeeded ? (
                                     <div className="flex items-start gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
-                                        <XCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
+                                        <XCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
                                         <div>
                                             <p className="text-sm font-medium text-destructive">❌ Majority rejection reached</p>
                                             <p className="text-xs text-muted-foreground mt-1">
@@ -271,7 +271,7 @@ export function LoanRequestDetail({ request, onMutationSuccess }: LoanRequestDet
                                     </div>
                                 ) : (
                                     <div className="flex items-start gap-2 p-3 rounded-lg bg-muted border border-border">
-                                        <AlertCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                                        <AlertCircle className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                                         <div>
                                             <p className="text-sm font-medium text-foreground">⏳ Voting in progress</p>
                                             <p className="text-xs text-muted-foreground mt-1">

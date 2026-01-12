@@ -81,7 +81,7 @@ function LoansPageContent() {
                             <Tabs defaultValue="pending" className="w-full">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-4 sm:gap-0">
                                     <ScrollArea className="w-full max-w-full sm:max-w-3xl whitespace-nowrap pb-3 sm:pb-0">
-                                        <TabsList className="inline-flex h-auto p-1 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <TabsList className="inline-flex h-auto p-1 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-xs border border-slate-200 dark:border-slate-700 shadow-xs">
                                             <TabsTrigger
                                                 value="pending"
                                                 className="flex-1 md:flex-none py-2 px-3 h-auto rounded-full text-xs sm:text-sm data-[state=active]:bg-slate-900 data-[state=active]:text-white dark:data-[state=active]:bg-slate-100 dark:data-[state=active]:text-slate-900"

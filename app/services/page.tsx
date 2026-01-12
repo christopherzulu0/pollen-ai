@@ -135,7 +135,7 @@ function ComparisonTableSkeleton() {
       <div className="inline-block min-w-full align-middle p-4 sm:p-0">
         <div className="overflow-hidden rounded-lg shadow-md">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-            <thead className="bg-[#003366] dark:bg-blue-900 text-white">
+            <thead className="bg-primary dark:bg-blue-900 text-white">
               <tr>
                 {[...Array(5)].map((_, i) => (
                   <th key={i} className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
@@ -325,9 +325,9 @@ function ServicesContent() {
               <TabsTrigger
                 key={category}
                 value={categoryToSlug(category)}
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[#003366] data-[state=active]:text-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200 flex-shrink-0"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium ring-offset-background transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-xs dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-white dark:text-gray-200 shrink-0"
               >
-                <span className="mr-1 sm:mr-2 flex-shrink-0">{getServiceIcon(category, firstService?.icon)}</span>
+                <span className="mr-1 sm:mr-2 shrink-0">{getServiceIcon(category, firstService?.icon)}</span>
                 <span className="whitespace-nowrap">{category}</span>
               </TabsTrigger>
             )
@@ -362,14 +362,14 @@ function ServicesContent() {
                           <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
                             {getServiceIcon(service.category, service.icon)}
                           </div>
-                          <h3 className="ml-2 text-2xl font-bold text-[#003366] dark:text-white">{service.name}</h3>
+                          <h3 className="ml-2 text-2xl font-bold text-primary dark:text-white">{service.name}</h3>
                         </div>
                         <p className="text-gray-600 dark:text-gray-300 mb-6">{service.description}</p>
                         {service.keyFeatures && service.keyFeatures.length > 0 && (
                           <ul className="space-y-3">
                             {service.keyFeatures.map((feature, index) => (
                               <li key={index} className="flex items-start">
-                                <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 flex-shrink-0 mt-0.5" />
+                                <Check className="h-5 w-5 text-[#00CC66] dark:text-emerald-400 mr-2 shrink-0 mt-0.5" />
                                 <span className="text-gray-800 dark:text-gray-300">{feature}</span>
                               </li>
                             ))}
@@ -378,8 +378,8 @@ function ServicesContent() {
 
                         {/* Interactive Loan Calculator - only show for first service in Digital Loans category */}
                         {isDigitalLoans && categoryServices[0]?.id === service.id && (
-                          <div className="mt-6 md:mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-                            <h4 className="text-base md:text-lg font-semibold text-[#003366] dark:text-white mb-3 md:mb-4">
+                          <div className="mt-6 md:mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-xs border border-gray-100 dark:border-gray-700">
+                            <h4 className="text-base md:text-lg font-semibold text-primary dark:text-white mb-3 md:mb-4">
                               Loan Calculator
                             </h4>
                             <div className="space-y-3 md:space-y-4">
@@ -388,7 +388,7 @@ function ServicesContent() {
                                   <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Loan Amount
                                   </label>
-                                  <span className="text-sm font-semibold text-[#003366] dark:text-white">
+                                  <span className="text-sm font-semibold text-primary dark:text-white">
                                     K{loanAmount.toLocaleString()}
                                   </span>
                                 </div>
@@ -410,7 +410,7 @@ function ServicesContent() {
                                   <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Loan Term
                                   </label>
-                                  <span className="text-sm font-semibold text-[#003366] dark:text-white">
+                                  <span className="text-sm font-semibold text-primary dark:text-white">
                                     {loanTerm} months
                                   </span>
                                 </div>
@@ -430,13 +430,13 @@ function ServicesContent() {
                               <div className="grid grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
                                 <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                                   <p className="text-xs text-gray-500 dark:text-gray-400">Monthly Payment</p>
-                                  <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">
+                                  <p className="text-lg md:text-xl font-bold text-primary dark:text-white">
                                     K{calculateMonthlyPayment()}
                                   </p>
                                 </div>
                                 <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                                   <p className="text-xs text-gray-500 dark:text-gray-400">Interest Rate</p>
-                                  <p className="text-lg md:text-xl font-bold text-[#003366] dark:text-white">5.9% APR</p>
+                                  <p className="text-lg md:text-xl font-bold text-primary dark:text-white">5.9% APR</p>
                                 </div>
                               </div>
                               <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
@@ -450,14 +450,14 @@ function ServicesContent() {
                         )}
 
                         <Link href={`/services/apply?serviceId=${service.id}`}>
-                          <Button className="mt-6 bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
+                          <Button className="mt-6 bg-primary hover:bg-primary/80 dark:bg-blue-900 dark:hover:bg-blue-800">
                             {isDigitalLoans ? "Apply Now" : isVillageBanking ? "Join a Group" : "Learn More"}
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </Button>
                         </Link>
                       </div>
                       <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-lg">
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#003366]/80 dark:to-gray-900/80 z-10"></div>
+                        <div className="absolute inset-0 bg-linear-to-b from-transparent to-primary/80 dark:to-gray-900/80 z-10"></div>
                         <Image
                           src={service.image || (isDigitalLoans ? "/digital.jpg" : isVillageBanking ? "/village.jpg" : "/placeholder.svg?height=800&width=600")}
                           alt={service.name}
@@ -495,7 +495,7 @@ function ServicesContent() {
                                   (group, index) => (
                                     <div
                                       key={index}
-                                      className="bg-white/10 backdrop-blur-sm rounded-md p-2 flex items-center"
+                                      className="bg-white/10 backdrop-blur-xs rounded-md p-2 flex items-center"
                                     >
                                       <div className="w-6 h-6 rounded-full bg-[#00CC66] dark:bg-emerald-500 flex items-center justify-center text-white text-xs mr-2">
                                         {index + 1}
@@ -561,11 +561,11 @@ function MobileServiceCards() {
                   <div className="p-2 rounded-full bg-[#00CC66]/10 dark:bg-emerald-900/30">
                     {getServiceIcon(service.category, service.icon)}
                   </div>
-                  <Badge className="bg-[#003366] dark:bg-blue-900">
+                  <Badge className="bg-primary dark:bg-blue-900">
                     {service.growth ? `+${service.growth}% Growth` : service.category}
                   </Badge>
                 </div>
-                <CardTitle className="text-[#003366] dark:text-white text-xl">{service.name}</CardTitle>
+                <CardTitle className="text-primary dark:text-white text-xl">{service.name}</CardTitle>
                 <CardDescription className="dark:text-gray-300 line-clamp-2">{service.description}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -573,7 +573,7 @@ function MobileServiceCards() {
                   <ul className="space-y-2">
                     {service.keyFeatures.slice(0, 4).map((feature, i) => (
                       <li key={i} className="flex items-start">
-                        <Check className="h-4 w-4 text-[#00CC66] dark:text-emerald-400 mr-2 mt-0.5 flex-shrink-0" />
+                        <Check className="h-4 w-4 text-[#00CC66] dark:text-emerald-400 mr-2 mt-0.5 shrink-0" />
                         <span className="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
                       </li>
                     ))}
@@ -584,7 +584,7 @@ function MobileServiceCards() {
               </CardContent>
               <CardFooter>
                 <Link href={`/services/apply?serviceId=${service.id}`} className="w-full">
-                  <Button className="w-full bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800">
+                  <Button className="w-full bg-primary hover:bg-primary/80 dark:bg-blue-900 dark:hover:bg-blue-800">
                     Apply Now
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -621,7 +621,7 @@ function ComparisonTable() {
       <div className="inline-block min-w-full align-middle p-4 sm:p-0">
         <div className="overflow-hidden rounded-lg shadow-md">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-            <thead className="bg-[#003366] dark:bg-blue-900 text-white">
+            <thead className="bg-primary dark:bg-blue-900 text-white">
               <tr>
                 <th scope="col" className="py-3 px-3 sm:px-6 text-left text-xs sm:text-sm font-medium">
                   Service
@@ -654,10 +654,10 @@ function ComparisonTable() {
                     >
                       <td className="py-3 px-3 sm:px-6 text-xs sm:text-sm border-b border-gray-100 dark:border-gray-600">
                         <div className="flex items-center gap-2">
-                          <div className="flex-shrink-0">
+                          <div className="shrink-0">
                             {getServiceIcon(service.category, service.icon)}
                           </div>
-                          <span className="font-medium text-[#003366] dark:text-white">
+                          <span className="font-medium text-primary dark:text-white">
                             {service.name}
                           </span>
                         </div>
@@ -670,7 +670,7 @@ function ComparisonTable() {
                           {service.keyFeatures && service.keyFeatures.length > 0 ? (
                             service.keyFeatures.slice(0, 3).map((feature, i) => (
                               <li key={i} className="flex items-center justify-center mb-1">
-                                <Check className="h-3 w-3 sm:h-4 sm:w-4 text-[#00CC66] dark:text-emerald-400 mr-1 flex-shrink-0" />
+                                <Check className="h-3 w-3 sm:h-4 sm:w-4 text-[#00CC66] dark:text-emerald-400 mr-1 shrink-0" />
                                 <span className="text-gray-700 dark:text-gray-300 line-clamp-1">{feature}</span>
                               </li>
                             ))
@@ -690,7 +690,7 @@ function ComparisonTable() {
                         <Link href={`/services/apply?serviceId=${service.id}`}>
                           <Button
                             size="sm"
-                            className="bg-[#003366] hover:bg-[#003366]/80 dark:bg-blue-900 dark:hover:bg-blue-800 text-xs px-2 py-1 h-auto"
+                            className="bg-primary hover:bg-primary/80 dark:bg-blue-900 dark:hover:bg-blue-800 text-xs px-2 py-1 h-auto"
                           >
                             Apply Now
                           </Button>
@@ -746,7 +746,7 @@ export default function ServicesPage() {
     <div className="flex flex-col min-h-screen dark:bg-gray-950">
       {/* Hero Section with Animated Background */}
       <section className="relative py-12 md:py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-[#003366] dark:bg-gray-900 z-0">
+        <div className="absolute inset-0 bg-primary dark:bg-gray-900 z-0">
           <div className="absolute inset-0 opacity-10">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
@@ -841,7 +841,7 @@ export default function ServicesPage() {
                 Blockchain Secured
               </div>
               <div className="relative h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] rounded-lg overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-105 preserve-3d rotate-y-[8deg] group">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/90 to-[#003366]/70 dark:from-gray-900/90 dark:to-gray-800/70 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-primary/90 to-primary/70 dark:from-gray-900/90 dark:to-gray-800/70 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                 <Image
                   src="/placeholder.svg?height=800&width=600"
                   alt="Financial Services"
@@ -850,7 +850,7 @@ export default function ServicesPage() {
                   priority
                 />
                 <div className="absolute inset-0 flex items-center justify-center z-20">
-                  <div className="bg-white/10 backdrop-blur-sm p-4 sm:p-6 rounded-lg border border-white/20 max-w-xs">
+                  <div className="bg-white/10 backdrop-blur-xs p-4 sm:p-6 rounded-lg border border-white/20 max-w-xs">
                     <div className="flex items-center mb-2 sm:mb-4">
                       <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-[#00CC66] dark:text-emerald-400" />
                       <h3 className="ml-2 text-lg sm:text-xl font-bold text-white dark:text-white">
@@ -879,10 +879,10 @@ export default function ServicesPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <Badge className="mb-4 bg-[#003366] hover:bg-[#003366]/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
+            <Badge className="mb-4 bg-primary hover:bg-primary/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
               Our Offerings
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366] dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary dark:text-white mb-4">
               Comprehensive Financial Solutions
             </h2>
             <p className="text-gray-600 dark:text-gray-300 md:text-lg max-w-2xl mx-auto">
@@ -906,10 +906,10 @@ export default function ServicesPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-8"
           >
-            <Badge className="mb-4 bg-[#003366] hover:bg-[#003366]/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
+            <Badge className="mb-4 bg-primary hover:bg-primary/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
               Quick Compare
             </Badge>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter text-[#003366] dark:text-white mb-2">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter text-primary dark:text-white mb-2">
               Swipe to Compare Services
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-sm max-w-2xl mx-auto">
@@ -933,10 +933,10 @@ export default function ServicesPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <Badge className="mb-4 bg-[#003366] hover:bg-[#003366]/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
+            <Badge className="mb-4 bg-primary hover:bg-primary/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
               Compare Options
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366] dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary dark:text-white mb-4">
               Find the Right Service for You
             </h2>
             <p className="text-gray-600 dark:text-gray-300 md:text-lg max-w-2xl mx-auto">
@@ -960,10 +960,10 @@ export default function ServicesPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-8 md:mb-12"
           >
-            <Badge className="mb-4 bg-[#003366] hover:bg-[#003366]/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
+            <Badge className="mb-4 bg-primary hover:bg-primary/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
               Process
             </Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-[#003366] dark:text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-primary dark:text-white mb-4">
               How It Works
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-sm md:text-lg max-w-2xl mx-auto">
@@ -1018,7 +1018,7 @@ export default function ServicesPage() {
                       <div className="absolute -left-2 md:-left-4 top-0 text-4xl md:text-6xl font-bold text-[#00CC66]/10 dark:text-emerald-500/10">
                         {item.step}
                       </div>
-                      <h3 className="text-lg md:text-xl font-bold text-[#003366] dark:text-white mb-2 md:mb-4 mt-4">
+                      <h3 className="text-lg md:text-xl font-bold text-primary dark:text-white mb-2 md:mb-4 mt-4">
                         {item.title}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{item.description}</p>
@@ -1033,7 +1033,7 @@ export default function ServicesPage() {
                   <div className={`relative z-10 mt-4 md:mt-0 ${index % 2 !== 0 ? "md:order-1" : "md:order-2"}`}>
                     <div className="relative h-[180px] sm:h-[220px] md:h-[250px] lg:h-[300px] rounded-lg overflow-hidden shadow-lg transform transition-all duration-500 hover:scale-105">
                       <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/60 to-transparent dark:from-gray-900/60 flex items-center">
+                      <div className="absolute inset-0 bg-linear-to-r from-primary/60 to-transparent dark:from-gray-900/60 flex items-center">
                         <div className="p-4 md:p-6">
                           <Badge className="mb-2 bg-white/20 text-white border-white/10 text-xs">
                             Step {index + 1}
@@ -1065,10 +1065,10 @@ export default function ServicesPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <Badge className="mb-4 bg-[#003366] hover:bg-[#003366]/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
+            <Badge className="mb-4 bg-primary hover:bg-primary/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
               Success Stories
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366] dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary dark:text-white mb-4">
               What Our Clients Say
             </h2>
             <p className="text-gray-600 dark:text-gray-300 md:text-lg max-w-2xl mx-auto">
@@ -1122,7 +1122,7 @@ export default function ServicesPage() {
                         />
                       </div>
                       <div>
-                        <CardTitle className="text-[#003366] dark:text-white text-base sm:text-lg">
+                        <CardTitle className="text-primary dark:text-white text-base sm:text-lg">
                           {testimonial.name}
                         </CardTitle>
                         <CardDescription className="dark:text-gray-400 text-xs sm:text-sm">
@@ -1153,7 +1153,7 @@ export default function ServicesPage() {
             <Link href="/testimonials">
               <Button
                 variant="outline"
-                className="border-[#003366] text-[#003366] hover:bg-[#003366] hover:text-white dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-white"
+                className="border-primary text-primary hover:bg-primary hover:text-white dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:text-white"
               >
                 View All Success Stories
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -1173,10 +1173,10 @@ export default function ServicesPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <Badge className="mb-4 bg-[#003366] hover:bg-[#003366]/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
+            <Badge className="mb-4 bg-primary hover:bg-primary/80 text-white dark:bg-blue-900 dark:hover:bg-blue-800">
               FAQ
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-[#003366] dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-primary dark:text-white mb-4">
               Frequently Asked Questions
             </h2>
             <p className="text-gray-600 dark:text-gray-300 md:text-lg max-w-2xl mx-auto">
@@ -1208,7 +1208,7 @@ export default function ServicesPage() {
                   value={`item-${index}`}
                   className="border-b border-gray-200 dark:border-gray-700"
                 >
-                  <AccordionTrigger className="text-[#003366] dark:text-white font-medium text-left text-sm sm:text-base py-3">
+                  <AccordionTrigger className="text-primary dark:text-white font-medium text-left text-sm sm:text-base py-3">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 dark:text-gray-300 text-sm">{faq.answer}</AccordionContent>
@@ -1239,7 +1239,7 @@ export default function ServicesPage() {
                   value={`item-${index + 3}`}
                   className="border-b border-gray-200 dark:border-gray-700"
                 >
-                  <AccordionTrigger className="text-[#003366] dark:text-white font-medium text-left text-sm sm:text-base py-3">
+                  <AccordionTrigger className="text-primary dark:text-white font-medium text-left text-sm sm:text-base py-3">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 dark:text-gray-300 text-sm">{faq.answer}</AccordionContent>
@@ -1251,7 +1251,7 @@ export default function ServicesPage() {
           <div className="text-center mt-12">
             <p className="text-gray-600 dark:text-gray-300 mb-4">Still have questions? We're here to help.</p>
             <Link href="/contact">
-              <Button className="bg-[#003366] hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800">
+              <Button className="bg-primary hover:bg-[#002244] dark:bg-blue-900 dark:hover:bg-blue-800">
                 Contact Our Team
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -1261,7 +1261,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 lg:py-24 bg-[#003366] dark:bg-gray-900 text-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-primary dark:bg-gray-900 text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1287,7 +1287,7 @@ export default function ServicesPage() {
                 </Link>
                 <Button
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-[#003366] dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900"
+                  className="border-white text-white hover:bg-white hover:text-primary dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-900"
                 >
                   Schedule a Demo
                 </Button>
@@ -1314,10 +1314,10 @@ export default function ServicesPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#00CC66]/20 to-[#00CC66]/5 dark:from-emerald-900/20 dark:to-emerald-900/5 rounded-lg transform rotate-3"></div>
+              <div className="absolute inset-0 bg-linear-to-r from-[#00CC66]/20 to-[#00CC66]/5 dark:from-emerald-900/20 dark:to-emerald-900/5 rounded-lg transform rotate-3"></div>
               <Card className="border-none shadow-xl relative z-10 overflow-hidden dark:bg-gray-800">
                 <CardHeader className="bg-[#00CC66]/10 dark:bg-emerald-900/20 pb-2">
-                  <CardTitle className="text-[#003366] dark:text-white text-base sm:text-lg">Success Metrics</CardTitle>
+                  <CardTitle className="text-primary dark:text-white text-base sm:text-lg">Success Metrics</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-4 sm:pt-6">
                   <div className="space-y-4 sm:space-y-6">
@@ -1332,7 +1332,7 @@ export default function ServicesPage() {
                       >
                         <div>
                           <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">{stat.label}</p>
-                          <p className="text-xl sm:text-2xl font-bold text-[#003366] dark:text-white">{stat.value}</p>
+                          <p className="text-xl sm:text-2xl font-bold text-primary dark:text-white">{stat.value}</p>
                         </div>
                         <Badge
                           variant="outline"
@@ -1365,7 +1365,7 @@ export default function ServicesPage() {
               ].map((item, index) => (
                 <button
                   key={index}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-sm text-[#003366] dark:text-white"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-sm text-primary dark:text-white"
                 >
                   {item.icon}
                   <span>{item.label}</span>
