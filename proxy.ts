@@ -24,7 +24,9 @@ const isPublicRoute = createRouteMatcher([
   "/api/groups/browse",
   "/api/Frontend(.*)",
   "/api/groups/requests(.*)",
-  "/dashboard/groups/details/(.*)"
+  "/dashboard/groups/details/(.*)",
+  "/api/admin/aave(.*)",
+  "/api/admin/aave/hub-assets(.*)"
 ]);
 
 // Define routes that should be ignored

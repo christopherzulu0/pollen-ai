@@ -1,7 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type ComponentType } from "react"
 import { useRouter } from "next/navigation"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -42,140 +44,71 @@ import {
   CheckCircle,
   DollarSign,
   FileText,
+  Loader2,
 } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { Textarea } from "@/components/ui/textarea"
+import { Skeleton } from "@/components/ui/skeleton"
 
-// Mock data for insurance products
-const insuranceProducts = [
-  {
-    id: "1",
-    name: "Crop Insurance",
-    type: "crop",
-    icon: Sprout,
-    activePolicies: 234,
-    totalCoverage: "$2.4M",
-    premiumCollected: "$45,600",
-    claims: 12,
-    claimsPaid: "$89,400",
-    status: "active",
-    description: "Seasonal crop protection with weather-based parametric coverage",
-  },
-  {
-    id: "2",
-    name: "Health Emergency Coverage",
-    type: "health",
-    icon: Heart,
-    activePolicies: 1245,
-    totalCoverage: "$8.9M",
-    premiumCollected: "$156,800",
-    claims: 45,
-    claimsPaid: "$234,500",
-    status: "active",
-    description: "Emergency medical coverage for members and families",
-  },
-  {
-    id: "3",
-    name: "Loan Protection",
-    type: "loan",
-    icon: Skull,
-    activePolicies: 89,
-    totalCoverage: "$1.2M",
-    premiumCollected: "$23,400",
-    claims: 3,
-    claimsPaid: "$45,000",
-    status: "active",
-    description: "Death and disability coverage for active loans",
-  },
-  {
-    id: "4",
-    name: "Group Savings Insurance",
-    type: "fraud",
-    icon: Users,
-    activePolicies: 342,
-    totalCoverage: "$5.6M",
-    premiumCollected: "$89,200",
-    claims: 2,
-    claimsPaid: "$12,000",
-    status: "active",
-    description: "Fraud protection for group savings accounts",
-  },
-  {
-    id: "5",
-    name: "Mobile Phone Insurance",
-    type: "mobile",
-    icon: Smartphone,
-    activePolicies: 567,
-    totalCoverage: "$850K",
-    premiumCollected: "$34,500",
-    claims: 28,
-    claimsPaid: "$56,700",
-    status: "active",
-    description: "Theft, damage, and loss protection for mobile devices",
-  },
-  {
-    id: "6",
-    name: "Weather Parametric",
-    type: "weather",
-    icon: Cloud,
-    activePolicies: 178,
-    totalCoverage: "$3.2M",
-    premiumCollected: "$67,800",
-    claims: 8,
-    claimsPaid: "$124,000",
-    status: "active",
-    description: "Automated payouts based on weather data triggers",
-  },
-]
+// Type definitions
+type InsuranceProduct = {
+  id: string
+  name: string
+  type: string
+  icon: string
+  activePolicies: number
+  totalCoverage: string
+  premiumCollected: string
+  claims: number
+  claimsPaid: string
+  status: string
+  description: string
+  // Raw values for editing
+  coverageAmount?: number
+  premiumAmount?: number
+  premiumFrequency?: string
+  waitingPeriod?: string
+  coverageTerms?: string
+  exclusions?: string
+}
 
-// Mock claims data
-const recentClaims = [
-  {
-    id: "CLM-001",
-    policyHolder: "John Farmer",
-    insuranceType: "Crop Insurance",
-    claimAmount: "$12,000",
-    status: "approved",
-    dateSubmitted: "2024-01-15",
-    description: "Drought damage to maize crop",
-  },
-  {
-    id: "CLM-002",
-    policyHolder: "Mary Johnson",
-    insuranceType: "Health Emergency",
-    claimAmount: "$5,400",
-    status: "pending",
-    dateSubmitted: "2024-01-14",
-    description: "Emergency hospital admission",
-  },
-  {
-    id: "CLM-003",
-    policyHolder: "Bob Smith",
-    insuranceType: "Mobile Phone",
-    claimAmount: "$800",
-    status: "processing",
-    dateSubmitted: "2024-01-13",
-    description: "Phone theft claim",
-  },
-  {
-    id: "CLM-004",
-    policyHolder: "Alice Williams",
-    insuranceType: "Weather Parametric",
-    claimAmount: "$15,000",
-    status: "approved",
-    dateSubmitted: "2024-01-12",
-    description: "Automatic payout - rainfall trigger met",
-  },
-  {
-    id: "CLM-005",
-    policyHolder: "David Brown Estate",
-    insuranceType: "Loan Protection",
-    claimAmount: "$25,000",
-    status: "approved",
-    dateSubmitted: "2024-01-10",
-    description: "Death benefit claim",
-  },
-]
+type InsuranceClaim = {
+  id: string
+  policyHolder: string
+  insuranceType: string
+  claimAmount: string
+  status: string
+  dateSubmitted: string
+  description: string
+  claimId?: string
+}
+
+// Icon component mapping
+const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
+  Sprout,
+  Heart,
+  Skull,
+  Users,
+  Smartphone,
+  Cloud,
+  Shield,
+}
+
+// Currency formatter for ZMW
+const formatCurrency = (amount: number) => {
+  return `ZMW ${amount.toLocaleString()}`
+}
+
+const formatCurrencyCompact = (amount: number) => {
+  if (amount >= 1000000) {
+    return `ZMW ${(amount / 1000000).toFixed(1)}M`
+  } else if (amount >= 1000) {
+    return `ZMW ${(amount / 1000).toFixed(1)}K`
+  }
+  return `ZMW ${amount.toLocaleString()}`
+}
+
+// Mock data removed - now fetching from API
 
 export function InsuranceView() {
   const router = useRouter()
@@ -188,13 +121,312 @@ export function InsuranceView() {
   const [claimsPerPage, setClaimsPerPage] = useState(10)
   const [showPendingAppsDialog, setShowPendingAppsDialog] = useState(false)
   const [showEditRulesDialog, setShowEditRulesDialog] = useState(false)
-  const [selectedProductForRules, setSelectedProductForRules] = useState<any>(null)
+  const [selectedProductForRules, setSelectedProductForRules] = useState<InsuranceProduct | null>(null)
+  const [claimsStatusFilter, setClaimsStatusFilter] = useState("all")
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState<InsuranceProduct | null>(null)
+  const [showEditProductDialog, setShowEditProductDialog] = useState(false)
+  const [showProductDetailsDialog, setShowProductDetailsDialog] = useState(false)
+  const [selectedProductForDetails, setSelectedProductForDetails] = useState<InsuranceProduct | null>(null)
 
+  // Form state for new product
+  const [newProductForm, setNewProductForm] = useState({
+    productType: "",
+    name: "",
+    description: "",
+    premiumAmount: "",
+    coverageAmount: "",
+    premiumFrequency: "monthly",
+    waitingPeriod: "30",
+    coverageTerms: "",
+    exclusions: "",
+  })
+
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  // Fetch insurance products
+  const {
+    data: insuranceProducts = [],
+    isLoading: productsLoading,
+    error: productsError,
+  } = useQuery<InsuranceProduct[]>({
+    queryKey: ["admin-insurance-products"],
+    queryFn: async () => {
+      const response = await fetch("/api/admin/insurance?type=products")
+      if (!response.ok) {
+        throw new Error("Failed to fetch insurance products")
+      }
+      return response.json()
+    },
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+  })
+
+  // Fetch claims
+  const {
+    data: recentClaims = [],
+    isLoading: claimsLoading,
+    error: claimsError,
+  } = useQuery<InsuranceClaim[]>({
+    queryKey: ["admin-insurance-claims", claimsStatusFilter, searchQuery],
+    queryFn: async () => {
+      const params = new URLSearchParams()
+      params.append("type", "claims")
+      if (claimsStatusFilter !== "all") params.append("status", claimsStatusFilter)
+      if (searchQuery) params.append("search", searchQuery)
+
+      const response = await fetch(`/api/admin/insurance?${params.toString()}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch claims")
+      }
+      return response.json()
+    },
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+  })
+
+  // Mutation for updating an insurance product
+  const updateProductMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<typeof newProductForm> }) => {
+      const response = await fetch(`/api/admin/insurance/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          productType: data.productType,
+          description: data.description,
+          coverageAmount: data.coverageAmount,
+          premiumAmount: data.premiumAmount,
+          premiumFrequency: data.premiumFrequency?.toUpperCase(),
+          claimProcessingTime: data.waitingPeriod ? `${data.waitingPeriod} days` : undefined,
+        }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to update product")
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-insurance-products"] })
+      toast({
+        title: "Success",
+        description: "Insurance product updated successfully",
+      })
+      setShowEditProductDialog(false)
+      setSelectedProductForEdit(null)
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update insurance product",
+        variant: "destructive",
+      })
+    },
+  })
+
+  // Mutation for deactivating an insurance product
+  const deactivateProductMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetch(`/api/admin/insurance/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: "inactive",
+        }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to deactivate product")
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-insurance-products"] })
+      toast({
+        title: "Success",
+        description: "Insurance product deactivated successfully",
+      })
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to deactivate insurance product",
+        variant: "destructive",
+      })
+    },
+  })
+
+  // Mutation for creating a new insurance product
+  const createProductMutation = useMutation({
+    mutationFn: async (data: typeof newProductForm) => {
+      const response = await fetch("/api/admin/insurance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          productType: data.productType,
+          description: data.description,
+          coverageAmount: data.coverageAmount,
+          premiumAmount: data.premiumAmount,
+          premiumFrequency: data.premiumFrequency.toUpperCase(),
+          claimProcessingTime: data.waitingPeriod ? `${data.waitingPeriod} days` : undefined,
+          coverageTerms: data.coverageTerms || undefined,
+          exclusions: data.exclusions || undefined,
+        }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to create product")
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-insurance-products"] })
+      toast({
+        title: "Success",
+        description: "Insurance product created successfully",
+      })
+      setShowNewProductDialog(false)
+      setNewProductForm({
+        productType: "",
+        name: "",
+        description: "",
+        premiumAmount: "",
+        coverageAmount: "",
+        premiumFrequency: "monthly",
+        waitingPeriod: "30",
+        coverageTerms: "",
+        exclusions: "",
+      })
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create insurance product",
+        variant: "destructive",
+      })
+    },
+  })
+
+  // Calculate pagination for claims
   const totalClaims = recentClaims.length
   const totalClaimsPages = Math.ceil(totalClaims / claimsPerPage)
   const startClaimsIndex = (claimsPage - 1) * claimsPerPage
   const endClaimsIndex = startClaimsIndex + claimsPerPage
   const paginatedClaims = recentClaims.slice(startClaimsIndex, endClaimsIndex)
+
+  const handleCreateProduct = () => {
+    if (!newProductForm.name || !newProductForm.productType || !newProductForm.coverageAmount || !newProductForm.premiumAmount) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      })
+      return
+    }
+    createProductMutation.mutate(newProductForm)
+  }
+
+  const handleEditProduct = (product: InsuranceProduct) => {
+    // Map product data to form format
+    const productTypeMap: Record<string, string> = {
+      crop: "crop",
+      health: "health",
+      loan_protection: "loan",
+      savings_fraud: "fraud",
+      mobile: "mobile",
+      weather: "weather",
+    }
+
+    const reverseFrequencyMap: Record<string, string> = {
+      MONTHLY: "monthly",
+      QUARTERLY: "quarterly",
+      SEASONAL: "seasonal",
+      ANNUAL: "annual",
+    }
+
+    // Extract numeric values - use raw values if available, otherwise parse formatted strings
+    let coverageAmountValue = ""
+    let premiumAmountValue = ""
+
+    if (product.coverageAmount !== undefined && product.coverageAmount !== null) {
+      // Use raw value from API
+      coverageAmountValue = product.coverageAmount.toString()
+    } else {
+      // Fallback to parsing formatted string
+      const coverageMatch = product.totalCoverage.match(/([\d.]+)/)
+      if (coverageMatch) {
+        const num = parseFloat(coverageMatch[1])
+        // Convert M to actual number (e.g., "1.5M" -> 1500000)
+        coverageAmountValue = product.totalCoverage.includes("M") 
+          ? (num * 1000000).toString() 
+          : (product.totalCoverage.includes("K") ? (num * 1000).toString() : num.toString())
+      }
+    }
+
+    if (product.premiumAmount !== undefined && product.premiumAmount !== null) {
+      // Use raw value from API
+      premiumAmountValue = product.premiumAmount.toString()
+    } else {
+      // Fallback to parsing formatted string
+      premiumAmountValue = product.premiumCollected.replace(/[ZMW\s,]/g, "") || ""
+    }
+
+    // Map premium frequency - use value from API if available
+    let premiumFreq = product.premiumFrequency || "monthly"
+    // Convert to lowercase if needed
+    if (premiumFreq && premiumFreq !== premiumFreq.toLowerCase()) {
+      premiumFreq = reverseFrequencyMap[premiumFreq.toUpperCase()] || premiumFreq.toLowerCase()
+    }
+
+    setNewProductForm({
+      productType: productTypeMap[product.type] || product.type,
+      name: product.name,
+      description: product.description || "",
+      premiumAmount: premiumAmountValue,
+      coverageAmount: coverageAmountValue,
+      premiumFrequency: premiumFreq,
+      waitingPeriod: product.waitingPeriod || "30",
+      coverageTerms: product.coverageTerms || "",
+      exclusions: product.exclusions || "",
+    })
+    setSelectedProductForEdit(product)
+    setShowEditProductDialog(true)
+  }
+
+  const handleUpdateProduct = () => {
+    if (!selectedProductForEdit || !newProductForm.name || !newProductForm.productType || !newProductForm.coverageAmount || !newProductForm.premiumAmount) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      })
+      return
+    }
+    updateProductMutation.mutate({ id: selectedProductForEdit.id, data: newProductForm })
+  }
+
+  const handleViewDetails = (product: InsuranceProduct) => {
+    setSelectedProductForDetails(product)
+    setShowProductDetailsDialog(true)
+  }
+
+  const handleViewPolicies = (product: InsuranceProduct) => {
+    router.push(`/Super-user/insurance/product/${product.id}?tab=policies`)
+  }
+
+  const handleDeactivateProduct = (product: InsuranceProduct) => {
+    if (confirm(`Are you sure you want to deactivate "${product.name}"? This will prevent new policies from being created.`)) {
+      deactivateProductMutation.mutate(product.id)
+    }
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -211,13 +443,94 @@ export function InsuranceView() {
     }
   }
 
+  // Calculate total stats
   const totalStats = {
     totalPolicies: insuranceProducts.reduce((acc, p) => acc + p.activePolicies, 0),
-    totalCoverage: "$22.1M",
-    totalPremiums: "$417,300",
+    totalCoverage: formatCurrencyCompact(
+      insuranceProducts.reduce((acc, p) => {
+        const coverage = parseFloat(p.totalCoverage.replace(/[ZMW\s,]/g, "")) * (p.totalCoverage.includes("M") ? 1000000 : 1000)
+        return acc + coverage
+      }, 0)
+    ),
+    totalPremiums: formatCurrency(
+      insuranceProducts.reduce((acc, p) => {
+        return acc + parseFloat(p.premiumCollected.replace(/[ZMW\s,]/g, ""))
+      }, 0)
+    ),
     totalClaims: insuranceProducts.reduce((acc, p) => acc + p.claims, 0),
-    claimsPaid: "$561,600",
-    claimRatio: "134.5%",
+    claimsPaid: formatCurrency(
+      insuranceProducts.reduce((acc, p) => {
+        return acc + parseFloat(p.claimsPaid.replace(/[ZMW\s,]/g, ""))
+      }, 0)
+    ),
+    claimRatio: "134.5%", // Would need to calculate from actual data
+  }
+
+  if (productsLoading) {
+    return (
+      <div className="space-y-6">
+        {/* Stats Cards Skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={i} className="bg-card border-border">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-4 rounded" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-8 w-20 mb-2" />
+                <Skeleton className="h-3 w-32" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Products Grid Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={i} className="bg-card border-border">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3 flex-1">
+                    <Skeleton className="h-10 w-10 rounded-lg" />
+                    <div className="space-y-2 flex-1">
+                      <Skeleton className="h-5 w-32" />
+                      <Skeleton className="h-4 w-20 rounded-full" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-8 w-8 rounded" />
+                </div>
+                <Skeleton className="h-3 w-full mt-2" />
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <Skeleton className="h-6 w-20" />
+                  <Skeleton className="h-6 w-20" />
+                </div>
+                <Skeleton className="h-2 w-full" />
+                <Skeleton className="h-9 w-full" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (productsError) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center space-y-3">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-sm text-destructive">Failed to load insurance data</p>
+            <p className="text-xs text-muted-foreground">
+              {productsError instanceof Error ? productsError.message : "An error occurred"}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -319,8 +632,13 @@ export function InsuranceView() {
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
-                    <Label>Product Type</Label>
-                    <Select>
+                    <Label>Product Type <span className="text-destructive">*</span></Label>
+                    <Select
+                      value={newProductForm.productType}
+                      onValueChange={(value) =>
+                        setNewProductForm({ ...newProductForm, productType: value })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select insurance type" />
                       </SelectTrigger>
@@ -336,30 +654,60 @@ export function InsuranceView() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Product Name</Label>
-                    <Input placeholder="e.g., Premium Crop Shield" />
+                    <Label>Product Name <span className="text-destructive">*</span></Label>
+                    <Input
+                      placeholder="e.g., Premium Crop Shield"
+                      value={newProductForm.name}
+                      onChange={(e) => setNewProductForm({ ...newProductForm, name: e.target.value })}
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label>Description</Label>
-                    <Textarea placeholder="Describe the insurance coverage..." rows={3} />
+                    <Textarea
+                      placeholder="Describe the insurance coverage..."
+                      rows={3}
+                      value={newProductForm.description}
+                      onChange={(e) =>
+                        setNewProductForm({ ...newProductForm, description: e.target.value })
+                      }
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Premium Amount</Label>
-                      <Input type="number" placeholder="0.00" />
+                      <Label>Premium Amount (ZMW) <span className="text-destructive">*</span></Label>
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        value={newProductForm.premiumAmount}
+                        onChange={(e) =>
+                          setNewProductForm({ ...newProductForm, premiumAmount: e.target.value })
+                        }
+                      />
                     </div>
                     <div className="space-y-2">
-                      <Label>Coverage Amount</Label>
-                      <Input type="number" placeholder="0.00" />
+                      <Label>Coverage Amount (ZMW) <span className="text-destructive">*</span></Label>
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        value={newProductForm.coverageAmount}
+                        onChange={(e) =>
+                          setNewProductForm({ ...newProductForm, coverageAmount: e.target.value })
+                        }
+                      />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Premium Frequency</Label>
-                      <Select>
+                      <Select
+                        value={newProductForm.premiumFrequency}
+                        onValueChange={(value) =>
+                          setNewProductForm({ ...newProductForm, premiumFrequency: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
@@ -373,25 +721,72 @@ export function InsuranceView() {
                     </div>
                     <div className="space-y-2">
                       <Label>Waiting Period (days)</Label>
-                      <Input type="number" placeholder="30" />
+                      <Input
+                        type="number"
+                        placeholder="30"
+                        value={newProductForm.waitingPeriod}
+                        onChange={(e) =>
+                          setNewProductForm({ ...newProductForm, waitingPeriod: e.target.value })
+                        }
+                      />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label>Coverage Terms</Label>
-                    <Textarea placeholder="Define coverage terms and conditions..." rows={4} />
+                    <Textarea
+                      placeholder="Define coverage terms and conditions..."
+                      rows={4}
+                      value={newProductForm.coverageTerms}
+                      onChange={(e) =>
+                        setNewProductForm({ ...newProductForm, coverageTerms: e.target.value })
+                      }
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label>Exclusions</Label>
-                    <Textarea placeholder="List any exclusions..." rows={3} />
+                    <Textarea
+                      placeholder="List any exclusions..."
+                      rows={3}
+                      value={newProductForm.exclusions}
+                      onChange={(e) =>
+                        setNewProductForm({ ...newProductForm, exclusions: e.target.value })
+                      }
+                    />
                   </div>
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setShowNewProductDialog(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setShowNewProductDialog(false)
+                      setNewProductForm({
+                        productType: "",
+                        name: "",
+                        description: "",
+                        premiumAmount: "",
+                        coverageAmount: "",
+                        premiumFrequency: "monthly",
+                        waitingPeriod: "30",
+                        coverageTerms: "",
+                        exclusions: "",
+                      })
+                    }}
+                    disabled={createProductMutation.isPending}
+                  >
                     Cancel
                   </Button>
-                  <Button onClick={() => setShowNewProductDialog(false)}>Create Product</Button>
+                  <Button onClick={handleCreateProduct} disabled={createProductMutation.isPending}>
+                    {createProductMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Creating...
+                      </>
+                    ) : (
+                      "Create Product"
+                    )}
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -400,9 +795,24 @@ export function InsuranceView() {
 
         {/* Insurance Products Tab */}
         <TabsContent value="products" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {insuranceProducts.map((product) => {
-              const Icon = product.icon
+          {insuranceProducts.length === 0 ? (
+            <Card className="bg-card border-border">
+              <CardContent className="flex flex-col items-center justify-center py-16">
+                <Shield className="h-16 w-16 text-muted-foreground mb-4" />
+                <CardTitle className="text-xl mb-2">No Insurance Products</CardTitle>
+                <CardDescription className="text-center mb-6 max-w-md">
+                  Get started by creating your first insurance product. You can configure coverage, premiums, and terms for different types of insurance.
+                </CardDescription>
+                <Button onClick={() => setShowNewProductDialog(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Your First Product
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {insuranceProducts.map((product) => {
+              const Icon = iconComponents[product.icon] || Shield
               return (
                 <Card key={product.id} className="bg-card border-border hover:border-primary/50 transition-colors">
                   <CardHeader>
@@ -426,11 +836,17 @@ export function InsuranceView() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit Product</DropdownMenuItem>
-                          <DropdownMenuItem>View Policies</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewDetails(product)}>View Details</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditProduct(product)}>Edit Product</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewPolicies(product)}>View Policies</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">Deactivate</DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => handleDeactivateProduct(product)}
+                            disabled={deactivateProductMutation.isPending}
+                          >
+                            {deactivateProductMutation.isPending ? "Deactivating..." : "Deactivate"}
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
@@ -463,7 +879,7 @@ export function InsuranceView() {
                       className="w-full bg-transparent"
                       size="sm"
                       onClick={() => {
-                        router.push(`/admin/insurance/product/${product.id}`)
+                              router.push(`/Super-user/insurance/product/${product.id}`)
                       }}
                     >
                       Manage Product
@@ -472,7 +888,8 @@ export function InsuranceView() {
                 </Card>
               )
             })}
-          </div>
+            </div>
+          )}
         </TabsContent>
 
         {/* Claims Management Tab */}
@@ -494,7 +911,7 @@ export function InsuranceView() {
                       className="pl-9 w-full sm:w-[250px]"
                     />
                   </div>
-                  <Select defaultValue="all">
+                  <Select value={claimsStatusFilter} onValueChange={setClaimsStatusFilter}>
                     <SelectTrigger className="w-full sm:w-[150px]">
                       <SelectValue />
                     </SelectTrigger>
@@ -510,21 +927,49 @@ export function InsuranceView() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Claim ID</TableHead>
-                      <TableHead>Policy Holder</TableHead>
-                      <TableHead>Insurance Type</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedClaims.map((claim) => (
+              {claimsLoading ? (
+                <div className="space-y-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-4 p-4 border border-border rounded-lg">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <div className="space-y-2 flex-1">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-48" />
+                      </div>
+                      <Skeleton className="h-6 w-20 rounded-full" />
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-8 w-20" />
+                    </div>
+                  ))}
+                </div>
+              ) : claimsError ? (
+                <div className="text-center py-8">
+                  <AlertCircle className="h-8 w-8 mx-auto text-destructive mb-2" />
+                  <p className="text-sm text-destructive">Failed to load claims</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Claim ID</TableHead>
+                        <TableHead>Policy Holder</TableHead>
+                        <TableHead>Insurance Type</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedClaims.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                            No claims found
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        paginatedClaims.map((claim) => (
                       <TableRow key={claim.id}>
                         <TableCell className="font-mono text-sm">{claim.id}</TableCell>
                         <TableCell>
@@ -556,10 +1001,12 @@ export function InsuranceView() {
                           </Button>
                         </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
 
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 pt-4 border-t border-border">
                 <div className="flex items-center gap-2">
@@ -624,13 +1071,27 @@ export function InsuranceView() {
 
         {/* Analytics Tab */}
         <TabsContent value="analytics" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {insuranceProducts.map((product) => {
-              const Icon = product.icon
-              const claimRatio =
-                (Number.parseFloat(product.claimsPaid.replace(/[$,]/g, "")) /
-                  Number.parseFloat(product.premiumCollected.replace(/[$,]/g, ""))) *
-                100
+          {insuranceProducts.length === 0 ? (
+            <Card className="bg-card border-border">
+              <CardContent className="flex flex-col items-center justify-center py-16">
+                <TrendingUp className="h-16 w-16 text-muted-foreground mb-4" />
+                <CardTitle className="text-xl mb-2">No Analytics Available</CardTitle>
+                <CardDescription className="text-center mb-6 max-w-md">
+                  Analytics will be available once you create insurance products and start collecting data on policies, premiums, and claims.
+                </CardDescription>
+                <Button onClick={() => setShowNewProductDialog(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Your First Product
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {insuranceProducts.map((product) => {
+              const Icon = iconComponents[product.icon] || Shield
+              const claimsPaidNum = parseFloat(product.claimsPaid.replace(/[ZMW\s,]/g, ""))
+              const premiumCollectedNum = parseFloat(product.premiumCollected.replace(/[ZMW\s,]/g, ""))
+              const claimRatio = premiumCollectedNum > 0 ? (claimsPaidNum / premiumCollectedNum) * 100 : 0
 
               return (
                 <Card key={product.id} className="bg-card border-border">
@@ -691,7 +1152,8 @@ export function InsuranceView() {
                 </Card>
               )
             })}
-          </div>
+            </div>
+          )}
         </TabsContent>
 
         {/* Risk & Underwriting Tab */}
@@ -761,9 +1223,19 @@ export function InsuranceView() {
                 <CardDescription>Automated approval criteria by product</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  {insuranceProducts.slice(0, 4).map((product) => {
-                    const Icon = product.icon
+                {insuranceProducts.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <FileText className="h-12 w-12 text-muted-foreground mb-3" />
+                    <p className="text-sm text-muted-foreground mb-4">No products available to configure rules</p>
+                    <Button size="sm" onClick={() => setShowNewProductDialog(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create Product
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {insuranceProducts.slice(0, 4).map((product) => {
+                    const Icon = iconComponents[product.icon] || Shield
                     return (
                       <div key={product.id} className="p-3 rounded-lg border border-border bg-muted/20">
                         <div className="flex items-center justify-between mb-2">
@@ -790,7 +1262,8 @@ export function InsuranceView() {
                       </div>
                     )
                   })}
-                </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -866,66 +1339,27 @@ export function InsuranceView() {
               <CardDescription>AI-powered suspicious activity monitoring</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {[
-                  {
-                    id: "FD-001",
-                    type: "Multiple Claims",
-                    user: "John Doe",
-                    risk: "high",
-                    reason: "3 claims in 2 weeks",
-                  },
-                  {
-                    id: "FD-002",
-                    type: "Duplicate Policy",
-                    user: "Jane Smith",
-                    risk: "medium",
-                    reason: "Similar details across accounts",
-                  },
-                  {
-                    id: "FD-003",
-                    type: "Rapid Enrollment",
-                    user: "Bob Wilson",
-                    risk: "high",
-                    reason: "Enrolled in 5 products same day",
-                  },
-                  {
-                    id: "FD-004",
-                    type: "Document Mismatch",
-                    user: "Alice Brown",
-                    risk: "high",
-                    reason: "ID verification failed",
-                  },
-                ].map((alert) => (
-                  <div
-                    key={alert.id}
-                    className="flex items-center justify-between p-4 rounded-lg border border-border bg-muted/20"
-                  >
+              {insuranceProducts.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <AlertCircle className="h-12 w-12 text-muted-foreground mb-3" />
+                  <p className="text-sm text-muted-foreground mb-1">No fraud alerts available</p>
+                  <p className="text-xs text-muted-foreground">Alerts will appear here once you have active policies and claims</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 rounded-lg border border-border bg-muted/20">
                     <div className="flex items-center gap-4">
-                      <div
-                        className={`p-2 rounded-full ${alert.risk === "high" ? "bg-red-500/10" : "bg-yellow-500/10"}`}
-                      >
-                        <AlertCircle
-                          className={`h-5 w-5 ${alert.risk === "high" ? "text-red-500" : "text-yellow-500"}`}
-                        />
+                      <div className="p-2 rounded-full bg-muted">
+                        <AlertCircle className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="font-medium text-foreground">{alert.type}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {alert.user} • {alert.reason}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">Alert ID: {alert.id}</p>
+                        <p className="font-medium text-foreground">No active fraud alerts</p>
+                        <p className="text-sm text-muted-foreground">All systems are operating normally</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={alert.risk === "high" ? "destructive" : "secondary"}>
-                        {alert.risk.toUpperCase()}
-                      </Badge>
-                      <Button size="sm">Investigate</Button>
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -970,53 +1404,69 @@ export function InsuranceView() {
 
         {/* Reconciliation Tab */}
         <TabsContent value="reconciliation" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          {insuranceProducts.length === 0 ? (
             <Card className="bg-card border-border">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Premiums Due</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-foreground">$87,340</div>
-                <p className="text-xs text-muted-foreground">This month</p>
+              <CardContent className="flex flex-col items-center justify-center py-16">
+                <DollarSign className="h-16 w-16 text-muted-foreground mb-4" />
+                <CardTitle className="text-xl mb-2">No Reconciliation Data</CardTitle>
+                <CardDescription className="text-center mb-6 max-w-md">
+                  Financial reconciliation data will be available once you have active insurance products with premiums and claims.
+                </CardDescription>
+                <Button onClick={() => setShowNewProductDialog(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Your First Product
+                </Button>
               </CardContent>
             </Card>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <Card className="bg-card border-border">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Premiums Due</CardTitle>
+                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-foreground">ZMW 87,340</div>
+                    <p className="text-xs text-muted-foreground">This month</p>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-card border-border">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Premiums Collected</CardTitle>
-                <CheckCircle className="h-4 w-4 text-green-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-foreground">$82,140</div>
-                <p className="text-xs text-green-500">94.0% collection rate</p>
-              </CardContent>
-            </Card>
+                <Card className="bg-card border-border">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Premiums Collected</CardTitle>
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-foreground">ZMW 82,140</div>
+                    <p className="text-xs text-green-500">94.0% collection rate</p>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-card border-border">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Outstanding</CardTitle>
-                <AlertCircle className="h-4 w-4 text-yellow-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-foreground">$5,200</div>
-                <p className="text-xs text-yellow-500">127 overdue accounts</p>
-              </CardContent>
-            </Card>
+                <Card className="bg-card border-border">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Outstanding</CardTitle>
+                    <AlertCircle className="h-4 w-4 text-yellow-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-foreground">ZMW 5,200</div>
+                    <p className="text-xs text-yellow-500">127 overdue accounts</p>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-card border-border">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Claims Reserves</CardTitle>
-                <Shield className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-foreground">$1.2M</div>
-                <p className="text-xs text-muted-foreground">Reserve fund</p>
-              </CardContent>
-            </Card>
-          </div>
+                <Card className="bg-card border-border">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Claims Reserves</CardTitle>
+                    <Shield className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-foreground">ZMW 1.2M</div>
+                    <p className="text-xs text-muted-foreground">Reserve fund</p>
+                  </CardContent>
+                </Card>
+              </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-card border-border">
               <CardHeader>
                 <CardTitle>Financial Reconciliation</CardTitle>
@@ -1049,14 +1499,14 @@ export function InsuranceView() {
                     <div className="grid grid-cols-2 gap-4 text-xs">
                       <div>
                         <p className="text-muted-foreground">Premiums</p>
-                        <p className="font-semibold">$91,200</p>
+                        <p className="font-semibold">ZMW 91,200</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Claims Paid</p>
-                        <p className="font-semibold">$67,400</p>
+                        <p className="font-semibold">ZMW 67,400</p>
                       </div>
                     </div>
-                    <p className="text-xs text-yellow-500 mt-2">Discrepancy: $234 - Requires review</p>
+                    <p className="text-xs text-yellow-500 mt-2">Discrepancy: ZMW 234 - Requires review</p>
                   </div>
                 </div>
 
@@ -1082,15 +1532,15 @@ export function InsuranceView() {
                     <div className="space-y-2 text-xs">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Coverage Limit</span>
-                        <span className="font-semibold">$5M</span>
+                        <span className="font-semibold">ZMW 5M</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Premium Ceded</span>
-                        <span className="font-semibold">$45,600/year</span>
+                        <span className="font-semibold">ZMW 45,600/year</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Retention</span>
-                        <span className="font-semibold">$500K</span>
+                        <span className="font-semibold">ZMW 500K</span>
                       </div>
                     </div>
                   </div>
@@ -1103,11 +1553,11 @@ export function InsuranceView() {
                     <div className="space-y-2 text-xs">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Coverage Limit</span>
-                        <span className="font-semibold">$3M</span>
+                        <span className="font-semibold">ZMW 3M</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Premium Ceded</span>
-                        <span className="font-semibold">$32,400/year</span>
+                        <span className="font-semibold">ZMW 32,400/year</span>
                       </div>
                     </div>
                   </div>
@@ -1118,12 +1568,30 @@ export function InsuranceView() {
                 </Button>
               </CardContent>
             </Card>
-          </div>
+              </div>
+            </>
+          )}
         </TabsContent>
 
         {/* Compliance Tab */}
         <TabsContent value="compliance" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {insuranceProducts.length === 0 ? (
+            <Card className="bg-card border-border">
+              <CardContent className="flex flex-col items-center justify-center py-16">
+                <Shield className="h-16 w-16 text-muted-foreground mb-4" />
+                <CardTitle className="text-xl mb-2">No Compliance Data</CardTitle>
+                <CardDescription className="text-center mb-6 max-w-md">
+                  Compliance reports and monitoring will be available once you have active insurance products and operations.
+                </CardDescription>
+                <Button onClick={() => setShowNewProductDialog(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Your First Product
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <Card className="bg-card border-border">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Compliance Score</CardTitle>
@@ -1262,7 +1730,9 @@ export function InsuranceView() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+              </div>
+            </>
+          )}
         </TabsContent>
       </Tabs>
 
@@ -1541,6 +2011,245 @@ export function InsuranceView() {
                   Cancel
                 </Button>
                 <Button onClick={() => setShowEditRulesDialog(false)}>Save Rules</Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Product Dialog */}
+      <Dialog open={showEditProductDialog} onOpenChange={setShowEditProductDialog}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Insurance Product</DialogTitle>
+            <DialogDescription>Update the insurance product configuration</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Product Type <span className="text-destructive">*</span></Label>
+              <Select
+                value={newProductForm.productType}
+                onValueChange={(value) =>
+                  setNewProductForm({ ...newProductForm, productType: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select insurance type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="crop">Crop Insurance</SelectItem>
+                  <SelectItem value="health">Health Emergency</SelectItem>
+                  <SelectItem value="loan">Loan Protection</SelectItem>
+                  <SelectItem value="fraud">Group Savings (Fraud Protection)</SelectItem>
+                  <SelectItem value="mobile">Mobile Phone</SelectItem>
+                  <SelectItem value="weather">Weather Parametric</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Product Name <span className="text-destructive">*</span></Label>
+              <Input
+                placeholder="e.g., Premium Crop Shield"
+                value={newProductForm.name}
+                onChange={(e) => setNewProductForm({ ...newProductForm, name: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Description</Label>
+              <Textarea
+                placeholder="Describe the insurance coverage..."
+                rows={3}
+                value={newProductForm.description}
+                onChange={(e) =>
+                  setNewProductForm({ ...newProductForm, description: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Premium Amount (ZMW) <span className="text-destructive">*</span></Label>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={newProductForm.premiumAmount}
+                  onChange={(e) =>
+                    setNewProductForm({ ...newProductForm, premiumAmount: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Coverage Amount (ZMW) <span className="text-destructive">*</span></Label>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={newProductForm.coverageAmount}
+                  onChange={(e) =>
+                    setNewProductForm({ ...newProductForm, coverageAmount: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Premium Frequency</Label>
+                <Select
+                  value={newProductForm.premiumFrequency}
+                  onValueChange={(value) =>
+                    setNewProductForm({ ...newProductForm, premiumFrequency: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="quarterly">Quarterly</SelectItem>
+                    <SelectItem value="seasonal">Seasonal</SelectItem>
+                    <SelectItem value="annual">Annual</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Waiting Period (days)</Label>
+                <Input
+                  type="number"
+                  placeholder="30"
+                  value={newProductForm.waitingPeriod}
+                  onChange={(e) =>
+                    setNewProductForm({ ...newProductForm, waitingPeriod: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Coverage Terms</Label>
+              <Textarea
+                placeholder="Define coverage terms and conditions..."
+                rows={4}
+                value={newProductForm.coverageTerms}
+                onChange={(e) =>
+                  setNewProductForm({ ...newProductForm, coverageTerms: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Exclusions</Label>
+              <Textarea
+                placeholder="List any exclusions..."
+                rows={3}
+                value={newProductForm.exclusions}
+                onChange={(e) =>
+                  setNewProductForm({ ...newProductForm, exclusions: e.target.value })
+                }
+              />
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowEditProductDialog(false)
+                setSelectedProductForEdit(null)
+              }}
+              disabled={updateProductMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleUpdateProduct} disabled={updateProductMutation.isPending}>
+              {updateProductMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                "Update Product"
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Product Details Dialog */}
+      <Dialog open={showProductDetailsDialog} onOpenChange={setShowProductDetailsDialog}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{selectedProductForDetails?.name}</DialogTitle>
+            <DialogDescription>Detailed information about this insurance product</DialogDescription>
+          </DialogHeader>
+          {selectedProductForDetails && (
+            <div className="space-y-6 py-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm">Product Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Product Type</Label>
+                      <p className="text-sm font-medium">{selectedProductForDetails.type}</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Status</Label>
+                      <Badge variant={selectedProductForDetails.status === "active" ? "default" : "secondary"}>
+                        {selectedProductForDetails.status}
+                      </Badge>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Description</Label>
+                      <p className="text-sm">{selectedProductForDetails.description || "No description provided"}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm">Statistics</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Active Policies</Label>
+                      <p className="text-lg font-semibold">{selectedProductForDetails.activePolicies}</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Total Coverage</Label>
+                      <p className="text-lg font-semibold">{selectedProductForDetails.totalCoverage}</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Premiums Collected</Label>
+                      <p className="text-lg font-semibold">{selectedProductForDetails.premiumCollected}</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Claims</Label>
+                      <p className="text-sm">{selectedProductForDetails.claims} claims / {selectedProductForDetails.claimsPaid} paid</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    handleEditProduct(selectedProductForDetails)
+                    setShowProductDetailsDialog(false)
+                  }}
+                >
+                  Edit Product
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleViewPolicies(selectedProductForDetails)
+                    setShowProductDetailsDialog(false)
+                  }}
+                >
+                  View Policies
+                </Button>
               </div>
             </div>
           )}

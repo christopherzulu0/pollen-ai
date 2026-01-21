@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,6 +29,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Loader2,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -35,120 +37,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-const mockTransactions = [
-  {
-    id: "1",
-    reference: "TRX-2024-001",
-    user: { name: "John Doe", email: "john@example.com", id: "user-1" },
-    type: "DEPOSIT",
-    amount: 50000,
-    status: "COMPLETED",
-    date: "2024-03-15T10:30:00",
-    description: "Monthly savings deposit",
-    momoNumber: "+260 977 123 456",
-    feeAmount: 250,
-    group: { name: "Village Savings Group", id: "group-1" },
-    wallet: { celoAddress: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb" },
-  },
-  {
-    id: "2",
-    reference: "TRX-2024-002",
-    user: { name: "Jane Smith", email: "jane@example.com", id: "user-2" },
-    type: "WITHDRAWAL",
-    amount: 20000,
-    status: "PENDING",
-    date: "2024-03-15T11:45:00",
-    description: "Emergency withdrawal request",
-    momoNumber: "+260 977 234 567",
-    feeAmount: 100,
-    group: { name: "Women Empowerment Fund", id: "group-2" },
-    wallet: null,
-  },
-  {
-    id: "3",
-    reference: "TRX-2024-003",
-    user: { name: "Bob Johnson", email: "bob@example.com", id: "user-3" },
-    type: "CONTRIBUTION",
-    amount: 100000,
-    status: "COMPLETED",
-    date: "2024-03-14T09:15:00",
-    description: "Weekly group contribution",
-    momoNumber: "+260 977 345 678",
-    feeAmount: 500,
-    group: { name: "Business Investment Group", id: "group-3" },
-    wallet: { celoAddress: "0x8e5A88b29A2b844Bc9e7595f0bEb1234567890" },
-  },
-  {
-    id: "4",
-    reference: "TRX-2024-004",
-    user: { name: "Alice Williams", email: "alice@example.com", id: "user-4" },
-    type: "LOAN_DISBURSEMENT",
-    amount: 500000,
-    status: "COMPLETED",
-    date: "2024-03-13T14:20:00",
-    description: "Loan disbursement for business expansion",
-    momoNumber: "+260 977 456 789",
-    feeAmount: 2500,
-    group: { name: "Village Savings Group", id: "group-1" },
-    wallet: { celoAddress: "0x9f6B99c30A3b844Bc9e7595f0bEb2345678901" },
-  },
-  {
-    id: "5",
-    reference: "TRX-2024-005",
-    user: { name: "Charlie Brown", email: "charlie@example.com", id: "user-5" },
-    type: "LOAN_REPAYMENT",
-    amount: 55000,
-    status: "COMPLETED",
-    date: "2024-03-12T16:45:00",
-    description: "Monthly loan installment payment",
-    momoNumber: "+260 977 567 890",
-    feeAmount: 275,
-    group: { name: "Women Empowerment Fund", id: "group-2" },
-    wallet: null,
-  },
-  {
-    id: "6",
-    reference: "TRX-2024-006",
-    user: { name: "Diana Prince", email: "diana@example.com", id: "user-6" },
-    type: "INTEREST",
-    amount: 7500,
-    status: "COMPLETED",
-    date: "2024-03-11T10:00:00",
-    description: "Monthly interest payment",
-    momoNumber: null,
-    feeAmount: 0,
-    group: { name: "Business Investment Group", id: "group-3" },
-    wallet: { celoAddress: "0xa07C10d41A4b844Bc9e7595f0bEb3456789012" },
-  },
-  {
-    id: "7",
-    reference: "TRX-2024-007",
-    user: { name: "Eve Davis", email: "eve@example.com", id: "user-7" },
-    type: "FEE",
-    amount: 1000,
-    status: "COMPLETED",
-    date: "2024-03-10T13:30:00",
-    description: "Platform service fee",
-    momoNumber: null,
-    feeAmount: 0,
-    group: null,
-    wallet: null,
-  },
-  {
-    id: "8",
-    reference: "TRX-2024-008",
-    user: { name: "Frank Miller", email: "frank@example.com", id: "user-8" },
-    type: "PENALTY",
-    amount: 5000,
-    status: "FAILED",
-    date: "2024-03-09T15:20:00",
-    description: "Late contribution penalty",
-    momoNumber: "+260 977 678 901",
-    feeAmount: 250,
-    group: { name: "Village Savings Group", id: "group-1" },
-    wallet: null,
-  },
-]
+// Transaction type definition
+type Transaction = {
+  id: string
+  reference: string
+  user: { name: string; email: string; id: string }
+  type: string
+  amount: number
+  status: string
+  date: string
+  description: string
+  momoNumber: string | null
+  feeAmount: number
+  group: { name: string; id: string } | null
+  wallet: { celoAddress: string | null } | null
+}
+
+// Fetch transactions from API
+const fetchTransactions = async (): Promise<Transaction[]> => {
+  const response = await fetch("/api/admin/transactions")
+  if (!response.ok) {
+    throw new Error("Failed to fetch transactions")
+  }
+  return response.json()
+}
 
 const statusColors = {
   COMPLETED: "bg-success text-success-foreground",
@@ -184,21 +96,44 @@ export function TransactionsView() {
   const [typeFilter, setTypeFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
   const [dateFilter, setDateFilter] = useState("all")
-  const [selectedTransaction, setSelectedTransaction] = useState<(typeof mockTransactions)[0] | null>(null)
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: "asc" | "desc" } | null>(null)
   const [activeTab, setActiveTab] = useState("overview")
   const [sortBy, setSortBy] = useState("date")
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
+  // Fetch transactions using React Query
+  const {
+    data: transactions = [],
+    isLoading,
+    error,
+  } = useQuery<Transaction[]>({
+    queryKey: ["admin-transactions", typeFilter, statusFilter, searchQuery],
+    queryFn: async () => {
+      const params = new URLSearchParams()
+      if (typeFilter !== "all") params.append("type", typeFilter)
+      if (statusFilter !== "all") params.append("status", statusFilter)
+      if (searchQuery) params.append("search", searchQuery)
+
+      const response = await fetch(`/api/admin/transactions?${params.toString()}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch transactions")
+      }
+      return response.json()
+    },
+    staleTime: 30000, // 30 seconds
+    refetchOnWindowFocus: false,
+  })
+
   const stats = {
-    totalVolume: mockTransactions.reduce((sum, t) => sum + t.amount, 0),
-    completedCount: mockTransactions.filter((t) => t.status === "COMPLETED").length,
-    pendingCount: mockTransactions.filter((t) => t.status === "PENDING").length,
-    totalFees: mockTransactions.reduce((sum, t) => sum + (t.feeAmount || 0), 0),
+    totalVolume: transactions.reduce((sum, t) => sum + t.amount, 0),
+    completedCount: transactions.filter((t) => t.status === "COMPLETED").length,
+    pendingCount: transactions.filter((t) => t.status === "PENDING").length,
+    totalFees: transactions.reduce((sum, t) => sum + (t.feeAmount || 0), 0),
   }
 
-  const filteredTransactions = mockTransactions.filter((transaction) => {
+  const filteredTransactions = transactions.filter((transaction) => {
     const matchesSearch =
       transaction.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
       transaction.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -257,6 +192,35 @@ export function TransactionsView() {
       key,
       direction: current?.key === key && current.direction === "asc" ? "desc" : "asc",
     }))
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4 sm:space-y-6 p-2 sm:p-0">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center space-y-3">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="text-sm text-muted-foreground">Loading transactions...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-4 sm:space-y-6 p-2 sm:p-0">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center space-y-3">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-sm text-destructive">Failed to load transactions</p>
+            <p className="text-xs text-muted-foreground">
+              {error instanceof Error ? error.message : "An error occurred"}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

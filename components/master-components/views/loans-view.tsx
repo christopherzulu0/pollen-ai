@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -32,6 +33,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Loader2,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -40,153 +42,62 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
+import { Skeleton } from "@/components/ui/skeleton"
+import { toast } from "sonner"
 
-const mockLoans = [
-  {
-    id: "1",
-    borrower: {
-      name: "John Doe",
-      email: "john@example.com",
-      avatar: "/thoughtful-man-in-library.png",
-      phone: "+260 977 123 456",
-      nationalId: "123456/78/9",
-    },
-    amount: 5000,
-    purpose: "Business expansion - Opening new retail location in Lusaka CBD",
-    status: "PENDING",
-    loanType: "GROUP",
-    groupName: "Savings Champions",
-    votes: { approve: 5, reject: 2, pending: 8, total: 15 },
-    date: "2024-03-15",
-    repaymentDate: "2024-09-15",
-    installments: 6,
-    interestRate: 5,
-    totalRepayment: 5250,
-    documents: ["NRC Front", "NRC Back", "Business Plan", "Bank Statement"],
-    creditScore: 78,
-    riskLevel: "Low",
-    employmentStatus: "Self-employed",
-    monthlyIncome: 8000,
-  },
-  {
-    id: "2",
-    borrower: {
-      name: "Jane Smith",
-      email: "jane@example.com",
-      avatar: "/jane-portrait.png",
-      phone: "+260 966 234 567",
-      nationalId: "234567/89/0",
-    },
-    amount: 3000,
-    purpose: "Education - University tuition fees for final year",
-    status: "APPROVED",
-    loanType: "GROUP",
-    groupName: "Education Fund",
-    votes: { approve: 8, reject: 1, pending: 0, total: 9 },
-    date: "2024-03-10",
-    repaymentDate: "2024-12-10",
-    installments: 9,
-    interestRate: 3,
-    totalRepayment: 3090,
-    documents: ["NRC Front", "NRC Back", "Admission Letter", "Pay Slip"],
-    creditScore: 85,
-    riskLevel: "Very Low",
-    employmentStatus: "Employed",
-    monthlyIncome: 5500,
-    approvedDate: "2024-03-12",
-    disbursedDate: "2024-03-14",
-  },
-  {
-    id: "3",
-    borrower: {
-      name: "Bob Johnson",
-      email: "bob@example.com",
-      avatar: "/bob-portrait.png",
-      phone: "+260 955 345 678",
-      nationalId: "345678/90/1",
-    },
-    amount: 10000,
-    purpose: "Solar equipment - 5kW solar panel installation for home",
-    status: "REPAYING",
-    loanType: "INDIVIDUAL",
-    groupName: null,
-    votes: { approve: 10, reject: 0, pending: 0, total: 10 },
-    date: "2024-02-20",
-    repaymentDate: "2025-02-20",
-    installments: 12,
-    interestRate: 7,
-    totalRepayment: 10700,
-    documents: ["NRC Front", "NRC Back", "Land Ownership", "Utility Bill", "Vendor Quotation"],
-    creditScore: 92,
-    riskLevel: "Very Low",
-    employmentStatus: "Employed",
-    monthlyIncome: 12000,
-    approvedDate: "2024-02-22",
-    disbursedDate: "2024-02-25",
-    paidInstallments: 3,
-    nextPaymentDate: "2024-06-25",
-    paidAmount: 2675,
-  },
-  {
-    id: "4",
-    borrower: {
-      name: "Alice Williams",
-      email: "alice@example.com",
-      avatar: "/thoughtful-man-in-library.png",
-      phone: "+260 977 456 789",
-      nationalId: "456789/01/2",
-    },
-    amount: 7500,
-    purpose: "Medical emergency - Surgery and hospital bills",
-    status: "REJECTED",
-    loanType: "GROUP",
-    groupName: "Community Support",
-    votes: { approve: 3, reject: 9, pending: 0, total: 12 },
-    date: "2024-03-08",
-    repaymentDate: "2024-09-08",
-    installments: 6,
-    interestRate: 4,
-    totalRepayment: 7800,
-    documents: ["NRC Front", "Medical Report"],
-    creditScore: 45,
-    riskLevel: "High",
-    employmentStatus: "Unemployed",
-    monthlyIncome: 0,
-    rejectedDate: "2024-03-10",
-    rejectionReason: "Insufficient voting support and no stable income source",
-  },
-  {
-    id: "5",
-    borrower: {
-      name: "Michael Brown",
-      email: "michael@example.com",
-      avatar: "/bob-portrait.png",
-      phone: "+260 966 567 890",
-      nationalId: "567890/12/3",
-    },
-    amount: 15000,
-    purpose: "Agricultural investment - Farm equipment and seeds",
-    status: "DISBURSED",
-    loanType: "INDIVIDUAL",
-    groupName: null,
-    votes: { approve: 1, reject: 0, pending: 0, total: 1 },
-    date: "2024-03-05",
-    repaymentDate: "2025-03-05",
-    installments: 12,
-    interestRate: 6,
-    totalRepayment: 15900,
-    documents: ["NRC Front", "NRC Back", "Farm Documentation", "Business Plan"],
-    creditScore: 88,
-    riskLevel: "Low",
-    employmentStatus: "Self-employed",
-    monthlyIncome: 10000,
-    approvedDate: "2024-03-06",
-    disbursedDate: "2024-03-08",
-    paidInstallments: 0,
-    nextPaymentDate: "2024-04-08",
-    paidAmount: 0,
-  },
-]
+// Loan type definition
+type Loan = {
+  id: string
+  borrower: {
+    name: string
+    email: string
+    avatar: string | null
+    phone: string
+    nationalId: string
+  }
+  amount: number
+  purpose: string
+  status: string
+  loanType: "GROUP" | "INDIVIDUAL"
+  groupName: string | null
+  votes: {
+    approve: number
+    reject: number
+    pending: number
+    total: number
+  }
+  date: string
+  repaymentDate: string | null
+  installments: number
+  interestRate: number
+  totalRepayment: number
+  documents: string[]
+  creditScore: number
+  riskLevel: string
+  employmentStatus: string
+  monthlyIncome: number
+  paidInstallments?: number
+  paidAmount?: number
+  nextPaymentDate?: string
+  approvedDate?: string
+  disbursedDate?: string
+  rejectedDate?: string
+  rejectionReason?: string
+}
+
+// Currency formatter for ZMW
+const formatCurrency = (amount: number) => {
+  return `ZMW ${amount.toLocaleString()}`
+}
+
+const formatCurrencyCompact = (amount: number) => {
+  if (amount >= 1000000) {
+    return `ZMW ${(amount / 1000000).toFixed(1)}M`
+  } else if (amount >= 1000) {
+    return `ZMW ${(amount / 1000).toFixed(1)}K`
+  }
+  return `ZMW ${amount.toLocaleString()}`
+}
 
 const statusColors = {
   PENDING: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
@@ -211,30 +122,97 @@ export function LoansView() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [loanTypeFilter, setLoanTypeFilter] = useState("all")
   const [sortBy, setSortBy] = useState<"date" | "amount" | "risk">("date")
-  const [selectedLoan, setSelectedLoan] = useState<(typeof mockLoans)[0] | null>(null)
+  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null)
   const [actionNote, setActionNote] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [activeTab, setActiveTab] = useState<string>("overview")
+  const [pendingAction, setPendingAction] = useState<"APPROVE" | "REJECT" | null>(null)
 
-  const totalLoans = mockLoans.length
-  const pendingLoans = mockLoans.filter((l) => l.status === "PENDING").length
-  const activeLoans = mockLoans.filter((l) => l.status === "REPAYING" || l.status === "DISBURSED").length
-  const totalDisbursed = mockLoans.reduce(
+  const queryClient = useQueryClient()
+
+  // Fetch loans using React Query
+  const {
+    data: loans = [],
+    isLoading,
+    error,
+  } = useQuery<Loan[]>({
+    queryKey: ["admin-loans", statusFilter, loanTypeFilter, searchQuery],
+    queryFn: async () => {
+      const params = new URLSearchParams()
+      if (statusFilter !== "all") params.append("status", statusFilter)
+      if (loanTypeFilter !== "all") params.append("loanType", loanTypeFilter)
+      if (searchQuery) params.append("search", searchQuery)
+
+      const response = await fetch(`/api/admin/loans?${params.toString()}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch loans")
+      }
+      return response.json()
+    },
+    staleTime: 30000, // 30 seconds
+    refetchOnWindowFocus: false,
+  })
+
+  // Mutation for approving/rejecting loans
+  const approveRejectMutation = useMutation({
+    mutationFn: async ({ loanId, action }: { loanId: string; action: "APPROVE" | "REJECT" }) => {
+      setPendingAction(action)
+      const response = await fetch(`/api/admin/loans/${loanId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action, note: actionNote }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to update loan")
+      }
+      return response.json()
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["admin-loans"] })
+      setSelectedLoan(null)
+      setActionNote("")
+      setPendingAction(null)
+      toast.success(
+        variables.action === "APPROVE" ? "Loan approved successfully" : "Loan rejected successfully"
+      )
+    },
+    onError: (error) => {
+      setPendingAction(null)
+      toast.error(error instanceof Error ? error.message : "Failed to update loan")
+    },
+  })
+
+  const handleApprove = (loanId: string) => {
+    approveRejectMutation.mutate({ loanId, action: "APPROVE" })
+  }
+
+  const handleReject = (loanId: string) => {
+    approveRejectMutation.mutate({ loanId, action: "REJECT" })
+  }
+
+  const totalLoans = loans.length
+  const pendingLoans = loans.filter((l) => l.status === "PENDING").length
+  const activeLoans = loans.filter((l) => l.status === "APPROVED").length
+  const totalDisbursed = loans.reduce(
     (sum, l) => (l.status !== "PENDING" && l.status !== "REJECTED" ? sum + l.amount : sum),
     0,
   )
-  const totalRepaying = mockLoans
+  const totalRepaying = loans
     .filter((l) => l.status === "REPAYING")
     .reduce((sum, l) => sum + (l.paidAmount || 0), 0)
-  const defaultedLoans = mockLoans.filter((l) => l.status === "DEFAULTED").length
-  const defaultRate = ((defaultedLoans / totalLoans) * 100).toFixed(1)
-  const approvalRate = (
-    (mockLoans.filter((l) => l.status !== "PENDING" && l.status !== "REJECTED").length / totalLoans) *
-    100
-  ).toFixed(1)
-  const avgLoanAmount = (mockLoans.reduce((sum, l) => sum + l.amount, 0) / totalLoans).toFixed(0)
+  const defaultedLoans = loans.filter((l) => l.status === "DEFAULTED").length
+  const defaultRate = totalLoans > 0 ? ((defaultedLoans / totalLoans) * 100).toFixed(1) : "0.0"
+  const approvalRate =
+    totalLoans > 0
+      ? ((loans.filter((l) => l.status !== "PENDING" && l.status !== "REJECTED").length / totalLoans) * 100).toFixed(1)
+      : "0.0"
+  const avgLoanAmount = totalLoans > 0 ? (loans.reduce((sum, l) => sum + l.amount, 0) / totalLoans).toFixed(0) : "0"
 
-  const filteredLoans = mockLoans
+  const filteredLoans = loans
     .filter((loan) => {
       const matchesSearch =
         loan.borrower.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -308,6 +286,92 @@ export function LoansView() {
     return pages
   }
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        {/* Stats Cards Skeleton */}
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Card key={i} className="bg-card border-border">
+              <CardHeader className="pb-2">
+                <Skeleton className="h-4 w-20" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-8 w-16 mb-2" />
+                <Skeleton className="h-3 w-24" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Main Card Skeleton */}
+        <Card className="bg-card border-border">
+          <CardHeader>
+            <Skeleton className="h-6 w-48 mb-2" />
+            <Skeleton className="h-4 w-96" />
+          </CardHeader>
+          <CardContent>
+            {/* Filters Skeleton */}
+            <div className="mb-4 flex flex-wrap gap-3">
+              <Skeleton className="h-10 flex-1 min-w-[200px]" />
+              <Skeleton className="h-10 w-[160px]" />
+              <Skeleton className="h-10 w-[160px]" />
+              <Skeleton className="h-10 w-[160px]" />
+            </div>
+
+            {/* Table Skeleton */}
+            <div className="rounded-md border border-border">
+              <div className="border-b border-border">
+                <div className="grid grid-cols-9 gap-4 p-4">
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <Skeleton key={i} className="h-4 w-full" />
+                  ))}
+                </div>
+              </div>
+              <div className="divide-y divide-border">
+                {Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <div key={rowIndex} className="grid grid-cols-9 gap-4 p-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <div className="space-y-1 flex-1">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-3 w-32" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-8 w-8 rounded" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center space-y-3">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-sm text-destructive">Failed to load loans</p>
+            <p className="text-xs text-muted-foreground">
+              {error instanceof Error ? error.message : "An error occurred"}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8">
@@ -333,7 +397,7 @@ export function LoansView() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeLoans}</div>
-            <p className="text-xs text-muted-foreground mt-1">Currently repaying</p>
+            <p className="text-xs text-muted-foreground mt-1">Approved loans</p>
           </CardContent>
         </Card>
 
@@ -345,7 +409,7 @@ export function LoansView() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${(totalDisbursed / 1000).toFixed(0)}K</div>
+            <div className="text-2xl font-bold">{formatCurrencyCompact(totalDisbursed)}</div>
             <p className="text-xs text-muted-foreground mt-1">Total amount</p>
           </CardContent>
         </Card>
@@ -384,7 +448,7 @@ export function LoansView() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${(totalRepaying / 1000).toFixed(1)}K</div>
+            <div className="text-2xl font-bold">{formatCurrencyCompact(totalRepaying)}</div>
             <p className="text-xs text-muted-foreground mt-1">Repayments</p>
           </CardContent>
         </Card>
@@ -410,7 +474,7 @@ export function LoansView() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${(Number(avgLoanAmount) / 1000).toFixed(1)}K</div>
+            <div className="text-2xl font-bold">{formatCurrencyCompact(Number(avgLoanAmount))}</div>
             <p className="text-xs text-muted-foreground mt-1">Per loan</p>
           </CardContent>
         </Card>
@@ -522,7 +586,7 @@ export function LoansView() {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="font-semibold">${loan.amount.toLocaleString()}</TableCell>
+                      <TableCell className="font-semibold">{formatCurrency(loan.amount)}</TableCell>
                       <TableCell className="text-muted-foreground max-w-[200px] truncate">{loan.purpose}</TableCell>
                       <TableCell>
                         <Badge variant="outline" className="gap-1">
@@ -576,12 +640,24 @@ export function LoansView() {
                               <Eye className="mr-2 h-4 w-4" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setActiveTab("documents")
+                                setSelectedLoan(loan)
+                              }}
+                            >
                               <FileText className="mr-2 h-4 w-4" />
                               View Documents
                             </DropdownMenuItem>
                             {loan.loanType === "GROUP" && (
-                              <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setActiveTab("voting")
+                                  setSelectedLoan(loan)
+                                }}
+                              >
                                 <MessageSquare className="mr-2 h-4 w-4" />
                                 View Votes
                               </DropdownMenuItem>
@@ -590,14 +666,28 @@ export function LoansView() {
                               <Download className="mr-2 h-4 w-4" />
                               Export Report
                             </DropdownMenuItem>
-                            {loan.status === "PENDING" && (
+                            {loan.status === "PENDING" && loan.loanType === "INDIVIDUAL" && (
                               <>
                                 <Separator className="my-1" />
-                                <DropdownMenuItem className="text-emerald-400" onClick={(e) => e.stopPropagation()}>
+                                <DropdownMenuItem
+                                  className="text-emerald-400"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleApprove(loan.id)
+                                  }}
+                                  disabled={approveRejectMutation.isPending}
+                                >
                                   <CheckCircle className="mr-2 h-4 w-4" />
                                   Approve Loan
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="text-red-400" onClick={(e) => e.stopPropagation()}>
+                                <DropdownMenuItem
+                                  className="text-red-400"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleReject(loan.id)
+                                  }}
+                                  disabled={approveRejectMutation.isPending}
+                                >
                                   <XCircle className="mr-2 h-4 w-4" />
                                   Reject Loan
                                 </DropdownMenuItem>
@@ -708,7 +798,15 @@ export function LoansView() {
         </CardContent>
       </Card>
 
-      <Dialog open={!!selectedLoan} onOpenChange={() => setSelectedLoan(null)}>
+      <Dialog
+        open={!!selectedLoan}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedLoan(null)
+            setActiveTab("overview")
+          }
+        }}
+      >
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
@@ -723,7 +821,7 @@ export function LoansView() {
           </DialogHeader>
 
           {selectedLoan && (
-            <Tabs defaultValue="overview" className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="borrower">Borrower</TabsTrigger>
@@ -741,11 +839,11 @@ export function LoansView() {
                   <CardContent className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="text-sm text-muted-foreground">Loan Amount</label>
-                      <div className="text-2xl font-bold">${selectedLoan.amount.toLocaleString()}</div>
+                      <div className="text-2xl font-bold">{formatCurrency(selectedLoan.amount)}</div>
                     </div>
                     <div>
                       <label className="text-sm text-muted-foreground">Total Repayment</label>
-                      <div className="text-2xl font-bold">${selectedLoan.totalRepayment.toLocaleString()}</div>
+                      <div className="text-2xl font-bold">{formatCurrency(selectedLoan.totalRepayment)}</div>
                     </div>
                     <div>
                       <label className="text-sm text-muted-foreground">Interest Rate</label>
@@ -814,12 +912,12 @@ export function LoansView() {
                           <div className="text-xs text-muted-foreground">Installments Paid</div>
                         </div>
                         <div>
-                          <div className="text-2xl font-bold">${selectedLoan.paidAmount?.toLocaleString()}</div>
+                          <div className="text-2xl font-bold">{formatCurrency(selectedLoan.paidAmount || 0)}</div>
                           <div className="text-xs text-muted-foreground">Amount Paid</div>
                         </div>
                         <div>
                           <div className="text-2xl font-bold">
-                            ${(selectedLoan.totalRepayment - (selectedLoan.paidAmount || 0)).toLocaleString()}
+                            {formatCurrency(selectedLoan.totalRepayment - (selectedLoan.paidAmount || 0))}
                           </div>
                           <div className="text-xs text-muted-foreground">Remaining</div>
                         </div>
@@ -831,7 +929,7 @@ export function LoansView() {
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Next Payment: {selectedLoan.nextPaymentDate}</span>
                         <span className="font-semibold">
-                          ${(selectedLoan.totalRepayment / selectedLoan.installments).toFixed(2)}
+                          {formatCurrency(Math.round(selectedLoan.totalRepayment / selectedLoan.installments))}
                         </span>
                       </div>
                     </CardContent>
@@ -889,7 +987,7 @@ export function LoansView() {
                       </div>
                       <div>
                         <label className="text-sm text-muted-foreground">Monthly Income</label>
-                        <div className="font-medium">${selectedLoan.monthlyIncome.toLocaleString()}</div>
+                        <div className="font-medium">{formatCurrency(selectedLoan.monthlyIncome)}</div>
                       </div>
                     </div>
                   </CardContent>
@@ -902,12 +1000,12 @@ export function LoansView() {
                   <CardContent className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">Monthly Income</span>
-                      <span className="font-semibold">${selectedLoan.monthlyIncome.toLocaleString()}</span>
+                      <span className="font-semibold">{formatCurrency(selectedLoan.monthlyIncome)}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">Monthly Loan Payment</span>
                       <span className="font-semibold">
-                        ${(selectedLoan.totalRepayment / selectedLoan.installments).toFixed(2)}
+                        {formatCurrency(Math.round(selectedLoan.totalRepayment / selectedLoan.installments))}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -977,7 +1075,7 @@ export function LoansView() {
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="font-semibold">${monthlyPayment.toFixed(2)}</div>
+                              <div className="font-semibold">{formatCurrency(Math.round(monthlyPayment))}</div>
                               {isPaid && <div className="text-xs text-emerald-400">Paid</div>}
                               {isNext && <div className="text-xs text-blue-400">Due Next</div>}
                             </div>
@@ -1129,11 +1227,11 @@ export function LoansView() {
             </Tabs>
           )}
 
-          {selectedLoan?.status === "PENDING" && (
+          {selectedLoan?.status === "PENDING" && selectedLoan?.loanType === "INDIVIDUAL" && (
             <Card className="bg-card border-border mt-4">
               <CardHeader>
                 <CardTitle className="text-base">Admin Action</CardTitle>
-                <CardDescription>Approve or reject this loan request</CardDescription>
+                <CardDescription>Approve or reject this individual loan request</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -1146,15 +1244,31 @@ export function LoansView() {
                   />
                 </div>
                 <div className="flex gap-3">
-                  <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700">
+                  <Button
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                    onClick={() => handleApprove(selectedLoan.id)}
+                    disabled={pendingAction !== null}
+                  >
                     <CheckCircle className="h-4 w-4 mr-2" />
-                    Approve Loan
+                    {pendingAction === "APPROVE" ? "Processing..." : "Approve Loan"}
                   </Button>
-                  <Button variant="destructive" className="flex-1">
+                  <Button
+                    variant="destructive"
+                    className="flex-1"
+                    onClick={() => handleReject(selectedLoan.id)}
+                    disabled={pendingAction !== null}
+                  >
                     <XCircle className="h-4 w-4 mr-2" />
-                    Reject Loan
+                    {pendingAction === "REJECT" ? "Processing..." : "Reject Loan"}
                   </Button>
                 </div>
+                {approveRejectMutation.isError && (
+                  <p className="text-sm text-destructive">
+                    {approveRejectMutation.error instanceof Error
+                      ? approveRejectMutation.error.message
+                      : "An error occurred"}
+                  </p>
+                )}
               </CardContent>
             </Card>
           )}

@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "type": "module",
+    "db:groups": "tsx prisma/seed-groups.ts",
     "db:seed": "tsx prisma/seed.ts",
     "copy-prisma-engine": "cp ./lib/generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node ./lib/generated/libquery_engine-rhel-openssl-3.0.x.so.node || true",
     "vercel-build": "prisma generate && prisma migrate deploy && npm run copy-prisma-engine && next build"
@@ -86,6 +87,7 @@
     "react-query": "^3.39.3",
     "react-query-devtools": "^2.6.3",
     "react-resizable-panels": "^2.1.9",
+    "react-webcam": "^7.2.0",
     "recharts": "^2.15.4",
     "sonner": "^1.7.4",
     "svix": "^1.84.1",

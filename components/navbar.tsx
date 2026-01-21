@@ -17,8 +17,14 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [userRole, setUserRole] = useState<string | undefined>(undefined)
   const [userOrganizations, setUserOrganizations] = useState<any[]>([])
+  const [isMounted, setIsMounted] = useState(false)
   const router = useRouter()
   const { user, isLoaded } = useUser()
+
+  // Prevent hydration mismatch by only rendering auth-dependent content on client
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // Get user's organizations and their role
   useEffect(() => {
@@ -188,44 +194,51 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center space-x-2 lg:space-x-4">
             {/* <ThemeToggle /> */}
-            <SignedOut>
-              <Button
-                onClick={handleGetStarted}
-                className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
-                Get Started
-              </Button>
-            </SignedOut>
+            {isMounted && isLoaded ? (
+              <>
+                <SignedOut>
+                  <Button
+                    onClick={handleGetStarted}
+                    className="bg-[#00CC66] hover:bg-[#00BB55] text-white rounded-full transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-[#00CC66]/20">
+                    Get Started
+                  </Button>
+                </SignedOut>
 
-            <SignedIn>
-              {isAuthorized ? (
-                <Button
-                  onClick={handleDashboardClick}
-                  className={`${isScrolled
-                    ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
-                    : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
-                    } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
-                  {isAdmin ? '📊 Admin' : '📈 Dashboard'}
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleRequestAccess}
-                  className={`${isScrolled
-                    ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                    : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
-                    } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
-                  🔐 Request Access
-                </Button>
-              )}
+                <SignedIn>
+                  {isAuthorized ? (
+                    <Button
+                      onClick={handleDashboardClick}
+                      className={`${isScrolled
+                        ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
+                        : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+                        } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
+                      {isAdmin ? '📊 Admin' : '📈 Dashboard'}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleRequestAccess}
+                      className={`${isScrolled
+                        ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                        : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
+                        } rounded-full transition-all duration-300 font-semibold shadow-lg`}>
+                      🔐 Request Access
+                    </Button>
+                  )}
 
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "h-10 w-10 rounded-full"
-                  }
-                }}
-                showName={false}
-              />
-            </SignedIn>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "h-10 w-10 rounded-full"
+                      }
+                    }}
+                    showName={false}
+                  />
+                </SignedIn>
+              </>
+            ) : (
+              // Placeholder to prevent layout shift during hydration
+              <div className="h-10 w-10" />
+            )}
           </div>
 
           <div className="lg:hidden flex items-center space-x-2">
@@ -383,47 +396,54 @@ export default function Navbar() {
             </Link>
             
             <div className="pt-4 space-y-2">
-              <SignedOut>
-                <Button
-                  onClick={handleGetStarted}
-                  className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
-                  Get Started
-                </Button>
-              </SignedOut>
+              {isMounted && isLoaded ? (
+                <>
+                  <SignedOut>
+                    <Button
+                      onClick={handleGetStarted}
+                      className="bg-[#00CC66] hover:bg-[#00BB55] text-white w-full rounded-xl py-6 text-lg shadow-lg">
+                      Get Started
+                    </Button>
+                  </SignedOut>
 
-              <SignedIn>
-                {isAuthorized ? (
-                  <Button
-                    onClick={() => {
-                      handleDashboardClick()
-                      setIsMenuOpen(false)
-                    }}
-                    className="w-full bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white rounded-xl py-3 font-bold text-base transition-all duration-300 shadow-lg">
-                    {isAdmin ? '📊 Admin Dashboard' : '📈 Dashboard'}
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => {
-                      handleRequestAccess()
-                      setIsMenuOpen(false)
-                    }}
-                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-bold text-base transition-all duration-300 shadow-lg">
-                    🔐 Request Access
-                  </Button>
-                )}
+                  <SignedIn>
+                    {isAuthorized ? (
+                      <Button
+                        onClick={() => {
+                          handleDashboardClick()
+                          setIsMenuOpen(false)
+                        }}
+                        className="w-full bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white rounded-xl py-3 font-bold text-base transition-all duration-300 shadow-lg">
+                        {isAdmin ? '📊 Admin Dashboard' : '📈 Dashboard'}
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          handleRequestAccess()
+                          setIsMenuOpen(false)
+                        }}
+                        className="w-full bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-bold text-base transition-all duration-300 shadow-lg">
+                        🔐 Request Access
+                      </Button>
+                    )}
 
-                <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
-                  <span className="font-medium">Account</span>
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "h-10 w-10 rounded-full"
-                      }
-                    }}
-                    showName={false}
-                  />
-                </div>
-              </SignedIn>
+                    <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                      <span className="font-medium">Account</span>
+                      <UserButton
+                        appearance={{
+                          elements: {
+                            avatarBox: "h-10 w-10 rounded-full"
+                          }
+                        }}
+                        showName={false}
+                      />
+                    </div>
+                  </SignedIn>
+                </>
+              ) : (
+                // Placeholder to prevent layout shift during hydration
+                <div className="h-12" />
+              )}
             </div>
           </nav>
         </div>

@@ -1,6 +1,6 @@
-import { PrismaClient } from '../lib/generated/prisma'
+import { prisma } from '@/lib/prisma'
+import 'dotenv/config'
 
-const prisma = new PrismaClient()
 
 async function main() {
   console.log('🌱 Starting seed...')

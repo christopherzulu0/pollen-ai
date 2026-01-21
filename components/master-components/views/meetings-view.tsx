@@ -1,10 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Skeleton } from "@/components/ui/skeleton"
+import { AlertTriangle } from "lucide-react"
 import {
   Calendar,
   MapPin,
@@ -28,138 +31,165 @@ import { Progress } from "@/components/ui/progress"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 
-const mockMeetings = [
-  {
-    id: "1",
-    title: "Monthly Financial Review",
-    description: "Review group finances, approve loan requests, and discuss investment opportunities",
-    date: "2024-03-20",
-    time: "10:00 AM",
-    duration: "2 hours",
-    location: "Conference Room A",
-    isVirtual: false,
-    meetingLink: null,
-    status: "upcoming",
-    group: { id: "g1", name: "Savings Circle A", members: 15 },
-    attendees: [
-      {
-        id: "1",
-        name: "John Doe",
-        email: "john@example.com",
-        status: "confirmed",
-        avatar: "/thoughtful-man-in-library.png",
-      },
-      { id: "2", name: "Jane Smith", email: "jane@example.com", status: "confirmed", avatar: "/jane-portrait.png" },
-      { id: "3", name: "Bob Johnson", email: "bob@example.com", status: "pending", avatar: "/bob-portrait.png" },
-      { id: "4", name: "Alice Williams", email: "alice@example.com", status: "confirmed", avatar: null },
-      { id: "5", name: "Charlie Brown", email: "charlie@example.com", status: "declined", avatar: null },
-    ],
-    agenda: [
-      "Opening remarks and attendance",
-      "Financial report presentation",
-      "Loan request reviews (3 pending)",
-      "Investment opportunity discussion",
-      "AOB and closing",
-    ],
-    createdBy: { name: "John Doe", email: "john@example.com" },
-    createdAt: "2024-03-01",
-  },
-  {
-    id: "2",
-    title: "Investment Strategy Discussion",
-    description: "Quarterly review of investment portfolio and strategy planning for Q2",
-    date: "2024-03-22",
-    time: "2:00 PM",
-    duration: "1.5 hours",
-    location: "Zoom Meeting",
-    isVirtual: true,
-    meetingLink: "https://zoom.us/j/123456789",
-    status: "upcoming",
-    group: { id: "g2", name: "Investment Group", members: 8 },
-    attendees: [
-      { id: "6", name: "David Lee", email: "david@example.com", status: "confirmed", avatar: null },
-      { id: "7", name: "Emma Wilson", email: "emma@example.com", status: "confirmed", avatar: null },
-      { id: "8", name: "Frank Miller", email: "frank@example.com", status: "pending", avatar: null },
-    ],
-    agenda: [
-      "Q1 performance review",
-      "Portfolio rebalancing discussion",
-      "New investment opportunities",
-      "Risk assessment update",
-    ],
-    createdBy: { name: "David Lee", email: "david@example.com" },
-    createdAt: "2024-03-05",
-  },
-  {
-    id: "3",
-    title: "Emergency Fund Planning",
-    description: "Discuss and establish emergency fund policies for the group",
-    date: "2024-03-15",
-    time: "3:00 PM",
-    duration: "1 hour",
-    location: "Community Center",
-    isVirtual: false,
-    meetingLink: null,
-    status: "completed",
-    group: { id: "g3", name: "Community Savers", members: 20 },
-    attendees: [
-      { id: "9", name: "Grace Taylor", email: "grace@example.com", status: "attended", avatar: null },
-      { id: "10", name: "Henry Anderson", email: "henry@example.com", status: "attended", avatar: null },
-      { id: "11", name: "Ivy Martinez", email: "ivy@example.com", status: "absent", avatar: null },
-    ],
-    agenda: ["Introduction to emergency funds", "Policy proposals", "Voting on proposals", "Implementation timeline"],
-    minutes: "Meeting was productive. Approved emergency fund policy with 85% vote. Implementation starts April 1st.",
-    createdBy: { name: "Grace Taylor", email: "grace@example.com" },
-    createdAt: "2024-03-01",
-  },
-  {
-    id: "4",
-    title: "New Member Orientation",
-    description: "Welcome and onboard new members to the savings group",
-    date: "2024-03-10",
-    time: "11:00 AM",
-    duration: "45 minutes",
-    location: "Google Meet",
-    isVirtual: true,
-    meetingLink: "https://meet.google.com/abc-defg-hij",
-    status: "completed",
-    group: { id: "g1", name: "Savings Circle A", members: 15 },
-    attendees: [
-      { id: "12", name: "Jack Robinson", email: "jack@example.com", status: "attended", avatar: null },
-      { id: "13", name: "Kate Lewis", email: "kate@example.com", status: "attended", avatar: null },
-    ],
-    agenda: ["Group introduction", "Rules and bylaws review", "Payment schedules", "Q&A session"],
-    minutes: "Successful orientation. Two new members onboarded. Both completed registration forms.",
-    createdBy: { name: "John Doe", email: "john@example.com" },
-    createdAt: "2024-02-25",
-  },
-  {
-    id: "5",
-    title: "Year-End Celebration & Planning",
-    description: "Celebrate achievements and plan for next year",
-    date: "2024-03-08",
-    time: "5:00 PM",
-    duration: "3 hours",
-    location: "Restaurant & Event Hall",
-    isVirtual: false,
-    meetingLink: null,
-    status: "cancelled",
-    group: { id: "g2", name: "Investment Group", members: 8 },
-    attendees: [],
-    agenda: ["Year in review", "Awards and recognition", "Next year goals", "Social networking"],
-    createdBy: { name: "David Lee", email: "david@example.com" },
-    createdAt: "2024-02-20",
-  },
-]
+// Types for meetings
+interface MeetingAttendee {
+  id: string
+  name: string
+  email: string
+  status: string
+  avatar: string | null
+}
 
-export function MeetingsView() {
+interface MeetingGroup {
+  id: string
+  name: string
+  members: number
+}
+
+interface Meeting {
+  id: string
+  title: string
+  description: string
+  date: string
+  time: string
+  duration: string
+  location: string
+  isVirtual: boolean
+  meetingLink: string | null
+  status: string
+  group: MeetingGroup
+  attendees: MeetingAttendee[]
+  agenda: string[]
+  createdBy: { name: string; email: string }
+  createdAt: string
+  minutes?: string | null
+}
+
+interface MeetingStats {
+  totalMeetings: number
+  upcomingMeetings: number
+  completedMeetings: number
+  cancelledMeetings: number
+  virtualMeetings: number
+  averageAttendance: number
+}
+
+interface MeetingsResponse {
+  meetings: Meeting[]
+  stats: MeetingStats
+}
+
+// Fetch meetings from API
+async function fetchMeetings(): Promise<MeetingsResponse> {
+  const response = await fetch("/api/admin/meetings")
+  if (!response.ok) {
+    throw new Error("Failed to fetch meetings")
+  }
+  return response.json()
+}
+
+// Skeleton loader for meetings view
+function MeetingsViewSkeleton() {
+  return (
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6 max-w-full overflow-x-hidden">
+      <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <Skeleton className="h-7 w-48 mb-2" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+        <Skeleton className="h-10 w-40" />
+      </div>
+
+      <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <Card key={i} className="bg-card border-border min-w-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-3 sm:p-4 sm:pb-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-4 rounded" />
+            </CardHeader>
+            <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+              <Skeleton className="h-6 w-12 mb-2" />
+              <Skeleton className="h-3 w-20" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Card className="bg-card border-border overflow-hidden">
+        <CardContent className="p-3 sm:p-4 md:pt-6">
+          <div className="flex flex-col gap-3 sm:gap-4 md:flex-row">
+            <Skeleton className="h-10 flex-1" />
+            <div className="grid grid-cols-2 gap-2 md:flex md:gap-2">
+              <Skeleton className="h-10 w-[140px]" />
+              <Skeleton className="h-10 w-[140px]" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
+        {[1, 2, 3, 4].map((i) => (
+          <Card key={i} className="bg-card border-border">
+            <CardHeader className="p-3 sm:p-4 md:p-6">
+              <Skeleton className="h-6 w-48 mb-2" />
+              <Skeleton className="h-4 w-32" />
+            </CardHeader>
+            <CardContent className="space-y-4 p-3 pt-0 sm:p-4 sm:pt-0 md:p-6 md:pt-0">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Meetings Content Component
+function MeetingsContent() {
+  const { data, isLoading, error } = useQuery<MeetingsResponse>({
+    queryKey: ["meetings"],
+    queryFn: fetchMeetings,
+    staleTime: 30000, // 30 seconds
+    refetchOnWindowFocus: false,
+  })
+
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [typeFilter, setTypeFilter] = useState("all")
-  const [selectedMeeting, setSelectedMeeting] = useState<(typeof mockMeetings)[0] | null>(null)
+  const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null)
   const [showScheduleDialog, setShowScheduleDialog] = useState(false)
 
-  const filteredMeetings = mockMeetings.filter((meeting) => {
+  if (isLoading) {
+    return <MeetingsViewSkeleton />
+  }
+
+  if (error) {
+    return (
+      <Card className="bg-card border-border">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-3 text-red-500">
+            <AlertTriangle className="h-5 w-5" />
+            <p>Failed to load meetings. Please try again.</p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const meetings = data?.meetings || []
+  const stats = data?.stats || {
+    totalMeetings: 0,
+    upcomingMeetings: 0,
+    completedMeetings: 0,
+    cancelledMeetings: 0,
+    virtualMeetings: 0,
+    averageAttendance: 0,
+  }
+
+  const filteredMeetings = meetings.filter((meeting) => {
     const matchesSearch =
       meeting.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       meeting.group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -168,15 +198,6 @@ export function MeetingsView() {
     const matchesType = typeFilter === "all" || (typeFilter === "virtual" ? meeting.isVirtual : !meeting.isVirtual)
     return matchesSearch && matchesStatus && matchesType
   })
-
-  const stats = {
-    totalMeetings: mockMeetings.length,
-    upcomingMeetings: mockMeetings.filter((m) => m.status === "upcoming").length,
-    completedMeetings: mockMeetings.filter((m) => m.status === "completed").length,
-    cancelledMeetings: mockMeetings.filter((m) => m.status === "cancelled").length,
-    virtualMeetings: mockMeetings.filter((m) => m.isVirtual).length,
-    averageAttendance: 85,
-  }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -713,7 +734,7 @@ export function MeetingsView() {
                           placeholder="Enter meeting summary, decisions made, action items..."
                           className="text-sm resize-none"
                           rows={4}
-                          defaultValue={selectedMeeting?.minutes}
+                          defaultValue={selectedMeeting?.minutes || ""}
                         />
                       </div>
                       <Button className="w-full sm:w-auto text-sm">
@@ -839,6 +860,16 @@ export function MeetingsView() {
           </div>
         </DialogContent>
       </Dialog>
+    </div>
+  )
+}
+
+export function MeetingsView() {
+  return (
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6 max-w-full overflow-x-hidden">
+      <Suspense fallback={<MeetingsViewSkeleton />}>
+        <MeetingsContent />
+      </Suspense>
     </div>
   )
 }

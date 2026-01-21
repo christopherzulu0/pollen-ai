@@ -1,8 +1,7 @@
-import { PrismaClient } from "../lib/generated/prisma"
+import { prisma } from '@/lib/prisma'
+import 'dotenv/config'
 
-const prisma = new PrismaClient()
-
-const USER_ID = "cmim3wh7w0000s3liasex09hr"
+const USER_ID = "cmklnaoal0000hcr7wlod7qno"
 
 const sampleGroups = [
   {

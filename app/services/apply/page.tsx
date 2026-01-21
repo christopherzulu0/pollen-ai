@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useQuery } from "@tanstack/react-query"
 import {
     ArrowLeft,
+    ArrowRight,
     Check,
     Loader2,
     AlertCircle,
@@ -426,6 +427,10 @@ function ApplicationForm({ service }: { service: Service }) {
         title: "",
         description: ""
     })
+    
+    // KYC Redirect Dialog State
+    const [kycRedirectDialogOpen, setKycRedirectDialogOpen] = useState(false)
+    const [kycRedirectPath, setKycRedirectPath] = useState<string | null>(null)
 
     const isPersonalLoan = service.name === "Personal Loans" || service.name === "Personal Loans "
     const isSolarEquipment = service.name === "Solar Equipment" || service.name.toLowerCase().includes("solar")
@@ -470,6 +475,21 @@ function ApplicationForm({ service }: { service: Service }) {
             setCheckingDocuments(false)
         }
     }
+
+    // Show KYC redirect dialog if documents don't exist
+    useEffect(() => {
+        if (!checkingDocuments && (isPersonalLoan || isSolarEquipment)) {
+            if (!hasExistingDocuments) {
+                if (isPersonalLoan) {
+                    setKycRedirectPath('/kyc/submit')
+                    setKycRedirectDialogOpen(true)
+                } else if (isSolarEquipment) {
+                    setKycRedirectPath('/kyc/Solar')
+                    setKycRedirectDialogOpen(true)
+                }
+            }
+        }
+    }, [checkingDocuments, hasExistingDocuments, isPersonalLoan, isSolarEquipment])
 
     const form = useForm<ApplicationFormValues>({
         resolver: zodResolver(createApplicationFormSchema(service.name, service.category)),
@@ -890,6 +910,18 @@ function ApplicationForm({ service }: { service: Service }) {
         } finally {
             setIsSubmitting(false)
         }
+    }
+
+    // Show loading state while checking documents
+    if (checkingDocuments && (isPersonalLoan || isSolarEquipment)) {
+        return (
+            <div className="space-y-6">
+                <div className="bg-card rounded-2xl border border-border p-8 md:p-12 text-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+                    <p className="text-muted-foreground">Checking existing documents...</p>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -2209,6 +2241,75 @@ function ApplicationForm({ service }: { service: Service }) {
                     <AlertDialogFooter>
                         <AlertDialogAction onClick={() => setAlertDialogOpen(false)}>
                             Okay
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            {/* KYC Redirect Dialog - Non-dismissible */}
+            <AlertDialog 
+                open={kycRedirectDialogOpen} 
+                onOpenChange={(open) => {
+                    // Prevent closing the dialog - only allow closing via the action button
+                    // If trying to close (open === false), ignore it and keep dialog open
+                    if (!open) {
+                        return
+                    }
+                    // Only allow opening (shouldn't happen, but just in case)
+                    setKycRedirectDialogOpen(true)
+                }}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="flex items-center gap-2">
+                            <FileText className="h-5 w-5 text-primary" />
+                            KYC Verification Required
+                        </AlertDialogTitle>
+                        <AlertDialogDescription asChild>
+                            <div className="space-y-2">
+                                <p>
+                                    To proceed with your {isPersonalLoan ? "Personal Loan" : "Solar Equipment"} application, 
+                                    you need to complete the KYC (Know Your Customer) verification process first.
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    This is a mandatory requirement to ensure compliance with financial regulations and 
+                                    to protect both you and our platform.
+                                </p>
+                                <div className="mt-4 p-3 bg-muted rounded-lg">
+                                    <p className="text-sm font-medium mb-1">What you'll need:</p>
+                                    <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                                        {isPersonalLoan ? (
+                                            <>
+                                                <li>Valid identification documents (NRC)</li>
+                                                <li>Proof of address</li>
+                                                <li>Employment verification</li>
+                                                <li>Bank statements</li>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <li>NRC (Front & Back)</li>
+                                                <li>Land ownership documents</li>
+                                                <li>Utility bills</li>
+                                                <li>Vendor quotation</li>
+                                                <li>Subsidy receipt (if applicable)</li>
+                                            </>
+                                        )}
+                                    </ul>
+                                </div>
+                            </div>
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction
+                            onClick={() => {
+                                if (kycRedirectPath) {
+                                    router.push(kycRedirectPath)
+                                }
+                            }}
+                            className="bg-primary hover:bg-primary/90 w-full"
+                        >
+                            Complete KYC Verification
+                            <ArrowRight className="ml-2 h-4 w-4" />
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

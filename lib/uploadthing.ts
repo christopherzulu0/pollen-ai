@@ -124,6 +124,44 @@ export const ourFileRouter = {
       console.log("Loan document url", file.url)
       return { url: file.url }
     }),
+
+  kycDocumentUploader: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 },
+    pdf: { maxFileSize: "4MB", maxFileCount: 1 }
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("KYC document uploaded for userId:", metadata.userId)
+      console.log("KYC document url", file.url)
+      return { url: file.url }
+    }),
+
+  kycVideoUploader: f({
+    video: { maxFileSize: "8GB", maxFileCount: 1 }
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("KYC video uploaded for userId:", metadata.userId)
+      console.log("KYC video url", file.url)
+      return { url: file.url }
+    }),
+
+  solarDocumentUploader: f({
+    image: { maxFileSize: "8MB", maxFileCount: 1 },
+    pdf: { maxFileSize: "8MB", maxFileCount: 1 }
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Solar document uploaded for userId:", metadata.userId)
+      console.log("Solar document url", file.url)
+      return { url: file.url }
+    }),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

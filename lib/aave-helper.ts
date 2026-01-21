@@ -1,11 +1,40 @@
 import { ethers } from 'ethers';
 
-// Aave V3 Lending Pool Address on Celo Alfajores Testnet
-const AAVE_LENDING_POOL_ADDRESS = process.env.NEXT_PUBLIC_AAVE_LENDING_POOL_ADDRESS || '0x...';
-const AAVE_DATA_PROVIDER_ADDRESS = process.env.NEXT_PUBLIC_AAVE_DATA_PROVIDER_ADDRESS || '0x...';
+// Aave/Moola Market Lending Pool Address on Celo
+// Note: AAVE V3 is not deployed on Celo. Use Moola Market (AAVE V2 fork) instead.
+// Moola Market addresses:
+// - Alfajores (Testnet): Lending Pool: 0x0886f74eEEc443fBb6907fB5528B57C28E813129
+// - Alfajores (Testnet): Data Provider: 0x43d067ed784D9DD2ffEda73775e2CC4c560103A1
+// - Mainnet: Lending Pool: 0xc1548F5AA1D76CDcAB7385FA6B5cEA70f941e535
+// - Mainnet: Data Provider: 0x31ccB9dC068058672D96E92BAf96B1607855822E
+const AAVE_LENDING_POOL_ADDRESS = 
+  process.env.NEXT_PUBLIC_AAVE_LENDING_POOL_ADDRESS || 
+  process.env.NEXT_PUBLIC_LENDING_POOL_ADDRESS || 
+  '0x...';
+const AAVE_DATA_PROVIDER_ADDRESS = 
+  process.env.NEXT_PUBLIC_AAVE_DATA_PROVIDER_ADDRESS || 
+  process.env.NEXT_PUBLIC_LENDING_POOL_DATA_PROVIDER || 
+  '0x...';
 
-// Celo Alfajores RPC
-const CELO_RPC_URL = process.env.CELO_RPC_URL || 'https://alfajores-forno.celo-testnet.org';
+// Determine network from environment or default to alfajores
+const getNetworkConfig = () => {
+  const network = process.env.NEXT_PUBLIC_CELO_NETWORK || process.env.CELO_NETWORK || 'alfajores';
+  
+  if (network === 'mainnet') {
+    return {
+      name: 'Celo Mainnet',
+      chainId: 42220,
+      rpcUrl: process.env.CELO_RPC_URL || process.env.NEXT_PUBLIC_CELO_RPC_URL || 'https://forno.celo.org',
+    };
+  }
+  
+  // Default to alfajores testnet
+  return {
+    name: 'Alfajores Testnet',
+    chainId: 44787,
+    rpcUrl: process.env.CELO_RPC_URL || process.env.NEXT_PUBLIC_CELO_RPC_URL || 'https://alfajores-forno.celo-testnet.org',
+  };
+};
 
 // Simplified ABI for Aave Lending Pool
 const LENDING_POOL_ABI = [
@@ -65,9 +94,21 @@ export interface UserReserveData {
 
 /**
  * Get provider for Celo network
+ * Uses StaticJsonRpcProvider to avoid network detection issues
  */
-export function getProvider(): ethers.JsonRpcProvider {
-  return new ethers.JsonRpcProvider(CELO_RPC_URL);
+export function getProvider(): ethers.providers.StaticJsonRpcProvider {
+  const networkConfig = getNetworkConfig();
+  
+  // Use StaticJsonRpcProvider which doesn't try to auto-detect network
+  // This prevents "could not detect network" errors
+  // StaticJsonRpcProvider takes (url, network) where network is { name, chainId }
+  return new ethers.providers.StaticJsonRpcProvider(
+    networkConfig.rpcUrl,
+    {
+      name: networkConfig.name,
+      chainId: networkConfig.chainId,
+    }
+  );
 }
 
 /**
@@ -81,21 +122,21 @@ export function getSigner(privateKey: string): ethers.Wallet {
 /**
  * Get Lending Pool contract instance
  */
-export function getLendingPoolContract(signerOrProvider: ethers.Signer | ethers.Provider): ethers.Contract {
+export function getLendingPoolContract(signerOrProvider: ethers.Signer | ethers.providers.Provider): ethers.Contract {
   return new ethers.Contract(AAVE_LENDING_POOL_ADDRESS, LENDING_POOL_ABI, signerOrProvider);
 }
 
 /**
  * Get Data Provider contract instance
  */
-export function getDataProviderContract(provider: ethers.Provider): ethers.Contract {
+export function getDataProviderContract(provider: ethers.providers.Provider | ethers.providers.StaticJsonRpcProvider): ethers.Contract {
   return new ethers.Contract(AAVE_DATA_PROVIDER_ADDRESS, DATA_PROVIDER_ABI, provider);
 }
 
 /**
  * Get ERC20 token contract instance
  */
-export function getTokenContract(tokenAddress: string, signerOrProvider: ethers.Signer | ethers.Provider): ethers.Contract {
+export function getTokenContract(tokenAddress: string, signerOrProvider: ethers.Signer | ethers.providers.Provider | ethers.providers.StaticJsonRpcProvider): ethers.Contract {
   return new ethers.Contract(tokenAddress, ERC20_ABI, signerOrProvider);
 }
 
@@ -208,40 +249,63 @@ export async function getUserAccountData(userAddress: string): Promise<UserAccou
 
 /**
  * Get reserve data for a specific asset
+ * Returns null if the reserve doesn't exist or call fails
  */
-export async function getReserveData(assetAddress: string): Promise<ReserveData> {
-  const provider = getProvider();
-  const dataProvider = getDataProviderContract(provider);
-  
-  const data = await dataProvider.getReserveData(assetAddress);
-  
-  return {
-    availableLiquidity: ethers.formatUnits(data[0], 18),
-    totalStableDebt: ethers.formatUnits(data[1], 18),
-    totalVariableDebt: ethers.formatUnits(data[2], 18),
-    liquidityRate: ethers.formatUnits(data[3], 27), // Ray units
-    variableBorrowRate: ethers.formatUnits(data[4], 27),
-    stableBorrowRate: ethers.formatUnits(data[5], 27),
-  };
+export async function getReserveData(assetAddress: string): Promise<ReserveData | null> {
+  try {
+    const provider = getProvider();
+    const dataProvider = getDataProviderContract(provider);
+    
+    // Check if contract addresses are configured
+    if (!AAVE_DATA_PROVIDER_ADDRESS || AAVE_DATA_PROVIDER_ADDRESS === '0x...') {
+      return null;
+    }
+    
+    const data = await dataProvider.getReserveData(assetAddress);
+    
+    return {
+      availableLiquidity: ethers.formatUnits(data[0], 18),
+      totalStableDebt: ethers.formatUnits(data[1], 18),
+      totalVariableDebt: ethers.formatUnits(data[2], 18),
+      liquidityRate: ethers.formatUnits(data[3], 27), // Ray units
+      variableBorrowRate: ethers.formatUnits(data[4], 27),
+      stableBorrowRate: ethers.formatUnits(data[5], 27),
+    };
+  } catch (error: any) {
+    // Reserve doesn't exist or contract call failed - return null instead of throwing
+    // This allows the caller to handle gracefully without fallback data
+    return null;
+  }
 }
 
 /**
  * Get user reserve data for a specific asset
+ * Returns null if the reserve doesn't exist or call fails
  */
-export async function getUserReserveData(assetAddress: string, userAddress: string): Promise<UserReserveData> {
-  const provider = getProvider();
-  const dataProvider = getDataProviderContract(provider);
-  
-  const data = await dataProvider.getUserReserveData(assetAddress, userAddress);
-  
-  return {
-    currentATokenBalance: ethers.formatUnits(data[0], 18),
-    currentStableDebt: ethers.formatUnits(data[1], 18),
-    currentVariableDebt: ethers.formatUnits(data[2], 18),
-    liquidityRate: ethers.formatUnits(data[6], 27),
-    stableBorrowRate: ethers.formatUnits(data[5], 27),
-    usageAsCollateralEnabled: data[8],
-  };
+export async function getUserReserveData(assetAddress: string, userAddress: string): Promise<UserReserveData | null> {
+  try {
+    const provider = getProvider();
+    const dataProvider = getDataProviderContract(provider);
+    
+    // Check if contract addresses are configured
+    if (!AAVE_DATA_PROVIDER_ADDRESS || AAVE_DATA_PROVIDER_ADDRESS === '0x...') {
+      return null;
+    }
+    
+    const data = await dataProvider.getUserReserveData(assetAddress, userAddress);
+    
+    return {
+      currentATokenBalance: ethers.formatUnits(data[0], 18),
+      currentStableDebt: ethers.formatUnits(data[1], 18),
+      currentVariableDebt: ethers.formatUnits(data[2], 18),
+      liquidityRate: ethers.formatUnits(data[6], 27),
+      stableBorrowRate: ethers.formatUnits(data[5], 27),
+      usageAsCollateralEnabled: data[8],
+    };
+  } catch (error: any) {
+    // Reserve doesn't exist or contract call failed - return null instead of throwing
+    return null;
+  }
 }
 
 /**

@@ -118,10 +118,12 @@ export async function POST(request: NextRequest) {
                 })
             }
 
-            // Create new documents
+            // Create new documents - use relation connect syntax
             const solarDocuments = await prisma.solarLoanDocuments.create({
                 data: {
-                    userId: user.id,
+                    user: {
+                        connect: { id: user.id },
+                    },
                     Nrcfront: nrcFront,
                     NrcBack: nrcBack,
                     LandOwnership: landOwnership,

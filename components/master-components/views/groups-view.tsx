@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,149 +23,123 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Loader2,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
 
-const mockGroups = [
-  {
-    id: "1",
-    name: "Savings Circle A",
-    description: "Monthly savings group for community members",
-    logo: "/savings-group.jpg",
-    members: 12,
-    maxMembers: 15,
-    balance: 12500,
-    depositGoal: 50000,
-    status: "ACTIVE",
-    privacy: "PRIVATE",
-    governanceType: "MULTI_ADMIN",
-    contributionAmount: 100,
-    contributionFrequency: "MONTHLY",
-    interestRate: 2.5,
-    createdAt: "2024-01-15",
-    owner: { name: "John Doe", avatar: "/thoughtful-man-in-library.png" },
-    stats: {
-      totalTransactions: 144,
-      activeLoans: 2,
-      upcomingMeetings: 1,
-      contributionRate: 95,
-      averageBalance: 1041.67,
-    },
-    recentTransactions: [
-      { id: "t1", type: "CONTRIBUTION", amount: 100, user: "Alice Smith", date: "2024-03-15" },
-      { id: "t2", type: "WITHDRAWAL", amount: 500, user: "Bob Johnson", date: "2024-03-10" },
-      { id: "t3", type: "CONTRIBUTION", amount: 100, user: "Carol White", date: "2024-03-08" },
-    ],
-    members_list: [
-      { id: "m1", name: "Alice Smith", role: "ADMIN", balance: 1200, status: "ACTIVE", joinedAt: "2024-01-15" },
-      { id: "m2", name: "Bob Johnson", role: "MEMBER", balance: 800, status: "ACTIVE", joinedAt: "2024-01-20" },
-      { id: "m3", name: "Carol White", role: "MEMBER", balance: 1500, status: "ACTIVE", joinedAt: "2024-02-01" },
-    ],
-    loanRequests: [
-      { id: "l1", user: "Bob Johnson", amount: 2000, purpose: "Business expansion", status: "APPROVED", votes: "8/12" },
-      { id: "l2", user: "David Brown", amount: 1500, purpose: "Emergency medical", status: "PENDING", votes: "5/12" },
-    ],
-  },
-  {
-    id: "2",
-    name: "Investment Group",
-    description: "Long-term investment and wealth building",
-    logo: "/investment-group.jpg",
-    members: 8,
-    maxMembers: 10,
-    balance: 25000,
-    depositGoal: 100000,
-    status: "ACTIVE",
-    privacy: "INVITE_ONLY",
-    governanceType: "ONE_VOTE_PER_PERSON",
-    contributionAmount: 500,
-    contributionFrequency: "MONTHLY",
-    interestRate: 5.0,
-    createdAt: "2024-02-01",
-    owner: { name: "Jane Smith", avatar: "/jane-portrait.png" },
-    stats: {
-      totalTransactions: 96,
-      activeLoans: 1,
-      upcomingMeetings: 2,
-      contributionRate: 100,
-      averageBalance: 3125,
-    },
-    recentTransactions: [
-      { id: "t4", type: "CONTRIBUTION", amount: 500, user: "Emily Davis", date: "2024-03-14" },
-      { id: "t5", type: "INTEREST", amount: 125, user: "System", date: "2024-03-01" },
-      { id: "t6", type: "CONTRIBUTION", amount: 500, user: "Frank Miller", date: "2024-03-12" },
-    ],
-    members_list: [
-      { id: "m4", name: "Emily Davis", role: "ADMIN", balance: 4000, status: "ACTIVE", joinedAt: "2024-02-01" },
-      { id: "m5", name: "Frank Miller", role: "MEMBER", balance: 3500, status: "ACTIVE", joinedAt: "2024-02-05" },
-      { id: "m6", name: "Grace Lee", role: "MEMBER", balance: 2800, status: "ACTIVE", joinedAt: "2024-02-10" },
-    ],
-    loanRequests: [
-      { id: "l3", user: "Grace Lee", amount: 5000, purpose: "Home renovation", status: "DISBURSED", votes: "8/8" },
-    ],
-  },
-  {
-    id: "3",
-    name: "Community Fund",
-    description: "Supporting local community projects and initiatives",
-    logo: "/community-fund.jpg",
-    members: 25,
-    maxMembers: 30,
-    balance: 50000,
-    depositGoal: 150000,
-    status: "ACTIVE",
-    privacy: "PUBLIC",
-    governanceType: "ONE_VOTE_DEPOSIT",
-    contributionAmount: 50,
-    contributionFrequency: "WEEKLY",
-    interestRate: 1.5,
-    createdAt: "2023-12-10",
-    owner: { name: "Michael Chen", avatar: "/bob-portrait.png" },
-    stats: {
-      totalTransactions: 520,
-      activeLoans: 5,
-      upcomingMeetings: 1,
-      contributionRate: 88,
-      averageBalance: 2000,
-    },
-    recentTransactions: [
-      { id: "t7", type: "CONTRIBUTION", amount: 50, user: "Helen Park", date: "2024-03-16" },
-      { id: "t8", type: "LOAN_DISBURSEMENT", amount: 3000, user: "Ian Wright", date: "2024-03-15" },
-      { id: "t9", type: "CONTRIBUTION", amount: 50, user: "Julia Martinez", date: "2024-03-16" },
-    ],
-    members_list: [
-      { id: "m7", name: "Helen Park", role: "ADMIN", balance: 2600, status: "ACTIVE", joinedAt: "2023-12-10" },
-      { id: "m8", name: "Ian Wright", role: "MEMBER", balance: 1800, status: "ACTIVE", joinedAt: "2023-12-15" },
-      { id: "m9", name: "Julia Martinez", role: "MEMBER", balance: 2200, status: "ACTIVE", joinedAt: "2024-01-05" },
-    ],
-    loanRequests: [
-      { id: "l4", user: "Ian Wright", amount: 3000, purpose: "Education fees", status: "DISBURSED", votes: "20/25" },
-      { id: "l5", user: "Kevin Brown", amount: 2500, purpose: "Small business", status: "APPROVED", votes: "18/25" },
-    ],
-  },
-]
+// Group type definition
+type Group = {
+  id: string
+  name: string
+  description: string
+  logo: string | null
+  members: number
+  maxMembers: number
+  balance: number
+  depositGoal: number
+  status: string
+  privacy: string
+  governanceType: string
+  contributionAmount: number
+  contributionFrequency: string
+  interestRate: number
+  createdAt: string
+  owner: {
+    name: string
+    avatar: string | null
+  }
+  stats: {
+    totalTransactions: number
+    activeLoans: number
+    upcomingMeetings: number
+    contributionRate: number
+    averageBalance: number
+  }
+  recentTransactions: Array<{
+    id: string
+    type: string
+    amount: number
+    user: string
+    date: string
+  }>
+  members_list: Array<{
+    id: string
+    name: string
+    role: string
+    balance: number
+    status: string
+    joinedAt: string
+  }>
+  loanRequests: Array<{
+    id: string
+    user: string
+    amount: number
+    purpose: string
+    status: string
+    votes: string
+  }>
+}
+
+// Currency formatter for ZMW
+const formatCurrency = (amount: number) => {
+  return `ZMW ${amount.toLocaleString()}`
+}
+
+const formatCurrencyCompact = (amount: number) => {
+  if (amount >= 1000000) {
+    return `ZMW ${(amount / 1000000).toFixed(1)}M`
+  } else if (amount >= 1000) {
+    return `ZMW ${(amount / 1000).toFixed(1)}K`
+  }
+  return `ZMW ${amount.toLocaleString()}`
+}
+
+// Mock data removed - now fetching from API
 
 export function GroupsView() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [privacyFilter, setPrivacyFilter] = useState("all")
   const [governanceFilter, setGovernanceFilter] = useState("all")
-  const [selectedGroup, setSelectedGroup] = useState<(typeof mockGroups)[0] | null>(null)
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const filteredGroups = mockGroups.filter((group) => {
-    const matchesSearch = group.name.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesStatus = statusFilter === "all" || group.status === statusFilter
-    const matchesPrivacy = privacyFilter === "all" || group.privacy === privacyFilter
-    const matchesGovernance = governanceFilter === "all" || group.governanceType === governanceFilter
-    return matchesSearch && matchesStatus && matchesPrivacy && matchesGovernance
+  // Fetch groups using React Query
+  const {
+    data: groups = [],
+    isLoading,
+    error,
+  } = useQuery<Group[]>({
+    queryKey: ["admin-groups", statusFilter, privacyFilter, governanceFilter, searchQuery],
+    queryFn: async () => {
+      const params = new URLSearchParams()
+      if (statusFilter !== "all") params.append("status", statusFilter)
+      if (privacyFilter !== "all") params.append("privacy", privacyFilter)
+      if (governanceFilter !== "all") params.append("governance", governanceFilter)
+      if (searchQuery) params.append("search", searchQuery)
+
+      const response = await fetch(`/api/admin/groups?${params.toString()}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch groups")
+      }
+      return response.json()
+    },
+    staleTime: 30000, // 30 seconds
+    refetchOnWindowFocus: false,
+  })
+
+  const filteredGroups = groups.filter((group) => {
+    const matchesSearch = group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         group.description.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesSearch
   })
 
   const totalPages = Math.ceil(filteredGroups.length / itemsPerPage)
@@ -231,12 +206,12 @@ export function GroupsView() {
     return pages
   }
 
-  const totalGroups = mockGroups.length
-  const activeGroups = mockGroups.filter((g) => g.status === "ACTIVE").length
-  const totalMembers = mockGroups.reduce((sum, g) => sum + g.members, 0)
-  const totalBalance = mockGroups.reduce((sum, g) => sum + g.balance, 0)
+  const totalGroups = groups.length
+  const activeGroups = groups.filter((g) => g.status === "ACTIVE").length
+  const totalMembers = groups.reduce((sum, g) => sum + g.members, 0)
+  const totalBalance = groups.reduce((sum, g) => sum + g.balance, 0)
 
-  const handleViewDetails = (group: (typeof mockGroups)[0]) => {
+  const handleViewDetails = (group: Group) => {
     setSelectedGroup(group)
     setDialogOpen(true)
   }
@@ -286,6 +261,95 @@ export function GroupsView() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        {/* Stats Cards Skeleton */}
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i} className="bg-card">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-8 w-16" />
+                  </div>
+                  <Skeleton className="h-8 w-8 rounded" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Main Card Skeleton */}
+        <Card className="bg-card">
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-9 w-32" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            {/* Filters Skeleton */}
+            <div className="mb-4 flex flex-col sm:flex-row flex-wrap gap-4">
+              <Skeleton className="h-10 flex-1 min-w-[200px]" />
+              <Skeleton className="h-10 w-[150px]" />
+              <Skeleton className="h-10 w-[150px]" />
+              <Skeleton className="h-10 w-[180px]" />
+            </div>
+
+            {/* Table Skeleton */}
+            <div className="rounded-md border border-border overflow-x-auto">
+              <div className="border-b border-border">
+                <div className="grid grid-cols-8 gap-4 p-4">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <Skeleton key={i} className="h-4 w-full" />
+                  ))}
+                </div>
+              </div>
+              <div className="divide-y divide-border">
+                {Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <div key={rowIndex} className="grid grid-cols-8 gap-4 p-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                      <div className="space-y-1 flex-1">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-48" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="h-6 w-24 rounded-full" />
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-8 w-8 rounded" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center space-y-3">
+            <AlertCircle className="h-8 w-8 mx-auto text-destructive" />
+            <p className="text-sm text-destructive">Failed to load groups</p>
+            <p className="text-xs text-muted-foreground">
+              {error instanceof Error ? error.message : "An error occurred"}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -327,7 +391,7 @@ export function GroupsView() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Balance</p>
-                <p className="text-2xl font-bold">${(totalBalance / 1000).toFixed(1)}K</p>
+                <p className="text-2xl font-bold">{formatCurrencyCompact(totalBalance)}</p>
               </div>
               <DollarSign className="h-8 w-8 text-success" />
             </div>
@@ -339,7 +403,7 @@ export function GroupsView() {
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <CardTitle>Group Management</CardTitle>
-            <Button size="sm" className="w-full sm:w-auto">
+            <Button size="sm" className="w-full sm:w-auto" disabled>
               <Plus className="mr-2 h-4 w-4" />
               Create Group
             </Button>
@@ -430,8 +494,8 @@ export function GroupsView() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <div className="font-medium">${group.balance.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">Goal: ${group.depositGoal.toLocaleString()}</div>
+                        <div className="font-medium">{formatCurrency(group.balance)}</div>
+                        <div className="text-sm text-muted-foreground">Goal: {formatCurrency(group.depositGoal)}</div>
                         <Progress value={(group.balance / group.depositGoal) * 100} className="mt-1 h-1" />
                       </div>
                     </TableCell>
@@ -652,13 +716,13 @@ export function GroupsView() {
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">Current Balance</span>
                         <span className="text-base sm:text-lg font-bold">
-                          ${selectedGroup.balance.toLocaleString()}
+                          {formatCurrency(selectedGroup.balance)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">Deposit Goal</span>
                         <span className="text-base sm:text-lg font-medium">
-                          ${selectedGroup.depositGoal.toLocaleString()}
+                          {formatCurrency(selectedGroup.depositGoal)}
                         </span>
                       </div>
                       <div>
@@ -674,7 +738,7 @@ export function GroupsView() {
                         <div>
                           <p className="text-sm text-muted-foreground">Avg Balance/Member</p>
                           <p className="text-base sm:text-lg font-medium">
-                            ${selectedGroup.stats.averageBalance.toFixed(2)}
+                            {formatCurrency(Math.round(selectedGroup.stats.averageBalance))}
                           </p>
                         </div>
                         <div>
@@ -704,7 +768,7 @@ export function GroupsView() {
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="text-sm font-medium">${transaction.amount.toLocaleString()}</p>
+                              <p className="text-sm font-medium">{formatCurrency(transaction.amount)}</p>
                               <p className="text-xs text-muted-foreground">{transaction.date}</p>
                             </div>
                           </div>
@@ -743,7 +807,7 @@ export function GroupsView() {
                             </div>
                             <div className="flex items-center gap-4">
                               <div className="text-right">
-                                <p className="text-sm font-medium">${member.balance.toLocaleString()}</p>
+                                <p className="text-sm font-medium">{formatCurrency(member.balance)}</p>
                                 <p className="text-xs text-muted-foreground">Balance</p>
                               </div>
                               <Badge variant={member.role === "ADMIN" ? "default" : "secondary"}>{member.role}</Badge>
@@ -789,7 +853,7 @@ export function GroupsView() {
                               </div>
                             </div>
                             <div className="text-left sm:text-right">
-                              <p className="text-sm font-bold">${transaction.amount.toLocaleString()}</p>
+                              <p className="text-sm font-bold">{formatCurrency(transaction.amount)}</p>
                               <p className="text-xs text-muted-foreground">{transaction.date}</p>
                             </div>
                           </div>
@@ -819,7 +883,7 @@ export function GroupsView() {
                             </div>
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                               <div>
-                                <p className="text-lg font-bold">${loan.amount.toLocaleString()}</p>
+                                <p className="text-lg font-bold">{formatCurrency(loan.amount)}</p>
                                 <p className="text-xs text-muted-foreground">Loan Amount</p>
                               </div>
                               <div className="text-left sm:text-right">
@@ -868,7 +932,7 @@ export function GroupsView() {
                         </div>
                         <div>
                           <p className="text-sm text-muted-foreground mb-1">Contribution Amount</p>
-                          <p className="text-sm font-medium">${selectedGroup.contributionAmount}</p>
+                          <p className="text-sm font-medium">{formatCurrency(selectedGroup.contributionAmount)}</p>
                         </div>
                         <div>
                           <p className="text-sm text-muted-foreground mb-1">Contribution Frequency</p>
