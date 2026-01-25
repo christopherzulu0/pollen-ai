@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import 'dotenv/config'
 
-const USER_ID = "cmklnaoal0000hcr7wlod7qno"
+const USER_ID = "cmkoawunx0001skr73h03ry20"
 
 const sampleGroups = [
   {

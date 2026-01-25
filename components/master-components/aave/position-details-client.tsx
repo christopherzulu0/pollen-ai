@@ -86,7 +86,7 @@ export default function PositionDetailsClient({
   if (!position) {
     return (
       <div className="p-6">
-        <Button onClick={() => router.push("/admin")} variant="ghost" size="sm" className="mb-4">
+        <Button onClick={() => router.push("/Super-user")} variant="ghost" size="sm" className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Dashboard
         </Button>
@@ -178,7 +178,7 @@ export default function PositionDetailsClient({
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Button onClick={() => router.push("/admin")} variant="ghost" size="sm">
+            <Button onClick={() => router.push("/Super-user")} variant="ghost" size="sm">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back
             </Button>

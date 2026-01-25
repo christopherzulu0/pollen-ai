@@ -81,6 +81,13 @@ type InsuranceClaim = {
   dateSubmitted: string
   description: string
   claimId?: string
+  documents?: string[]
+  evidenceUrls?: string[]
+  claimNumber?: string
+  claimType?: string
+  incidentDate?: string
+  rejectionReason?: string | null
+  approvedAmount?: string | null
 }
 
 // Icon component mapping
@@ -117,6 +124,10 @@ export function InsuranceView() {
   const [showNewProductDialog, setShowNewProductDialog] = useState(false)
   const [showClaimDialog, setShowClaimDialog] = useState(false)
   const [selectedClaim, setSelectedClaim] = useState<any>(null)
+  const [adminNotes, setAdminNotes] = useState("")
+  const [rejectionReason, setRejectionReason] = useState("")
+  const [showRejectDialog, setShowRejectDialog] = useState(false)
+  const [approvedAmount, setApprovedAmount] = useState("")
   const [claimsPage, setClaimsPage] = useState(1)
   const [claimsPerPage, setClaimsPerPage] = useState(10)
   const [showPendingAppsDialog, setShowPendingAppsDialog] = useState(false)
@@ -127,6 +138,11 @@ export function InsuranceView() {
   const [showEditProductDialog, setShowEditProductDialog] = useState(false)
   const [showProductDetailsDialog, setShowProductDetailsDialog] = useState(false)
   const [selectedProductForDetails, setSelectedProductForDetails] = useState<InsuranceProduct | null>(null)
+  const [showNewPolicyDialog, setShowNewPolicyDialog] = useState(false)
+  const [policiesPage, setPoliciesPage] = useState(1)
+  const [policiesPerPage, setPoliciesPerPage] = useState(10)
+  const [policiesStatusFilter, setPoliciesStatusFilter] = useState("all")
+  const [policiesSearchQuery, setPoliciesSearchQuery] = useState("")
 
   // Form state for new product
   const [newProductForm, setNewProductForm] = useState({
@@ -139,6 +155,16 @@ export function InsuranceView() {
     waitingPeriod: "30",
     coverageTerms: "",
     exclusions: "",
+  })
+
+  // Form state for new policy
+  const [newPolicyForm, setNewPolicyForm] = useState({
+    productId: "",
+    userId: "",
+    groupId: "",
+    coverageAmount: "",
+    startDate: new Date().toISOString().split("T")[0],
+    notes: "",
   })
 
   const queryClient = useQueryClient()
@@ -185,6 +211,88 @@ export function InsuranceView() {
     refetchOnWindowFocus: false,
   })
 
+  // Fetch policies
+  type Policy = {
+    id: string
+    policyNumber: string
+    productName: string
+    productType: string
+    userName: string
+    userEmail: string
+    groupName: string | null
+    coverageAmount: string
+    premiumAmount: string
+    premiumFrequency: string
+    startDate: string
+    endDate: string
+    status: string
+    paymentStatus: string
+    nextPremiumDue: string | null
+    createdAt: string
+  }
+
+  const {
+    data: policies = [],
+    isLoading: policiesLoading,
+    error: policiesError,
+  } = useQuery<Policy[]>({
+    queryKey: ["admin-insurance-policies", policiesStatusFilter, policiesSearchQuery],
+    queryFn: async () => {
+      const params = new URLSearchParams()
+      if (policiesStatusFilter !== "all") params.append("status", policiesStatusFilter)
+      if (policiesSearchQuery) params.append("search", policiesSearchQuery)
+
+      const response = await fetch(`/api/admin/insurance/policies?${params.toString()}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch policies")
+      }
+      return response.json()
+    },
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+  })
+
+  // Fetch users for policy creation
+  const { 
+    data: users = [], 
+    isLoading: usersLoading,
+    error: usersError 
+  } = useQuery<Array<{ id: string; name: string | null; email: string }>>({
+    queryKey: ["admin-users"],
+    queryFn: async () => {
+      const response = await fetch("/api/admin/users")
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: "Failed to fetch users" }))
+        throw new Error(error.error || "Failed to fetch users")
+      }
+      const data = await response.json()
+      // API returns { users: [...], stats: {...} }
+      const usersArray = Array.isArray(data) ? data : (data.users || [])
+      return usersArray.map((u: any) => ({ 
+        id: u.id, 
+        name: u.name || null, 
+        email: u.email || "Unknown" 
+      }))
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  })
+
+  // Fetch groups for policy creation
+  const { data: groups = [] } = useQuery<Array<{ id: string; name: string }>>({
+    queryKey: ["admin-groups"],
+    queryFn: async () => {
+      const response = await fetch("/api/admin/groups")
+      if (!response.ok) {
+        throw new Error("Failed to fetch groups")
+      }
+      const data = await response.json()
+      return data.map((g: any) => ({ id: g.id, name: g.name }))
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  })
+
   // Mutation for updating an insurance product
   const updateProductMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<typeof newProductForm> }) => {
@@ -222,6 +330,55 @@ export function InsuranceView() {
       toast({
         title: "Error",
         description: error.message || "Failed to update insurance product",
+        variant: "destructive",
+      })
+    },
+  })
+
+  // Mutation for approving/rejecting claims
+  const updateClaimMutation = useMutation({
+    mutationFn: async ({ claimId, action, approvedAmount, rejectionReason, internalNotes }: {
+      claimId: string
+      action: "approve" | "reject"
+      approvedAmount?: string
+      rejectionReason?: string
+      internalNotes?: string
+    }) => {
+      const response = await fetch(`/api/admin/insurance/claims/${claimId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action,
+          approvedAmount,
+          rejectionReason,
+          internalNotes,
+        }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || `Failed to ${action} claim`)
+      }
+      return response.json()
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["admin-insurance-claims"] })
+      toast({
+        title: "Success",
+        description: `Claim ${variables.action}d successfully`,
+      })
+      setShowClaimDialog(false)
+      setShowRejectDialog(false)
+      setAdminNotes("")
+      setRejectionReason("")
+      setApprovedAmount("")
+      setSelectedClaim(null)
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update claim",
         variant: "destructive",
       })
     },
@@ -315,12 +472,67 @@ export function InsuranceView() {
     },
   })
 
+  // Mutation for creating a new policy
+  const createPolicyMutation = useMutation({
+    mutationFn: async (data: typeof newPolicyForm) => {
+      const response = await fetch("/api/admin/insurance/policies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: data.productId,
+          userId: data.userId,
+          groupId: data.groupId || undefined,
+          coverageAmount: data.coverageAmount,
+          startDate: data.startDate,
+          notes: data.notes || undefined,
+        }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to create policy")
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-insurance-policies"] })
+      toast({
+        title: "Success",
+        description: "Insurance policy created successfully",
+      })
+      setShowNewPolicyDialog(false)
+      setNewPolicyForm({
+        productId: "",
+        userId: "",
+        groupId: "",
+        coverageAmount: "",
+        startDate: new Date().toISOString().split("T")[0],
+        notes: "",
+      })
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create insurance policy",
+        variant: "destructive",
+      })
+    },
+  })
+
   // Calculate pagination for claims
   const totalClaims = recentClaims.length
   const totalClaimsPages = Math.ceil(totalClaims / claimsPerPage)
   const startClaimsIndex = (claimsPage - 1) * claimsPerPage
   const endClaimsIndex = startClaimsIndex + claimsPerPage
   const paginatedClaims = recentClaims.slice(startClaimsIndex, endClaimsIndex)
+
+  // Calculate pagination for policies
+  const totalPolicies = policies.length
+  const totalPoliciesPages = Math.ceil(totalPolicies / policiesPerPage)
+  const startPoliciesIndex = (policiesPage - 1) * policiesPerPage
+  const endPoliciesIndex = startPoliciesIndex + policiesPerPage
+  const paginatedPolicies = policies.slice(startPoliciesIndex, endPoliciesIndex)
 
   const handleCreateProduct = () => {
     if (!newProductForm.name || !newProductForm.productType || !newProductForm.coverageAmount || !newProductForm.premiumAmount) {
@@ -332,6 +544,18 @@ export function InsuranceView() {
       return
     }
     createProductMutation.mutate(newProductForm)
+  }
+
+  const handleCreatePolicy = () => {
+    if (!newPolicyForm.productId || !newPolicyForm.userId || !newPolicyForm.coverageAmount || !newPolicyForm.startDate) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields (Product, User, Coverage Amount, Start Date)",
+        variant: "destructive",
+      })
+      return
+    }
+    createPolicyMutation.mutate(newPolicyForm)
   }
 
   const handleEditProduct = (product: InsuranceProduct) => {
@@ -606,9 +830,10 @@ export function InsuranceView() {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="products" className="space-y-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
           <TabsList className="flex-wrap">
             <TabsTrigger value="products">Insurance Products</TabsTrigger>
+            <TabsTrigger value="policies">Policies</TabsTrigger>
             <TabsTrigger value="claims">Claims Management</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="underwriting">Risk & Underwriting</TabsTrigger>
@@ -892,6 +1117,344 @@ export function InsuranceView() {
           )}
         </TabsContent>
 
+        {/* Policies Tab */}
+        <TabsContent value="policies" className="space-y-4">
+          <Card className="bg-card border-border">
+            <CardHeader>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <CardTitle>Insurance Policies</CardTitle>
+                  <CardDescription>Manage all insurance policies in the system</CardDescription>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <Dialog open={showNewPolicyDialog} onOpenChange={setShowNewPolicyDialog}>
+                    <DialogTrigger asChild>
+                      <Button className="flex-1 sm:flex-none">
+                        <Plus className="h-4 w-4 mr-2" />
+                        New Policy
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                      <DialogHeader>
+                        <DialogTitle>Create New Insurance Policy</DialogTitle>
+                        <DialogDescription>Create a new insurance policy for a user</DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label>Insurance Product <span className="text-destructive">*</span></Label>
+                          <Select
+                            value={newPolicyForm.productId}
+                            onValueChange={(value) =>
+                              setNewPolicyForm({ ...newPolicyForm, productId: value })
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select insurance product" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {insuranceProducts
+                                .filter((p) => p.status === "active")
+                                .map((product) => (
+                                  <SelectItem key={product.id} value={product.id}>
+                                    {product.name}
+                                  </SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>User <span className="text-destructive">*</span></Label>
+                          <Select
+                            value={newPolicyForm.userId}
+                            onValueChange={(value) =>
+                              setNewPolicyForm({ ...newPolicyForm, userId: value })
+                            }
+                            disabled={usersLoading}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder={usersLoading ? "Loading users..." : "Select user"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {usersError ? (
+                                <div className="p-2 text-sm text-destructive">
+                                  Failed to load users. Please try again.
+                                </div>
+                              ) : users.length === 0 && !usersLoading ? (
+                                <div className="p-2 text-sm text-muted-foreground">
+                                  No users found.
+                                </div>
+                              ) : (
+                                users.map((user) => (
+                                  <SelectItem key={user.id} value={user.id}>
+                                    {user.name || user.email}
+                                  </SelectItem>
+                                ))
+                              )}
+                            </SelectContent>
+                          </Select>
+                          {usersError && (
+                            <p className="text-xs text-destructive mt-1">
+                              Error loading users. Please refresh the page.
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Group (Optional)</Label>
+                          <Select
+                            value={newPolicyForm.groupId || "none"}
+                            onValueChange={(value) =>
+                              setNewPolicyForm({ ...newPolicyForm, groupId: value === "none" ? "" : value })
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select group (optional)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="none">None</SelectItem>
+                              {groups.map((group) => (
+                                <SelectItem key={group.id} value={group.id}>
+                                  {group.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Coverage Amount (ZMW) <span className="text-destructive">*</span></Label>
+                          <Input
+                            type="number"
+                            placeholder="e.g., 50000"
+                            value={newPolicyForm.coverageAmount}
+                            onChange={(e) =>
+                              setNewPolicyForm({ ...newPolicyForm, coverageAmount: e.target.value })
+                            }
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Start Date <span className="text-destructive">*</span></Label>
+                          <Input
+                            type="date"
+                            value={newPolicyForm.startDate}
+                            onChange={(e) =>
+                              setNewPolicyForm({ ...newPolicyForm, startDate: e.target.value })
+                            }
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Notes (Optional)</Label>
+                          <Textarea
+                            placeholder="Additional notes about this policy..."
+                            rows={3}
+                            value={newPolicyForm.notes}
+                            onChange={(e) =>
+                              setNewPolicyForm({ ...newPolicyForm, notes: e.target.value })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setShowNewPolicyDialog(false)
+                            setNewPolicyForm({
+                              productId: "",
+                              userId: "",
+                              groupId: "",
+                              coverageAmount: "",
+                              startDate: new Date().toISOString().split("T")[0],
+                              notes: "",
+                            })
+                          }}
+                          disabled={createPolicyMutation.isPending}
+                        >
+                          Cancel
+                        </Button>
+                        <Button onClick={handleCreatePolicy} disabled={createPolicyMutation.isPending}>
+                          {createPolicyMutation.isPending ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Creating...
+                            </>
+                          ) : (
+                            "Create Policy"
+                          )}
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search policies by number, user name, or email..."
+                      value={policiesSearchQuery}
+                      onChange={(e) => {
+                        setPoliciesSearchQuery(e.target.value)
+                        setPoliciesPage(1)
+                      }}
+                      className="pl-9 w-full"
+                    />
+                  </div>
+                  <Select value={policiesStatusFilter} onValueChange={setPoliciesStatusFilter}>
+                    <SelectTrigger className="w-full sm:w-[150px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="expired">Expired</SelectItem>
+                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                      <SelectItem value="claimed">Claimed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {policiesLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                  </div>
+                ) : policiesError ? (
+                  <div className="text-center py-12 text-destructive">
+                    Failed to load policies. Please try again.
+                  </div>
+                ) : paginatedPolicies.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    No policies found. Create your first policy to get started.
+                  </div>
+                ) : (
+                  <>
+                    <div className="rounded-md border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Policy Number</TableHead>
+                            <TableHead>Product</TableHead>
+                            <TableHead>User</TableHead>
+                            <TableHead>Group</TableHead>
+                            <TableHead>Coverage</TableHead>
+                            <TableHead>Premium</TableHead>
+                            <TableHead>Start Date</TableHead>
+                            <TableHead>End Date</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Payment</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {paginatedPolicies.map((policy) => (
+                            <TableRow key={policy.id}>
+                              <TableCell className="font-medium">{policy.policyNumber}</TableCell>
+                              <TableCell>
+                                <div className="flex flex-col">
+                                  <span className="font-medium">{policy.productName}</span>
+                                  <span className="text-xs text-muted-foreground">{policy.productType}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex flex-col">
+                                  <span>{policy.userName}</span>
+                                  <span className="text-xs text-muted-foreground">{policy.userEmail}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell>{policy.groupName || "-"}</TableCell>
+                              <TableCell>{policy.coverageAmount}</TableCell>
+                              <TableCell>{policy.premiumAmount}</TableCell>
+                              <TableCell>{policy.startDate}</TableCell>
+                              <TableCell>{policy.endDate}</TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={
+                                    policy.status === "active"
+                                      ? "default"
+                                      : policy.status === "expired"
+                                      ? "secondary"
+                                      : "destructive"
+                                  }
+                                >
+                                  {policy.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={
+                                    policy.paymentStatus === "paid"
+                                      ? "default"
+                                      : policy.paymentStatus === "pending"
+                                      ? "secondary"
+                                      : "destructive"
+                                  }
+                                >
+                                  {policy.paymentStatus}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm text-muted-foreground">
+                        Showing {startPoliciesIndex + 1} to {Math.min(endPoliciesIndex, totalPolicies)} of {totalPolicies} policies
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Select
+                          value={policiesPerPage.toString()}
+                          onValueChange={(value) => {
+                            setPoliciesPerPage(Number(value))
+                            setPoliciesPage(1)
+                          }}
+                        >
+                          <SelectTrigger className="w-[70px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="5">5</SelectItem>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="20">20</SelectItem>
+                            <SelectItem value="50">50</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setPoliciesPage((p) => Math.max(1, p - 1))}
+                            disabled={policiesPage === 1}
+                          >
+                            Previous
+                          </Button>
+                          <span className="text-sm">
+                            Page {policiesPage} of {totalPoliciesPages || 1}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setPoliciesPage((p) => Math.min(totalPoliciesPages, p + 1))}
+                            disabled={policiesPage >= totalPoliciesPages}
+                          >
+                            Next
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Claims Management Tab */}
         <TabsContent value="claims" className="space-y-4">
           <Card className="bg-card border-border">
@@ -994,6 +1557,9 @@ export function InsuranceView() {
                             size="sm"
                             onClick={() => {
                               setSelectedClaim(claim)
+                              setAdminNotes("")
+                              setRejectionReason("")
+                              setApprovedAmount("")
                               setShowClaimDialog(true)
                             }}
                           >
@@ -1745,6 +2311,14 @@ export function InsuranceView() {
           </DialogHeader>
           {selectedClaim && (
             <div className="space-y-6 py-4">
+              {/* Debug info - remove in production */}
+              {process.env.NODE_ENV === "development" && (
+                <div className="text-xs text-muted-foreground p-2 bg-muted rounded">
+                  <p>Documents: {JSON.stringify(selectedClaim.documents)}</p>
+                  <p>Evidence URLs: {JSON.stringify(selectedClaim.evidenceUrls)}</p>
+                </div>
+              )}
+              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label className="text-muted-foreground">Policy Holder</Label>
@@ -1787,52 +2361,214 @@ export function InsuranceView() {
                   <CardTitle className="text-sm">Supporting Documents</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-background">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">claim-evidence-001.pdf</span>
+                  {(() => {
+                    // Combine both documents and evidenceUrls arrays
+                    const allDocuments = [
+                      ...(selectedClaim.documents || []),
+                      ...(selectedClaim.evidenceUrls || [])
+                    ]
+                    
+                    if (allDocuments.length === 0) {
+                      return (
+                        <div className="text-center py-4 text-muted-foreground text-sm">
+                          No documents uploaded for this claim
+                        </div>
+                      )
+                    }
+                    
+                    return (
+                      <div className="space-y-2">
+                        {allDocuments.map((docUrl, index) => {
+                          if (!docUrl || docUrl.trim() === "") return null
+                          
+                          const fileName = docUrl.split("/").pop() || `document-${index + 1}`
+                          const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)
+                          const isPdf = /\.pdf$/i.test(fileName)
+                          
+                          return (
+                            <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-background border border-border">
+                              <div className="flex items-center gap-2 flex-1 min-w-0">
+                                {isImage ? (
+                                  <FileText className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                                ) : isPdf ? (
+                                  <FileText className="h-4 w-4 text-red-500 flex-shrink-0" />
+                                ) : (
+                                  <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                                )}
+                                <span className="text-sm truncate" title={fileName}>{fileName}</span>
+                              </div>
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => window.open(docUrl, "_blank")}
+                              >
+                                View
+                              </Button>
+                            </div>
+                          )
+                        })}
                       </div>
-                      <Button variant="ghost" size="sm">
-                        View
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-background">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">medical-report.pdf</span>
-                      </div>
-                      <Button variant="ghost" size="sm">
-                        View
-                      </Button>
-                    </div>
-                  </div>
+                    )
+                  })()}
                 </CardContent>
               </Card>
 
+              {selectedClaim.status === "pending" && (
+                <div className="space-y-2">
+                  <Label>Approved Amount (Optional)</Label>
+                  <Input
+                    type="number"
+                    placeholder={selectedClaim.claimAmount?.replace(/[ZMW\s,]/g, "") || ""}
+                    value={approvedAmount}
+                    onChange={(e) => setApprovedAmount(e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Leave empty to approve the full claim amount: {selectedClaim.claimAmount}
+                  </p>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label>Admin Notes</Label>
-                <Textarea placeholder="Add notes about this claim..." rows={4} />
+                <Textarea 
+                  placeholder="Add notes about this claim..." 
+                  rows={4}
+                  value={adminNotes}
+                  onChange={(e) => setAdminNotes(e.target.value)}
+                />
               </div>
 
               {selectedClaim.status === "pending" && (
                 <div className="flex gap-2 pt-4">
-                  <Button className="flex-1 bg-transparent" variant="outline" onClick={() => setShowClaimDialog(false)}>
+                  <Button 
+                    className="flex-1 bg-transparent" 
+                    variant="outline" 
+                    onClick={() => setShowRejectDialog(true)}
+                    disabled={updateClaimMutation.isPending}
+                  >
                     Reject Claim
                   </Button>
-                  <Button className="flex-1" onClick={() => setShowClaimDialog(false)}>
-                    Approve & Process
+                  <Button 
+                    className="flex-1" 
+                    onClick={() => {
+                      const amount = approvedAmount || selectedClaim.claimAmount?.replace(/[ZMW\s,]/g, "") || ""
+                      updateClaimMutation.mutate({
+                        claimId: selectedClaim.claimId,
+                        action: "approve",
+                        approvedAmount: amount,
+                        internalNotes: adminNotes || undefined,
+                      })
+                    }}
+                    disabled={updateClaimMutation.isPending}
+                  >
+                    {updateClaimMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Approve & Process"
+                    )}
                   </Button>
+                </div>
+              )}
+
+              {selectedClaim.status === "approved" && (
+                <div className="space-y-2 pt-2">
+                  <Label className="text-muted-foreground">Approved Amount</Label>
+                  <p className="text-lg font-semibold text-green-500">
+                    {selectedClaim.claimAmount}
+                  </p>
+                </div>
+              )}
+
+              {selectedClaim.status === "rejected" && selectedClaim.rejectionReason && (
+                <div className="space-y-2 pt-2">
+                  <Label className="text-muted-foreground">Rejection Reason</Label>
+                  <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg">
+                    {selectedClaim.rejectionReason}
+                  </p>
                 </div>
               )}
 
               {selectedClaim.status !== "pending" && (
                 <div className="flex justify-end">
-                  <Button onClick={() => setShowClaimDialog(false)}>Close</Button>
+                  <Button onClick={() => {
+                    setShowClaimDialog(false)
+                    setAdminNotes("")
+                    setSelectedClaim(null)
+                  }}>
+                    Close
+                  </Button>
                 </div>
               )}
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Reject Claim Dialog */}
+      <Dialog open={showRejectDialog} onOpenChange={setShowRejectDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Reject Claim</DialogTitle>
+            <DialogDescription>
+              Please provide a reason for rejecting this claim. This will be visible to the policyholder.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Rejection Reason *</Label>
+              <Textarea
+                placeholder="Enter the reason for rejection..."
+                rows={4}
+                value={rejectionReason}
+                onChange={(e) => setRejectionReason(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2 pt-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setShowRejectDialog(false)
+                  setRejectionReason("")
+                }}
+                disabled={updateClaimMutation.isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="flex-1 bg-red-500 hover:bg-red-600"
+                onClick={() => {
+                  if (!rejectionReason.trim()) {
+                    toast({
+                      title: "Validation Error",
+                      description: "Please provide a rejection reason",
+                      variant: "destructive",
+                    })
+                    return
+                  }
+                  updateClaimMutation.mutate({
+                    claimId: selectedClaim?.claimId,
+                    action: "reject",
+                    rejectionReason: rejectionReason,
+                    internalNotes: adminNotes || undefined,
+                  })
+                }}
+                disabled={updateClaimMutation.isPending || !rejectionReason.trim()}
+              >
+                {updateClaimMutation.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Rejecting...
+                  </>
+                ) : (
+                  "Confirm Rejection"
+                )}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
 

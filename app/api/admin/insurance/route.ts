@@ -66,17 +66,17 @@ export async function POST(req: Request) {
     // Prepare the data object for creation
     const productData = {
       name: data.name.trim(),
-      productType: productType,
+        productType: productType,
       description: data.description ? data.description.trim() : "",
       coverageAmount: coverageAmount,
       premiumAmount: premiumAmount,
-      premiumFrequency: premiumFrequency,
-      features: [],
-      requirements: [],
-      status: "active",
-      claimProcessingTime: data.claimProcessingTime || null,
-      maxClaimAmount: null,
-      deductible: 0,
+        premiumFrequency: premiumFrequency,
+        features: [],
+        requirements: [],
+        status: "active",
+        claimProcessingTime: data.claimProcessingTime || null,
+        maxClaimAmount: null,
+        deductible: 0,
       coverageTerms: data.coverageTerms ? data.coverageTerms.trim() : null,
       exclusions: data.exclusions ? data.exclusions.trim() : null,
     }
@@ -159,16 +159,29 @@ export async function GET(req: Request) {
         },
       })
 
-      const transformedClaims = claims.map((claim) => ({
-        id: claim.claimNumber,
-        policyHolder: claim.policy.user?.name || "Unknown",
-        insuranceType: claim.policy.product?.name || "Unknown",
-        claimAmount: `ZMW ${Number(claim.claimAmount).toLocaleString()}`,
-        status: claim.status === "submitted" ? "pending" : claim.status === "under_review" ? "processing" : claim.status,
-        dateSubmitted: claim.claimDate.toISOString().split("T")[0],
-        description: claim.description,
-        claimId: claim.id,
-      }))
+      const transformedClaims = claims.map((claim) => {
+        // Ensure documents and evidenceUrls are arrays
+        const documents = Array.isArray(claim.documents) ? claim.documents : []
+        const evidenceUrls = Array.isArray(claim.evidenceUrls) ? claim.evidenceUrls : []
+        
+        return {
+          id: claim.claimNumber,
+          policyHolder: claim.policy.user?.name || "Unknown",
+          insuranceType: claim.policy.product?.name || "Unknown",
+          claimAmount: `ZMW ${Number(claim.claimAmount).toLocaleString()}`,
+          status: claim.status === "submitted" ? "pending" : claim.status === "under_review" ? "processing" : claim.status,
+          dateSubmitted: claim.claimDate.toISOString().split("T")[0],
+          description: claim.description,
+          claimId: claim.id,
+        claimNumber: claim.claimNumber,
+        claimType: claim.claimType,
+        incidentDate: claim.incidentDate.toISOString().split("T")[0],
+        documents: documents.filter((doc: string) => doc && doc.trim() !== ""),
+        evidenceUrls: evidenceUrls.filter((url: string) => url && url.trim() !== ""),
+        rejectionReason: claim.rejectionReason || null,
+        approvedAmount: claim.approvedAmount ? `ZMW ${Number(claim.approvedAmount).toLocaleString()}` : null,
+      }
+      })
 
       return NextResponse.json(transformedClaims)
     } else {
@@ -219,11 +232,15 @@ export async function GET(req: Request) {
 
       const transformedProducts = products.map((product) => {
         const activePolicies = product.policies.length
-        const totalCoverage = product.policies.reduce((sum, p) => sum + Number(p.coverageAmount), 0)
-        const premiumCollected = product.policies.reduce((sum, p) => {
-          const paidPremiums = p.payments.reduce((premSum, prem) => premSum + Number(prem.amount), 0)
-          return sum + paidPremiums
-        }, 0)
+        const totalCoverage = product.policies.length > 0
+          ? product.policies.reduce((sum, p) => sum + Number(p.coverageAmount), 0)
+          : Number(product.coverageAmount) // Use product default if no policies
+        const premiumCollected = product.policies.length > 0
+          ? product.policies.reduce((sum, p) => {
+              const paidPremiums = p.payments.reduce((premSum, prem) => premSum + Number(prem.amount), 0)
+              return sum + paidPremiums
+            }, 0)
+          : 0 // No premiums collected if no policies
         const claims = product.policies.reduce((sum, p) => sum + p.claims.length, 0)
         const claimsPaid = product.policies.reduce((sum, p) => {
           const paidClaims = p.claims
@@ -244,14 +261,24 @@ export async function GET(req: Request) {
         const waitingPeriodMatch = product.claimProcessingTime?.match(/(\d+)/)
         const waitingPeriod = waitingPeriodMatch ? waitingPeriodMatch[1] : "30"
 
+        // Format coverage - show in millions if >= 1M, otherwise show full amount
+        // Ensure we always have a value to display
+        const coverageValue = totalCoverage > 0 ? totalCoverage : Number(product.coverageAmount || 0)
+        const coverageDisplay = coverageValue >= 1000000
+          ? `ZMW ${(coverageValue / 1000000).toFixed(1)}M`
+          : `ZMW ${coverageValue.toLocaleString()}`
+
+        // Format premium collected - always show formatted, even if 0
+        const premiumDisplay = `ZMW ${premiumCollected.toLocaleString()}`
+
         return {
           id: product.id,
           name: product.name,
           type: product.productType,
           icon: iconMap[product.productType] || "Shield",
           activePolicies,
-          totalCoverage: `ZMW ${(totalCoverage / 1000000).toFixed(1)}M`,
-          premiumCollected: `ZMW ${premiumCollected.toLocaleString()}`,
+          totalCoverage: coverageDisplay,
+          premiumCollected: premiumDisplay,
           claims,
           claimsPaid: `ZMW ${claimsPaid.toLocaleString()}`,
           status: product.status,

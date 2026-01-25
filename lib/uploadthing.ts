@@ -162,6 +162,19 @@ export const ourFileRouter = {
       console.log("Solar document url", file.url)
       return { url: file.url }
     }),
+
+  insuranceDocumentUploader: f({
+    image: { maxFileSize: "10MB", maxFileCount: 10 },
+    pdf: { maxFileSize: "10MB", maxFileCount: 10 }
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Insurance document uploaded for userId:", metadata.userId)
+      console.log("Insurance document url", file.url)
+      return { url: file.url }
+    }),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

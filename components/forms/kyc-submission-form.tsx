@@ -846,7 +846,7 @@ export function KycSubmissionForm() {
         description: error instanceof Error ? error.message : "Failed to upload files. Please try again.",
         variant: "destructive",
       })
-    }
+  }
   }
 
   const isSubmitting = submitKycMutation.isPending || isUploadingDocument || isUploadingVideo
@@ -1361,7 +1361,7 @@ export function KycSubmissionForm() {
                               <AlertCircle className="h-4 w-4" />
                               <AlertDescription>{videoError}</AlertDescription>
                             </Alert>
-                          </div>
+                      </div>
                         ) : (
                           <>
                             <Webcam
@@ -1498,9 +1498,9 @@ export function KycSubmissionForm() {
 
         {/* Hide navigation buttons if all KYC is complete */}
         {!(kycStatus?.hasPersonalInfo && kycStatus?.hasLevel2Documents && kycStatus?.hasLevel3Documents) && (
-          <div className="flex justify-between gap-4">
-            <Button
-              variant="outline"
+        <div className="flex justify-between gap-4">
+          <Button
+            variant="outline"
               onClick={() => {
                 // Find previous available step
                 let prevStep = currentStep - 1
@@ -1518,11 +1518,11 @@ export function KycSubmissionForm() {
                 }
                 setCurrentStep(Math.max(1, prevStep))
               }}
-              disabled={currentStep === 1}
-            >
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Previous
-            </Button>
+            disabled={currentStep === 1}
+          >
+            <ChevronLeft className="h-4 w-4 mr-2" />
+            Previous
+          </Button>
 
             {currentStep < totalSteps() ? (
               <Button
@@ -1545,10 +1545,10 @@ export function KycSubmissionForm() {
                 }}
                 disabled={isSubmitting}
               >
-                Next
-                <ChevronRight className="h-4 w-4 ml-2" />
-              </Button>
-            ) : (
+              Next
+              <ChevronRight className="h-4 w-4 ml-2" />
+            </Button>
+          ) : (
               <Button onClick={handleSubmit} className="bg-primary" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
@@ -1557,13 +1557,13 @@ export function KycSubmissionForm() {
                   </>
                 ) : (
                   <>
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    Submit Application
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Submit Application
                   </>
                 )}
-              </Button>
-            )}
-          </div>
+            </Button>
+          )}
+        </div>
         )}
       </CardContent>
     </Card>

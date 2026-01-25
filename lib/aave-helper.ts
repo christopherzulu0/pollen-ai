@@ -94,21 +94,22 @@ export interface UserReserveData {
 
 /**
  * Get provider for Celo network
- * Uses StaticJsonRpcProvider to avoid network detection issues
+ * Uses JsonRpcProvider with explicit network configuration
  */
-export function getProvider(): ethers.providers.StaticJsonRpcProvider {
+export function getProvider(): ethers.providers.JsonRpcProvider {
   const networkConfig = getNetworkConfig();
   
-  // Use StaticJsonRpcProvider which doesn't try to auto-detect network
-  // This prevents "could not detect network" errors
-  // StaticJsonRpcProvider takes (url, network) where network is { name, chainId }
-  return new ethers.providers.StaticJsonRpcProvider(
+  // Use JsonRpcProvider with explicit network to avoid auto-detection issues
+  // This works better in server-side environments
+  const provider = new ethers.providers.JsonRpcProvider(
     networkConfig.rpcUrl,
     {
       name: networkConfig.name,
       chainId: networkConfig.chainId,
     }
   );
+  
+  return provider;
 }
 
 /**
@@ -150,7 +151,7 @@ export async function approveToken(
   signer: ethers.Signer
 ): Promise<ethers.ContractTransactionReceipt | null> {
   const tokenContract = getTokenContract(tokenAddress, signer);
-  const tx = await tokenContract.approve(spenderAddress, ethers.parseUnits(amount, 18));
+  const tx = await tokenContract.approve(spenderAddress, ethers.utils.parseUnits(amount, 18));
   return await tx.wait();
 }
 
@@ -169,7 +170,7 @@ export async function depositCollateral(
   
   // Then deposit
   const lendingPool = getLendingPoolContract(signer);
-  const amountInWei = ethers.parseUnits(amount, 18);
+  const amountInWei = ethers.utils.parseUnits(amount, 18);
   const tx = await lendingPool.deposit(assetAddress, amountInWei, userAddress, 0);
   return await tx.wait();
 }
@@ -184,7 +185,7 @@ export async function withdrawCollateral(
 ): Promise<ethers.ContractTransactionReceipt | null> {
   const userAddress = await signer.getAddress();
   const lendingPool = getLendingPoolContract(signer);
-  const amountInWei = ethers.parseUnits(amount, 18);
+  const amountInWei = ethers.utils.parseUnits(amount, 18);
   const tx = await lendingPool.withdraw(assetAddress, amountInWei, userAddress);
   return await tx.wait();
 }
@@ -201,7 +202,7 @@ export async function borrowFromAave(
 ): Promise<ethers.ContractTransactionReceipt | null> {
   const userAddress = await signer.getAddress();
   const lendingPool = getLendingPoolContract(signer);
-  const amountInWei = ethers.parseUnits(amount, 18);
+  const amountInWei = ethers.utils.parseUnits(amount, 18);
   const tx = await lendingPool.borrow(assetAddress, amountInWei, interestRateMode, 0, userAddress);
   return await tx.wait();
 }
@@ -223,7 +224,7 @@ export async function repayLoan(
   
   // Then repay
   const lendingPool = getLendingPoolContract(signer);
-  const amountInWei = ethers.parseUnits(amount, 18);
+  const amountInWei = ethers.utils.parseUnits(amount, 18);
   const tx = await lendingPool.repay(assetAddress, amountInWei, rateMode, userAddress);
   return await tx.wait();
 }
@@ -238,12 +239,12 @@ export async function getUserAccountData(userAddress: string): Promise<UserAccou
   const data = await lendingPool.getUserAccountData(userAddress);
   
   return {
-    totalCollateralETH: ethers.formatUnits(data[0], 18),
-    totalDebtETH: ethers.formatUnits(data[1], 18),
-    availableBorrowsETH: ethers.formatUnits(data[2], 18),
-    currentLiquidationThreshold: ethers.formatUnits(data[3], 2),
-    ltv: ethers.formatUnits(data[4], 2),
-    healthFactor: ethers.formatUnits(data[5], 18),
+    totalCollateralETH: ethers.utils.formatUnits(data[0], 18),
+    totalDebtETH: ethers.utils.formatUnits(data[1], 18),
+    availableBorrowsETH: ethers.utils.formatUnits(data[2], 18),
+    currentLiquidationThreshold: ethers.utils.formatUnits(data[3], 2),
+    ltv: ethers.utils.formatUnits(data[4], 2),
+    healthFactor: ethers.utils.formatUnits(data[5], 18),
   };
 }
 
@@ -264,12 +265,12 @@ export async function getReserveData(assetAddress: string): Promise<ReserveData 
     const data = await dataProvider.getReserveData(assetAddress);
     
     return {
-      availableLiquidity: ethers.formatUnits(data[0], 18),
-      totalStableDebt: ethers.formatUnits(data[1], 18),
-      totalVariableDebt: ethers.formatUnits(data[2], 18),
-      liquidityRate: ethers.formatUnits(data[3], 27), // Ray units
-      variableBorrowRate: ethers.formatUnits(data[4], 27),
-      stableBorrowRate: ethers.formatUnits(data[5], 27),
+      availableLiquidity: ethers.utils.formatUnits(data[0], 18),
+      totalStableDebt: ethers.utils.formatUnits(data[1], 18),
+      totalVariableDebt: ethers.utils.formatUnits(data[2], 18),
+      liquidityRate: ethers.utils.formatUnits(data[3], 27), // Ray units
+      variableBorrowRate: ethers.utils.formatUnits(data[4], 27),
+      stableBorrowRate: ethers.utils.formatUnits(data[5], 27),
     };
   } catch (error: any) {
     // Reserve doesn't exist or contract call failed - return null instead of throwing
@@ -295,11 +296,11 @@ export async function getUserReserveData(assetAddress: string, userAddress: stri
     const data = await dataProvider.getUserReserveData(assetAddress, userAddress);
     
     return {
-      currentATokenBalance: ethers.formatUnits(data[0], 18),
-      currentStableDebt: ethers.formatUnits(data[1], 18),
-      currentVariableDebt: ethers.formatUnits(data[2], 18),
-      liquidityRate: ethers.formatUnits(data[6], 27),
-      stableBorrowRate: ethers.formatUnits(data[5], 27),
+      currentATokenBalance: ethers.utils.formatUnits(data[0], 18),
+      currentStableDebt: ethers.utils.formatUnits(data[1], 18),
+      currentVariableDebt: ethers.utils.formatUnits(data[2], 18),
+      liquidityRate: ethers.utils.formatUnits(data[6], 27),
+      stableBorrowRate: ethers.utils.formatUnits(data[5], 27),
       usageAsCollateralEnabled: data[8],
     };
   } catch (error: any) {

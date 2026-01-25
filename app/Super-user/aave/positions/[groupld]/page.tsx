@@ -1,6 +1,5 @@
-"use client"
 import { Suspense } from "react"
-import PositionDetailsClient from "@/components/admin/aave/position-details-client"
+import PositionDetailsClient from "@/components/master-components/aave/position-details-client"
 
 // Mock data - In production, fetch based on groupId
 const positionData = {
