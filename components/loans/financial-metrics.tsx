@@ -269,28 +269,28 @@ export default function FinancialMetrics() {
 
   return (
    <>
-     <Card className="overflow-hidden border border-slate-200 dark:border-slate-800 shadow-lg rounded-xl bg-white dark:bg-slate-900">
-       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4 border-b border-slate-200 dark:border-slate-800">
+     <Card className="overflow-hidden border border-border shadow-lg rounded-xl bg-card">
+       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4 border-b border-border">
          <div className="space-y-1">
            <div className="flex items-center gap-2">
-             <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">Financial Overview</CardTitle>
+             <CardTitle className="text-xl font-bold text-foreground">Financial Overview</CardTitle>
              {showAIInsights && (
                  <Badge
                      variant="outline"
-                     className="ml-2 bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-900"
+                     className="ml-2 bg-primary/10 text-primary border-primary/30"
                  >
                    <Sparkles className="h-3 w-3 mr-1" />
                    AI Enhanced
                  </Badge>
              )}
            </div>
-           <CardDescription className="text-slate-500 dark:text-slate-400">
+           <CardDescription className="text-muted-foreground">
              Track contributions, loans, and group finances for {getTimeframeLabel().toLowerCase()}
            </CardDescription>
          </div>
          <div className="flex items-center gap-2 flex-col sm:flex-row w-full sm:w-auto">
            <Select value={selectedGroupId || ""} onValueChange={setSelectedGroupId}>
-             <SelectTrigger className="w-full sm:w-[180px] rounded-md border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+             <SelectTrigger className="w-full sm:w-[180px] rounded-md border-border bg-background">
                <SelectValue placeholder="Select group" />
              </SelectTrigger>
              <SelectContent>
@@ -300,7 +300,7 @@ export default function FinancialMetrics() {
              </SelectContent>
            </Select>
            <Select value={timeframe} onValueChange={setTimeframe}>
-             <SelectTrigger className="w-full sm:w-[130px] rounded-md border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+             <SelectTrigger className="w-full sm:w-[130px] rounded-md border-border bg-background">
                <SelectValue placeholder="Select timeframe" />
              </SelectTrigger>
              <SelectContent>
@@ -316,7 +316,7 @@ export default function FinancialMetrics() {
                <Button
                    variant="outline"
                    size="sm"
-                   className="rounded-md border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+                   className="rounded-md border-border hover:bg-accent hover:text-accent-foreground"
                >
                  Export <ChevronDown className="ml-1 h-3 w-3" />
                </Button>
@@ -338,73 +338,73 @@ export default function FinancialMetrics() {
          </div>
        </CardHeader>
        <CardContent className="px-0 pb-0">
-         <div className="grid grid-cols-2 divide-x divide-slate-200 dark:divide-slate-800 md:grid-cols-4">
-           <div className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+         <div className="grid grid-cols-2 divide-x divide-border md:grid-cols-4">
+           <div className="p-4 hover:bg-muted/50 transition-colors">
              <div className="flex items-center gap-2">
-               <ArrowUpCircle className="h-4 w-4 text-emerald-500" />
-               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Total Contributed</span>
+               <ArrowUpCircle className="h-4 w-4 text-success" />
+               <span className="text-sm font-medium text-muted-foreground">Total Contributed</span>
              </div>
              <div className="mt-1 flex items-baseline">
-              <span className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              <span className="text-xl sm:text-2xl font-bold text-foreground">
                 {formatCurrency(financialData.totalContributed)}
               </span>
-               <span className="ml-2 text-xs flex items-center gap-0.5 text-emerald-500">
+               <span className="ml-2 text-xs flex items-center gap-0.5 text-success">
                 <TrendingUp className="h-3 w-3" />
                  {financialData.contributionGrowth}%
               </span>
              </div>
-             <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+             <div className="mt-1 text-xs text-muted-foreground">
                From {financialData.totalMembers} members
              </div>
            </div>
-           <div className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+           <div className="p-4 hover:bg-muted/50 transition-colors">
              <div className="flex items-center gap-2">
-               <ArrowDownCircle className="h-4 w-4 text-amber-500" />
-               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Total Lent Out</span>
+               <ArrowDownCircle className="h-4 w-4 text-warning" />
+               <span className="text-sm font-medium text-muted-foreground">Total Lent Out</span>
              </div>
              <div className="mt-1 flex items-baseline">
-              <span className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              <span className="text-xl sm:text-2xl font-bold text-foreground">
                 {formatCurrency(financialData.totalLentOut)}
               </span>
-               <span className="ml-2 text-xs flex items-center gap-0.5 text-emerald-500">
+               <span className="ml-2 text-xs flex items-center gap-0.5 text-success">
                 <TrendingUp className="h-3 w-3" />
                  {financialData.loanGrowth}%
               </span>
              </div>
-             <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+             <div className="mt-1 text-xs text-muted-foreground">
                {financialData.activeLoans} active loans
              </div>
            </div>
-           <div className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+           <div className="p-4 hover:bg-muted/50 transition-colors">
              <div className="flex items-center gap-2">
-               <Wallet className="h-4 w-4 text-blue-500" />
-               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Available Balance</span>
+               <Wallet className="h-4 w-4 text-primary" />
+               <span className="text-sm font-medium text-muted-foreground">Available Balance</span>
              </div>
              <div className="mt-1">
-              <span className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              <span className="text-xl sm:text-2xl font-bold text-foreground">
                 {formatCurrency(financialData.availableBalance)}
               </span>
              </div>
-             <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+             <div className="mt-1 text-xs text-muted-foreground">
                Fund utilization: {formatPercentage(financialData.fundUtilization)}
              </div>
            </div>
-           <div className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-             <TooltipProvider>
+           <div className="p-4 hover:bg-muted/50 transition-colors">
+            <TooltipProvider>
                <Tooltip>
                  <TooltipTrigger asChild>
                    <div className="cursor-help">
                      <div className="flex items-center gap-2">
-                       <PiggyBank className="h-4 w-4 text-purple-500" />
-                       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Projected Interest</span>
-                       <Info className="h-3 w-3 text-slate-400 dark:text-slate-500" />
+                       <PiggyBank className="h-4 w-4 text-secondary" />
+                       <span className="text-sm font-medium text-muted-foreground">Projected Interest</span>
+                       <Info className="h-3 w-3 text-muted-foreground" />
                      </div>
                      <div className="mt-1">
-                      <span className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">
                         {formatCurrency(financialData.projectedInterest)}
                       </span>
                      </div>
-                     <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                     <div className="mt-1 text-xs text-muted-foreground">
                        Avg. rate: {financialData.averageInterestRate}%
                      </div>
                    </div>
@@ -419,12 +419,12 @@ export default function FinancialMetrics() {
 
 
        </CardContent>
-       <CardFooter className="flex items-center justify-between px-4 py-3 border-t border-slate-200 dark:border-slate-800 mt-4">
-         <div className="text-xs text-slate-500 dark:text-slate-400">Last updated: Today at 10:35 AM</div>
+       <CardFooter className="flex items-center justify-between px-4 py-3 border-t border-border mt-4">
+         <div className="text-xs text-muted-foreground">Last updated: Today at 10:35 AM</div>
          <Button
              variant="link"
              size="sm"
-             className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+             className="text-muted-foreground hover:text-foreground"
          >
            View detailed reports <ArrowRight className="ml-1 h-3 w-3" />
          </Button>

@@ -41,7 +41,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
   // Show error state
   if (error) {
     return (
-      <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900">
+      <Card className="border border-border shadow-md rounded-xl bg-card">
         <CardContent className="flex flex-col items-center justify-center py-10 space-y-4">
           <AlertCircle className="h-12 w-12 text-destructive" />
           <div className="text-center space-y-2">
@@ -150,19 +150,19 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "LOAN_REQUEST":
-        return <Clock className="h-4 w-4 text-amber-500" />
+        return <Clock className="h-4 w-4 text-warning" />
       case "PAYMENT":
-        return <ArrowUpCircle className="h-4 w-4 text-emerald-500" />
+        return <ArrowUpCircle className="h-4 w-4 text-success" />
       case "CONTRIBUTION":
-        return <ArrowUpCircle className="h-4 w-4 text-emerald-500" />
+        return <ArrowUpCircle className="h-4 w-4 text-success" />
       case "LOAN_APPROVED":
-        return <CheckCircle className="h-4 w-4 text-emerald-500" />
+        return <CheckCircle className="h-4 w-4 text-success" />
       case "LOAN_REJECTED":
-        return <XCircle className="h-4 w-4 text-red-500" />
+        return <XCircle className="h-4 w-4 text-destructive" />
       case "MEMBER_JOINED":
-        return <User className="h-4 w-4 text-blue-500" />
+        return <User className="h-4 w-4 text-primary" />
       case "SYSTEM":
-        return <Bell className="h-4 w-4 text-purple-500" />
+        return <Bell className="h-4 w-4 text-muted-foreground" />
       default:
         return <Clock className="h-4 w-4" />
     }
@@ -174,7 +174,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
         return (
             <Badge
                 variant="outline"
-                className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900"
+                className="bg-success/10 text-success border-success/30"
             >
               Completed
             </Badge>
@@ -183,7 +183,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
         return (
             <Badge
                 variant="outline"
-                className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-900"
+                className="bg-warning/10 text-warning border-warning/30"
             >
               Pending
             </Badge>
@@ -192,7 +192,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
         return (
             <Badge
                 variant="outline"
-                className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900"
+                className="bg-success/10 text-success border-success/30"
             >
               Approved
             </Badge>
@@ -201,7 +201,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
         return (
             <Badge
                 variant="outline"
-                className="bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-900"
+                className="bg-destructive/10 text-destructive border-destructive/30"
             >
               Rejected
             </Badge>
@@ -210,7 +210,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
         return (
             <Badge
                 variant="outline"
-                className="bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-900"
+                className="bg-muted text-muted-foreground border-border"
             >
               System
             </Badge>
@@ -235,11 +235,11 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
   })
 
   return (
-      <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900 w-full max-w-full overflow-hidden">
-        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2 border-b border-slate-200 dark:border-slate-800">
+      <Card className="border border-border shadow-md rounded-xl bg-card w-full max-w-full overflow-hidden">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2 border-b border-border">
           <div className="space-y-1">
-            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">Recent Activity</CardTitle>
-            <CardDescription className="text-slate-500 dark:text-slate-400">
+            <CardTitle className="text-xl font-bold text-foreground">Recent Activity</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Latest actions in your groups
             </CardDescription>
           </div>
@@ -249,7 +249,7 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
+                    className="rounded-md hover:bg-accent hover:text-accent-foreground"
                 >
                   <Filter className="h-4 w-4" />
                 </Button>
@@ -286,28 +286,28 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
           <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
             <div className="px-4 pt-2">
               <ScrollArea className="w-full whitespace-nowrap pb-3">
-                <TabsList className="inline-flex w-full p-1 rounded-md bg-slate-100 dark:bg-slate-800">
+                <TabsList className="inline-flex w-full p-1 rounded-md bg-muted/50">
                   <TabsTrigger
                       value="all"
-                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     All
                   </TabsTrigger>
                   <TabsTrigger
                       value="LOAN_REQUEST"
-                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     Loans
                   </TabsTrigger>
                   <TabsTrigger
                       value="CONTRIBUTION"
-                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     Contributions
                   </TabsTrigger>
                   <TabsTrigger
                       value="MEMBER_JOINED"
-                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                      className="flex-1 md:flex-none px-3 py-1.5 rounded-sm text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
                   >
                     Members
                   </TabsTrigger>
@@ -324,24 +324,24 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
                       filteredActivities.map((activity) => (
                           <div
                               key={activity.id}
-                              className="flex flex-col sm:flex-row sm:items-start gap-3 rounded-lg p-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-200 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                              className="flex flex-col sm:flex-row sm:items-start gap-3 rounded-lg p-2 hover:bg-muted/50 transition-all duration-200 cursor-pointer border border-transparent hover:border-border"
                           >
-                            <Avatar className="h-8 w-8 border-2 border-slate-200 dark:border-slate-700 self-start">
+                            <Avatar className="h-8 w-8 border-2 border-border self-start">
                               <AvatarImage src={activity.user.avatar || "/placeholder.svg"} alt={activity.user.name} />
-                              <AvatarFallback className="bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white">
+                              <AvatarFallback className="bg-muted text-foreground">
                                 {activity.user.name.substring(0, 2).toUpperCase()}
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex-1 space-y-1">
                               <div className="flex items-center gap-2">
-                                <p className="text-sm font-medium text-slate-900 dark:text-white">{activity.user.name}</p>
+                                <p className="text-sm font-medium text-foreground">{activity.user.name}</p>
                                 {getActivityIcon(activity.type)}
                               </div>
-                              <p className="text-xs text-slate-500 dark:text-slate-400">{activity.description}</p>
+                              <p className="text-xs text-muted-foreground">{activity.description}</p>
                               <div className="flex items-center justify-between flex-wrap gap-2">
                                 <div className="flex items-center gap-2">
-                                  <p className="text-xs text-slate-500 dark:text-slate-400">{activity.time}</p>
-                                  <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline">
+                                  <p className="text-xs text-muted-foreground">{activity.time}</p>
+                                  <p className="text-xs text-muted-foreground hidden sm:inline">
                                     • {activity.group}
                                   </p>
                                 </div>
@@ -352,8 +352,8 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
                       ))
                   ) : (
                       <div className="flex flex-col items-center justify-center py-8">
-                        <Bell className="h-10 w-10 text-slate-400 dark:text-slate-500 mb-2" />
-                        <p className="text-sm text-slate-500 dark:text-slate-400">No activities match your filters</p>
+                        <Bell className="h-10 w-10 text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground">No activities match your filters</p>
                       </div>
                   )}
                 </div>
@@ -361,10 +361,10 @@ export default function ActivityFeed({ activities, isLoading, error }: ActivityF
             </TabsContent>
           </Tabs>
         </CardContent>
-        <CardFooter className="border-t border-slate-200 dark:border-slate-800 pt-4">
+        <CardFooter className="border-t border-border pt-4">
           <Button
               variant="ghost"
-              className="w-full text-xs rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
+              className="w-full text-xs rounded-md hover:bg-accent hover:text-accent-foreground"
               size="sm"
           >
             View All Activity

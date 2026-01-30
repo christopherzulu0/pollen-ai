@@ -339,18 +339,18 @@ export default function LoanStatistics() {
   }
 
   return (
-    <Card className="border border-muted/40 shadow-md rounded-xl bg-gradient-to-b from-card to-background overflow-hidden">
+    <Card className="border border-border shadow-md rounded-xl bg-card overflow-hidden">
       <CardHeader className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-2 lg:space-y-0 pb-2">
         <div className="space-y-1">
-          <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
+          <CardTitle className="text-xl font-bold text-foreground flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
             Loan Analytics
           </CardTitle>
-          <CardDescription>Advanced insights into loan performance and member contributions</CardDescription>
+          <CardDescription className="text-muted-foreground">Advanced insights into loan performance and member contributions</CardDescription>
         </div>
         <div className="flex items-center gap-2 flex-col sm:flex-row w-full sm:w-auto">
           <Select value={selectedGroup} onValueChange={setSelectedGroup}>
-            <SelectTrigger className="w-full sm:w-[180px] rounded-full">
+            <SelectTrigger className="w-full sm:w-[180px] rounded-full border-border bg-background">
               <SelectValue placeholder="Select group" />
             </SelectTrigger>
             <SelectContent>
@@ -362,7 +362,7 @@ export default function LoanStatistics() {
             </SelectContent>
           </Select>
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-full sm:w-[120px] rounded-full">
+            <SelectTrigger className="w-full sm:w-[120px] rounded-full border-border bg-background">
               <SelectValue placeholder="Time range" />
             </SelectTrigger>
             <SelectContent>
@@ -468,16 +468,16 @@ export default function LoanStatistics() {
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter className="px-4 py-3 text-xs text-muted-foreground border-t border-border/50 mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+      <CardFooter className="px-4 py-3 text-xs text-muted-foreground border-t border-border mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div className="flex items-center gap-1">
           <Clock className="h-3 w-3" />
           <span>Last updated: Today at 10:45 AM</span>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+          <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground">
             View full analytics report
           </Button>
-          <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+          <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground">
             Schedule automated reports
           </Button>
         </div>

@@ -857,10 +857,10 @@ const LoanStatusTab = () => {
 
                 {/* Status Summary Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                    <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg">
-                                <CircleDollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                            <div className="bg-primary/20 p-2 rounded-lg">
+                                <CircleDollarSign className="h-5 w-5 text-primary" />
                             </div>
                             <Badge variant="outline" className="rounded-full">
                                 <Calendar className="h-3 w-3 mr-1" />
@@ -877,14 +877,14 @@ const LoanStatusTab = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                    <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded-lg">
-                                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                            <div className="bg-success/20 p-2 rounded-lg">
+                                <CheckCircle className="h-5 w-5 text-success" />
                             </div>
                             <Badge
                                 variant="outline"
-                                className="rounded-full bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800"
+                                className="rounded-full bg-success/20 text-success border-success/50"
                             >
                                 <TrendingUp className="h-3 w-3 mr-1" />
                                 +5%
@@ -895,18 +895,18 @@ const LoanStatusTab = () => {
                             <div className="text-2xl font-bold mt-1">{completionRate}%</div>
                         </div>
                         <div className="mt-3">
-                            <Progress value={completionRate} className="h-1.5" indicatorClassName="bg-green-500" />
+                            <Progress value={completionRate} className="h-1.5" indicatorClassName="bg-success" />
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                    <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded-lg">
-                                <Hourglass className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                            <div className="bg-warning/20 p-2 rounded-lg">
+                                <Hourglass className="h-5 w-5 text-warning-foreground" />
                             </div>
                             <Badge
                                 variant="outline"
-                                className="rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800"
+                                className="rounded-full bg-warning/20 text-warning-foreground border-warning/50"
                             >
                                 <Clock className="h-3 w-3 mr-1" />
                                 Pending
@@ -922,14 +922,14 @@ const LoanStatusTab = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                    <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <div className="bg-red-50 dark:bg-red-900/20 p-2 rounded-lg">
-                                <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+                            <div className="bg-destructive/20 p-2 rounded-lg">
+                                <XCircle className="h-5 w-5 text-destructive" />
                             </div>
                             <Badge
                                 variant="outline"
-                                className="rounded-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800"
+                                className="rounded-full bg-destructive/20 text-destructive border-destructive/50"
                             >
                                 <TrendingDown className="h-3 w-3 mr-1" />
                                 -10%
@@ -940,7 +940,7 @@ const LoanStatusTab = () => {
                             <div className="text-2xl font-bold mt-1">{defaultRate}%</div>
                         </div>
                         <div className="mt-3">
-                            <Progress value={defaultRate} max={20} className="h-1.5" indicatorClassName="bg-red-500" />
+                            <Progress value={defaultRate} max={20} className="h-1.5" indicatorClassName="bg-destructive" />
                             <div className="text-xs text-muted-foreground mt-1">Industry avg: 12%</div>
                         </div>
                     </div>
@@ -955,12 +955,12 @@ const LoanStatusTab = () => {
                                 className={cn(
                                     "p-4 rounded-xl border flex flex-col gap-2 transition-all hover:shadow-md",
                                     status.name === "Active"
-                                        ? "bg-blue-50/50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800"
+                                        ? "bg-primary/20 border-primary/50"
                                         : status.name === "Pending Approval"
-                                            ? "bg-amber-50/50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800"
+                                            ? "bg-warning/20 border-warning/50"
                                             : status.name === "Completed"
-                                                ? "bg-green-50/50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
-                                                : "bg-red-50/50 dark:bg-red-950/30 border-red-200 dark:border-red-800",
+                                                ? "bg-success/20 border-success/50"
+                                                : "bg-destructive/20 border-destructive/50",
                                 )}
                             >
                                 <div className="flex items-center justify-between">
@@ -969,18 +969,18 @@ const LoanStatusTab = () => {
                                             className={cn(
                                                 "h-8 w-8 rounded-full flex items-center justify-center",
                                                 status.name === "Active"
-                                                    ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400"
+                                                    ? "bg-primary/30 text-primary"
                                                     : status.name === "Pending Approval"
-                                                        ? "bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400"
+                                                        ? "bg-warning/30 text-warning-foreground"
                                                         : status.name === "Completed"
-                                                            ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400"
-                                                            : "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400",
+                                                            ? "bg-success/30 text-success"
+                                                            : "bg-destructive/30 text-destructive",
                                             )}
                                         >
                                             {status.icon}
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-medium">{status.name}</h4>
+                                            <h4 className="text-sm font-medium text-foreground">{status.name}</h4>
                                             <p className="text-xs text-muted-foreground">{status.description}</p>
                                         </div>
                                     </div>
@@ -998,8 +998,8 @@ const LoanStatusTab = () => {
                                         className={cn(
                                             "text-xs rounded-sm px-1.5 py-0",
                                             status.trendDirection === "up"
-                                                ? "text-green-500 border-green-200"
-                                                : "text-red-500 border-red-200",
+                                                ? "text-success border-success/50"
+                                                : "text-destructive border-destructive/50",
                                         )}
                                     >
                                         {status.trendDirection === "up" ? (
@@ -1041,7 +1041,7 @@ const LoanStatusTab = () => {
 
                 {statusViewMode === "chart" && (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div className="lg:col-span-2 bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                        <div className="lg:col-span-2 bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-4">
                                 <h4 className="text-sm font-medium">Status Distribution</h4>
                                 <div className="flex items-center gap-2">
@@ -1094,8 +1094,8 @@ const LoanStatusTab = () => {
                                                             className={cn(
                                                                 "text-xs rounded-sm px-1.5 py-0",
                                                                 status.trendDirection === "up"
-                                                                    ? "text-green-500 border-green-200"
-                                                                    : "text-red-500 border-red-200",
+                                                                    ? "text-success border-green-200"
+                                                                    : "text-destructive border-red-200",
                                                             )}
                                                         >
                                                             {status.trendDirection === "up" ? (
@@ -1143,8 +1143,8 @@ const LoanStatusTab = () => {
                                                 className={cn(
                                                     "text-xs rounded-sm px-1.5 py-0",
                                                     status.trendDirection === "up"
-                                                        ? "text-green-500 border-green-200"
-                                                        : "text-red-500 border-red-200",
+                                                        ? "text-success border-green-200"
+                                                        : "text-destructive border-red-200",
                                                 )}
                                             >
                                                 {status.trendDirection === "up" ? (
@@ -1160,72 +1160,72 @@ const LoanStatusTab = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                        <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                             <h4 className="text-sm font-medium mb-4">Key Metrics</h4>
 
                             <div className="space-y-5 mt-4">
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
                                         <span className="flex items-center gap-1.5">
-                                            <CheckCircle className="h-4 w-4 text-green-500" />
+                                            <CheckCircle className="h-4 w-4 text-success" />
                                             Completion Rate
                                         </span>
-                                        <span className="font-medium text-green-500">{completionRate}%</span>
+                                        <span className="font-medium text-success">{completionRate}%</span>
                                     </div>
                                     <div className="relative pt-1">
                                         <div className="flex mb-1 items-center justify-between">
                                             <div className="text-xs text-muted-foreground">
-                                                <span className="font-semibold text-green-500">{completionRate}%</span> vs target 85%
+                                                <span className="font-semibold text-success">{completionRate}%</span> vs target 85%
                                             </div>
-                                            <div className="text-xs text-green-500 font-semibold">+5%</div>
+                                            <div className="text-xs text-success font-semibold">+5%</div>
                                         </div>
-                                        <Progress value={completionRate} className="h-2" indicatorClassName="bg-green-500" />
+                                        <Progress value={completionRate} className="h-2" indicatorClassName="bg-success" />
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
                                         <span className="flex items-center gap-1.5">
-                                            <XCircle className="h-4 w-4 text-red-500" />
+                                            <XCircle className="h-4 w-4 text-destructive" />
                                             Default Rate
                                         </span>
-                                        <span className="font-medium text-red-500">{defaultRate}%</span>
+                                        <span className="font-medium text-destructive">{defaultRate}%</span>
                                     </div>
                                     <div className="relative pt-1">
                                         <div className="flex mb-1 items-center justify-between">
                                             <div className="text-xs text-muted-foreground">
-                                                <span className="font-semibold text-red-500">{defaultRate}%</span> vs industry avg 12%
+                                                <span className="font-semibold text-destructive">{defaultRate}%</span> vs industry avg 12%
                                             </div>
-                                            <div className="text-xs text-green-500 font-semibold">-6%</div>
+                                            <div className="text-xs text-success font-semibold">-6%</div>
                                         </div>
-                                        <Progress value={defaultRate} max={20} className="h-2" indicatorClassName="bg-red-500" />
+                                        <Progress value={defaultRate} max={20} className="h-2" indicatorClassName="bg-destructive" />
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
                                         <span className="flex items-center gap-1.5">
-                                            <Zap className="h-4 w-4 text-blue-500" />
+                                            <Zap className="h-4 w-4 text-primary" />
                                             Active Loans
                                         </span>
-                                        <span className="font-medium text-blue-500">
+                                        <span className="font-medium text-primary">
                                             {Math.round(((loanStatusData.find((s) => s.name === "Active")?.value || 0) / totalLoans) * 100)}%
                                         </span>
                                     </div>
                                     <div className="relative pt-1">
                                         <div className="flex mb-1 items-center justify-between">
                                             <div className="text-xs text-muted-foreground">
-                                                <span className="font-semibold text-blue-500">
+                                                <span className="font-semibold text-primary">
                                                     {loanStatusData.find((s) => s.name === "Active")?.value || 0}
                                                 </span>{" "}
                                                 of {totalLoans} total loans
                                             </div>
-                                            <div className="text-xs text-blue-500 font-semibold">+12%</div>
+                                            <div className="text-xs text-primary font-semibold">+12%</div>
                                         </div>
                                         <Progress
                                             value={((loanStatusData.find((s) => s.name === "Active")?.value || 0) / totalLoans) * 100}
                                             className="h-2"
-                                            indicatorClassName="bg-blue-500"
+                                            indicatorClassName="bg-primary"
                                         />
                                     </div>
                                 </div>
@@ -1233,10 +1233,10 @@ const LoanStatusTab = () => {
                                 <div>
                                     <div className="flex items-center justify-between text-sm mb-1.5">
                                         <span className="flex items-center gap-1.5">
-                                            <Clock className="h-4 w-4 text-amber-500" />
+                                            <Clock className="h-4 w-4 text-warning-foreground" />
                                             Pending Approval
                                         </span>
-                                        <span className="font-medium text-amber-500">
+                                        <span className="font-medium text-warning-foreground">
                                             {Math.round(
                                                 ((loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0) / totalLoans) * 100,
                                             )}
@@ -1246,19 +1246,19 @@ const LoanStatusTab = () => {
                                     <div className="relative pt-1">
                                         <div className="flex mb-1 items-center justify-between">
                                             <div className="text-xs text-muted-foreground">
-                                                <span className="font-semibold text-amber-500">
+                                                <span className="font-semibold text-warning-foreground">
                                                     {loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0}
                                                 </span>{" "}
                                                 of {totalLoans} total loans
                                             </div>
-                                            <div className="text-xs text-amber-500 font-semibold">+20%</div>
+                                            <div className="text-xs text-warning-foreground font-semibold">+20%</div>
                                         </div>
                                         <Progress
                                             value={
                                                 ((loanStatusData.find((s) => s.name === "Pending Approval")?.value || 0) / totalLoans) * 100
                                             }
                                             className="h-2"
-                                            indicatorClassName="bg-amber-500"
+                                            indicatorClassName="bg-warning"
                                         />
                                     </div>
                                 </div>
@@ -1271,22 +1271,22 @@ const LoanStatusTab = () => {
                                 </h5>
                                 <ul className="space-y-2 text-xs">
                                     <li className="flex items-start gap-1.5">
-                                        <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
+                                        <CheckCircle2 className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />
                                         <span>
-                                            Default rate is <span className="text-green-500 font-medium">6% lower</span> than industry average
+                                            Default rate is <span className="text-success font-medium">6% lower</span> than industry average
                                         </span>
                                     </li>
                                     <li className="flex items-start gap-1.5">
-                                        <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
+                                        <CheckCircle2 className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />
                                         <span>
-                                            Completion rate has improved by <span className="text-green-500 font-medium">5%</span> since last{" "}
+                                            Completion rate has improved by <span className="text-success font-medium">5%</span> since last{" "}
                                             {timeRange}
                                         </span>
                                     </li>
                                     <li className="flex items-start gap-1.5">
-                                        <AlertCircle className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+                                        <AlertCircle className="h-3.5 w-3.5 text-warning-foreground mt-0.5 shrink-0" />
                                         <span>
-                                            Pending approvals increased by <span className="text-amber-500 font-medium">20%</span> - review
+                                            Pending approvals increased by <span className="text-warning-foreground font-medium">20%</span> - review
                                             process may need optimization
                                         </span>
                                     </li>
@@ -1298,7 +1298,7 @@ const LoanStatusTab = () => {
 
                 {statusViewMode === "table" && (
                     <div className="space-y-6">
-                        <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                        <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
                                 <div className="flex items-center gap-2">
                                     <h4 className="text-sm font-medium">Status Trends</h4>
@@ -1340,22 +1340,22 @@ const LoanStatusTab = () => {
                                                 <div key={index} className="flex flex-col justify-end gap-1">
                                                     <div className="flex flex-col-reverse">
                                                         <div
-                                                            className="bg-blue-500 rounded-t"
+                                                            className="bg-primary rounded-t"
                                                             style={{ height: `${(data.Active / 10) * 100}%` }}
                                                             title={`Active: ${data.Active} loans`}
                                                         ></div>
                                                         <div
-                                                            className="bg-amber-500 rounded-t"
+                                                            className="bg-warning rounded-t"
                                                             style={{ height: `${(data["Pending Approval"] / 10) * 100}%` }}
                                                             title={`Pending Approval: ${data["Pending Approval"]} loans`}
                                                         ></div>
                                                         <div
-                                                            className="bg-green-500 rounded-t"
+                                                            className="bg-success rounded-t"
                                                             style={{ height: `${(data.Completed / 10) * 100}%` }}
                                                             title={`Completed: ${data.Completed} loans`}
                                                         ></div>
                                                         <div
-                                                            className="bg-red-500 rounded-t"
+                                                            className="bg-destructive rounded-t"
                                                             style={{ height: `${(data.Defaulted / 10) * 100}%` }}
                                                             title={`Defaulted: ${data.Defaulted} loans`}
                                                         ></div>
@@ -1367,19 +1367,19 @@ const LoanStatusTab = () => {
                                     </div>
                                     <div className="h-8 flex items-center justify-center gap-4 text-xs">
                                         <div className="flex items-center gap-1">
-                                            <div className="h-3 w-3 bg-blue-500 rounded"></div>
+                                            <div className="h-3 w-3 bg-primary rounded"></div>
                                             <span>Active</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <div className="h-3 w-3 bg-amber-500 rounded"></div>
+                                            <div className="h-3 w-3 bg-warning rounded"></div>
                                             <span>Pending</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <div className="h-3 w-3 bg-green-500 rounded"></div>
+                                            <div className="h-3 w-3 bg-success rounded"></div>
                                             <span>Completed</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <div className="h-3 w-3 bg-red-500 rounded"></div>
+                                            <div className="h-3 w-3 bg-destructive rounded"></div>
                                             <span>Defaulted</span>
                                         </div>
                                     </div>
@@ -1394,14 +1394,14 @@ const LoanStatusTab = () => {
                                     </h5>
                                     <ul className="space-y-2 text-xs">
                                         <li className="flex items-start gap-1.5">
-                                            <ArrowUpRight className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
+                                            <ArrowUpRight className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />
                                             <span>
                                                 <span className="font-medium">Completed loans</span> show steady growth over the last 6 months
                                                 (+33%)
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-1.5">
-                                            <ArrowDownRight className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />
+                                            <ArrowDownRight className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />
                                             <span>
                                                 <span className="font-medium">Defaulted loans</span> have remained consistently low (0-1 per
                                                 month)
@@ -1416,28 +1416,28 @@ const LoanStatusTab = () => {
                                         Key Metrics
                                     </h5>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-70 p-2 rounded-md border border-border/50">
+                                        <div className="bg-card/70 p-2 rounded-md border border-border/50">
                                             <div className="text-xs text-muted-foreground">Active Growth</div>
-                                            <div className="text-sm font-bold text-blue-500">+25%</div>
+                                            <div className="text-sm font-bold text-primary">+25%</div>
                                         </div>
-                                        <div className="bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-70 p-2 rounded-md border border-border/50">
+                                        <div className="bg-card/70 p-2 rounded-md border border-border/50">
                                             <div className="text-xs text-muted-foreground">Completion Rate</div>
-                                            <div className="text-sm font-bold text-green-500">+33%</div>
+                                            <div className="text-sm font-bold text-success">+33%</div>
                                         </div>
-                                        <div className="bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-70 p-2 rounded-md border border-border/50">
+                                        <div className="bg-card/70 p-2 rounded-md border border-border/50">
                                             <div className="text-xs text-muted-foreground">Pending Rate</div>
-                                            <div className="text-sm font-bold text-amber-500">+50%</div>
+                                            <div className="text-sm font-bold text-warning-foreground">+50%</div>
                                         </div>
-                                        <div className="bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-70 p-2 rounded-md border border-border/50">
+                                        <div className="bg-card/70 p-2 rounded-md border border-border/50">
                                             <div className="text-xs text-muted-foreground">Default Rate</div>
-                                            <div className="text-sm font-bold text-green-500">0%</div>
+                                            <div className="text-sm font-bold text-success">0%</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                        <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-4">
                                 <h4 className="text-sm font-medium">Loan Purpose Distribution</h4>
                                 <Button variant="outline" size="sm" className="h-7 text-xs rounded-full" onClick={() => { }}>
@@ -1501,11 +1501,11 @@ const LoanStatusTab = () => {
                                             <span>Medical</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <div className="h-3 w-3 bg-amber-500 rounded"></div>
+                                            <div className="h-3 w-3 bg-warning rounded"></div>
                                             <span>Home</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <div className="h-3 w-3 bg-emerald-500 rounded"></div>
+                                            <div className="h-3 w-3 bg-success rounded"></div>
                                             <span>Emergency</span>
                                         </div>
                                     </div>
@@ -1537,9 +1537,9 @@ const LoanStatusTab = () => {
                                                 className={cn(
                                                     "text-xs rounded-sm px-1.5 py-0",
                                                     purpose.trendDirection === "up"
-                                                        ? "text-green-500 border-green-200"
+                                                        ? "text-success border-green-200"
                                                         : purpose.trendDirection === "down"
-                                                            ? "text-red-500 border-red-200"
+                                                            ? "text-destructive border-red-200"
                                                             : "text-muted-foreground border-muted",
                                                 )}
                                             >
@@ -1586,9 +1586,9 @@ const LoanStatusTab = () => {
                                                 className={cn(
                                                     "text-xs rounded-sm px-1.5 py-0",
                                                     purpose.trendDirection === "up"
-                                                        ? "text-green-500 border-green-200"
+                                                        ? "text-success border-green-200"
                                                         : purpose.trendDirection === "down"
-                                                            ? "text-red-500 border-red-200"
+                                                            ? "text-destructive border-red-200"
                                                             : "text-muted-foreground border-muted",
                                                 )}
                                             >
@@ -1621,8 +1621,8 @@ const LoanStatusTab = () => {
                                                             : purpose.name === "Medical"
                                                                 ? "bg-purple-500"
                                                                 : purpose.name === "Home Improvement"
-                                                                    ? "bg-amber-500"
-                                                                    : "bg-emerald-500",
+                                                                    ? "bg-warning"
+                                                                    : "bg-success",
                                                 )}
                                             />
                                         </div>
@@ -1669,16 +1669,16 @@ const LoanStatusTab = () => {
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
+                <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
                         <h4 className="text-sm font-medium">Payment Timeliness</h4>
                         <div className="flex items-center gap-2">
                             <div className="flex items-center gap-1.5">
-                                <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                                <div className="h-3 w-3 rounded-full bg-success"></div>
                                 <span className="text-xs">On Time</span>
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                                <div className="h-3 w-3 rounded-full bg-destructive"></div>
                                 <span className="text-xs">Late</span>
                             </div>
                         </div>
@@ -1698,9 +1698,9 @@ const LoanStatusTab = () => {
                                     {repaymentTrendData.map((data, index) => (
                                         <div key={index} className="flex flex-col h-full">
                                             <div className="flex-1 relative">
-                                                <div className="absolute bottom-0 left-0 right-0 bg-green-100 dark:bg-green-950/30 rounded-t overflow-hidden">
+                                                <div className="absolute bottom-0 left-0 right-0 bg-success/20 rounded-t overflow-hidden">
                                                     <div
-                                                        className="bg-green-500 absolute bottom-0 left-0 right-0"
+                                                        className="bg-success absolute bottom-0 left-0 right-0"
                                                         style={{ height: `${(data.onTime - 80) * 5}%` }}
                                                     ></div>
                                                 </div>
@@ -1712,7 +1712,7 @@ const LoanStatusTab = () => {
                             </div>
                             <div className="h-8 flex items-center justify-center gap-4 text-xs">
                                 <div className="flex items-center gap-1">
-                                    <div className="h-3 w-3 bg-green-500 rounded"></div>
+                                    <div className="h-3 w-3 bg-success rounded"></div>
                                     <span>
                                         On Time Payments (
                                         {(repaymentTrendData.reduce((sum, data) => sum + data.onTime, 0) / repaymentTrendData.length).toFixed(2)}% avg)
@@ -1770,16 +1770,16 @@ const LoanStatusTab = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                                 <div className="bg-muted/30 p-3 rounded-lg border border-border/50">
                                     <div className="flex items-center gap-3">
-                                        <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded-lg">
-                                            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                        <div className="bg-success/20 p-2 rounded-lg">
+                                            <CheckCircle className="h-5 w-5 text-success" />
                                         </div>
                                         <div>
                                             <div className="text-sm font-medium">On-time Payments</div>
                                             <div className="text-xs text-muted-foreground">Average: {avgOnTime.toFixed(1)}%</div>
                                         </div>
                                         <div className="ml-auto">
-                                            <div className="text-lg font-bold text-green-600 dark:text-green-400">{onTimePercentage}%</div>
-                                            <div className={`text-xs ${trendValue >= 0 ? 'text-green-500' : 'text-red-500'} flex items-center justify-end`}>
+                                            <div className="text-lg font-bold text-success">{onTimePercentage}%</div>
+                                            <div className={`text-xs ${trendValue >= 0 ? 'text-success' : 'text-destructive'} flex items-center justify-end`}>
                                                 {trendValue >= 0 ? (
                                                     <TrendingUp className="h-3 w-3 mr-0.5" />
                                                 ) : (
@@ -1790,28 +1790,28 @@ const LoanStatusTab = () => {
                                         </div>
                                     </div>
                                     <div className="mt-2">
-                                        <Progress value={onTimePercentage} className="h-2" indicatorClassName="bg-green-500" />
+                                        <Progress value={onTimePercentage} className="h-2" indicatorClassName="bg-success" />
                                     </div>
                                 </div>
 
                                 <div className="bg-muted/30 p-3 rounded-lg border border-border/50">
                                     <div className="flex items-center gap-3">
-                                        <div className="bg-red-50 dark:bg-red-900/20 p-2 rounded-lg">
-                                            <Clock className="h-5 w-5 text-red-600 dark:text-red-400" />
+                                        <div className="bg-destructive/20 p-2 rounded-lg">
+                                            <Clock className="h-5 w-5 text-destructive" />
                                         </div>
                                         <div>
                                             <div className="text-sm font-medium">Late Payments</div>
                                             {lateLoans > 0 ? (
                                                 <div className="text-xs text-muted-foreground">Average: {(100 - avgOnTime).toFixed(1)}%</div>
                                             ) : (
-                                                <div className="text-xs text-green-500">No late payments</div>
+                                                <div className="text-xs text-success">No late payments</div>
                                             )}
                                         </div>
                                         <div className="ml-auto">
                                             {lateLoans > 0 ? (
                                                 <>
-                                                    <div className="text-lg font-bold text-red-600 dark:text-red-400">{latePercentage}%</div>
-                                                    <div className={`text-xs ${-trendValue >= 0 ? 'text-green-500' : 'text-red-500'} flex items-center justify-end`}>
+                                                    <div className="text-lg font-bold text-destructive">{latePercentage}%</div>
+                                                    <div className={`text-xs ${-trendValue >= 0 ? 'text-success' : 'text-destructive'} flex items-center justify-end`}>
                                                         {-trendValue >= 0 ? (
                                                             <TrendingDown className="h-3 w-3 mr-0.5" />
                                                         ) : (
@@ -1821,23 +1821,23 @@ const LoanStatusTab = () => {
                                                     </div>
                                                 </>
                                             ) : (
-                                                <div className="text-lg font-bold text-green-600 dark:text-green-400">0%</div>
+                                                <div className="text-lg font-bold text-success">0%</div>
                                             )}
                                         </div>
                                     </div>
                                     <div className="mt-2">
-                                        <Progress value={lateLoans > 0 ? latePercentage : 0} max={20} className="h-2" indicatorClassName="bg-red-500" />
+                                        <Progress value={lateLoans > 0 ? latePercentage : 0} max={20} className="h-2" indicatorClassName="bg-destructive" />
                                     </div>
                                 </div>
                             </div>
                         );
                     })()}
 
-                    <div className="mt-4 p-3 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800">
+                    <div className="mt-4 p-3 rounded-lg bg-success/20 border border-success/50">
                         <div className="flex items-start gap-2">
-                            <Sparkles className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5" />
+                            <Sparkles className="h-4 w-4 text-success mt-0.5" />
                             <div>
-                                <h5 className="text-sm font-medium text-green-700 dark:text-green-300">Performance Insight</h5>
+                                <h5 className="text-sm font-medium text-success">Performance Insight</h5>
                                 {(() => {
                                     // Calculate overall repayment performance
                                     const activeLoans = loanRequests.filter(loan =>
@@ -1866,14 +1866,14 @@ const LoanStatusTab = () => {
 
                                     // Determine performance level
                                     let performanceLevel = "excellent";
-                                    let textColorClass = "text-green-600 dark:text-green-400";
+                                    let textColorClass = "text-success";
 
                                     if (onTimePercentage < 80) {
                                         performanceLevel = "concerning";
-                                        textColorClass = "text-red-600 dark:text-red-400";
+                                        textColorClass = "text-destructive";
                                     } else if (onTimePercentage < 90) {
                                         performanceLevel = "good";
-                                        textColorClass = "text-amber-600 dark:text-amber-400";
+                                        textColorClass = "text-warning-foreground";
                                     }
 
                                     return (
@@ -1897,22 +1897,22 @@ const LoanStatusTab = () => {
                             {repaymentTrendData.map((data, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-70 p-2 rounded-md border border-border/50"
+                                    className="bg-card/70 p-2 rounded-md border border-border/50"
                                 >
                                     <div className="text-xs text-muted-foreground">{data.month}</div>
                                     <div className="flex items-center gap-1 mt-1">
-                                        <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                                        <div className="h-2 w-2 rounded-full bg-success"></div>
                                         <div className="text-xs font-medium">{data.onTime}%</div>
                                     </div>
                                     <div className="flex items-center gap-1 mt-1">
-                                        <div className="h-2 w-2 rounded-full bg-red-500"></div>
+                                        <div className="h-2 w-2 rounded-full bg-destructive"></div>
                                         <div className="text-xs font-medium">{data.late}%</div>
                                     </div>
                                     <div className="mt-1 pt-1 border-t border-border/50">
                                         <div
                                             className={cn(
                                                 "text-xs font-medium flex items-center",
-                                                data.onTime >= 95 ? "text-green-500" : "text-amber-500",
+                                                data.onTime >= 95 ? "text-success" : "text-warning-foreground",
                                             )}
                                         >
                                             {data.onTime >= 95 ? (

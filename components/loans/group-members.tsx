@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Calendar, CheckCircle, XCircle, AlertCircle, ArrowUpCircle, DollarSign, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -154,19 +154,19 @@ export default function GroupMembers() {
     switch (status) {
       case "ON_TIME":
         return (
-          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+          <Badge variant="outline" className="bg-success/20 text-success border-success/50">
             <CheckCircle className="mr-1 h-3 w-3" /> On Time
           </Badge>
         )
       case "LATE":
         return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+          <Badge variant="outline" className="bg-warning/20 text-warning-foreground border-warning/50">
             <AlertCircle className="mr-1 h-3 w-3" /> Late
           </Badge>
         )
       case "VERY_LATE":
         return (
-          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+          <Badge variant="outline" className="bg-destructive/20 text-destructive border-destructive/50">
             <XCircle className="mr-1 h-3 w-3" /> Very Late
           </Badge>
         )
@@ -295,7 +295,7 @@ export default function GroupMembers() {
               <span className="text-sm">Loading groups...</span>
             </div>
           ) : groupsError ? (
-            <div className="flex items-center gap-2 h-10 px-3 border rounded-md text-destructive">
+            <div className="flex items-center gap-2 h-10 px-3 border border-border rounded-md text-destructive bg-destructive/10">
               <AlertCircle className="h-4 w-4" />
               <span className="text-sm">{groupsError}</span>
             </div>
@@ -315,7 +315,7 @@ export default function GroupMembers() {
           )}
           {selectedGroup !== "all" && !isLoadingGroups && !groupsError && (
             <Button 
-              onClick={() => router.push(`/dashboard/groups/saving-groups?tab=new-request&groupId=${selectedGroup}`)}
+              onClick={() => router.push(`${savingsGroupsPath}?tab=new-request&groupId=${selectedGroup}`)}
               className="flex items-center gap-2"
             >
               <DollarSign className="h-4 w-4" />
@@ -346,7 +346,7 @@ export default function GroupMembers() {
           <CardContent className="pb-2">
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="flex items-center gap-2">
-                <ArrowUpCircle className="h-4 w-4 text-green-500" />
+                <ArrowUpCircle className="h-4 w-4 text-success" />
                 <span className="font-medium">Total Contributed: {formatCurrency(member.totalContributed)}</span>
               </div>
               <div className="flex items-center gap-2">

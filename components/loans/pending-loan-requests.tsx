@@ -306,7 +306,7 @@ export default function PendingLoanRequests() {
         return (
           <Badge
             variant="outline"
-            className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900"
+            className="bg-success/20 text-success border-success/50"
           >
             <ShieldCheck className="mr-1 h-3 w-3" /> Low Risk
           </Badge>
@@ -315,7 +315,7 @@ export default function PendingLoanRequests() {
         return (
           <Badge
             variant="outline"
-            className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-900"
+            className="bg-warning/20 text-warning-foreground border-warning/50"
           >
             <ShieldAlert className="mr-1 h-3 w-3" /> Medium Risk
           </Badge>
@@ -324,7 +324,7 @@ export default function PendingLoanRequests() {
         return (
           <Badge
             variant="outline"
-            className="bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-900"
+            className="bg-destructive/20 text-destructive border-destructive/50"
           >
             <ShieldAlert className="mr-1 h-3 w-3" /> High Risk
           </Badge>
@@ -409,10 +409,10 @@ export default function PendingLoanRequests() {
 
   if (isLoading) {
     return (
-      <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900">
+      <Card className="border border-border shadow-md rounded-xl bg-card">
         <CardContent className="flex flex-col items-center justify-center py-10">
-          <Hourglass className="h-12 w-12 text-slate-400 dark:text-slate-500 mb-4 animate-pulse" />
-          <p className="text-slate-600 dark:text-slate-400 text-center">
+          <Hourglass className="h-12 w-12 text-muted-foreground mb-4 animate-pulse" />
+          <p className="text-muted-foreground text-center">
             Loading pending loan requests...
           </p>
         </CardContent>
@@ -422,11 +422,11 @@ export default function PendingLoanRequests() {
 
   if (error) {
     return (
-      <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900">
+      <Card className="border border-border shadow-md rounded-xl bg-card">
         <CardContent className="flex flex-col items-center justify-center py-10 space-y-4">
           <AlertCircle className="h-12 w-12 text-destructive" />
           <div className="text-center space-y-2">
-            <h3 className="font-semibold text-lg">Unable to Load Requests</h3>
+            <h3 className="font-semibold text-lg text-foreground">Unable to Load Requests</h3>
             <p className="text-muted-foreground max-w-md">
               {error}
             </p>
@@ -441,10 +441,10 @@ export default function PendingLoanRequests() {
 
   if (sortedLoans.length === 0) {
     return (
-      <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900">
+      <Card className="border border-border shadow-md rounded-xl bg-card">
         <CardContent className="flex flex-col items-center justify-center py-10">
-          <AlertTriangle className="h-12 w-12 text-slate-400 dark:text-slate-500 mb-4" />
-          <p className="text-slate-600 dark:text-slate-400 text-center">
+          <AlertTriangle className="h-12 w-12 text-muted-foreground mb-4" />
+          <p className="text-muted-foreground text-center">
             There are no pending loan requests to vote on at this time.
           </p>
           <Button variant="outline" className="mt-4 rounded-md">
@@ -461,8 +461,8 @@ export default function PendingLoanRequests() {
       {(voteSuccess || voteError) && (
         <div className={cn(
           "p-4 rounded-lg mb-4 flex items-center justify-between",
-          voteSuccess ? "bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900" 
-                      : "bg-red-50 text-red-700 border border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-900"
+          voteSuccess ? "bg-success/20 text-success border border-success/50" 
+                      : "bg-destructive/20 text-destructive border border-destructive/50"
         )}>
           <div className="flex items-center">
             {voteSuccess ? (
@@ -493,25 +493,25 @@ export default function PendingLoanRequests() {
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-foreground">
               Pending Loan Requests
             </h2>
             <Badge variant="secondary" className="rounded-full">
               {filteredLoans.length}
             </Badge>
             {selectedLoans.length > 0 && (
-              <Badge variant="outline" className="ml-2 bg-slate-100 dark:bg-slate-800">
+              <Badge variant="outline" className="ml-2 bg-muted">
                 {selectedLoans.length} selected
               </Badge>
             )}
           </div>
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <div className="relative w-full sm:w-auto">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500 dark:text-slate-400" />
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
                 placeholder="Search loans..."
-                className="w-full sm:w-[200px] pl-8 border-slate-200 dark:border-slate-700 rounded-md"
+                className="w-full sm:w-[200px] pl-8 border-border rounded-md"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -521,8 +521,8 @@ export default function PendingLoanRequests() {
                 variant="outline"
                 size="sm"
                 className={cn(
-                  "rounded-md border-slate-200 dark:border-slate-700 w-full sm:w-auto",
-                  showFilters && "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
+                  "rounded-md border-border w-full sm:w-auto",
+                  showFilters && "bg-muted text-foreground"
                 )}
                 onClick={() => setShowFilters(!showFilters)}
               >
@@ -533,7 +533,7 @@ export default function PendingLoanRequests() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="rounded-md border-slate-200 dark:border-slate-700">
+                  <Button variant="outline" size="sm" className="rounded-md border-border">
                     <ArrowUpDown className="h-4 w-4 mr-1.5" />
                     <span>Sort</span>
                   </Button>
@@ -543,14 +543,14 @@ export default function PendingLoanRequests() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => setSortBy("deadline")}
-                    className={sortBy === "deadline" ? "bg-slate-100 dark:bg-slate-800" : ""}
+                    className={sortBy === "deadline" ? "bg-muted" : ""}
                   >
                     <Clock className="mr-2 h-4 w-4" />
                     <span>Deadline (Soonest)</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setSortBy("newest")}
-                    className={sortBy === "newest" ? "bg-slate-100 dark:bg-slate-800" : ""}
+                    className={sortBy === "newest" ? "bg-muted" : ""}
                   >
                     <ArrowUpRight className="mr-2 h-4 w-4" />
                     <span>Newest First</span>
@@ -560,7 +560,7 @@ export default function PendingLoanRequests() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="rounded-md border-slate-200 dark:border-slate-700">
+                  <Button variant="outline" size="sm" className="rounded-md border-border">
                     <BarChart4 className="h-4 w-4 mr-1.5" />
                     <span>View</span>
                   </Button>
@@ -568,7 +568,7 @@ export default function PendingLoanRequests() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
                     onClick={() => setViewMode("card")}
-                    className={viewMode === "card" ? "bg-slate-100 dark:bg-slate-800" : ""}
+                    className={viewMode === "card" ? "bg-muted" : ""}
                   >
                     <div className="grid grid-cols-2 gap-1 mr-2">
                       <div className="h-2 w-2 rounded-sm bg-current"></div>
@@ -580,7 +580,7 @@ export default function PendingLoanRequests() {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setViewMode("list")}
-                    className={viewMode === "list" ? "bg-slate-100 dark:bg-slate-800" : ""}
+                    className={viewMode === "list" ? "bg-muted" : ""}
                   >
                     <div className="flex flex-col gap-1 mr-2">
                       <div className="h-1 w-4 rounded-sm bg-current"></div>
@@ -604,15 +604,15 @@ export default function PendingLoanRequests() {
               <Card
                 key={loan.id}
                 className={cn(
-                  "overflow-hidden border hover:shadow-md transition-all duration-200 rounded-xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900",
-                  selectedLoans.includes(loan.id) && "ring-2 ring-slate-900 dark:ring-white"
+                  "overflow-hidden border hover:shadow-md transition-all duration-200 rounded-xl border-border bg-card",
+                  selectedLoans.includes(loan.id) && "ring-2 ring-primary"
                 )}
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 font-medium text-sm overflow-hidden">
+                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground font-medium text-sm overflow-hidden">
                           {loan.userAvatar ? (
                             <img src={loan.userAvatar || "/placeholder.svg"} alt={loan.userName} className="w-full h-full object-cover" />
                           ) : (
@@ -620,13 +620,13 @@ export default function PendingLoanRequests() {
                           )}
                         </div>
                         {loan.priority === "HIGH" && (
-                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-slate-900" />
+                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full border-2 border-card" />
                         )}
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900 dark:text-white flex items-center gap-1">
+                        <h3 className="font-medium text-foreground flex items-center gap-1">
                           {loan.userName}
-                          <span className="text-xs font-normal text-amber-500 flex items-center ml-1">
+                          <span className="text-xs font-normal text-warning flex items-center ml-1">
                             {loan.userRating}
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -642,7 +642,7 @@ export default function PendingLoanRequests() {
                             </svg>
                           </span>
                         </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{loan.groupName}</p>
+                        <p className="text-xs text-muted-foreground">{loan.groupName}</p>
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-1">
@@ -656,7 +656,7 @@ export default function PendingLoanRequests() {
                         }
                         className={cn(
                           "rounded-full px-2 py-0 text-xs",
-                          getVoteStatus(loan) === "TIED" && "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-400 dark:border-blue-900"
+                          getVoteStatus(loan) === "TIED" && "bg-primary/20 text-primary border-primary/50"
                         )}
                       >
                         {getVoteStatus(loan)}
@@ -667,16 +667,16 @@ export default function PendingLoanRequests() {
 
                   <div className="grid grid-cols-2 gap-3 mb-3">
                     <div className="flex flex-col">
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Amount</span>
-                      <span className="font-medium text-sm flex items-center gap-1 text-slate-900 dark:text-white">
-                        {/*<DollarSign className="h-3 w-3 text-emerald-500" />*/}
+                      <span className="text-xs text-muted-foreground">Amount</span>
+                      <span className="font-medium text-sm flex items-center gap-1 text-foreground">
+                        {/*<DollarSign className="h-3 w-3 text-success" />*/}
                         {formatCurrency(loan.amount)}
                       </span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Voting Ends</span>
-                      <span className="font-medium flex items-center gap-1 text-xs text-slate-900 dark:text-white">
-                        <Clock className="h-3 w-3 text-amber-500" />
+                      <span className="text-xs text-muted-foreground">Voting Ends</span>
+                      <span className="font-medium flex items-center gap-1 text-xs text-foreground">
+                        <Clock className="h-3 w-3 text-warning" />
                         {getDaysRemaining(loan.votingDeadline) <= 1 
                           ? "Today" 
                           : `${getDaysRemaining(loan.votingDeadline)} days`}
@@ -684,29 +684,29 @@ export default function PendingLoanRequests() {
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 mb-3">{loan.purpose}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{loan.purpose}</p>
 
                   <div className="space-y-1 mb-3">
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-700 dark:text-slate-300">Voting Progress</span>
-                      <span className="text-slate-700 dark:text-slate-300">
+                      <span className="text-foreground">Voting Progress</span>
+                      <span className="text-foreground">
                         {loan.votesYes + loan.votesNo} of {loan.totalVotes}
                       </span>
                     </div>
                     <div className="flex justify-between text-xs mt-1">
-                      <span className="text-emerald-600 dark:text-emerald-400">Yes: {loan.votesYes}</span>
-                      <span className="text-red-600 dark:text-red-400">No: {loan.votesNo}</span>
-                      <span className="text-slate-500 dark:text-slate-400">Remaining: {loan.totalVotes - (loan.votesYes + loan.votesNo)}</span>
+                      <span className="text-success">Yes: {loan.votesYes}</span>
+                      <span className="text-destructive">No: {loan.votesNo}</span>
+                      <span className="text-muted-foreground">Remaining: {loan.totalVotes - (loan.votesYes + loan.votesNo)}</span>
                     </div>
-                    <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
+                    <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden mt-1">
                       <div
                         className={cn(
                           "h-full rounded-full transition-all",
                           getVoteStatus(loan) === "PASSING"
-                            ? "bg-gradient-to-r from-emerald-500 to-emerald-400"
+                            ? "bg-success"
                             : getVoteStatus(loan) === "FAILING"
-                              ? "bg-gradient-to-r from-amber-500 to-amber-400"
-                              : "bg-gradient-to-r from-blue-500 to-blue-400" // For TIED status
+                              ? "bg-warning"
+                              : "bg-primary" // For TIED status
                         )}
                         style={{ width: `${getVotePercentage(loan)}%` }}
                       />
@@ -717,7 +717,7 @@ export default function PendingLoanRequests() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-md border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
+                      className="rounded-md border-border text-foreground"
                       onClick={() => {
                         setSelectedLoan(loan)
                         setIsLoanDetailsOpen(true)
@@ -729,7 +729,7 @@ export default function PendingLoanRequests() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="rounded-md border-red-200 bg-red-50 text-red-700 hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900"
+                        className="rounded-md border-destructive/50 bg-destructive/10 text-destructive hover:bg-destructive/20"
                         disabled={loan.userHasVoted || isVoting}
                         onClick={() => handleVote(loan.id, 'NO')}
                       >
@@ -738,7 +738,7 @@ export default function PendingLoanRequests() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="rounded-md border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400 dark:hover:bg-emerald-900"
+                        className="rounded-md border-success/50 bg-success/10 text-success hover:bg-success/20"
                         disabled={loan.userHasVoted || isVoting}
                         onClick={() => handleVote(loan.id, 'YES')}
                       >
@@ -768,9 +768,9 @@ export default function PendingLoanRequests() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Requester</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">Requester</h3>
                     <div className="flex items-center mt-1">
-                      <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 font-medium text-sm overflow-hidden mr-2">
+                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-foreground font-medium text-sm overflow-hidden mr-2">
                         {selectedLoan.userAvatar ? (
                           <img src={selectedLoan.userAvatar} alt={selectedLoan.userName} className="w-full h-full object-cover" />
                         ) : (
@@ -778,25 +778,25 @@ export default function PendingLoanRequests() {
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-slate-900 dark:text-white">{selectedLoan.userName}</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Member of {selectedLoan.groupName}</p>
+                        <p className="font-medium text-foreground">{selectedLoan.userName}</p>
+                        <p className="text-xs text-muted-foreground">Member of {selectedLoan.groupName}</p>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Loan Amount</h3>
-                    <p className="text-lg font-semibold text-slate-900 dark:text-white mt-1">{formatCurrency(selectedLoan.amount)}</p>
+                    <h3 className="text-sm font-medium text-muted-foreground">Loan Amount</h3>
+                    <p className="text-lg font-semibold text-foreground mt-1">{formatCurrency(selectedLoan.amount)}</p>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Purpose</h3>
-                    <p className="text-slate-900 dark:text-white mt-1">{selectedLoan.purpose}</p>
+                    <h3 className="text-sm font-medium text-muted-foreground">Purpose</h3>
+                    <p className="text-foreground mt-1">{selectedLoan.purpose}</p>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Repayment Date</h3>
-                    <p className="text-slate-900 dark:text-white mt-1">
+                    <h3 className="text-sm font-medium text-muted-foreground">Repayment Date</h3>
+                    <p className="text-foreground mt-1">
                       {selectedLoan.repaymentDate.toLocaleDateString('en-US', { 
                         year: 'numeric', 
                         month: 'long', 
@@ -872,8 +872,8 @@ export default function PendingLoanRequests() {
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Created On</h3>
-                    <p className="text-slate-900 dark:text-white mt-1">
+                    <h3 className="text-sm font-medium text-muted-foreground">Created On</h3>
+                    <p className="text-foreground mt-1">
                       {selectedLoan.createdAt.toLocaleDateString('en-US', { 
                         year: 'numeric', 
                         month: 'long', 
@@ -887,11 +887,11 @@ export default function PendingLoanRequests() {
               <DialogFooter className="flex justify-between items-center">
                 <div>
                   {selectedLoan.userHasVoted ? (
-                    <Badge variant="outline" className="bg-slate-100 dark:bg-slate-800">
+                    <Badge variant="outline" className="bg-muted">
                       You have already voted
                     </Badge>
                   ) : (
-                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                    <span className="text-sm text-muted-foreground">
                       Cast your vote on this loan request
                     </span>
                   )}
@@ -904,7 +904,7 @@ export default function PendingLoanRequests() {
                     <>
                       <Button 
                         variant="outline"
-                        className="border-red-200 bg-red-50 text-red-700 hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900"
+                        className="border-destructive/50 bg-destructive/10 text-destructive hover:bg-destructive/20"
                         disabled={isVoting}
                         onClick={() => {
                           handleVote(selectedLoan.id, 'NO');
@@ -914,7 +914,7 @@ export default function PendingLoanRequests() {
                       </Button>
                       <Button 
                         variant="outline"
-                        className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400 dark:hover:bg-emerald-900"
+                        className="border-success/50 bg-success/10 text-success hover:bg-success/20"
                         disabled={isVoting}
                         onClick={() => {
                           handleVote(selectedLoan.id, 'YES');

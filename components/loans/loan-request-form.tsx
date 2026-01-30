@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -60,6 +60,8 @@ const formSchema = z.object({
 
 export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { preSelectedGroupId?: string; onSuccess?: () => void }) {
     const router = useRouter()
+    const pathname = usePathname()
+    const savingsGroupsPath = pathname?.startsWith("/member") ? "/member/savings-groups" : "/dashboard/groups/saving-groups"
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [activeTab, setActiveTab] = useState("details")
     const [formStep, setFormStep] = useState(0)
@@ -257,7 +259,7 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
                 onSuccess()
             } else {
                 // Only navigate if not in dialog mode
-                router.push("/dashboard/groups/saving-groups?tab=my-requests")
+                router.push(`${savingsGroupsPath}?tab=my-requests`)
             }
         } catch (error) {
             console.error("Error submitting loan request:", error);
@@ -578,7 +580,7 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
                                                                 <TooltipProvider>
                                                                     <Tooltip>
                                                                         <TooltipTrigger asChild>
-                                                                            <Badge variant="outline" className="ml-auto text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 cursor-help">
+                                                                            <Badge variant="outline" className="ml-auto text-xs bg-primary/20 text-primary border-primary/50 cursor-help">
                                                                                 <CheckCircle2 className="h-3 w-3 mr-1" />
                                                                                 Fixed Rate
                                                                             </Badge>
@@ -788,7 +790,7 @@ export default function LoanRequestForm({ preSelectedGroupId, onSuccess }: { pre
                                         <label className="text-sm font-medium flex items-center gap-2">
                                             Interest Rate (%)
                                             {selectedGroup && (
-                                                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                                                <Badge variant="outline" className="text-xs bg-primary/20 text-primary border-primary/50">
                                                     Fixed
                                                 </Badge>
                                             )}

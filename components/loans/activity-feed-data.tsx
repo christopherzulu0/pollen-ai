@@ -1,7 +1,9 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import ActivityFeed from "./activity-feed"
+import { ActivityFeedSkeleton } from "./activity-feed-skeleton"
 import { toast } from "sonner"
 import { formatErrorForToast } from "@/lib/error-messages"
 
@@ -23,18 +25,21 @@ async function fetchActivities(groupId?: string, type?: string): Promise<Activit
   if (groupId) params.set("groupId", groupId)
   if (type && type !== "all") params.set("type", type)
 
-  // Construct absolute URL for SSR compatibility
-  const baseUrl =
-    typeof window !== "undefined"
-      ? window.location.origin
-      : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-  const url = `${baseUrl}/api/activities${params.toString() ? `?${params.toString()}` : ""}`
-
+  const url = `/api/activities${params.toString() ? `?${params.toString()}` : ""}`
   const response = await fetch(url)
 
   if (!response.ok) {
-    const errorData = await response.json()
-    throw new Error(errorData.error || "Failed to fetch activities")
+    const contentType = response.headers.get("content-type")
+    if (contentType?.includes("application/json")) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Failed to fetch activities")
+    }
+    throw new Error(`Failed to fetch activities (${response.status})`)
+  }
+
+  const contentType = response.headers.get("content-type")
+  if (!contentType?.includes("application/json")) {
+    throw new Error("Invalid response format from server")
   }
 
   return response.json()
@@ -46,6 +51,20 @@ interface ActivityFeedDataProps {
 }
 
 export function ActivityFeedData({ groupId, type }: ActivityFeedDataProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <ActivityFeedSkeleton />
+  }
+
+  return <ActivityFeedDataContent groupId={groupId} type={type} />
+}
+
+function ActivityFeedDataContent({ groupId, type }: ActivityFeedDataProps) {
   const { data: activities = [] } = useSuspenseQuery({
     queryKey: ["activities", groupId, type],
     queryFn: () => fetchActivities(groupId, type),

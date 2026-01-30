@@ -234,37 +234,37 @@ export default function MembersWithLoans() {
     switch (status) {
       case "ON_TIME":
         return (
-          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+          <Badge variant="outline" className="bg-success/20 text-success border-success/50">
             <CheckCircle className="mr-1 h-3 w-3" /> On Time
           </Badge>
         )
       case "LATE":
         return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+          <Badge variant="outline" className="bg-warning/20 text-warning-foreground border-warning/50">
             <AlertCircle className="mr-1 h-3 w-3" /> Late
           </Badge>
         )
       case "VERY_LATE":
         return (
-          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+          <Badge variant="outline" className="bg-destructive/20 text-destructive border-destructive/50">
             <XCircle className="mr-1 h-3 w-3" /> Very Late
           </Badge>
         )
       case "APPROVED":
         return (
-          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+          <Badge variant="outline" className="bg-success/20 text-success border-success/50">
             <CheckCircle className="mr-1 h-3 w-3" /> Approved
           </Badge>
         )
       case "PENDING":
         return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+          <Badge variant="outline" className="bg-warning/20 text-warning-foreground border-warning/50">
             <Clock className="mr-1 h-3 w-3" /> Pending
           </Badge>
         )
       case "REJECTED":
         return (
-          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+          <Badge variant="outline" className="bg-destructive/20 text-destructive border-destructive/50">
             <XCircle className="mr-1 h-3 w-3" /> Rejected
           </Badge>
         )
@@ -342,7 +342,7 @@ export default function MembersWithLoans() {
   // Handle loading state
   if (isLoading) {
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-10">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
           <p className="text-muted-foreground text-center">Loading outstanding loans...</p>
@@ -354,7 +354,7 @@ export default function MembersWithLoans() {
   // Handle error state
   if (isError) {
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-10">
           <AlertCircle className="h-8 w-8 text-destructive mb-4" />
           <p className="text-destructive text-center">Failed to load loans. Please try again.</p>
@@ -371,7 +371,7 @@ export default function MembersWithLoans() {
 
   if (filteredLoans.length === 0) {
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-10">
           <p className="text-muted-foreground text-center">There are no outstanding loans in this group.</p>
         </CardContent>
@@ -382,7 +382,7 @@ export default function MembersWithLoans() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Outstanding Loans</h2>
+        <h2 className="text-xl font-semibold text-foreground">Outstanding Loans</h2>
         <Select value={selectedGroup} onValueChange={setSelectedGroup}>
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="Select group" />
@@ -398,7 +398,7 @@ export default function MembersWithLoans() {
       </div>
 
       {filteredLoans.map((loan) => (
-        <Card key={loan.id} className="overflow-hidden">
+        <Card key={loan.id} className="overflow-hidden bg-card border-border">
           <CardHeader className="pb-3">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-3">

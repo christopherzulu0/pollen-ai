@@ -264,18 +264,18 @@ export default function LoanPurposeTab() {
                 </div>
 
                 {/* Amount Range Filter */}
-                <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm mb-6">
+                <div className="bg-card rounded-xl border border-border p-4 shadow-sm mb-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h4 className="text-sm font-medium">Filter by Average Amount</h4>
+                            <h4 className="text-sm font-medium text-foreground">Filter by Average Amount</h4>
                             <p className="text-xs text-muted-foreground mt-1">
                                 Adjust the range to filter loan purposes by their average amount
                             </p>
                         </div>
                         <div className="w-full sm:w-[300px]">
                             <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs">K{amountRange[0].toLocaleString()}</span>
-                                <span className="text-xs">K{amountRange[1].toLocaleString()}</span>
+                                <span className="text-xs text-muted-foreground">K{amountRange[0].toLocaleString()}</span>
+                                <span className="text-xs text-muted-foreground">K{amountRange[1].toLocaleString()}</span>
                             </div>
                             <Slider
                                 value={amountRange}
@@ -291,9 +291,9 @@ export default function LoanPurposeTab() {
 
                 {/* Loading State */}
                 {isLoadingPurposes && (
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-8 text-center mb-6">
+                    <div className="bg-card rounded-xl border border-border p-8 text-center mb-6">
                         <Loader2 className="h-8 w-8 mx-auto mb-2 text-primary animate-spin" />
-                        <h4 className="text-base font-medium mb-1">Loading loan purposes</h4>
+                        <h4 className="text-base font-medium text-foreground mb-1">Loading loan purposes</h4>
                         <p className="text-sm text-muted-foreground">
                             Please wait while we fetch the loan purposes data...
                         </p>
@@ -302,9 +302,9 @@ export default function LoanPurposeTab() {
 
                 {/* Error State */}
                 {!isLoadingPurposes && purposesError && (
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-8 text-center mb-6">
+                    <div className="bg-card rounded-xl border border-border p-8 text-center mb-6">
                         <AlertCircle className="h-8 w-8 mx-auto mb-2 text-destructive" />
-                        <h4 className="text-base font-medium mb-1">Error loading loan purposes</h4>
+                        <h4 className="text-base font-medium text-foreground mb-1">Error loading loan purposes</h4>
                         <p className="text-sm text-muted-foreground">
                             {purposesError}
                         </p>
@@ -357,7 +357,7 @@ export default function LoanPurposeTab() {
                 {/* Purpose View Modes */}
                 {/* Display message when no purposes match the filters */}
                 {!isLoadingPurposes && !purposesError && amountFilteredPurposes.length === 0 && (
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-8 text-center mb-6">
+                    <div className="bg-card rounded-xl border border-border p-8 text-center mb-6">
                         <AlertCircle className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
                         <h4 className="text-base font-medium mb-1">No loan purposes found</h4>
                         <p className="text-sm text-muted-foreground">
@@ -385,7 +385,7 @@ export default function LoanPurposeTab() {
                         {amountFilteredPurposes.map((purpose, index) => (
                             <div
                                 key={purpose.id}
-                                className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm hover:shadow-md transition-all"
+                                className="bg-card rounded-xl border border-border p-4 shadow-sm hover:shadow-md transition-all"
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
@@ -396,7 +396,7 @@ export default function LoanPurposeTab() {
                                             {purpose.icon}
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-medium">{purpose.name}</h4>
+                                            <h4 className="text-sm font-medium text-foreground">{purpose.name}</h4>
                                             <p className="text-xs text-muted-foreground">{purpose.description}</p>
                                             {/* Group indicator - only show when viewing all groups */}
                                             {selectedGroup === "all" && (
@@ -413,9 +413,9 @@ export default function LoanPurposeTab() {
                                         className={cn(
                                             "text-xs rounded-sm px-1.5 py-0",
                                             purpose.trendDirection === "up"
-                                                ? "text-green-500 border-green-200"
+                                                ? "text-success border-success/50"
                                                 : purpose.trendDirection === "down"
-                                                    ? "text-red-500 border-red-200"
+                                                    ? "text-destructive border-destructive/50"
                                                     : "",
                                         )}
                                     >
@@ -431,22 +431,22 @@ export default function LoanPurposeTab() {
                                 <div className="mt-4 grid grid-cols-2 gap-2">
                                     <div className="bg-muted/30 p-2 rounded-lg">
                                         <div className="text-xs text-muted-foreground">Loans</div>
-                                        <div className="text-lg font-bold mt-0.5">{purpose.value}</div>
+                                        <div className="text-lg font-bold mt-0.5 text-foreground">{purpose.value}</div>
                                     </div>
                                     <div className="bg-muted/30 p-2 rounded-lg">
                                         <div className="text-xs text-muted-foreground">Success Rate</div>
-                                        <div className="text-lg font-bold mt-0.5">{purpose.successRate}%</div>
+                                        <div className="text-lg font-bold mt-0.5 text-foreground">{purpose.successRate}%</div>
                                     </div>
                                 </div>
 
                                 <div className="mt-3 space-y-2">
                                     <div className="flex items-center justify-between text-xs">
                                         <span className="text-muted-foreground">Average Amount:</span>
-                                        <span className="font-medium">${purpose.avgAmount.toLocaleString()}</span>
+                                        <span className="font-medium text-foreground">${purpose.avgAmount.toLocaleString()}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-xs">
                                         <span className="text-muted-foreground">Total Amount:</span>
-                                        <span className="font-medium">${purpose.totalAmount.toLocaleString()}</span>
+                                        <span className="font-medium text-foreground">${purpose.totalAmount.toLocaleString()}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-xs">
                                         <span className="text-muted-foreground">Interest Rate:</span>
@@ -459,10 +459,10 @@ export default function LoanPurposeTab() {
                                             className={cn(
                                                 "text-xs rounded-sm px-1.5 py-0",
                                                 purpose.riskLevel === "Low" || purpose.riskLevel === "Very Low"
-                                                    ? "text-green-500 border-green-200"
+                                                    ? "text-success border-success/50"
                                                     : purpose.riskLevel === "Medium"
-                                                        ? "text-amber-500 border-amber-200"
-                                                        : "text-red-500 border-red-200"
+                                                        ? "text-warning border-warning/50"
+                                                        : "text-destructive border-destructive/50"
                                             )}
                                         >
                                             {purpose.riskLevel}
@@ -470,7 +470,7 @@ export default function LoanPurposeTab() {
                                     </div>
                                 </div>
 
-                                <div className="mt-3 pt-3 border-t border-border/50">
+                                <div className="mt-3 pt-3 border-t border-border">
                                     <div className="text-xs text-muted-foreground mb-1.5">Top Contributors:</div>
                                     <div className="flex items-center gap-2">
                                         {purpose.topContributors.map((contributor, i) => (
@@ -495,24 +495,24 @@ export default function LoanPurposeTab() {
                 )}
 
                 {!isLoadingPurposes && !purposesError && purposeViewMode === "list" && amountFilteredPurposes.length > 0 && (
-                    <div className="bg-white dark:bg-black rounded-xl border border-border/50 shadow-sm mb-6">
+                    <div className="bg-card rounded-xl border border-border shadow-sm mb-6">
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
-                                    <tr className="border-b border-border/50">
-                                        <th className="text-xs font-medium text-left p-3">Purpose</th>
-                                        <th className="text-xs font-medium text-left p-3">Loans</th>
-                                        <th className="text-xs font-medium text-left p-3">Avg. Amount</th>
-                                        <th className="text-xs font-medium text-left p-3">Success Rate</th>
-                                        <th className="text-xs font-medium text-left p-3">Trend</th>
-                                        <th className="text-xs font-medium text-left p-3">Risk Level</th>
+                                    <tr className="border-b border-border">
+                                        <th className="text-xs font-medium text-left p-3 text-foreground">Purpose</th>
+                                        <th className="text-xs font-medium text-left p-3 text-foreground">Loans</th>
+                                        <th className="text-xs font-medium text-left p-3 text-foreground">Avg. Amount</th>
+                                        <th className="text-xs font-medium text-left p-3 text-foreground">Success Rate</th>
+                                        <th className="text-xs font-medium text-left p-3 text-foreground">Trend</th>
+                                        <th className="text-xs font-medium text-left p-3 text-foreground">Risk Level</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {amountFilteredPurposes.map((purpose) => (
                                         <tr 
                                             key={purpose.id} 
-                                            className="border-b border-border/50 hover:bg-muted/20 cursor-pointer"
+                                            className="border-b border-border hover:bg-muted/20 cursor-pointer"
                                             onClick={() => console.log(`View detailed analysis for ${purpose.name}`)}
                                         >
                                             <td className="p-3">
@@ -524,7 +524,7 @@ export default function LoanPurposeTab() {
                                                         {purpose.icon}
                                                     </div>
                                                     <div>
-                                                        <div className="text-sm font-medium">{purpose.name}</div>
+                                                        <div className="text-sm font-medium text-foreground">{purpose.name}</div>
                                                         <div className="text-xs text-muted-foreground">{purpose.description}</div>
                                                         {/* Group indicator - only show when viewing all groups */}
                                                         {selectedGroup === "all" && (
@@ -537,18 +537,18 @@ export default function LoanPurposeTab() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="p-3 text-sm">{purpose.value}</td>
-                                            <td className="p-3 text-sm">${purpose.avgAmount.toLocaleString()}</td>
-                                            <td className="p-3 text-sm">{purpose.successRate}%</td>
+                                            <td className="p-3 text-sm text-foreground">{purpose.value}</td>
+                                            <td className="p-3 text-sm text-foreground">${purpose.avgAmount.toLocaleString()}</td>
+                                            <td className="p-3 text-sm text-foreground">{purpose.successRate}%</td>
                                             <td className="p-3">
                                                 <Badge
                                                     variant={purpose.trendDirection === "up" ? "outline" : "secondary"}
                                                     className={cn(
                                                         "text-xs rounded-sm px-1.5 py-0",
                                                         purpose.trendDirection === "up"
-                                                            ? "text-green-500 border-green-200"
+                                                            ? "text-success border-success/50"
                                                             : purpose.trendDirection === "down"
-                                                                ? "text-red-500 border-red-200"
+                                                                ? "text-destructive border-destructive/50"
                                                                 : "",
                                                     )}
                                                 >
@@ -566,10 +566,10 @@ export default function LoanPurposeTab() {
                                                     className={cn(
                                                         "text-xs rounded-sm px-1.5 py-0",
                                                         purpose.riskLevel === "Low" || purpose.riskLevel === "Very Low"
-                                                            ? "text-green-500 border-green-200"
+                                                            ? "text-success border-success/50"
                                                             : purpose.riskLevel === "Medium"
-                                                                ? "text-amber-500 border-amber-200"
-                                                                : "text-red-500 border-red-200"
+                                                                ? "text-warning border-warning/50"
+                                                                : "text-destructive border-destructive/50"
                                                     )}
                                                 >
                                                     {purpose.riskLevel}
@@ -587,8 +587,8 @@ export default function LoanPurposeTab() {
                     <div className="space-y-6 mb-6">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {/* Donut Chart */}
-                            <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
-                                <h4 className="text-sm font-medium mb-4">Loan Purpose Distribution</h4>
+                            <div className="bg-card rounded-xl border border-border p-4 shadow-sm">
+                                <h4 className="text-sm font-medium text-foreground mb-4">Loan Purpose Distribution</h4>
                                 <div className="h-[300px]">
                                     <DonutChart
                                         data={amountFilteredPurposes.map(purpose => ({
@@ -605,8 +605,8 @@ export default function LoanPurposeTab() {
                             </div>
 
                             {/* Bar Chart */}
-                            <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
-                                <h4 className="text-sm font-medium mb-4">Average Loan Amount by Purpose</h4>
+                            <div className="bg-card rounded-xl border border-border p-4 shadow-sm">
+                                <h4 className="text-sm font-medium text-foreground mb-4">Average Loan Amount by Purpose</h4>
                                 <div className="h-[300px]">
                                     <ChartBar
                                         data={amountFilteredPurposes.map(purpose => ({
@@ -624,8 +624,8 @@ export default function LoanPurposeTab() {
                         </div>
 
                         {/* Line Chart */}
-                        <div className="bg-white dark:bg-black rounded-xl border border-border/50 p-4 shadow-sm">
-                            <h4 className="text-sm font-medium mb-4">Loan Purpose Trends Over Time</h4>
+                        <div className="bg-card rounded-xl border border-border p-4 shadow-sm">
+                            <h4 className="text-sm font-medium text-foreground mb-4">Loan Purpose Trends Over Time</h4>
                             <div className="h-[300px]">
                                 <ChartLine
                                     data={purposeTrendData}

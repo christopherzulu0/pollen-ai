@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,7 +25,6 @@ import {
   XCircle,
   Clock,
   Video,
-  Fingerprint,
   Eye,
   Download,
   FileText,
@@ -43,148 +43,70 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Skeleton } from "@/components/ui/skeleton"
 
-const mockKycUsers = [
-  {
-    id: "1",
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+260 977 123 456",
-    avatar: "/thoughtful-man-in-library.png",
-    kycLevel: 2,
-    status: "approved",
-    verificationDate: "2024-03-15",
-    riskScore: 15,
-    riskLevel: "low",
-    biometricStatus: "verified",
-    videoKycStatus: "completed",
-    nationalId: "123456/78/9",
-    address: "Plot 123, Independence Ave, Lusaka",
-    sanctionsCheck: "clear",
-    pepCheck: "clear",
-    transactionLimit: { daily: 50000, monthly: 500000 },
-    documents: [
-      { type: "NRC Front", status: "verified", date: "2024-03-10" },
-      { type: "NRC Back", status: "verified", date: "2024-03-10" },
-      { type: "Proof of Address", status: "verified", date: "2024-03-11" },
-    ],
-    activityFlags: [],
-    lastReview: "2024-03-15",
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
-    phone: "+260 966 234 567",
-    avatar: "/jane-portrait.png",
-    kycLevel: 3,
-    status: "approved",
-    verificationDate: "2024-03-10",
-    riskScore: 8,
-    riskLevel: "low",
-    biometricStatus: "verified",
-    videoKycStatus: "completed",
-    nationalId: "234567/89/0",
-    address: "House 45, Kabulonga, Lusaka",
-    sanctionsCheck: "clear",
-    pepCheck: "clear",
-    transactionLimit: { daily: 100000, monthly: 1000000 },
-    documents: [
-      { type: "NRC Front", status: "verified", date: "2024-03-05" },
-      { type: "NRC Back", status: "verified", date: "2024-03-05" },
-      { type: "Proof of Address", status: "verified", date: "2024-03-06" },
-      { type: "Bank Statement", status: "verified", date: "2024-03-07" },
-      { type: "Employment Letter", status: "verified", date: "2024-03-08" },
-    ],
-    activityFlags: [],
-    lastReview: "2024-03-10",
-  },
-  {
-    id: "3",
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    phone: "+260 955 345 678",
-    avatar: "/bob-portrait.png",
-    kycLevel: 1,
-    status: "pending",
-    verificationDate: null,
-    riskScore: 45,
-    riskLevel: "medium",
-    biometricStatus: "pending",
-    videoKycStatus: "required",
-    nationalId: "345678/90/1",
-    address: "Flat 12B, Cairo Road, Lusaka",
-    sanctionsCheck: "pending",
-    pepCheck: "pending",
-    transactionLimit: { daily: 10000, monthly: 100000 },
-    documents: [
-      { type: "NRC Front", status: "pending", date: "2024-03-16" },
-      { type: "NRC Back", status: "pending", date: "2024-03-16" },
-    ],
-    activityFlags: [],
-    lastReview: null,
-  },
-  {
-    id: "4",
-    name: "Alice Williams",
-    email: "alice@example.com",
-    phone: "+260 977 456 789",
-    avatar: "/thoughtful-man-in-library.png",
-    kycLevel: 2,
-    status: "flagged",
-    verificationDate: "2024-02-20",
-    riskScore: 78,
-    riskLevel: "high",
-    biometricStatus: "verified",
-    videoKycStatus: "completed",
-    nationalId: "456789/01/2",
-    address: "Plot 67, Chongwe Road, Lusaka",
-    sanctionsCheck: "flagged",
-    pepCheck: "match",
-    transactionLimit: { daily: 5000, monthly: 50000 },
-    documents: [
-      { type: "NRC Front", status: "verified", date: "2024-02-15" },
-      { type: "NRC Back", status: "verified", date: "2024-02-15" },
-      { type: "Proof of Address", status: "verified", date: "2024-02-16" },
-    ],
-    activityFlags: [
-      { type: "Multiple large transactions", date: "2024-03-14", severity: "high" },
-      { type: "Unusual transaction pattern", date: "2024-03-12", severity: "medium" },
-    ],
-    lastReview: "2024-03-14",
-  },
-  {
-    id: "5",
-    name: "Michael Brown",
-    email: "michael@example.com",
-    phone: "+260 966 567 890",
-    avatar: "/bob-portrait.png",
-    kycLevel: 1,
-    status: "rejected",
-    verificationDate: null,
-    riskScore: 92,
-    riskLevel: "high",
-    biometricStatus: "failed",
-    videoKycStatus: "failed",
-    nationalId: "567890/12/3",
-    address: "Unknown",
-    sanctionsCheck: "match",
-    pepCheck: "match",
-    transactionLimit: { daily: 0, monthly: 0 },
-    documents: [
-      { type: "NRC Front", status: "rejected", date: "2024-03-05" },
-      { type: "NRC Back", status: "rejected", date: "2024-03-05" },
-    ],
-    activityFlags: [
-      { type: "Sanctions list match", date: "2024-03-05", severity: "critical" },
-      { type: "Document forgery detected", date: "2024-03-05", severity: "critical" },
-    ],
-    lastReview: "2024-03-05",
-    rejectionReason: "Sanctions list match and document verification failure",
-  },
-]
+// Type definitions
+type KycUser = {
+  id: string
+  name: string
+  email: string
+  phone: string
+  avatar: string | null
+  kycLevel: number
+  status: "approved" | "pending" | "flagged" | "rejected"
+  verificationDate: string | null
+  riskScore: number
+  riskLevel: "low" | "medium" | "high"
+  videoKycStatus: "completed" | "required" | "failed"
+  videoKycUrl: string | null
+  nationalId: string
+  address: string
+  sanctionsCheck: "clear" | "pending" | "flagged" | "match"
+  pepCheck: "clear" | "pending" | "match"
+  transactionLimit: { daily: number; monthly: number }
+  documents: Array<{ type: string; status: "verified" | "pending" | "rejected"; date: string; url: string }>
+  activityFlags: Array<{ type: string; date: string; severity: "low" | "medium" | "high" | "critical" }>
+  lastReview: string | null
+  rejectionReason: string | null
+}
 
-const kycLevelDetails = {
+type KycResponse = {
+  users: KycUser[]
+  stats: {
+    totalUsers: number
+    verified: number
+    pending: number
+    flagged: number
+    rejected: number
+    videoKycRequired: number
+    highRisk: number
+  }
+}
+
+// Fetch function
+async function fetchKycData(search?: string, status?: string, level?: string, risk?: string): Promise<KycResponse> {
+  const params = new URLSearchParams()
+  if (search) params.append("search", search)
+  if (status) params.append("status", status)
+  if (level) params.append("level", level)
+  if (risk) params.append("risk", risk)
+
+  const response = await fetch(`/api/admin/kyc?${params.toString()}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch KYC data")
+  }
+  return response.json()
+}
+
+const kycLevelDetails: Record<
+  number,
+  {
+    name: string
+    limits: { daily: number; monthly: number }
+    requirements: string[]
+    color: string
+  }
+> = {
   1: {
     name: "Level 1 - Basic",
     limits: { daily: 10000, monthly: 100000 },
@@ -194,7 +116,7 @@ const kycLevelDetails = {
   2: {
     name: "Level 2 - Standard",
     limits: { daily: 50000, monthly: 500000 },
-    requirements: ["Level 1", "Proof of Address", "Biometric Verification"],
+    requirements: ["Level 1", "Proof of Address"],
     color: "bg-purple-500",
   },
   3: {
@@ -205,16 +127,94 @@ const kycLevelDetails = {
   },
 }
 
-export function KycView() {
+// Skeleton Components
+function KycStatsSkeleton() {
+  return (
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      {[1, 2, 3, 4].map((i) => (
+        <Card key={i} className="bg-card border-border">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-4" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-8 w-16 mb-2" />
+            <Skeleton className="h-3 w-24" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+function KycLevelOverviewSkeleton() {
+  return (
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+      {[1, 2, 3].map((i) => (
+        <Card key={i} className="bg-card border-border">
+          <CardHeader>
+            <Skeleton className="h-5 w-40 mb-2" />
+            <Skeleton className="h-6 w-20" />
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Separator />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+function KycTableSkeleton() {
+  return (
+    <Card className="bg-card border-border">
+      <CardHeader>
+        <Skeleton className="h-6 w-48 mb-2" />
+        <Skeleton className="h-4 w-96" />
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4 space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <div className="flex gap-2">
+            <Skeleton className="h-10 w-[180px]" />
+            <Skeleton className="h-10 w-[180px]" />
+            <Skeleton className="h-10 w-[180px]" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <Skeleton key={i} className="h-16 w-full" />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function KycSkeleton() {
+  return (
+    <div className="space-y-6">
+      <KycStatsSkeleton />
+      <KycLevelOverviewSkeleton />
+      <KycTableSkeleton />
+    </div>
+  )
+}
+
+// Content Component
+function KycContent() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [levelFilter, setLevelFilter] = useState("all")
   const [riskFilter, setRiskFilter] = useState("all")
-  const [selectedUser, setSelectedUser] = useState<(typeof mockKycUsers)[0] | null>(null)
+  const [selectedUser, setSelectedUser] = useState<KycUser | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const [videoKycDialog, setVideoKycDialog] = useState(false)
-  const [biometricDialog, setBiometricDialog] = useState(false)
   const [documentsDialog, setDocumentsDialog] = useState(false)
   const [upgradeDialog, setUpgradeDialog] = useState(false)
   const [flagDialog, setFlagDialog] = useState(false)
@@ -224,65 +224,79 @@ export function KycView() {
   const [flagReason, setFlagReason] = useState("")
   const [targetKycLevel, setTargetKycLevel] = useState<number>(2)
 
-  const filteredUsers = mockKycUsers.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.nationalId.includes(searchQuery)
-    const matchesStatus = statusFilter === "all" || user.status === statusFilter
-    const matchesLevel = levelFilter === "all" || user.kycLevel.toString() === levelFilter
-    const matchesRisk = riskFilter === "all" || user.riskLevel === riskFilter
-    return matchesSearch && matchesStatus && matchesLevel && matchesRisk
+  // Fetch KYC data with react-query
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["kyc-data", searchQuery, statusFilter, levelFilter, riskFilter],
+    queryFn: () =>
+      fetchKycData(
+        searchQuery || undefined,
+        statusFilter !== "all" ? statusFilter : undefined,
+        levelFilter !== "all" ? levelFilter : undefined,
+        riskFilter !== "all" ? riskFilter : undefined
+      ),
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
   })
 
-  const stats = {
-    totalUsers: mockKycUsers.length,
-    verified: mockKycUsers.filter((u) => u.status === "approved").length,
-    pending: mockKycUsers.filter((u) => u.status === "pending").length,
-    flagged: mockKycUsers.filter((u) => u.status === "flagged").length,
-    rejected: mockKycUsers.filter((u) => u.status === "rejected").length,
-    videoKycRequired: mockKycUsers.filter((u) => u.videoKycStatus === "required").length,
-    highRisk: mockKycUsers.filter((u) => u.riskLevel === "high").length,
-    biometricPending: mockKycUsers.filter((u) => u.biometricStatus === "pending").length,
+  if (isLoading) {
+    return <KycSkeleton />
   }
 
-  const handleViewDetails = (user: (typeof mockKycUsers)[0]) => {
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6">
+            <p className="text-destructive">Failed to load KYC data. Please try again.</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  const filteredUsers = data?.users || []
+  const stats = data?.stats || {
+    totalUsers: 0,
+    verified: 0,
+    pending: 0,
+    flagged: 0,
+    rejected: 0,
+    videoKycRequired: 0,
+    highRisk: 0,
+  }
+
+  const handleViewDetails = (user: KycUser) => {
     setSelectedUser(user)
     setDialogOpen(true)
   }
 
-  const handleVideoKyc = (user: (typeof mockKycUsers)[0]) => {
+  const handleVideoKyc = (user: KycUser) => {
     setSelectedUser(user)
     setVideoKycDialog(true)
   }
 
-  const handleBiometric = (user: (typeof mockKycUsers)[0]) => {
-    setSelectedUser(user)
-    setBiometricDialog(true)
-  }
-
-  const handleDocuments = (user: (typeof mockKycUsers)[0]) => {
+  const handleDocuments = (user: KycUser) => {
     setSelectedUser(user)
     setDocumentsDialog(true)
   }
 
-  const handleUpgrade = (user: (typeof mockKycUsers)[0]) => {
+  const handleUpgrade = (user: KycUser) => {
     setSelectedUser(user)
     setTargetKycLevel(Math.min(user.kycLevel + 1, 3))
     setUpgradeDialog(true)
   }
 
-  const handleFlag = (user: (typeof mockKycUsers)[0]) => {
+  const handleFlag = (user: KycUser) => {
     setSelectedUser(user)
     setFlagDialog(true)
   }
 
-  const handleApprove = (user: (typeof mockKycUsers)[0]) => {
+  const handleApprove = (user: KycUser) => {
     setSelectedUser(user)
     setApproveDialog(true)
   }
 
-  const handleReject = (user: (typeof mockKycUsers)[0]) => {
+  const handleReject = (user: KycUser) => {
     setSelectedUser(user)
     setRejectDialog(true)
   }
@@ -336,7 +350,7 @@ export function KycView() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.pending}</div>
-            <p className="text-xs text-muted-foreground">{stats.biometricPending} biometric pending</p>
+            <p className="text-xs text-muted-foreground">{stats.pending} pending reviews</p>
           </CardContent>
         </Card>
         <Card className="bg-card border-border">
@@ -364,7 +378,7 @@ export function KycView() {
       {/* KYC Level Overview */}
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {Object.entries(kycLevelDetails).map(([level, details]) => {
-          const count = mockKycUsers.filter((u) => u.kycLevel === Number.parseInt(level)).length
+          const count = (data?.users || []).filter((u) => u.kycLevel === Number.parseInt(level)).length
           return (
             <Card key={level} className="bg-card border-border">
               <CardHeader>
@@ -466,7 +480,6 @@ export function KycView() {
                   <TableHead>KYC Level</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Risk Score</TableHead>
-                  <TableHead>Biometric</TableHead>
                   <TableHead>Video KYC</TableHead>
                   <TableHead>Sanctions</TableHead>
                   <TableHead>PEP Check</TableHead>
@@ -514,15 +527,6 @@ export function KycView() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {user.biometricStatus === "verified" ? (
-                        <CheckCircle className="h-5 w-5 text-emerald-500" />
-                      ) : user.biometricStatus === "pending" ? (
-                        <Clock className="h-5 w-5 text-yellow-500" />
-                      ) : (
-                        <XCircle className="h-5 w-5 text-red-500" />
-                      )}
-                    </TableCell>
-                    <TableCell>
                       {user.videoKycStatus === "completed" ? (
                         <CheckCircle className="h-5 w-5 text-emerald-500" />
                       ) : user.videoKycStatus === "required" ? (
@@ -567,10 +571,6 @@ export function KycView() {
                             <Video className="mr-2 h-4 w-4" />
                             Review Video KYC
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleBiometric(user)}>
-                            <Fingerprint className="mr-2 h-4 w-4" />
-                            Verify Biometric
-                          </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleDocuments(user)}>
                             <FileText className="mr-2 h-4 w-4" />
                             View Documents
@@ -609,10 +609,9 @@ export function KycView() {
 
           {selectedUser && (
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="documents">Documents</TabsTrigger>
-                <TabsTrigger value="biometric">Biometric</TabsTrigger>
                 <TabsTrigger value="compliance">Compliance</TabsTrigger>
                 <TabsTrigger value="activity">Activity</TabsTrigger>
               </TabsList>
@@ -705,17 +704,6 @@ export function KycView() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-3 md:grid-cols-2">
-                      <div className="flex items-center justify-between p-3 rounded-lg border border-border">
-                        <div className="flex items-center gap-2">
-                          <Fingerprint className="h-5 w-5" />
-                          <span className="text-sm">Biometric Verification</span>
-                        </div>
-                        {selectedUser.biometricStatus === "verified" ? (
-                          <CheckCircle className="h-5 w-5 text-emerald-500" />
-                        ) : (
-                          <Clock className="h-5 w-5 text-yellow-500" />
-                        )}
-                      </div>
                       <div className="flex items-center justify-between p-3 rounded-lg border border-border">
                         <div className="flex items-center gap-2">
                           <Video className="h-5 w-5" />
@@ -860,10 +848,29 @@ export function KycView() {
                             >
                               {doc.status}
                             </Badge>
-                            <Button size="sm" variant="ghost">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => window.open(doc.url, "_blank")}
+                              disabled={!doc.url}
+                            >
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button size="sm" variant="ghost">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => {
+                                if (doc.url) {
+                                  const link = document.createElement("a")
+                                  link.href = doc.url
+                                  link.download = `${doc.type.replace(/\s+/g, "_")}.${doc.url.split(".").pop()}`
+                                  document.body.appendChild(link)
+                                  link.click()
+                                  document.body.removeChild(link)
+                                }
+                              }}
+                              disabled={!doc.url}
+                            >
                               <Download className="h-4 w-4" />
                             </Button>
                           </div>
@@ -891,142 +898,6 @@ export function KycView() {
                         Reject Documents
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Biometric Tab */}
-              <TabsContent value="biometric" className="space-y-4">
-                <Card className="bg-card border-border">
-                  <CardHeader>
-                    <CardTitle className="text-base">Biometric Verification</CardTitle>
-                    <CardDescription>Fingerprint and Face ID verification status</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="p-4 rounded-lg border border-border space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">Fingerprint</h4>
-                          {selectedUser.biometricStatus === "verified" ? (
-                            <Badge className="bg-emerald-500">Verified</Badge>
-                          ) : (
-                            <Badge className="bg-yellow-500">Pending</Badge>
-                          )}
-                        </div>
-                        <div className="flex justify-center p-6 bg-muted rounded-lg">
-                          <Fingerprint className="h-24 w-24 text-muted-foreground" />
-                        </div>
-                        <div className="text-xs space-y-1">
-                          <p>
-                            <span className="text-muted-foreground">Captured:</span>{" "}
-                            {selectedUser.verificationDate || "Not yet"}
-                          </p>
-                          <p>
-                            <span className="text-muted-foreground">Match Score:</span> 98.5%
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="p-4 rounded-lg border border-border space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">Face ID</h4>
-                          {selectedUser.biometricStatus === "verified" ? (
-                            <Badge className="bg-emerald-500">Verified</Badge>
-                          ) : (
-                            <Badge className="bg-yellow-500">Pending</Badge>
-                          )}
-                        </div>
-                        <div className="flex justify-center p-6 bg-muted rounded-lg">
-                          <User className="h-24 w-24 text-muted-foreground" />
-                        </div>
-                        <div className="text-xs space-y-1">
-                          <p>
-                            <span className="text-muted-foreground">Captured:</span>{" "}
-                            {selectedUser.verificationDate || "Not yet"}
-                          </p>
-                          <p>
-                            <span className="text-muted-foreground">Liveness Check:</span> Passed
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <Separator />
-
-                    <div className="space-y-2">
-                      <Label>Biometric Verification Notes</Label>
-                      <Textarea
-                        placeholder="Add notes about biometric verification..."
-                        className="bg-background min-h-[100px]"
-                      />
-                    </div>
-
-                    {selectedUser.biometricStatus !== "verified" && (
-                      <Button
-                        className="w-full bg-emerald-500 hover:bg-emerald-600"
-                        onClick={() => setBiometricDialog(true)}
-                      >
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                        Approve Biometric Verification
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Video KYC Section */}
-                <Card className="bg-card border-border">
-                  <CardHeader>
-                    <CardTitle className="text-base">Video KYC</CardTitle>
-                    <CardDescription>Live video verification for high-value transactions</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {selectedUser.videoKycStatus === "completed" ? (
-                      <>
-                        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                          <Video className="h-16 w-16 text-muted-foreground" />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">Completed:</span>{" "}
-                            {selectedUser.verificationDate || "N/A"}
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Duration:</span> 12:34
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Reviewer:</span> Agent KYC-001
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Status:</span> Approved
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          className="w-full bg-transparent"
-                          onClick={() => setVideoKycDialog(true)}
-                        >
-                          <Video className="mr-2 h-4 w-4" />
-                          Review Video Recording
-                        </Button>
-                      </>
-                    ) : selectedUser.videoKycStatus === "required" ? (
-                      <>
-                        <div className="p-6 rounded-lg border-2 border-dashed border-orange-500/50 bg-orange-500/5">
-                          <div className="flex flex-col items-center gap-3 text-center">
-                            <AlertTriangle className="h-12 w-12 text-orange-500" />
-                            <h4 className="font-medium">Video KYC Required</h4>
-                            <p className="text-sm text-muted-foreground">
-                              This user requires video KYC verification before approval
-                            </p>
-                            <Button className="mt-2 bg-primary">Schedule Video Call</Button>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="p-6 rounded-lg border border-border bg-card text-center">
-                        <p className="text-muted-foreground">Video KYC not required for this KYC level</p>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -1276,10 +1147,10 @@ export function KycView() {
                       </div>
                       <div className="flex items-start gap-3 p-3 rounded-lg border border-border">
                         <div className="h-8 w-8 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                          <Fingerprint className="h-4 w-4 text-blue-500" />
+                          <Video className="h-4 w-4 text-blue-500" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium">Biometric Verification</p>
+                          <p className="text-sm font-medium">Video KYC Completed</p>
                           <p className="text-xs text-muted-foreground">3 days before approval</p>
                         </div>
                       </div>
@@ -1303,16 +1174,54 @@ export function KycView() {
             <div className="space-y-4">
               <Card className="bg-card border-border">
                 <CardContent className="p-6">
-                  <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
-                    <div className="text-center space-y-2">
-                      <Video className="h-16 w-16 mx-auto text-muted-foreground" />
-                      <p className="text-sm text-muted-foreground">Video recording available</p>
-                      <Button>
-                        <Play className="mr-2 h-4 w-4" />
-                        Play Video
-                      </Button>
+                  {selectedUser.videoKycUrl ? (
+                    <>
+                      <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4">
+                        <video
+                          src={selectedUser.videoKycUrl}
+                          controls
+                          className="w-full h-full"
+                          style={{ maxHeight: "500px" }}
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <div className="flex gap-2 mb-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => window.open(selectedUser.videoKycUrl || "", "_blank")}
+                          className="flex-1"
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          View Full Screen
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            if (selectedUser.videoKycUrl) {
+                              const link = document.createElement("a")
+                              link.href = selectedUser.videoKycUrl
+                              link.download = `video_kyc_${selectedUser.name.replace(/\s+/g, "_")}_${selectedUser.verificationDate || "unknown"}.mp4`
+                              document.body.appendChild(link)
+                              link.click()
+                              document.body.removeChild(link)
+                            }
+                          }}
+                          className="flex-1"
+                        >
+                          <Download className="mr-2 h-4 w-4" />
+                          Download Video
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
+                      <div className="text-center space-y-2">
+                        <Video className="h-16 w-16 mx-auto text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground">No video recording available</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
@@ -1320,16 +1229,19 @@ export function KycView() {
                       <div className="text-sm">{selectedUser.verificationDate || "Not recorded"}</div>
                     </div>
                     <div className="space-y-2">
-                      <Label>Duration</Label>
-                      <div className="text-sm">2:45 minutes</div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Video Quality</Label>
-                      <Badge className="bg-emerald-500">HD Quality</Badge>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Audio Quality</Label>
-                      <Badge className="bg-emerald-500">Clear</Badge>
+                      <Label>Status</Label>
+                      <Badge
+                        variant="outline"
+                        className={
+                          selectedUser.videoKycStatus === "completed"
+                            ? "bg-emerald-500/10 text-emerald-500"
+                            : selectedUser.videoKycStatus === "required"
+                              ? "bg-yellow-500/10 text-yellow-500"
+                              : "bg-red-500/10 text-red-500"
+                        }
+                      >
+                        {selectedUser.videoKycStatus}
+                      </Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -1382,104 +1294,6 @@ export function KycView() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={biometricDialog} onOpenChange={setBiometricDialog}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Biometric Verification</DialogTitle>
-            <DialogDescription>Review biometric authentication data for {selectedUser?.name}</DialogDescription>
-          </DialogHeader>
-
-          {selectedUser && (
-            <div className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card className="bg-card border-border">
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Fingerprint className="h-5 w-5" />
-                      Fingerprint Scan
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-center p-8 bg-muted rounded-lg">
-                      <Fingerprint className="h-32 w-32 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Match Score:</span>
-                        <span className="font-medium">98.5%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Quality:</span>
-                        <Badge className="bg-emerald-500">Excellent</Badge>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Captured:</span>
-                        <span className="font-medium">{selectedUser.verificationDate}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card border-border">
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <User className="h-5 w-5" />
-                      Face Recognition
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-center p-8 bg-muted rounded-lg">
-                      <Avatar className="h-32 w-32">
-                        <AvatarImage src={selectedUser.avatar || "/placeholder.svg"} />
-                        <AvatarFallback>
-                          {selectedUser.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Match Score:</span>
-                        <span className="font-medium">96.8%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Liveness:</span>
-                        <Badge className="bg-emerald-500">Verified</Badge>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Captured:</span>
-                        <span className="font-medium">{selectedUser.verificationDate}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card className="bg-card border-border">
-                <CardHeader>
-                  <CardTitle className="text-base">Verification Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Textarea placeholder="Add verification notes..." className="bg-background min-h-[80px]" />
-                  <div className="flex gap-2">
-                    <Button className="flex-1 bg-emerald-500 hover:bg-emerald-600">
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Verify Biometrics
-                    </Button>
-                    <Button variant="destructive" className="flex-1">
-                      <XCircle className="mr-2 h-4 w-4" />
-                      Request Re-scan
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
       <Dialog open={documentsDialog} onOpenChange={setDocumentsDialog}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -1510,17 +1324,46 @@ export function KycView() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
-                      <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                        <FileText className="h-16 w-16 text-muted-foreground" />
-                      </div>
+                      {doc.url ? (
+                        <>
+                          {doc.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            <img src={doc.url} alt={doc.type} className="w-full rounded-lg border border-border" />
+                          ) : (
+                            <iframe src={doc.url} className="w-full aspect-video rounded-lg border border-border" />
+                          )}
+                        </>
+                      ) : (
+                        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+                          <FileText className="h-16 w-16 text-muted-foreground" />
+                        </div>
+                      )}
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Uploaded: {doc.date}</span>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => window.open(doc.url, "_blank")}
+                            disabled={!doc.url}
+                          >
                             <Eye className="mr-2 h-4 w-4" />
                             View Full
                           </Button>
-                          <Button size="sm" variant="outline">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              if (doc.url) {
+                                const link = document.createElement("a")
+                                link.href = doc.url
+                                link.download = `${doc.type.replace(/\s+/g, "_")}.${doc.url.split(".").pop()}`
+                                document.body.appendChild(link)
+                                link.click()
+                                document.body.removeChild(link)
+                              }
+                            }}
+                            disabled={!doc.url}
+                          >
                             <Download className="mr-2 h-4 w-4" />
                             Download
                           </Button>
@@ -1760,8 +1603,8 @@ export function KycView() {
                     <CheckCircle className="h-4 w-4 text-emerald-500" />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Biometric:</span>
-                    {selectedUser.biometricStatus === "verified" ? (
+                    <span className="text-muted-foreground">Video KYC:</span>
+                    {selectedUser.videoKycStatus === "completed" ? (
                       <CheckCircle className="h-4 w-4 text-emerald-500" />
                     ) : (
                       <XCircle className="h-4 w-4 text-red-500" />
@@ -1833,7 +1676,6 @@ export function KycView() {
                       <SelectItem value="forgery">Suspected Document Forgery</SelectItem>
                       <SelectItem value="sanctions">Sanctions List Match</SelectItem>
                       <SelectItem value="pep">PEP Match - High Risk</SelectItem>
-                      <SelectItem value="biometric_fail">Biometric Verification Failed</SelectItem>
                       <SelectItem value="video_fail">Video KYC Failed</SelectItem>
                       <SelectItem value="incomplete">Incomplete Information</SelectItem>
                       <SelectItem value="other">Other</SelectItem>
@@ -1871,5 +1713,14 @@ export function KycView() {
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+// Main Export Component with Suspense
+export function KycView() {
+  return (
+    <Suspense fallback={<KycSkeleton />}>
+      <KycContent />
+    </Suspense>
   )
 }

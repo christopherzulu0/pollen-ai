@@ -140,7 +140,7 @@ export default function TopContributorsTab() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 px-4">
                 <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-primary" />
-                    <h2 className="text-lg font-medium">Top Contributors</h2>
+                    <h2 className="text-lg font-medium text-foreground">Top Contributors</h2>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto">
@@ -233,14 +233,14 @@ export default function TopContributorsTab() {
                                             <AvatarFallback>{contributor.name.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         {index < 3 && (
-                                            <div className="absolute -top-1 -right-1 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                                            <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                                                 {index + 1}
                                             </div>
                                         )}
                                     </div>
                                     <div className="min-w-0">
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <h4 className="text-sm font-medium">{contributor.name}</h4>
+                                            <h4 className="text-sm font-medium text-foreground">{contributor.name}</h4>
                                             {contributor.badge && (
                                                 <Badge
                                                     variant="secondary"
@@ -285,8 +285,8 @@ export default function TopContributorsTab() {
                                             className={cn(
                                                 "text-xs rounded-sm px-1.5 py-0",
                                                 contributor.trendDirection === "up"
-                                                    ? "text-green-500 border-green-200"
-                                                    : "text-red-500 border-red-200",
+                                                    ? "text-success border-success/50"
+                                                    : "text-destructive border-destructive/50",
                                             )}
                                         >
                                             {contributor.trendDirection === "up" ? (
@@ -303,10 +303,10 @@ export default function TopContributorsTab() {
                                             className="h-1.5"
                                             indicatorClassName={cn(
                                                 contributor.reliability >= 95
-                                                    ? "bg-green-500"
+                                                    ? "bg-success"
                                                     : contributor.reliability >= 90
-                                                        ? "bg-amber-500"
-                                                        : "bg-red-500",
+                                                        ? "bg-warning"
+                                                        : "bg-destructive",
                                             )}
                                         />
                                         <TooltipProvider>
@@ -335,7 +335,7 @@ export default function TopContributorsTab() {
                 {/* Contribution Statistics */}
                 <div className="lg:col-span-4 space-y-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-medium">Contribution Statistics</h3>
+                        <h3 className="text-lg font-medium text-foreground">Contribution Statistics</h3>
                     </div>
 
                     {loading ? (
@@ -352,10 +352,10 @@ export default function TopContributorsTab() {
                         </Alert>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
-                            <div className="bg-white dark:bg-black p-5 rounded-lg border border-border/50">
+                            <div className="bg-card p-5 rounded-lg border border-border">
                                 <div className="text-sm text-muted-foreground">Total Contributions</div>
-                                <div className="text-2xl font-bold mt-2">ZMK {totalContributions.toLocaleString()}</div>
-                                <div className="text-sm text-green-500 flex items-start gap-2 mt-2">
+                                <div className="text-2xl font-bold mt-2 text-foreground">ZMK {totalContributions.toLocaleString()}</div>
+                                <div className="text-sm text-success flex items-start gap-2 mt-2">
                                     <TrendingUp className="h-4 w-4 flex-shrink-0 mt-0.5" />
                                     <span className="break-words whitespace-normal overflow-hidden">
                                         {selectedGroup === "all" 
@@ -364,10 +364,10 @@ export default function TopContributorsTab() {
                                     </span>
                                 </div>
                             </div>
-                            <div className="bg-white dark:bg-black p-5 rounded-lg border border-border/50">
+                            <div className="bg-card p-5 rounded-lg border border-border">
                                 <div className="text-sm text-muted-foreground">Active Contributors</div>
-                                <div className="text-2xl font-bold mt-2">{totalActiveContributors}</div>
-                                <div className="text-sm text-green-500 flex items-start gap-2 mt-2">
+                                <div className="text-2xl font-bold mt-2 text-foreground">{totalActiveContributors}</div>
+                                <div className="text-sm text-success flex items-start gap-2 mt-2">
                                     <TrendingUp className="h-4 w-4 flex-shrink-0 mt-0.5" />
                                     <span className="break-words whitespace-normal overflow-hidden">
                                         {totalActiveContributors > 0 

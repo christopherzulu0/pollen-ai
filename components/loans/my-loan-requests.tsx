@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { usePathname } from "next/navigation"
 
 // Define the type for loan requests
 interface LoanRequest {
@@ -62,6 +63,8 @@ interface LoanRequest {
 }
 
 export default function MyLoanRequests() {
+  const pathname = usePathname()
+  const savingsGroupsPath = pathname?.startsWith("/member") ? "/member/savings-groups" : "/dashboard/groups/saving-groups"
   const [selectedLoan, setSelectedLoan] = useState<LoanRequest | null>(null)
   const [isWithdrawing, setIsWithdrawing] = useState(false)
 
@@ -181,11 +184,11 @@ export default function MyLoanRequests() {
   // Handle loading state
   if (isLoading) {
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-10">
           <div className="flex items-center justify-center space-x-2">
-            <Loader2 className="h-6 w-6 animate-spin" />
-            <p>Loading your loan requests...</p>
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <p className="text-muted-foreground">Loading your loan requests...</p>
           </div>
         </CardContent>
       </Card>
@@ -196,11 +199,11 @@ export default function MyLoanRequests() {
   if (isError) {
     const errorInfo = formatErrorForToast(error, 'fetch');
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-10 space-y-4">
           <AlertCircle className="h-12 w-12 text-destructive" />
           <div className="text-center space-y-2">
-            <h3 className="font-semibold text-lg">{errorInfo.title}</h3>
+            <h3 className="font-semibold text-lg text-foreground">{errorInfo.title}</h3>
             <p className="text-muted-foreground max-w-md">
               {errorInfo.description}
             </p>
@@ -216,10 +219,10 @@ export default function MyLoanRequests() {
   // Handle empty state
   if (myRequests.length === 0) {
     return (
-      <Card>
+      <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-10">
           <p className="text-muted-foreground text-center">You haven't made any loan requests yet.</p>
-          <Button className="mt-4" variant="outline" onClick={() => (window.location.href = "/loans?tab=new-request")}>
+          <Button className="mt-4" variant="outline" onClick={() => (window.location.href = `${savingsGroupsPath}?tab=new-request`)}>
             Create a New Request
           </Button>
         </CardContent>
@@ -229,10 +232,10 @@ export default function MyLoanRequests() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">My Loan Requests</h2>
+      <h2 className="text-xl font-semibold text-foreground">My Loan Requests</h2>
 
       {myRequests.map((loan) => (
-        <Card key={loan.id} className="overflow-hidden">
+        <Card key={loan.id} className="overflow-hidden bg-card border-border">
           <CardHeader className="pb-3">
             <div className="flex justify-between items-start">
               <div>
@@ -399,7 +402,7 @@ export default function MyLoanRequests() {
             )}
 
             {loan.status === "REJECTED" && (
-              <Button variant="outline" onClick={() => (window.location.href = "/loans?tab=new-request")}>
+              <Button variant="outline" onClick={() => (window.location.href = `${savingsGroupsPath}?tab=new-request`)}>
                 Create New Request
               </Button>
             )}

@@ -4,8 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 
 export function ActivityFeedSkeleton() {
   return (
-    <Card className="border border-slate-200 dark:border-slate-800 shadow-md rounded-xl bg-white dark:bg-slate-900 w-full max-w-full overflow-hidden">
-      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2 border-b border-slate-200 dark:border-slate-800">
+    <Card className="border border-border shadow-md rounded-xl bg-card w-full max-w-full overflow-hidden">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2 border-b border-border">
         <div className="space-y-1">
           <Skeleton className="h-6 w-32" />
           <Skeleton className="h-4 w-48" />
@@ -47,7 +47,7 @@ export function ActivityFeedSkeleton() {
           </div>
         </ScrollArea>
       </CardContent>
-      <CardFooter className="border-t border-slate-200 dark:border-slate-800 pt-4">
+      <CardFooter className="border-t border-border pt-4">
         <Skeleton className="h-8 w-full rounded-md" />
       </CardFooter>
     </Card>
