@@ -30,7 +30,7 @@ const COMMAND_ITEMS: CommandItem[] = [
     description: 'View your dashboard',
     category: 'Navigation',
     icon: <BarChart3 className="w-4 h-4" />,
-    href: '/dashboard',
+    href: '/member',
   },
   {
     id: '3',
@@ -71,6 +71,14 @@ const COMMAND_ITEMS: CommandItem[] = [
     category: 'Information',
     icon: <Users className="w-4 h-4" />,
     href: '/contact',
+  },
+  {
+    id: '6',
+    label: 'KYC Submissions',
+    description: 'Solor Equipment Form',
+    category: 'Navigation',
+    icon: <FileText className="w-4 h-4" />,
+    href: '/kyc/submit',
   },
 ];
 
