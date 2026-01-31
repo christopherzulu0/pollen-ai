@@ -55,7 +55,7 @@ export function MegaMenu({ isScrolled, textClasses }: MegaMenuProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-screen max-w-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl p-8 animate-slide-down z-50">
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-screen max-w-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl p-8 animate-slide-down z-50">
           <div className="grid grid-cols-3 gap-8">
             {MEGA_MENU_DATA.map((category) => (
               <div key={category.title}>

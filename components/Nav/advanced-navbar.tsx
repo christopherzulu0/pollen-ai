@@ -24,10 +24,10 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Groups', href: '/Groups' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'KYC Submissions', href: '/kyc/submit' },
+  // { label: 'Services', href: '/services' },
+  // { label: 'Groups', href: '/Groups' },
+  // { label: 'Blog', href: '/blog' },
+  // { label: 'KYC Submissions', href: '/kyc/submit' },
   { label: 'Contact', href: '/contact' },
 ];
 
