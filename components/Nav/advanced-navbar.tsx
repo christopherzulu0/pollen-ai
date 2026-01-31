@@ -228,7 +228,7 @@ export function AdvancedNavbar() {
             {/* Right Controls Section */}
             <div className="hidden lg:flex items-center gap-2 lg:gap-4">
               {/* Search Button */}
-              <button
+              {/* <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 className={`p-2 rounded-full transition-all duration-200 ${
                   isScrolled
@@ -239,10 +239,10 @@ export function AdvancedNavbar() {
                 title="Search"
               >
                 <Search className="h-5 w-5" />
-              </button>
+              </button> */}
 
               {/* Notifications Dropdown */}
-              <DropdownMenu>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
                     className={`relative p-2 rounded-full transition-all duration-200 ${
@@ -271,10 +271,10 @@ export function AdvancedNavbar() {
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
 
               {/* Theme Toggle */}
-              <button
+              {/* <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className={`p-2 rounded-full transition-all duration-200 ${
                   isScrolled
@@ -289,7 +289,7 @@ export function AdvancedNavbar() {
                 ) : (
                   <Moon className="h-5 w-5" />
                 )}
-              </button>
+              </button> */}
 
               {/* Command Palette Trigger */}
               <button

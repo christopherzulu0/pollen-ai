@@ -13,24 +13,24 @@ const MEGA_MENU_DATA: MegaMenuCategory[] = [
   {
     title: 'Services',
     items: [
-      { label: 'Services List', href: '/solutions/teams' },
-      { label: 'For Enterprises', href: '/solutions/enterprise' },
-      { label: 'For Startups', href: '/solutions/startups' },
+      { label: 'Services List', href: '/services' },
+      // { label: 'Solar Equipment Form', href: '/solutions/enterprise' },
+      // { label: 'For Startups', href: '/solutions/startups' },
     ],
   },
   {
     title: 'Kyc Verification',
     items: [
-      { label: 'Solar Equipment', href: '/docs' },
-      { label: 'Village Banking Loans', href: '/blog' },
+      { label: 'Solar Equipment', href: '/kyc/Solar' },
+      { label: 'User Kyc', href: '/kyc/submit' },
       // { label: 'Support', href: '/support' },
     ],
   },
   {
     title: 'Community',
     items: [
-      { label: 'Groups', href: '/groups' },
-      { label: 'Blog', href: '/forum' },
+      { label: 'Groups', href: '/Groups' },
+      { label: 'Blog', href: '/blog' },
       // { label: 'Events', href: '/events' },
     ],
   },
