@@ -68,6 +68,7 @@ import StatisticsSection from "@/components/statistics-section"
 import BlogSection from "@/components/blog-section"
 import { useRouter } from "next/navigation"
 import { useLanguage, type Language } from "@/contexts/LanguageContext"
+import { UserOnboardingTour } from "@/components/onboarding/user-onboarding-tour"
 
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false)
@@ -105,6 +106,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen" >
+      <UserOnboardingTour />
       {/* Language Switcher - Floating Top Right */}
       {/* Mobile: Below navbar (top-24 = 96px), Desktop: Near top, offset to avoid navbar buttons */}
       {isMounted && (
