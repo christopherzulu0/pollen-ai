@@ -228,3 +228,65 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Knock feed: dark theme + responsive overrides */
+.dark [data-knock-color-mode="light"],
+.dark .rnf-notification-feed:not(.rnf-notification-feed--dark),
+.dark .rnf-notification-cell:not(.rnf-notification-cell--dark),
+.dark .rnf-empty-feed:not(.rnf-empty-feed--dark),
+.dark .rnf-dropdown:not(.rnf-dropdown--dark),
+.dark .rnf-mark-all-as-read:not(.rnf-mark-all-as-read--dark) {
+  /* Force dark appearance when app is in dark mode */
+}
+.dark .rnf-notification-feed {
+  background-color: hsl(var(--card)) !important;
+}
+.dark .rnf-notification-cell {
+  border-bottom-color: hsl(var(--border)) !important;
+}
+.dark .rnf-notification-cell:hover,
+.dark .rnf-notification-cell:focus,
+.dark .rnf-notification-cell:active {
+  background-color: hsl(var(--muted) / 0.5) !important;
+}
+.dark .rnf-notification-cell__content {
+  color: hsl(var(--foreground)) !important;
+}
+.dark .rnf-notification-cell__timestamp {
+  color: hsl(var(--muted-foreground)) !important;
+}
+.dark .rnf-notification-feed__type {
+  color: hsl(var(--foreground)) !important;
+}
+.dark .rnf-empty-feed__header {
+  color: hsl(var(--foreground)) !important;
+}
+.dark .rnf-empty-feed__body {
+  color: hsl(var(--muted-foreground)) !important;
+}
+.dark .rnf-dropdown,
+.dark .rnf-mark-all-as-read {
+  color: hsl(var(--muted-foreground)) !important;
+}
+.dark .rnf-notification-feed__knock-branding a {
+  color: hsl(var(--muted-foreground)) !important;
+  border-top-color: hsl(var(--border)) !important;
+}
+.dark .rnf-notification-feed__knock-branding a:hover {
+  background-color: hsl(var(--muted) / 0.5) !important;
+}
+
+/* Knock feed: responsive */
+.rnf-notification-feed,
+.rnf-notification-feed__container,
+.rnf-feed-provider {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.rtk-combobox__grid,
+.rsk-combobox__grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}

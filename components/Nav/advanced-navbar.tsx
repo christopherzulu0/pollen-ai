@@ -135,12 +135,17 @@ export function AdvancedNavbar() {
     return items;
   }, [pathname]);
 
-  // Dynamic classes based on scroll position
-  const scrolledClasses = isScrolled
+  // Support and pricing pages have light background - use light navbar styling from the start
+  const isLightPage =
+    pathname.startsWith('/support') || pathname.startsWith('/pricing');
+  const useLightNavbar = isScrolled || isLightPage;
+
+  // Dynamic classes based on scroll position (and page background for support)
+  const scrolledClasses = useLightNavbar
     ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800'
     : 'bg-gradient-to-b from-[#003366]/90 to-transparent';
 
-  const textClasses = isScrolled
+  const textClasses = useLightNavbar
     ? 'text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-[#00CC66] transition-colors'
     : 'text-white/90 hover:text-white transition-colors';
 
@@ -154,21 +159,21 @@ export function AdvancedNavbar() {
         <div className="container mx-auto px-4 md:px-6">
           {/* Breadcrumbs - Hidden on mobile, visible on tablet and above */}
           {pathname !== '/' && (
-            <div className="hidden sm:block py-2 border-b border-white/10">
+            <div className={`hidden sm:block py-2 border-b ${useLightNavbar ? 'border-gray-200 dark:border-gray-800' : 'border-white/10'}`}>
               <nav className="flex items-center gap-1 text-xs" aria-label="Breadcrumb">
                 {breadcrumbs.map((crumb, index) => (
                   <div key={crumb.href} className="flex items-center gap-1">
                     {index > 0 && (
                       <ChevronRight
                         className={`w-3 h-3 ${
-                          isScrolled ? 'text-gray-400' : 'text-white/50'
+                          useLightNavbar ? 'text-gray-400' : 'text-white/50'
                         }`}
                       />
                     )}
                     {crumb.current ? (
                       <span
                         className={`font-semibold ${
-                          isScrolled
+                          useLightNavbar
                             ? 'text-[#003366] dark:text-[#00CC66]'
                             : 'text-white'
                         }`}
@@ -179,7 +184,7 @@ export function AdvancedNavbar() {
                       <Link
                         href={crumb.href}
                         className={`transition-colors ${
-                          isScrolled
+                          useLightNavbar
                             ? 'text-gray-600 dark:text-gray-400 hover:text-[#003366] dark:hover:text-[#00CC66]'
                             : 'text-white/70 hover:text-white'
                         }`}
@@ -202,7 +207,7 @@ export function AdvancedNavbar() {
                 </div>
                 <span
                   className={`text-2xl font-bold transition-colors duration-300 ${
-                    isScrolled ? 'text-[#003366] dark:text-white' : 'text-white'
+                    useLightNavbar ? 'text-[#003366] dark:text-white' : 'text-white'
                   }`}
                 >
                   Pollen
@@ -222,7 +227,7 @@ export function AdvancedNavbar() {
                 </Link>
               ))}
               {/* Mega Menu Component */}
-              <MegaMenu isScrolled={isScrolled} textClasses={textClasses} />
+              <MegaMenu isScrolled={useLightNavbar} textClasses={textClasses} />
             </nav>
 
             {/* Right Controls Section */}
@@ -295,7 +300,7 @@ export function AdvancedNavbar() {
               <button
                 onClick={() => setShowCommandPalette(true)}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1 transition-all duration-200 ${
-                  isScrolled
+                  useLightNavbar
                     ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                     : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
@@ -322,7 +327,7 @@ export function AdvancedNavbar() {
                       <Button
                         onClick={handleDashboardClick}
                         className={`${
-                          isScrolled
+                          useLightNavbar
                             ? 'bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white'
                             : 'bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm'
                         } rounded-full transition-all duration-300 font-semibold shadow-lg`}
@@ -332,7 +337,7 @@ export function AdvancedNavbar() {
                     ) : (
                       <Button
                         className={`${
-                          isScrolled
+                          useLightNavbar
                             ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
                             : 'bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm'
                         } rounded-full transition-all duration-300 font-semibold shadow-lg`}
@@ -361,7 +366,7 @@ export function AdvancedNavbar() {
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 className={`p-2 rounded-full transition-colors ${
-                  isScrolled
+                  useLightNavbar
                     ? 'text-gray-700 dark:text-gray-300'
                     : 'text-white'
                 }`}
@@ -374,7 +379,7 @@ export function AdvancedNavbar() {
                 size="icon"
                 onClick={toggleMenu}
                 aria-label="Toggle Menu"
-                className={`transition-colors ${isScrolled ? 'text-[#003366] dark:text-white' : 'text-white'}`}
+                className={`transition-colors ${useLightNavbar ? 'text-[#003366] dark:text-white' : 'text-white'}`}
               >
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>

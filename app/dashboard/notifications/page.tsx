@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useUser } from "@clerk/nextjs"
 import { formatDistanceToNow } from "date-fns"
-import { Users, Calendar, DollarSign, Bell, AlertCircle } from "lucide-react"
+import { Users, Calendar, DollarSign, Bell } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -56,17 +56,17 @@ const getNotificationIcon = (type?: string) => {
   }
 }
 
-// Helper function to get the appropriate background color for a notification type
+// Helper function to get the appropriate background color for a notification type (theme-aware)
 const getNotificationColor = (type?: string) => {
   switch (type) {
     case "user":
-      return "bg-blue-100 text-blue-700"
+      return "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
     case "payment":
-      return "bg-emerald-100 text-emerald-700"
+      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
     case "event":
-      return "bg-amber-100 text-amber-700"
+      return "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300"
     default:
-      return "bg-gray-100 text-gray-700"
+      return "bg-muted text-muted-foreground"
   }
 }
 
@@ -199,11 +199,11 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Notifications</h1>
           <p className="text-muted-foreground">
             Stay updated with your account activity
             {meta.unread_count > 0 && (
-              <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+              <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
                 {meta.unread_count} unread
               </span>
             )}
@@ -223,7 +223,7 @@ export default function NotificationsPage() {
             {isLoading ? (
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-start gap-4 rounded-md border p-4">
+                  <div key={i} className="flex items-start gap-4 rounded-md border border-border p-4">
                     <Skeleton className="h-10 w-10 rounded-full" />
                     <div className="flex-1 space-y-2">
                       <Skeleton className="h-4 w-[200px]" />
@@ -234,10 +234,10 @@ export default function NotificationsPage() {
               </div>
             ) : displayNotifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                  <Bell className="h-6 w-6 text-gray-500" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                  <Bell className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h3 className="mt-4 text-lg font-medium">No notifications</h3>
+                <h3 className="mt-4 text-lg font-medium text-foreground">No notifications</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   You don't have any notifications at the moment.
                 </p>
@@ -247,15 +247,15 @@ export default function NotificationsPage() {
                 {displayNotifications.map((notification) => (
                   <div 
                     key={notification.id} 
-                    className={`flex items-start gap-4 rounded-md border p-4 ${!notification.read_at ? 'bg-blue-50' : ''}`}
+                    className={`flex items-start gap-4 rounded-md border border-border p-4 transition-colors hover:bg-muted/50 cursor-pointer ${!notification.read_at ? 'bg-primary/5 dark:bg-primary/10' : ''}`}
                     onClick={() => handleMarkAsRead(notification.id)}
                   >
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-full ${getNotificationColor(notification.type)}`}>
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${getNotificationColor(notification.type)}`}>
                       {getNotificationIcon(notification.type)}
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">{notification.title}</h4>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <h4 className="font-medium text-foreground">{notification.title}</h4>
                         <span className="text-xs text-muted-foreground">
                           {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                         </span>

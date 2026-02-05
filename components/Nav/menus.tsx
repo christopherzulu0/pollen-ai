@@ -34,6 +34,15 @@ const MEGA_MENU_DATA: MegaMenuCategory[] = [
       // { label: 'Events', href: '/events' },
     ],
   },
+  {
+    title: 'Meeting Scheduling',
+    items: [
+      { label: 'Availability', href: '/support/availability' },
+      { label: 'Booking', href: '/support/bookings' },
+      { label: 'Feedback', href: '/support/feedback' },
+      { label: 'Account Settings', href: '/support/settings' },
+    ],
+  },
 ];
 
 interface MegaMenuProps {
@@ -50,7 +59,7 @@ export function MegaMenu({ isScrolled, textClasses }: MegaMenuProps) {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-1 px-3 lg:px-4 py-2 rounded-full text-sm font-medium transition-colors ${textClasses}`}
       >
-       Pages
+        Pages
         <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 

@@ -51,7 +51,7 @@ const navSections = [
     title: "Groups",
     items: [
       { path: "/member/savings-groups", label: "Savings Groups", icon: Users },
-      { path: "/member/groups", label: "My Groups", icon: UsersRound },
+      // { path: "/member/groups", label: "My Groups", icon: UsersRound },
       { path: "/member/meetings", label: "Meetings", icon: Calendar },
       { path: "/member/create-group", label: "Create Group", icon: UserPlus },
       { path: "/member/group-requests", label: "Group Requests", icon: Mail },

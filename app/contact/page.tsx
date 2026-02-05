@@ -429,10 +429,10 @@ export default function ContactPage() {
                   <Mail className="h-4 w-4 mr-2 hidden md:inline" />
                   Contact Form
                 </TabsTrigger>
-                <TabsTrigger value="schedule" className="text-sm md:text-base">
+                {/* <TabsTrigger value="schedule" className="text-sm md:text-base">
                   <Calendar className="h-4 w-4 mr-2 hidden md:inline" />
                   Schedule Meeting
-                </TabsTrigger>
+                </TabsTrigger> */}
                 <TabsTrigger value="directory" className="text-sm md:text-base">
                   <Phone className="h-4 w-4 mr-2 hidden md:inline" />
                   Directory
@@ -915,7 +915,7 @@ export default function ContactPage() {
                           We've scheduled your meeting and sent calendar invites to all participants.
                         </p>
                         
-                        {/* Meeting Details Card */}
+                       
                         <div className="bg-linear-to-br from-primary/5 to-[#00CC66]/5 border-2 border-[#00CC66] rounded-lg p-6 mb-6 text-left max-w-md mx-auto">
                           <h3 className="text-lg font-semibold text-primary mb-4 flex items-center">
                             <Calendar className="h-5 w-5 mr-2 text-[#00CC66]" />
@@ -946,7 +946,7 @@ export default function ContactPage() {
                           </div>
                         </div>
                         
-                        {/* Video Conference Link */}
+                     
                         {meetingDetails?.videoMeetingLink || meetingDetails?.zoomMeetingLink || meetingDetails?.googleMeetLink ? (
                           <div className="bg-white border-2 border-primary rounded-lg p-6 mb-6 max-w-md mx-auto">
                             <div className="flex items-center justify-center mb-4">

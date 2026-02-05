@@ -257,3 +257,6 @@
   transform-style: preserve-3d;
 }
 
+/* Support section overrides - load last so they win over base styles */
+@import "./support/support.css";
+

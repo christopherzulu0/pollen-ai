@@ -15,10 +15,14 @@ export default function LayoutClient({ children }: LayoutClientProps) {
   const isAdmin = pathname.startsWith('/admin')
   const isSuperUser = pathname.startsWith('/Super-user')
   const isMember = pathname.startsWith('/member')
+  const isSupport = pathname.startsWith('/support')
+  const isPricing = pathname.startsWith('/pricing')
   const shouldHideNavbarFooter = isDashboard || isAdmin || isSuperUser || isMember
+  const useLightBackground =
+    shouldHideNavbarFooter || isSupport || isPricing
 
   return (
-    <div className={`flex flex-col min-h-screen ${shouldHideNavbarFooter ? 'bg-white dark:bg-gray-950 text-gray-900 dark:text-white' : 'bg-gray-900 text-white'}`}>
+    <div className={`flex flex-col min-h-screen ${useLightBackground ? 'bg-background text-foreground' : 'bg-gray-900 text-white'}`}>
       {/* Show Navbar only on non-dashboard/admin/Super-user/member pages */}
       {!shouldHideNavbarFooter && <Navbar />}
 

@@ -507,7 +507,11 @@ function KycContent() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge className={kycLevelDetails[user.kycLevel as keyof typeof kycLevelDetails].color}>
+                      <Badge
+                        className={
+                          (kycLevelDetails[user.kycLevel as keyof typeof kycLevelDetails] || kycLevelDetails[1]).color
+                        }
+                      >
                         Level {user.kycLevel}
                       </Badge>
                     </TableCell>
@@ -634,7 +638,13 @@ function KycContent() {
                       <Badge variant="outline" className={getStatusColor(selectedUser.status)}>
                         {selectedUser.status}
                       </Badge>
-                      <Badge className={kycLevelDetails[selectedUser.kycLevel as keyof typeof kycLevelDetails].color}>
+                      <Badge
+                        className={
+                          (
+                            kycLevelDetails[selectedUser.kycLevel as keyof typeof kycLevelDetails] || kycLevelDetails[1]
+                          ).color
+                        }
+                      >
                         KYC Level {selectedUser.kycLevel}
                       </Badge>
                     </div>
