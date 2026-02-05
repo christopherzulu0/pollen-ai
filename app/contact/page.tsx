@@ -32,6 +32,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { ThemeProvider } from "@/components/theme-provider"
+import TeamPage from "@/components/booking-team/TeamPage"
 
 // Add subtle background pattern
 const bgPattern = {
@@ -436,6 +437,11 @@ export default function ContactPage() {
                 <TabsTrigger value="directory" className="text-sm md:text-base">
                   <Phone className="h-4 w-4 mr-2 hidden md:inline" />
                   Directory
+                </TabsTrigger>
+
+                 <TabsTrigger value="availability" className="text-sm md:text-base">
+                  <Phone className="h-4 w-4 mr-2 hidden md:inline" />
+                  Team Availability
                 </TabsTrigger>
               </TabsList>
 
@@ -1387,6 +1393,11 @@ export default function ContactPage() {
                   </CardContent>
                 </Card>
               </TabsContent>
+
+
+               <TabsContent value="availability" className="mt-0">
+                <TeamPage/>
+               </TabsContent>
             </Tabs>
           </div>
         </section>
