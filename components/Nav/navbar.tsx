@@ -25,11 +25,10 @@ const NAV_LINKS = [
 const NavLink = ({ href, label, isScrolled }: { href: string; label: string; isScrolled: boolean }) => (
   <Link
     href={href}
-    className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-      isScrolled
-        ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
-        : "text-white/80 hover:text-white"
-    }`}
+    className={`px-3 lg:px-4 py-2 rounded-full text-sm font-medium transition-colors ${isScrolled
+      ? "text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-white"
+      : "text-white/80 hover:text-white"
+      }`}
   >
     {label}
   </Link>
@@ -102,12 +101,12 @@ export default function Navbar() {
   }, [])
 
   // Computed values
-  const isAuthorized = useMemo(() => 
+  const isAuthorized = useMemo(() =>
     ['org:admin', 'admin', 'org:member', 'member'].includes(userRole || ''),
     [userRole]
   )
 
-  const isAdmin = useMemo(() => 
+  const isAdmin = useMemo(() =>
     ['org:admin', 'admin'].includes(userRole || ''),
     [userRole]
   )
@@ -118,23 +117,19 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-[100] w-full transition-all duration-300 ${
-        isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
-      }`}
+      className={`sticky top-0 z-100 w-full transition-all duration-300 ${isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#003366] to-[#00CC66] flex items-center justify-center text-white font-bold text-xl">
-              P
-            </div>
+          <Link href="/" className="flex items-center gap-3 shrink-0 group">
+            <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300" />
             <span
-              className={`text-2xl font-bold transition-colors ${
-                isScrolled ? "text-[#003366] dark:text-white" : "text-white"
-              }`}
+              className={`text-2xl font-black tracking-tight transition-colors ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"
+                }`}
             >
-              Pollen
+              Pollen<span className="text-[#4C4EFB]">AI</span>
             </span>
           </Link>
 
@@ -162,22 +157,20 @@ export default function Navbar() {
                   {isAuthorized ? (
                     <Button
                       onClick={handleDashboardClick}
-                      className={`rounded-full transition-all duration-300 font-semibold ${
-                        isScrolled
-                          ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
-                          : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
-                      }`}
+                      className={`rounded-full transition-all duration-300 font-semibold ${isScrolled
+                        ? "bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white"
+                        : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+                        }`}
                     >
                       {isAdmin ? "📊 Admin" : "📈 Dashboard"}
                     </Button>
                   ) : (
                     <Button
                       onClick={handleRequestAccess}
-                      className={`rounded-full transition-all duration-300 font-semibold ${
-                        isScrolled
-                          ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                          : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
-                      }`}
+                      className={`rounded-full transition-all duration-300 font-semibold ${isScrolled
+                        ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                        : "bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm"
+                        }`}
                     >
                       🔐 Request Access
                     </Button>
@@ -205,9 +198,8 @@ export default function Navbar() {
               size="icon"
               onClick={toggleMenu}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              className={`transition-colors ${
-                isScrolled ? "text-[#003366] dark:text-white" : "text-white"
-              }`}
+              className={`transition-colors ${isScrolled ? "text-[#003366] dark:text-white" : "text-white"
+                }`}
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
@@ -217,7 +209,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden fixed left-0 right-0 top-20 bg-gradient-to-br from-[#003366] to-[#002244] dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)] animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden fixed left-0 right-0 top-20 bg-linear-to-br from-[#003366] to-[#002244] dark:bg-linear-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)] animate-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col gap-2">
             {NAV_LINKS.map(({ href, label, icon }) => (
               <MobileNavItem key={href} href={href} label={label} icon={icon && <icon.render />} onClose={closeMenu} />

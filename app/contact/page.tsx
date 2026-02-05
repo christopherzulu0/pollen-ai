@@ -297,10 +297,10 @@ export default function ContactPage() {
           toast.error("Time Slot Already Booked", {
             description: data.message || "This time is already taken. Please choose a different time slot.",
           })
-      } else {
-        toast.error("Failed to schedule meeting", {
-          description: data.message || "Please try again later.",
-        })
+        } else {
+          toast.error("Failed to schedule meeting", {
+            description: data.message || "Please try again later.",
+          })
         }
       }
     } catch (error) {
@@ -439,7 +439,7 @@ export default function ContactPage() {
                   Directory
                 </TabsTrigger>
 
-                 <TabsTrigger value="availability" className="text-sm md:text-base">
+                <TabsTrigger value="availability" className="text-sm md:text-base">
                   <Phone className="h-4 w-4 mr-2 hidden md:inline" />
                   Team Availability
                 </TabsTrigger>
@@ -902,14 +902,14 @@ export default function ContactPage() {
                   <CardContent className="p-6">
                     {!meetingScheduled ? (
                       <>
-                    <div className="mb-6">
-                      <h2 className="text-2xl font-bold text-primary mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
-                        Schedule a Meeting
-                      </h2>
-                      <p className="text-gray-600">
-                        Fill in your details and select a date and time that works for you.
-                      </p>
-                    </div>
+                        <div className="mb-6">
+                          <h2 className="text-2xl font-bold text-primary mb-3 relative inline-block pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-1/2 after:h-1 after:bg-[#00CC66]/30 after:rounded-full">
+                            Schedule a Meeting
+                          </h2>
+                          <p className="text-gray-600">
+                            Fill in your details and select a date and time that works for you.
+                          </p>
+                        </div>
                       </>
                     ) : (
                       <div className="text-center py-8 animate-in fade-in duration-500">
@@ -920,8 +920,8 @@ export default function ContactPage() {
                         <p className="text-gray-600 mb-6">
                           We've scheduled your meeting and sent calendar invites to all participants.
                         </p>
-                        
-                       
+
+
                         <div className="bg-linear-to-br from-primary/5 to-[#00CC66]/5 border-2 border-[#00CC66] rounded-lg p-6 mb-6 text-left max-w-md mx-auto">
                           <h3 className="text-lg font-semibold text-primary mb-4 flex items-center">
                             <Calendar className="h-5 w-5 mr-2 text-[#00CC66]" />
@@ -951,15 +951,15 @@ export default function ContactPage() {
                             </div>
                           </div>
                         </div>
-                        
-                     
+
+
                         {meetingDetails?.videoMeetingLink || meetingDetails?.zoomMeetingLink || meetingDetails?.googleMeetLink ? (
                           <div className="bg-white border-2 border-primary rounded-lg p-6 mb-6 max-w-md mx-auto">
                             <div className="flex items-center justify-center mb-4">
                               <div className="w-12 h-12 bg-linear-to-br from-[#00CC66] to-[#00AA55] rounded-full flex items-center justify-center">
                                 {meetingDetails.videoPlatform === 'Zoom' ? (
                                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M2 9.5V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3.5l5.5 3.5V6L2 9.5z"/>
+                                    <path d="M2 9.5V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3.5l5.5 3.5V6L2 9.5z" />
                                   </svg>
                                 ) : (
                                   <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -980,7 +980,7 @@ export default function ContactPage() {
                               Join {meetingDetails.videoPlatform || 'Meeting'}
                             </a>
                             <p className="text-xs text-gray-500 text-center mt-3">
-                              {meetingDetails.videoPlatform === 'Zoom' 
+                              {meetingDetails.videoPlatform === 'Zoom'
                                 ? 'Meeting link is active now. Join 5 minutes early!'
                                 : 'Link will be active 15 minutes before the meeting'}
                             </p>
@@ -1002,7 +1002,7 @@ export default function ContactPage() {
                             </p>
                           </div>
                         )}
-                        
+
                         {/* Calendar Invite Info */}
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 max-w-md mx-auto">
                           <div className="flex items-start">
@@ -1010,15 +1010,15 @@ export default function ContactPage() {
                             <div className="text-left">
                               <h4 className="font-semibold text-blue-900 mb-1">Calendar Invite Sent</h4>
                               <p className="text-sm text-blue-700">
-                                We've sent a calendar invitation to <strong>{meetingFormData.email}</strong>. 
+                                We've sent a calendar invitation to <strong>{meetingFormData.email}</strong>.
                                 Add it to your calendar to receive automatic reminders.
                               </p>
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                          <Button 
+                          <Button
                             onClick={() => {
                               setMeetingScheduled(false);
                               setMeetingDetails(null);
@@ -1032,7 +1032,7 @@ export default function ContactPage() {
                             Schedule Another Meeting
                           </Button>
                           {(meetingDetails?.videoMeetingLink || meetingDetails?.zoomMeetingLink || meetingDetails?.googleMeetLink) && (
-                            <Button 
+                            <Button
                               onClick={() => {
                                 const linkToCopy = meetingDetails.videoMeetingLink || meetingDetails.zoomMeetingLink || meetingDetails.googleMeetLink!;
                                 navigator.clipboard.writeText(linkToCopy);
@@ -1048,240 +1048,240 @@ export default function ContactPage() {
                         </div>
                       </div>
                     )}
-                    
+
                     {!meetingScheduled && (
                       <>
-                    {/* Contact Information Form */}
-                    <div className="mb-8 space-y-4">
-                      <h3 className="text-lg font-semibold text-primary mb-4">Your Information</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="meeting-name" className="text-primary">
-                            Full Name <span className="text-red-500">*</span>
-                          </Label>
-                          <Input
-                            id="meeting-name"
-                            placeholder="Your full name"
-                            value={meetingFormData.name}
-                            onChange={(e) =>
-                              setMeetingFormData((prev) => ({ ...prev, name: e.target.value }))
-                            }
-                            className="border-2 focus:border-[#00CC66]"
-                          />
-                        </div>
+                        {/* Contact Information Form */}
+                        <div className="mb-8 space-y-4">
+                          <h3 className="text-lg font-semibold text-primary mb-4">Your Information</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="meeting-name" className="text-primary">
+                                Full Name <span className="text-red-500">*</span>
+                              </Label>
+                              <Input
+                                id="meeting-name"
+                                placeholder="Your full name"
+                                value={meetingFormData.name}
+                                onChange={(e) =>
+                                  setMeetingFormData((prev) => ({ ...prev, name: e.target.value }))
+                                }
+                                className="border-2 focus:border-[#00CC66]"
+                              />
+                            </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="meeting-email" className="text-primary">
-                            Email Address <span className="text-red-500">*</span>
-                          </Label>
-                          <Input
-                            id="meeting-email"
-                            type="email"
-                            placeholder="Your email address"
-                            value={meetingFormData.email}
-                            onChange={(e) =>
-                              setMeetingFormData((prev) => ({ ...prev, email: e.target.value }))
-                            }
-                            className="border-2 focus:border-[#00CC66]"
-                          />
-                        </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="meeting-email" className="text-primary">
+                                Email Address <span className="text-red-500">*</span>
+                              </Label>
+                              <Input
+                                id="meeting-email"
+                                type="email"
+                                placeholder="Your email address"
+                                value={meetingFormData.email}
+                                onChange={(e) =>
+                                  setMeetingFormData((prev) => ({ ...prev, email: e.target.value }))
+                                }
+                                className="border-2 focus:border-[#00CC66]"
+                              />
+                            </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="meeting-phone" className="text-primary">
-                            Phone Number <span className="text-gray-400 font-normal">(Optional)</span>
-                          </Label>
-                          <Input
-                            id="meeting-phone"
-                            placeholder="Your phone number"
-                            value={meetingFormData.phone}
-                            onChange={(e) =>
-                              setMeetingFormData((prev) => ({ ...prev, phone: e.target.value }))
-                            }
-                            className="border-2 focus:border-[#00CC66]"
-                          />
-                        </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="meeting-phone" className="text-primary">
+                                Phone Number <span className="text-gray-400 font-normal">(Optional)</span>
+                              </Label>
+                              <Input
+                                id="meeting-phone"
+                                placeholder="Your phone number"
+                                value={meetingFormData.phone}
+                                onChange={(e) =>
+                                  setMeetingFormData((prev) => ({ ...prev, phone: e.target.value }))
+                                }
+                                className="border-2 focus:border-[#00CC66]"
+                              />
+                            </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="meeting-purpose" className="text-primary">
-                            Purpose <span className="text-gray-400 font-normal">(Optional)</span>
-                          </Label>
-                          <Input
-                            id="meeting-purpose"
-                            placeholder="What would you like to discuss?"
-                            value={meetingFormData.purpose}
-                            onChange={(e) =>
-                              setMeetingFormData((prev) => ({ ...prev, purpose: e.target.value }))
-                            }
-                            className="border-2 focus:border-[#00CC66]"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div>
-                        <h3 className="text-lg font-semibold text-primary mb-4">Select a Date</h3>
-                        <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
-                          {/* Month/Year Navigation */}
-                          <div className="flex items-center justify-between mb-4">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={previousMonth}
-                              className="hover:bg-primary/10"
-                            >
-                              <ChevronDown className="h-4 w-4 rotate-90" />
-                            </Button>
-                            <h4 className="text-base font-semibold text-primary">
-                              {monthNames[currentMonth]} {currentYear}
-                            </h4>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={nextMonth}
-                              className="hover:bg-primary/10"
-                            >
-                              <ChevronDown className="h-4 w-4 -rotate-90" />
-                            </Button>
+                            <div className="space-y-2">
+                              <Label htmlFor="meeting-purpose" className="text-primary">
+                                Purpose <span className="text-gray-400 font-normal">(Optional)</span>
+                              </Label>
+                              <Input
+                                id="meeting-purpose"
+                                placeholder="What would you like to discuss?"
+                                value={meetingFormData.purpose}
+                                onChange={(e) =>
+                                  setMeetingFormData((prev) => ({ ...prev, purpose: e.target.value }))
+                                }
+                                className="border-2 focus:border-[#00CC66]"
+                              />
+                            </div>
                           </div>
+                        </div>
 
-                          {/* Calendar Grid */}
-                          <div className="grid grid-cols-7 gap-1 text-center mb-2">
-                            {["S", "M", "T", "W", "T", "F", "S"].map((day, i) => (
-                              <div key={i} className="text-gray-500 text-sm py-1 font-medium">
-                                {day}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div>
+                            <h3 className="text-lg font-semibold text-primary mb-4">Select a Date</h3>
+                            <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
+                              {/* Month/Year Navigation */}
+                              <div className="flex items-center justify-between mb-4">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={previousMonth}
+                                  className="hover:bg-primary/10"
+                                >
+                                  <ChevronDown className="h-4 w-4 rotate-90" />
+                                </Button>
+                                <h4 className="text-base font-semibold text-primary">
+                                  {monthNames[currentMonth]} {currentYear}
+                                </h4>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={nextMonth}
+                                  className="hover:bg-primary/10"
+                                >
+                                  <ChevronDown className="h-4 w-4 -rotate-90" />
+                                </Button>
                               </div>
-                            ))}
-                          </div>
-                          <div className="grid grid-cols-7 gap-1 text-center">
-                            {(() => {
-                              const daysInMonth = getDaysInMonth(currentMonth, currentYear)
-                              const firstDay = getFirstDayOfMonth(currentMonth, currentYear)
-                              const days = []
 
-                              // Empty cells for days before month starts
-                              for (let i = 0; i < firstDay; i++) {
-                                days.push(
-                                  <div key={`empty-${i}`} className="py-2 text-gray-300">
-
+                              {/* Calendar Grid */}
+                              <div className="grid grid-cols-7 gap-1 text-center mb-2">
+                                {["S", "M", "T", "W", "T", "F", "S"].map((day, i) => (
+                                  <div key={i} className="text-gray-500 text-sm py-1 font-medium">
+                                    {day}
                                   </div>
-                                )
-                              }
+                                ))}
+                              </div>
+                              <div className="grid grid-cols-7 gap-1 text-center">
+                                {(() => {
+                                  const daysInMonth = getDaysInMonth(currentMonth, currentYear)
+                                  const firstDay = getFirstDayOfMonth(currentMonth, currentYear)
+                                  const days = []
 
-                              // Actual days of the month
-                              for (let day = 1; day <= daysInMonth; day++) {
-                                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
-                                const isSelected = selectedDate === dateStr
-                                const disabled = isDateDisabled(day)
+                                  // Empty cells for days before month starts
+                                  for (let i = 0; i < firstDay; i++) {
+                                    days.push(
+                                      <div key={`empty-${i}`} className="py-2 text-gray-300">
 
-                                days.push(
-                                  <div
-                                    key={day}
-                                    className={`
+                                      </div>
+                                    )
+                                  }
+
+                                  // Actual days of the month
+                                  for (let day = 1; day <= daysInMonth; day++) {
+                                    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+                                    const isSelected = selectedDate === dateStr
+                                    const disabled = isDateDisabled(day)
+
+                                    days.push(
+                                      <div
+                                        key={day}
+                                        className={`
                                       py-2 rounded-md text-sm cursor-pointer transition-all
                                       ${disabled ? "text-gray-300 cursor-not-allowed" : "hover:bg-[#00CC66]/10"}
                                       ${isSelected ? "bg-[#00CC66] text-white font-medium" : ""}
                                     `}
-                                    onClick={() => !disabled && setSelectedDate(dateStr)}
-                                  >
-                                    {day}
-                                  </div>
-                                )
-                              }
+                                        onClick={() => !disabled && setSelectedDate(dateStr)}
+                                      >
+                                        {day}
+                                      </div>
+                                    )
+                                  }
 
-                              return days
-                            })()}
-                          </div>
-                        </div>
-
-                        {selectedDate && (
-                          <div className="mt-4">
-                            <h3 className="text-lg font-semibold text-primary mb-4">Selected Date</h3>
-                            <div className="bg-primary/5 p-4 rounded-lg">
-                              <p className="font-medium">
-                                {new Date(selectedDate).toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                })}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div>
-                        <h3 className="text-lg font-semibold text-primary mb-4">Select a Time</h3>
-                        <div className="grid grid-cols-2 gap-3">
-                          {availableTimes.map((time, index) => (
-                            <div
-                              key={index}
-                              className={`
-                                border-2 p-3 rounded-md text-center cursor-pointer transition-all
-                                ${selectedTime === time
-                                  ? "border-[#00CC66] bg-[#00CC66]/10 text-primary font-medium"
-                                  : "border-gray-200 hover:border-gray-300"
-                                }
-                              `}
-                              onClick={() => setSelectedTime(time)}
-                            >
-                              {time}
-                            </div>
-                          ))}
-                        </div>
-
-                        {selectedDate && selectedTime && (
-                          <div className="mt-8">
-                            <Button
-                              className="w-full bg-[#00CC66] hover:bg-[#00AA55]"
-                              onClick={handleMeetingSubmit}
-                              disabled={isMeetingSubmitting}
-                            >
-                              {isMeetingSubmitting ? (
-                                <>
-                                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                  Scheduling...
-                                </>
-                              ) : (
-                                <>
-                                  <Calendar className="mr-2 h-4 w-4" />
-                                  Confirm Meeting
-                                </>
-                              )}
-                            </Button>
-
-                            <div className="mt-4 bg-primary/5 p-4 rounded-lg">
-                              <h4 className="font-medium text-primary mb-2">Meeting Summary</h4>
-                              <div className="space-y-1 text-sm text-gray-600">
-                                <p>
-                                  <span className="font-medium">Name:</span> {meetingFormData.name || "Not provided"}
-                                </p>
-                                <p>
-                                  <span className="font-medium">Email:</span> {meetingFormData.email || "Not provided"}
-                                </p>
-                                <p>
-                                  <span className="font-medium">Date:</span>{" "}
-                                  {new Date(selectedDate).toLocaleDateString("en-US", {
-                                    weekday: "long",
-                                    month: "long",
-                                    day: "numeric",
-                                  })}
-                                </p>
-                                <p>
-                                  <span className="font-medium">Time:</span> {selectedTime}
-                                </p>
-                                {meetingFormData.purpose && (
-                                  <p>
-                                    <span className="font-medium">Purpose:</span> {meetingFormData.purpose}
-                                  </p>
-                                )}
+                                  return days
+                                })()}
                               </div>
                             </div>
+
+                            {selectedDate && (
+                              <div className="mt-4">
+                                <h3 className="text-lg font-semibold text-primary mb-4">Selected Date</h3>
+                                <div className="bg-primary/5 p-4 rounded-lg">
+                                  <p className="font-medium">
+                                    {new Date(selectedDate).toLocaleDateString("en-US", {
+                                      weekday: "long",
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    })}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    </div>
+
+                          <div>
+                            <h3 className="text-lg font-semibold text-primary mb-4">Select a Time</h3>
+                            <div className="grid grid-cols-2 gap-3">
+                              {availableTimes.map((time, index) => (
+                                <div
+                                  key={index}
+                                  className={`
+                                border-2 p-3 rounded-md text-center cursor-pointer transition-all
+                                ${selectedTime === time
+                                      ? "border-[#00CC66] bg-[#00CC66]/10 text-primary font-medium"
+                                      : "border-gray-200 hover:border-gray-300"
+                                    }
+                              `}
+                                  onClick={() => setSelectedTime(time)}
+                                >
+                                  {time}
+                                </div>
+                              ))}
+                            </div>
+
+                            {selectedDate && selectedTime && (
+                              <div className="mt-8">
+                                <Button
+                                  className="w-full bg-[#00CC66] hover:bg-[#00AA55]"
+                                  onClick={handleMeetingSubmit}
+                                  disabled={isMeetingSubmitting}
+                                >
+                                  {isMeetingSubmitting ? (
+                                    <>
+                                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                      Scheduling...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Calendar className="mr-2 h-4 w-4" />
+                                      Confirm Meeting
+                                    </>
+                                  )}
+                                </Button>
+
+                                <div className="mt-4 bg-primary/5 p-4 rounded-lg">
+                                  <h4 className="font-medium text-primary mb-2">Meeting Summary</h4>
+                                  <div className="space-y-1 text-sm text-gray-600">
+                                    <p>
+                                      <span className="font-medium">Name:</span> {meetingFormData.name || "Not provided"}
+                                    </p>
+                                    <p>
+                                      <span className="font-medium">Email:</span> {meetingFormData.email || "Not provided"}
+                                    </p>
+                                    <p>
+                                      <span className="font-medium">Date:</span>{" "}
+                                      {new Date(selectedDate).toLocaleDateString("en-US", {
+                                        weekday: "long",
+                                        month: "long",
+                                        day: "numeric",
+                                      })}
+                                    </p>
+                                    <p>
+                                      <span className="font-medium">Time:</span> {selectedTime}
+                                    </p>
+                                    {meetingFormData.purpose && (
+                                      <p>
+                                        <span className="font-medium">Purpose:</span> {meetingFormData.purpose}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </>
                     )}
                   </CardContent>
@@ -1395,9 +1395,9 @@ export default function ContactPage() {
               </TabsContent>
 
 
-               <TabsContent value="availability" className="mt-0">
-                <TeamPage/>
-               </TabsContent>
+              <TabsContent value="availability" className="mt-0">
+                <TeamPage />
+              </TabsContent>
             </Tabs>
           </div>
         </section>
@@ -1416,7 +1416,7 @@ export default function ContactPage() {
               <div className="mb-4 flex justify-between items-center">
                 <div className="flex space-x-2">
                   <Button
-                    variant={mapView === "standard" ? "default" : "outline-solid"}
+                    variant={mapView === "standard" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setMapView("standard")}
                     className={mapView === "standard" ? "bg-primary hover:bg-[#002244]" : ""}
@@ -1424,7 +1424,7 @@ export default function ContactPage() {
                     Standard
                   </Button>
                   <Button
-                    variant={mapView === "satellite" ? "default" : "outline-solid"}
+                    variant={mapView === "satellite" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setMapView("satellite")}
                     className={mapView === "satellite" ? "bg-primary hover:bg-[#002244]" : ""}

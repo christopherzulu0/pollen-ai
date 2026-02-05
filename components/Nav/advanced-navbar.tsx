@@ -15,6 +15,7 @@ import { SignedOut, SignedIn, UserButton, useUser } from '@clerk/nextjs';
 import { CommandPalette } from './command-palette';
 import { MegaMenu } from './menus';
 import { useTheme } from 'next-themes';
+import { PollenLogo } from '../shared/pollen-logo';
 
 interface NavLink {
   label: string;
@@ -58,7 +59,7 @@ export function AdvancedNavbar() {
 
   // Get user role
   useEffect(() => {
-    if (isLoaded && user?.organizationMemberships?.length > 0) {
+    if (isLoaded && user?.organizationMemberships && user.organizationMemberships.length > 0) {
       const primaryOrg = user.organizationMemberships[0];
       setUserRole(primaryOrg?.role);
     }
@@ -154,7 +155,7 @@ export function AdvancedNavbar() {
       <CommandPalette open={showCommandPalette} onOpenChange={setShowCommandPalette} />
 
       <header
-        className={`sticky top-0 z-[100] w-full transition-all duration-300 ${scrolledClasses}`}
+        className={`sticky top-0 z-100 w-full transition-all duration-300 ${scrolledClasses}`}
       >
         <div className="container mx-auto px-4 md:px-6">
           {/* Breadcrumbs - Hidden on mobile, visible on tablet and above */}
@@ -165,29 +166,26 @@ export function AdvancedNavbar() {
                   <div key={crumb.href} className="flex items-center gap-1">
                     {index > 0 && (
                       <ChevronRight
-                        className={`w-3 h-3 ${
-                          useLightNavbar ? 'text-gray-400' : 'text-white/50'
-                        }`}
+                        className={`w-3 h-3 ${useLightNavbar ? 'text-gray-400' : 'text-white/50'
+                          }`}
                       />
                     )}
                     {crumb.current ? (
                       <span
-                        className={`font-semibold ${
-                          useLightNavbar
-                            ? 'text-[#003366] dark:text-[#00CC66]'
-                            : 'text-white'
-                        }`}
+                        className={`font-semibold ${useLightNavbar
+                          ? 'text-[#003366] dark:text-[#00CC66]'
+                          : 'text-white'
+                          }`}
                       >
                         {crumb.label}
                       </span>
                     ) : (
                       <Link
                         href={crumb.href}
-                        className={`transition-colors ${
-                          useLightNavbar
-                            ? 'text-gray-600 dark:text-gray-400 hover:text-[#003366] dark:hover:text-[#00CC66]'
-                            : 'text-white/70 hover:text-white'
-                        }`}
+                        className={`transition-colors ${useLightNavbar
+                          ? 'text-gray-600 dark:text-gray-400 hover:text-[#003366] dark:hover:text-[#00CC66]'
+                          : 'text-white/70 hover:text-white'
+                          }`}
                       >
                         {crumb.label}
                       </Link>
@@ -200,17 +198,14 @@ export function AdvancedNavbar() {
 
           <div className="flex h-20 items-center justify-between">
             {/* Logo Section */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <Link href="/" className="flex items-center gap-2 group">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#003366] to-[#00CC66] flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:shadow-[#00CC66]/40 transition-all duration-300">
-                  P
-                </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Link href="/" className="flex items-center gap-3 group">
+                <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300" />
                 <span
-                  className={`text-2xl font-bold transition-colors duration-300 ${
-                    useLightNavbar ? 'text-[#003366] dark:text-white' : 'text-white'
-                  }`}
+                  className={`text-2xl font-black tracking-tight transition-colors duration-300 ${useLightNavbar ? 'text-gray-900 dark:text-white' : 'text-white'
+                    }`}
                 >
-                  Pollen
+                  Pollen<span className="text-[#4C4EFB]">AI</span>
                 </span>
               </Link>
             </div>
@@ -299,11 +294,10 @@ export function AdvancedNavbar() {
               {/* Command Palette Trigger */}
               <button
                 onClick={() => setShowCommandPalette(true)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1 transition-all duration-200 ${
-                  useLightNavbar
-                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1 transition-all duration-200 ${useLightNavbar
+                  ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
                 title="Open command palette"
               >
                 <Command className="h-4 w-4" />
@@ -326,21 +320,19 @@ export function AdvancedNavbar() {
                     {isAuthorized ? (
                       <Button
                         onClick={handleDashboardClick}
-                        className={`${
-                          useLightNavbar
-                            ? 'bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white'
-                            : 'bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm'
-                        } rounded-full transition-all duration-300 font-semibold shadow-lg`}
+                        className={`${useLightNavbar
+                          ? 'bg-[#4C4EFB] hover:bg-[#4C4EFB]/90 text-white'
+                          : 'bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm'
+                          } rounded-full transition-all duration-300 font-semibold shadow-lg`}
                       >
                         {isAdmin ? '📊 Admin' : '📈 Dashboard'}
                       </Button>
                     ) : (
                       <Button
-                        className={`${
-                          useLightNavbar
-                            ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
-                            : 'bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm'
-                        } rounded-full transition-all duration-300 font-semibold shadow-lg`}
+                        className={`${useLightNavbar
+                          ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                          : 'bg-yellow-400/80 hover:bg-yellow-500/90 text-white backdrop-blur-sm'
+                          } rounded-full transition-all duration-300 font-semibold shadow-lg`}
                       >
                         🔐 Request Access
                       </Button>
@@ -365,11 +357,10 @@ export function AdvancedNavbar() {
             <div className="lg:hidden flex items-center gap-2">
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`p-2 rounded-full transition-colors ${
-                  useLightNavbar
-                    ? 'text-gray-700 dark:text-gray-300'
-                    : 'text-white'
-                }`}
+                className={`p-2 rounded-full transition-colors ${useLightNavbar
+                  ? 'text-gray-700 dark:text-gray-300'
+                  : 'text-white'
+                  }`}
                 aria-label="Search"
               >
                 <Search className="h-5 w-5" />
@@ -407,7 +398,7 @@ export function AdvancedNavbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden fixed left-0 right-0 top-20 bg-gradient-to-br from-[#003366] to-[#002244] dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)] animate-slide-down">
+        <div className="lg:hidden fixed left-0 right-0 top-20 bg-linear-to-br from-[#003366] to-[#002244] dark:bg-linear-to-br dark:from-gray-900 dark:to-gray-950 z-50 p-4 overflow-y-auto max-h-[calc(100vh-80px)] animate-slide-down">
           <nav className="flex flex-col gap-2">
             {NAV_LINKS.map((link) => (
               <Link

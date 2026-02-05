@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Facebook, Instagram, Linkedin, Twitter, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { PollenLogo } from "@/components/shared/pollen-logo"
 
 export default function Footer() {
   return (
@@ -38,12 +39,12 @@ export default function Footer() {
         <div className="py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="space-y-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#003366] to-[#00CC66] flex items-center justify-center text-white font-bold text-xl">
-                  P
-                </div>
-                <span className="text-2xl font-bold text-white">Pollen</span>
-              </div>
+              <Link href="/" className="flex items-center space-x-3 group">
+                <PollenLogo size={40} className="group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-2xl font-black tracking-tight text-white">
+                  Pollen<span className="text-[#4C4EFB]">AI</span>
+                </span>
+              </Link>
               <p className="text-white/70">Empowering financial inclusion with AI and blockchain technology.</p>
               <div className="flex space-x-4">
                 <Link
@@ -134,7 +135,7 @@ export default function Footer() {
                     className="text-white/70 hover:text-white transition-colors flex items-center"
                   >
                     <ChevronLink />
-                   Village Accounts
+                    Village Accounts
                   </Link>
                 </li>
                 {/* <li>

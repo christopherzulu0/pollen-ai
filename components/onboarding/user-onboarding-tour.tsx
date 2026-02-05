@@ -29,6 +29,8 @@ import {
   Sparkles
 } from "lucide-react"
 
+import { PollenLogo } from "@/components/shared/pollen-logo"
+
 export function UserOnboardingTour() {
   const [open, setOpen] = React.useState(false)
   const [api, setApi] = React.useState<CarouselApi>()
@@ -108,7 +110,13 @@ export function UserOnboardingTour() {
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[95vw] max-w-[500px] sm:max-w-[650px] p-0 overflow-hidden bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-white/20 dark:border-gray-800/20 shadow-2xl flex flex-col max-h-[90vh] rounded-3xl top-[45%] sm:top-[50%]">
-        <div className="relative h-1.5 bg-gray-100 dark:bg-gray-800/50 shrink-0">
+        <div className="p-4 sm:p-6 pb-0 flex items-center gap-3 shrink-0">
+          <PollenLogo size={32} />
+          <span className="text-xl font-black tracking-tight text-gray-900 dark:text-white">
+            Pollen<span className="text-[#4C4EFB]">AI</span>
+          </span>
+        </div>
+        <div className="relative h-1.5 mt-4 bg-gray-100 dark:bg-gray-800/50 shrink-0">
           <motion.div
             className="absolute top-0 left-0 h-full bg-linear-to-r from-[#4C4EFB] to-[#6366f1] transition-all duration-300"
             initial={{ width: 0 }}
