@@ -175,6 +175,16 @@ export const ourFileRouter = {
       console.log("Insurance document url", file.url)
       return { url: file.url }
     }),
+
+  memberProfileImage: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 }
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { url: file.url }
+    }),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

@@ -20,6 +20,12 @@ export const userType = defineType({
       type: "string",
     }),
     defineField({
+      name: "image",
+      title: "User Image URL",
+      type: "string",
+      description: "External URL for the profile image (from Uploadthing)",
+    }),
+    defineField({
       name: "email",
       title: "Email",
       type: "string",
@@ -31,6 +37,42 @@ export const userType = defineType({
       type: "slug",
       options: { source: "name" },
       description: "Used for the public booking page URL",
+    }),
+    defineField({
+      name: "role",
+      title: "Role",
+      type: "string",
+      description: "Job title or role (e.g., Founder & CEO)",
+    }),
+    defineField({
+      name: "bio",
+      title: "Bio",
+      type: "text",
+      description: "Brief professional summary",
+    }),
+    defineField({
+      name: "phone",
+      title: "Phone Number",
+      type: "string",
+    }),
+    defineField({
+      name: "expertise",
+      title: "Expertise",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+      description: "List of skills or areas of expertise",
+    }),
+    defineField({
+      name: "socialLinks",
+      title: "Social Media Links",
+      type: "object",
+      fields: [
+        defineField({ name: "facebook", type: "string", title: "Facebook" }),
+        defineField({ name: "twitter", type: "string", title: "Twitter/X" }),
+        defineField({ name: "github", type: "string", title: "GitHub" }),
+        defineField({ name: "instagram", type: "string", title: "Instagram" }),
+        defineField({ name: "linkedin", type: "string", title: "LinkedIn" }),
+      ],
     }),
     defineField({
       name: "availability",

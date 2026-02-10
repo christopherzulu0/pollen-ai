@@ -1,7 +1,10 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { FacebookIcon, GithubIcon, InstagramIcon, TwitterIcon, Search, X, Calendar, Clock, CheckCircle2, Star, Zap, MapPin, Mail, Phone, MessageSquare } from 'lucide-react'
+import { FacebookIcon, GithubIcon, InstagramIcon, TwitterIcon, Search, X, CheckCircle2, Star, Zap, MapPin, Mail, Phone, MessageSquare, Share2, Copy, Check } from 'lucide-react'
+import { useUser } from '@clerk/nextjs'
+import { ShareLinkDialog } from '@/components/support/calendar/components/share-link-dialog'
+import { toast } from 'sonner'
 
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,6 +23,8 @@ type TeamMember = {
   email?: string
   phone?: string
   timezone?: string
+  slug?: string
+  clerkId?: string
   socialLinks: {
     facebook: string
     twitter: string
@@ -28,17 +33,10 @@ type TeamMember = {
   }
 }[]
 
-const TIME_SLOTS = ['9:00 AM', '10:30 AM', '2:00 PM', '3:30 PM', '4:00 PM']
-const MEETING_DURATIONS = ['30 min', '1 hour', '1.5 hours']
-
 const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedRole, setSelectedRole] = useState<string | null>(null)
   const [selectedExpertise, setSelectedExpertise] = useState<string | null>(null)
-  const [selectedMember, setSelectedMember] = useState<number | null>(null)
-  const [selectedDate, setSelectedDate] = useState<string>('')
-  const [selectedTime, setSelectedTime] = useState<string>('')
-  const [selectedDuration, setSelectedDuration] = useState<string>('')
   const [memberDetails, setMemberDetails] = useState<number | null>(null)
 
   // Get unique roles and expertise for filters
@@ -53,6 +51,19 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
     })
     return Array.from(expertise)
   }, [teamMembers])
+
+  const { user: currentUser } = useUser()
+
+  const handleCopyLink = async (slug: string) => {
+    const baseUrl = window.location.origin
+    const url = `${baseUrl}/book/${slug}`
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success('Link copied to clipboard')
+    } catch (err) {
+      toast.error('Failed to copy link')
+    }
+  }
 
   // Advanced filtering
   const filteredMembers = useMemo(() => {
@@ -171,9 +182,9 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
           {sortedMembers.map((member, index) => (
             <Card
               key={index}
-              className='group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-card/80'
+              className='group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-card/80 flex flex-col'
             >
-              <CardContent className='p-0'>
+              <CardContent className='p-0 flex flex-col flex-1'>
                 {/* Image Container with Overlay */}
                 <div className='relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/10 flex items-center justify-center min-h-72'>
                   <img
@@ -201,7 +212,7 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                 </div>
 
                 {/* Content Container */}
-                <div className='relative space-y-3 p-5'>
+                <div className='relative flex-1 flex flex-col space-y-3 p-5'>
                   {/* Name, Role and Rating Summary */}
                   <div className='space-y-2'>
                     <div className='flex items-start justify-between gap-2'>
@@ -214,7 +225,7 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                         </div>
                       </div>
                     </div>
-                    {member.rating && (
+                    {/* {member.rating && (
                       <div className='flex items-center gap-2'>
                         <div className='flex gap-0.5'>
                           {[...Array(5)].map((_, i) => (
@@ -226,11 +237,11 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                         </div>
                         <span className='text-xs text-muted-foreground'>({member.reviews} reviews)</span>
                       </div>
-                    )}
+                    )} */}
                   </div>
 
                   {/* Description */}
-                  <p className='text-sm text-muted-foreground leading-relaxed line-clamp-2'>
+                  <p className='text-sm text-muted-foreground leading-relaxed line-clamp-2 -mt-7'>
                     {member.description}
                   </p>
 
@@ -251,7 +262,7 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                   )}
 
                   {/* Contact and Info Quick Links */}
-                  <div className='flex flex-wrap gap-2 pt-2 pb-1'>
+                  <div className='flex flex-wrap gap-2 pt-2'>
                     {member.email && (
                       <button className='p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-all' title='Email'>
                         <Mail className='h-3.5 w-3.5' />
@@ -277,7 +288,6 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                       href={member.socialLinks.facebook}
                       target='_blank'
                       rel='noopener noreferrer'
-                      onClick={(e) => e.stopPropagation()}
                       className='p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 hover:scale-110 transition-all duration-200'
                     >
                       <FacebookIcon className='h-3.5 w-3.5' />
@@ -286,7 +296,6 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                       href={member.socialLinks.twitter}
                       target='_blank'
                       rel='noopener noreferrer'
-                      onClick={(e) => e.stopPropagation()}
                       className='p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 hover:scale-110 transition-all duration-200'
                     >
                       <TwitterIcon className='h-3.5 w-3.5' />
@@ -295,7 +304,6 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                       href={member.socialLinks.github}
                       target='_blank'
                       rel='noopener noreferrer'
-                      onClick={(e) => e.stopPropagation()}
                       className='p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 hover:scale-110 transition-all duration-200'
                     >
                       <GithubIcon className='h-3.5 w-3.5' />
@@ -304,101 +312,40 @@ const Team = ({ teamMembers }: { teamMembers: TeamMember }) => {
                       href={member.socialLinks.instagram}
                       target='_blank'
                       rel='noopener noreferrer'
-                      onClick={(e) => e.stopPropagation()}
                       className='p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 hover:scale-110 transition-all duration-200'
                     >
                       <InstagramIcon className='h-3.5 w-3.5' />
                     </a>
                   </div>
 
-                  {/* Schedule Meeting Button */}
-                  <Button
-                    className='w-full mt-2 bg-secondary hover:bg-secondary/90 text-primary font-semibold h-9 text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95'
-                    onClick={() => setSelectedMember(selectedMember === index ? null : index)}
-                  >
-                    <Calendar className='mr-2 h-4 w-4' />
-                    Schedule Meeting
-                  </Button>
-
-                  {/* Expandable Booking Section */}
-                  {selectedMember === index && (
-                    <div className='mt-4 p-4 rounded-lg bg-secondary/10 border border-secondary/30 space-y-4 animate-in fade-in duration-200'>
-                      {/* Date Selection */}
-                      <div>
-                        <p className='text-xs font-semibold text-foreground mb-2'>Select Date</p>
-                        <input
-                          type='date'
-                          value={selectedDate}
-                          onChange={(e) => setSelectedDate(e.target.value)}
-                          className='w-full px-3 py-2 text-xs rounded-lg border border-primary/20 bg-card text-foreground focus:border-secondary outline-none'
-                        />
-                      </div>
-
-                      {/* Time Slot Selection */}
-                      <div>
-                        <p className='text-xs font-semibold text-foreground mb-2'>Select Time</p>
-                        <div className='grid grid-cols-2 gap-2'>
-                          {TIME_SLOTS.map(slot => (
-                            <Button
-                              key={slot}
-                              variant={selectedTime === slot ? 'default' : 'outline'}
-                              size='sm'
-                              className='text-xs h-8'
-                              onClick={() => setSelectedTime(slot)}
-                            >
-                              <Clock className='mr-1 h-3 w-3' />
-                              {slot}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Duration Selection */}
-                      <div>
-                        <p className='text-xs font-semibold text-foreground mb-2'>Meeting Duration</p>
-                        <div className='flex gap-2'>
-                          {MEETING_DURATIONS.map(duration => (
-                            <Button
-                              key={duration}
-                              variant={selectedDuration === duration ? 'default' : 'outline'}
-                              size='sm'
-                              className='text-xs h-8 flex-1'
-                              onClick={() => setSelectedDuration(duration)}
-                            >
-                              {duration}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Timezone Info */}
-                      {member.timezone && (
-                        <div className='p-2 rounded-lg bg-primary/5 border border-primary/10'>
-                          <p className='text-xs text-muted-foreground flex items-center gap-1'>
-                            <MapPin className='h-3 w-3' />
-                            {member.timezone}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Confirm Button */}
+                  {/* Share / Copy Link Button */}
+                  <div className="pt-4 mt-auto">
+                    {member.clerkId === currentUser?.id ? (
+                      <ShareLinkDialog
+                        trigger={
+                          <Button className="w-full bg-[#4C4EFB] hover:bg-[#3b3dbf] text-white font-semibold h-10 text-sm rounded-lg shadow-sm hover:shadow-md transition-all">
+                            <Share2 className="mr-2 h-4 w-4" />
+                            Share My Booking Link
+                          </Button>
+                        }
+                      />
+                    ) : member.slug ? (
                       <Button
-                        className='w-full bg-primary hover:bg-primary/90 text-primary-foreground h-9 text-sm font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed'
-                        disabled={!selectedDate || !selectedTime || !selectedDuration}
-                        onClick={() => {
-                          console.log(`[v0] Booking confirmed - Date: ${selectedDate}, Time: ${selectedTime}, Duration: ${selectedDuration}`)
-                          alert('Booking confirmed! Check your email for details.')
-                          setSelectedMember(null)
-                          setSelectedDate('')
-                          setSelectedTime('')
-                          setSelectedDuration('')
-                        }}
+                        onClick={() => handleCopyLink(member.slug!)}
+                        className="w-full bg-[#4C4EFB] hover:bg-[#3b3dbf] text-white font-semibold h-10 text-sm rounded-lg shadow-sm hover:shadow-md transition-all"
                       >
-                        <CheckCircle2 className='mr-2 h-4 w-4' />
-                        Confirm Booking
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy Booking Link
                       </Button>
-                    </div>
-                  )}
+                    ) : (
+                      <Button
+                        disabled
+                        className="w-full bg-muted text-muted-foreground font-semibold h-10 text-sm rounded-lg"
+                      >
+                        Booking Unavailable
+                      </Button>
+                    )}
+                  </div>
 
                   {/* Member Details Modal */}
                   {memberDetails === index && (

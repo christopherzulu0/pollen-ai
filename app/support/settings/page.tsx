@@ -5,6 +5,7 @@ import { CreditCard } from "lucide-react";
 import { sanityFetch } from "@/sanity/lib/live";
 import { USER_CONNECTED_ACCOUNTS_DISPLAY_QUERY } from "@/sanity/queries/users";
 import { AccountManager } from "@/components/support/settings/account-manager";
+import { ProfileEditor } from "@/components/support/settings/profile-editor";
 import { getUserPlanLimits } from "@/lib/features";
 
 export default async function SettingsPage({
@@ -67,6 +68,18 @@ export default async function SettingsPage({
         connectedAccounts={connectedAccounts}
         maxCalendars={planLimits.maxConnectedCalendars}
         plan={planLimits.plan}
+      />
+
+      <ProfileEditor
+        key={user?._id || "profile-editor"}
+        initialData={{
+          role: user?.role,
+          bio: user?.bio,
+          phone: user?.phone,
+          image: user?.image,
+          expertise: user?.expertise,
+          socialLinks: user?.socialLinks,
+        }}
       />
 
       {/* Billing Section */}

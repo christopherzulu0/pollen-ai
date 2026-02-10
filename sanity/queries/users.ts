@@ -40,6 +40,11 @@ export const USER_BY_CLERK_ID_QUERY = defineQuery(`*[
   name,
   email,
   slug,
+  role,
+  bio,
+  phone,
+  expertise,
+  socialLinks,
   availability[]{
     _key,
     startDateTime,
@@ -53,7 +58,7 @@ export const USER_BY_CLERK_ID_QUERY = defineQuery(`*[
     isDefault,
     connectedAt
   }
-}`);
+} `);
 
 /**
  * Get a user by their public booking slug
@@ -175,11 +180,40 @@ export const USER_CONNECTED_ACCOUNTS_DISPLAY_QUERY = defineQuery(`*[
   _type == "user"
   && clerkId == $clerkId
 ][0]{
+  role,
+  bio,
+  phone,
+  image,
+  expertise,
+  socialLinks,
   connectedAccounts[]{
     _key,
     accountId,
     email,
     isDefault
+  }
+}`);
+
+/**
+ * Get all users for the Team page
+ */
+export const GET_ALL_TEAM_MEMBERS_QUERY = defineQuery(`*[
+  _type == "user"
+] | order(name asc) {
+  clerkId,
+  name,
+  email,
+  image,
+  slug,
+  role,
+  bio,
+  phone,
+  expertise,
+  socialLinks,
+  availability[]{
+    _key,
+    startDateTime,
+    endDateTime
   }
 }`);
 

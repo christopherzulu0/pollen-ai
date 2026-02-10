@@ -51,7 +51,11 @@ const DURATION_OPTIONS: Array<{ value: MeetingDuration; label: string }> = [
   { value: 90, label: "90 minutes" },
 ];
 
-export function ShareLinkDialog() {
+interface ShareLinkDialogProps {
+  trigger?: React.ReactNode;
+}
+
+export function ShareLinkDialog({ trigger }: ShareLinkDialogProps) {
   const [open, setOpen] = useState(false);
   const [meetingTypes, setMeetingTypes] = useState<MeetingTypeForHost[]>([]);
   const [selectedMeetingType, setSelectedMeetingType] =
@@ -167,10 +171,12 @@ export function ShareLinkDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <Share2 className="mr-2 h-4 w-4" />
-          Share Link
-        </Button>
+        {trigger || (
+          <Button variant="outline">
+            <Share2 className="mr-2 h-4 w-4" />
+            Share Link
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

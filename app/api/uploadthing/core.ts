@@ -6,9 +6,9 @@ const f = createUploadthing();
 
 export const uploadRouter = {
   // Example "profile picture upload" route - these can be named whatever you want!
-//  groupLogo: f(["image"])
-//     .middleware(({ req }) => auth(req))
-//     .onUploadComplete((data) => console.log("file", data)),
+  //  groupLogo: f(["image"])
+  //     .middleware(({ req }) => auth(req))
+  //     .onUploadComplete((data) => console.log("file", data)),
 
   // This route takes an attached image OR video
   // messageAttachment: f(["image", "video"])
@@ -39,11 +39,11 @@ export const uploadRouter = {
     .middleware(async () => {
       try {
         const session = await auth();
-        
+
         if (!session || !session?.userId) {
           throw new Error("Unauthorized");
         }
-        
+
         // Return metadata object with userId
         return { userId: session.userId };
       } catch (error) {
@@ -57,10 +57,10 @@ export const uploadRouter = {
           console.error("No URL returned from upload");
           return;
         }
-        
+
         console.log("Upload complete for user:", metadata.userId);
         console.log("File URL:", file.url);
-        
+
         // Explicitly return void by not returning anything
         return;
       } catch (error) {
@@ -68,6 +68,27 @@ export const uploadRouter = {
         // Don't throw here, just return void
         return;
       }
+    }),
+
+  memberProfileImage: f(
+    { image: { maxFileSize: "4MB", maxFileCount: 1 } },
+    { awaitServerData: true },
+  )
+    .middleware(async () => {
+      try {
+        const session = await auth();
+        if (!session || !session?.userId) {
+          throw new Error("Unauthorized");
+        }
+        return { userId: session.userId };
+      } catch (error) {
+        throw new Error("Unauthorized");
+      }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Profile image upload complete for user:", metadata.userId);
+      console.log("File URL:", file.url);
+      return { uploadedBy: metadata.userId, url: file.url };
     }),
 } satisfies FileRouter;
 

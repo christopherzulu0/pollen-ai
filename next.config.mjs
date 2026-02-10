@@ -55,6 +55,7 @@ const nextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+     turbopackFileSystemCacheForDev: true,
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -63,6 +64,15 @@ const nextConfig = {
       //  domains: [
       //      ''
       //],
+     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'utfs.io',
+        port: '',
+        pathname: 'utfs.io/**',
+        search: '',
+      },
+    ],
     unoptimized: true,
    
   },
