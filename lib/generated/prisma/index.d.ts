@@ -1325,8 +1325,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.3.0
-   * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
+   * Prisma Client JS version: 7.4.0
+   * Query Engine version: ab56fe763f921d033a6c195e7ddeb3e255bdbb57
    */
   export type PrismaVersion = {
     client: string
@@ -5957,6 +5957,8 @@ export namespace Prisma {
     meetingAttendees: number
     voteResults: number
     loanVotes: number
+    chairedMeetings: number
+    noteTakerMeetings: number
   }
 
   export type MembershipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5964,6 +5966,8 @@ export namespace Prisma {
     meetingAttendees?: boolean | MembershipCountOutputTypeCountMeetingAttendeesArgs
     voteResults?: boolean | MembershipCountOutputTypeCountVoteResultsArgs
     loanVotes?: boolean | MembershipCountOutputTypeCountLoanVotesArgs
+    chairedMeetings?: boolean | MembershipCountOutputTypeCountChairedMeetingsArgs
+    noteTakerMeetings?: boolean | MembershipCountOutputTypeCountNoteTakerMeetingsArgs
   }
 
   // Custom InputTypes
@@ -6003,6 +6007,20 @@ export namespace Prisma {
    */
   export type MembershipCountOutputTypeCountLoanVotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LoanVoteWhereInput
+  }
+
+  /**
+   * MembershipCountOutputType without action
+   */
+  export type MembershipCountOutputTypeCountChairedMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingWhereInput
+  }
+
+  /**
+   * MembershipCountOutputType without action
+   */
+  export type MembershipCountOutputTypeCountNoteTakerMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingWhereInput
   }
 
 
@@ -17821,6 +17839,8 @@ export namespace Prisma {
     meetingAttendees?: boolean | Membership$meetingAttendeesArgs<ExtArgs>
     voteResults?: boolean | Membership$voteResultsArgs<ExtArgs>
     loanVotes?: boolean | Membership$loanVotesArgs<ExtArgs>
+    chairedMeetings?: boolean | Membership$chairedMeetingsArgs<ExtArgs>
+    noteTakerMeetings?: boolean | Membership$noteTakerMeetingsArgs<ExtArgs>
     _count?: boolean | MembershipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membership"]>
 
@@ -17872,6 +17892,8 @@ export namespace Prisma {
     meetingAttendees?: boolean | Membership$meetingAttendeesArgs<ExtArgs>
     voteResults?: boolean | Membership$voteResultsArgs<ExtArgs>
     loanVotes?: boolean | Membership$loanVotesArgs<ExtArgs>
+    chairedMeetings?: boolean | Membership$chairedMeetingsArgs<ExtArgs>
+    noteTakerMeetings?: boolean | Membership$noteTakerMeetingsArgs<ExtArgs>
     _count?: boolean | MembershipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MembershipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17892,6 +17914,8 @@ export namespace Prisma {
       meetingAttendees: Prisma.$MeetingAttendeePayload<ExtArgs>[]
       voteResults: Prisma.$VoteResultPayload<ExtArgs>[]
       loanVotes: Prisma.$LoanVotePayload<ExtArgs>[]
+      chairedMeetings: Prisma.$MeetingPayload<ExtArgs>[]
+      noteTakerMeetings: Prisma.$MeetingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18303,6 +18327,8 @@ export namespace Prisma {
     meetingAttendees<T extends Membership$meetingAttendeesArgs<ExtArgs> = {}>(args?: Subset<T, Membership$meetingAttendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     voteResults<T extends Membership$voteResultsArgs<ExtArgs> = {}>(args?: Subset<T, Membership$voteResultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VoteResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loanVotes<T extends Membership$loanVotesArgs<ExtArgs> = {}>(args?: Subset<T, Membership$loanVotesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chairedMeetings<T extends Membership$chairedMeetingsArgs<ExtArgs> = {}>(args?: Subset<T, Membership$chairedMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    noteTakerMeetings<T extends Membership$noteTakerMeetingsArgs<ExtArgs> = {}>(args?: Subset<T, Membership$noteTakerMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18830,6 +18856,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LoanVoteScalarFieldEnum | LoanVoteScalarFieldEnum[]
+  }
+
+  /**
+   * Membership.chairedMeetings
+   */
+  export type Membership$chairedMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    cursor?: MeetingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * Membership.noteTakerMeetings
+   */
+  export type Membership$noteTakerMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    cursor?: MeetingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
   }
 
   /**
@@ -24860,6 +24934,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     groupId: string | null
+    chairpersonMembershipId: string | null
+    noteTakerMembershipId: string | null
   }
 
   export type MeetingMaxAggregateOutputType = {
@@ -24873,12 +24949,15 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     groupId: string | null
+    chairpersonMembershipId: string | null
+    noteTakerMembershipId: string | null
   }
 
   export type MeetingCountAggregateOutputType = {
     id: number
     title: number
     description: number
+    agenda: number
     date: number
     location: number
     isVirtual: number
@@ -24886,6 +24965,8 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     groupId: number
+    chairpersonMembershipId: number
+    noteTakerMembershipId: number
     _all: number
   }
 
@@ -24901,6 +24982,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     groupId?: true
+    chairpersonMembershipId?: true
+    noteTakerMembershipId?: true
   }
 
   export type MeetingMaxAggregateInputType = {
@@ -24914,12 +24997,15 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     groupId?: true
+    chairpersonMembershipId?: true
+    noteTakerMembershipId?: true
   }
 
   export type MeetingCountAggregateInputType = {
     id?: true
     title?: true
     description?: true
+    agenda?: true
     date?: true
     location?: true
     isVirtual?: true
@@ -24927,6 +25013,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     groupId?: true
+    chairpersonMembershipId?: true
+    noteTakerMembershipId?: true
     _all?: true
   }
 
@@ -25006,6 +25094,7 @@ export namespace Prisma {
     id: string
     title: string
     description: string | null
+    agenda: string[]
     date: Date
     location: string | null
     isVirtual: boolean
@@ -25013,6 +25102,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     groupId: string
+    chairpersonMembershipId: string | null
+    noteTakerMembershipId: string | null
     _count: MeetingCountAggregateOutputType | null
     _min: MeetingMinAggregateOutputType | null
     _max: MeetingMaxAggregateOutputType | null
@@ -25036,6 +25127,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
+    agenda?: boolean
     date?: boolean
     location?: boolean
     isVirtual?: boolean
@@ -25043,8 +25135,12 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
+    chairpersonMembershipId?: boolean
+    noteTakerMembershipId?: boolean
     group?: boolean | GroupDefaultArgs<ExtArgs>
     attendees?: boolean | Meeting$attendeesArgs<ExtArgs>
+    chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
+    noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
     _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
@@ -25052,6 +25148,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
+    agenda?: boolean
     date?: boolean
     location?: boolean
     isVirtual?: boolean
@@ -25059,13 +25156,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
+    chairpersonMembershipId?: boolean
+    noteTakerMembershipId?: boolean
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
+    noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
   export type MeetingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
     description?: boolean
+    agenda?: boolean
     date?: boolean
     location?: boolean
     isVirtual?: boolean
@@ -25073,13 +25175,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
+    chairpersonMembershipId?: boolean
+    noteTakerMembershipId?: boolean
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
+    noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
   export type MeetingSelectScalar = {
     id?: boolean
     title?: boolean
     description?: boolean
+    agenda?: boolean
     date?: boolean
     location?: boolean
     isVirtual?: boolean
@@ -25087,19 +25194,27 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
+    chairpersonMembershipId?: boolean
+    noteTakerMembershipId?: boolean
   }
 
-  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "date" | "location" | "isVirtual" | "meetingLink" | "createdAt" | "updatedAt" | "groupId", ExtArgs["result"]["meeting"]>
+  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "agenda" | "date" | "location" | "isVirtual" | "meetingLink" | "createdAt" | "updatedAt" | "groupId" | "chairpersonMembershipId" | "noteTakerMembershipId", ExtArgs["result"]["meeting"]>
   export type MeetingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     group?: boolean | GroupDefaultArgs<ExtArgs>
     attendees?: boolean | Meeting$attendeesArgs<ExtArgs>
+    chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
+    noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
     _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MeetingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
+    noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
   }
   export type MeetingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
+    noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
   }
 
   export type $MeetingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25107,11 +25222,14 @@ export namespace Prisma {
     objects: {
       group: Prisma.$GroupPayload<ExtArgs>
       attendees: Prisma.$MeetingAttendeePayload<ExtArgs>[]
+      chairperson: Prisma.$MembershipPayload<ExtArgs> | null
+      noteTaker: Prisma.$MembershipPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
       description: string | null
+      agenda: string[]
       date: Date
       location: string | null
       isVirtual: boolean
@@ -25119,6 +25237,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       groupId: string
+      chairpersonMembershipId: string | null
+      noteTakerMembershipId: string | null
     }, ExtArgs["result"]["meeting"]>
     composites: {}
   }
@@ -25515,6 +25635,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     group<T extends GroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupDefaultArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     attendees<T extends Meeting$attendeesArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$attendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chairperson<T extends Meeting$chairpersonArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$chairpersonArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    noteTaker<T extends Meeting$noteTakerArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$noteTakerArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25547,6 +25669,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Meeting", 'String'>
     readonly title: FieldRef<"Meeting", 'String'>
     readonly description: FieldRef<"Meeting", 'String'>
+    readonly agenda: FieldRef<"Meeting", 'String[]'>
     readonly date: FieldRef<"Meeting", 'DateTime'>
     readonly location: FieldRef<"Meeting", 'String'>
     readonly isVirtual: FieldRef<"Meeting", 'Boolean'>
@@ -25554,6 +25677,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Meeting", 'DateTime'>
     readonly updatedAt: FieldRef<"Meeting", 'DateTime'>
     readonly groupId: FieldRef<"Meeting", 'String'>
+    readonly chairpersonMembershipId: FieldRef<"Meeting", 'String'>
+    readonly noteTakerMembershipId: FieldRef<"Meeting", 'String'>
   }
     
 
@@ -25971,6 +26096,44 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MeetingAttendeeScalarFieldEnum | MeetingAttendeeScalarFieldEnum[]
+  }
+
+  /**
+   * Meeting.chairperson
+   */
+  export type Meeting$chairpersonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Membership
+     */
+    select?: MembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Membership
+     */
+    omit?: MembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MembershipInclude<ExtArgs> | null
+    where?: MembershipWhereInput
+  }
+
+  /**
+   * Meeting.noteTaker
+   */
+  export type Meeting$noteTakerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Membership
+     */
+    select?: MembershipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Membership
+     */
+    omit?: MembershipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MembershipInclude<ExtArgs> | null
+    where?: MembershipWhereInput
   }
 
   /**
@@ -66082,13 +66245,16 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     description: 'description',
+    agenda: 'agenda',
     date: 'date',
     location: 'location',
     isVirtual: 'isVirtual',
     meetingLink: 'meetingLink',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    groupId: 'groupId'
+    groupId: 'groupId',
+    chairpersonMembershipId: 'chairpersonMembershipId',
+    noteTakerMembershipId: 'noteTakerMembershipId'
   };
 
   export type MeetingScalarFieldEnum = (typeof MeetingScalarFieldEnum)[keyof typeof MeetingScalarFieldEnum]
@@ -68161,6 +68327,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeListRelationFilter
     voteResults?: VoteResultListRelationFilter
     loanVotes?: LoanVoteListRelationFilter
+    chairedMeetings?: MeetingListRelationFilter
+    noteTakerMeetings?: MeetingListRelationFilter
   }
 
   export type MembershipOrderByWithRelationInput = {
@@ -68179,6 +68347,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeOrderByRelationAggregateInput
     voteResults?: VoteResultOrderByRelationAggregateInput
     loanVotes?: LoanVoteOrderByRelationAggregateInput
+    chairedMeetings?: MeetingOrderByRelationAggregateInput
+    noteTakerMeetings?: MeetingOrderByRelationAggregateInput
   }
 
   export type MembershipWhereUniqueInput = Prisma.AtLeast<{
@@ -68201,6 +68371,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeListRelationFilter
     voteResults?: VoteResultListRelationFilter
     loanVotes?: LoanVoteListRelationFilter
+    chairedMeetings?: MeetingListRelationFilter
+    noteTakerMeetings?: MeetingListRelationFilter
   }, "id" | "userId_groupId">
 
   export type MembershipOrderByWithAggregationInput = {
@@ -68675,6 +68847,7 @@ export namespace Prisma {
     id?: StringFilter<"Meeting"> | string
     title?: StringFilter<"Meeting"> | string
     description?: StringNullableFilter<"Meeting"> | string | null
+    agenda?: StringNullableListFilter<"Meeting">
     date?: DateTimeFilter<"Meeting"> | Date | string
     location?: StringNullableFilter<"Meeting"> | string | null
     isVirtual?: BoolFilter<"Meeting"> | boolean
@@ -68682,14 +68855,19 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     groupId?: StringFilter<"Meeting"> | string
+    chairpersonMembershipId?: StringNullableFilter<"Meeting"> | string | null
+    noteTakerMembershipId?: StringNullableFilter<"Meeting"> | string | null
     group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
     attendees?: MeetingAttendeeListRelationFilter
+    chairperson?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
+    noteTaker?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
   }
 
   export type MeetingOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
+    agenda?: SortOrder
     date?: SortOrder
     location?: SortOrderInput | SortOrder
     isVirtual?: SortOrder
@@ -68697,8 +68875,12 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
+    chairpersonMembershipId?: SortOrderInput | SortOrder
+    noteTakerMembershipId?: SortOrderInput | SortOrder
     group?: GroupOrderByWithRelationInput
     attendees?: MeetingAttendeeOrderByRelationAggregateInput
+    chairperson?: MembershipOrderByWithRelationInput
+    noteTaker?: MembershipOrderByWithRelationInput
   }
 
   export type MeetingWhereUniqueInput = Prisma.AtLeast<{
@@ -68708,6 +68890,7 @@ export namespace Prisma {
     NOT?: MeetingWhereInput | MeetingWhereInput[]
     title?: StringFilter<"Meeting"> | string
     description?: StringNullableFilter<"Meeting"> | string | null
+    agenda?: StringNullableListFilter<"Meeting">
     date?: DateTimeFilter<"Meeting"> | Date | string
     location?: StringNullableFilter<"Meeting"> | string | null
     isVirtual?: BoolFilter<"Meeting"> | boolean
@@ -68715,14 +68898,19 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     groupId?: StringFilter<"Meeting"> | string
+    chairpersonMembershipId?: StringNullableFilter<"Meeting"> | string | null
+    noteTakerMembershipId?: StringNullableFilter<"Meeting"> | string | null
     group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
     attendees?: MeetingAttendeeListRelationFilter
+    chairperson?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
+    noteTaker?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
   }, "id">
 
   export type MeetingOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
+    agenda?: SortOrder
     date?: SortOrder
     location?: SortOrderInput | SortOrder
     isVirtual?: SortOrder
@@ -68730,6 +68918,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
+    chairpersonMembershipId?: SortOrderInput | SortOrder
+    noteTakerMembershipId?: SortOrderInput | SortOrder
     _count?: MeetingCountOrderByAggregateInput
     _max?: MeetingMaxOrderByAggregateInput
     _min?: MeetingMinOrderByAggregateInput
@@ -68742,6 +68932,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Meeting"> | string
     title?: StringWithAggregatesFilter<"Meeting"> | string
     description?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    agenda?: StringNullableListFilter<"Meeting">
     date?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     location?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
     isVirtual?: BoolWithAggregatesFilter<"Meeting"> | boolean
@@ -68749,6 +68940,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     groupId?: StringWithAggregatesFilter<"Meeting"> | string
+    chairpersonMembershipId?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    noteTakerMembershipId?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
   }
 
   export type MeetingAttendeeWhereInput = {
@@ -73083,6 +73276,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateInput = {
@@ -73099,6 +73294,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUpdateInput = {
@@ -73115,6 +73312,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateInput = {
@@ -73131,6 +73330,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipCreateManyInput = {
@@ -73637,6 +73838,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
@@ -73645,12 +73847,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     group: GroupCreateNestedOneWithoutMeetingsInput
     attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
+    chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+    noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
   }
 
   export type MeetingUncheckedCreateInput = {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
@@ -73658,6 +73863,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
     attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
   }
 
@@ -73665,6 +73872,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -73673,12 +73881,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
     attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
+    chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+    noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
   }
 
   export type MeetingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -73686,6 +73897,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
@@ -73693,6 +73906,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
@@ -73700,12 +73914,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
   }
 
   export type MeetingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -73718,6 +73935,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -73725,6 +73943,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MeetingAttendeeCreateInput = {
@@ -78997,10 +79217,16 @@ export namespace Prisma {
     remainingAmount?: SortOrder
   }
 
+  export type MembershipNullableScalarRelationFilter = {
+    is?: MembershipWhereInput | null
+    isNot?: MembershipWhereInput | null
+  }
+
   export type MeetingCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
+    agenda?: SortOrder
     date?: SortOrder
     location?: SortOrder
     isVirtual?: SortOrder
@@ -79008,6 +79234,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
+    chairpersonMembershipId?: SortOrder
+    noteTakerMembershipId?: SortOrder
   }
 
   export type MeetingMaxOrderByAggregateInput = {
@@ -79021,6 +79249,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
+    chairpersonMembershipId?: SortOrder
+    noteTakerMembershipId?: SortOrder
   }
 
   export type MeetingMinOrderByAggregateInput = {
@@ -79034,6 +79264,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
+    chairpersonMembershipId?: SortOrder
+    noteTakerMembershipId?: SortOrder
   }
 
   export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
@@ -83003,6 +83235,20 @@ export namespace Prisma {
     connect?: LoanVoteWhereUniqueInput | LoanVoteWhereUniqueInput[]
   }
 
+  export type MeetingCreateNestedManyWithoutChairpersonInput = {
+    create?: XOR<MeetingCreateWithoutChairpersonInput, MeetingUncheckedCreateWithoutChairpersonInput> | MeetingCreateWithoutChairpersonInput[] | MeetingUncheckedCreateWithoutChairpersonInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutChairpersonInput | MeetingCreateOrConnectWithoutChairpersonInput[]
+    createMany?: MeetingCreateManyChairpersonInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
+  export type MeetingCreateNestedManyWithoutNoteTakerInput = {
+    create?: XOR<MeetingCreateWithoutNoteTakerInput, MeetingUncheckedCreateWithoutNoteTakerInput> | MeetingCreateWithoutNoteTakerInput[] | MeetingUncheckedCreateWithoutNoteTakerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutNoteTakerInput | MeetingCreateOrConnectWithoutNoteTakerInput[]
+    createMany?: MeetingCreateManyNoteTakerInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
   export type VoteUncheckedCreateNestedManyWithoutMembershipInput = {
     create?: XOR<VoteCreateWithoutMembershipInput, VoteUncheckedCreateWithoutMembershipInput> | VoteCreateWithoutMembershipInput[] | VoteUncheckedCreateWithoutMembershipInput[]
     connectOrCreate?: VoteCreateOrConnectWithoutMembershipInput | VoteCreateOrConnectWithoutMembershipInput[]
@@ -83029,6 +83275,20 @@ export namespace Prisma {
     connectOrCreate?: LoanVoteCreateOrConnectWithoutMembershipInput | LoanVoteCreateOrConnectWithoutMembershipInput[]
     createMany?: LoanVoteCreateManyMembershipInputEnvelope
     connect?: LoanVoteWhereUniqueInput | LoanVoteWhereUniqueInput[]
+  }
+
+  export type MeetingUncheckedCreateNestedManyWithoutChairpersonInput = {
+    create?: XOR<MeetingCreateWithoutChairpersonInput, MeetingUncheckedCreateWithoutChairpersonInput> | MeetingCreateWithoutChairpersonInput[] | MeetingUncheckedCreateWithoutChairpersonInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutChairpersonInput | MeetingCreateOrConnectWithoutChairpersonInput[]
+    createMany?: MeetingCreateManyChairpersonInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
+  export type MeetingUncheckedCreateNestedManyWithoutNoteTakerInput = {
+    create?: XOR<MeetingCreateWithoutNoteTakerInput, MeetingUncheckedCreateWithoutNoteTakerInput> | MeetingCreateWithoutNoteTakerInput[] | MeetingUncheckedCreateWithoutNoteTakerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutNoteTakerInput | MeetingCreateOrConnectWithoutNoteTakerInput[]
+    createMany?: MeetingCreateManyNoteTakerInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
   }
 
   export type EnumMembershipRoleFieldUpdateOperationsInput = {
@@ -83111,6 +83371,34 @@ export namespace Prisma {
     deleteMany?: LoanVoteScalarWhereInput | LoanVoteScalarWhereInput[]
   }
 
+  export type MeetingUpdateManyWithoutChairpersonNestedInput = {
+    create?: XOR<MeetingCreateWithoutChairpersonInput, MeetingUncheckedCreateWithoutChairpersonInput> | MeetingCreateWithoutChairpersonInput[] | MeetingUncheckedCreateWithoutChairpersonInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutChairpersonInput | MeetingCreateOrConnectWithoutChairpersonInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutChairpersonInput | MeetingUpsertWithWhereUniqueWithoutChairpersonInput[]
+    createMany?: MeetingCreateManyChairpersonInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutChairpersonInput | MeetingUpdateWithWhereUniqueWithoutChairpersonInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutChairpersonInput | MeetingUpdateManyWithWhereWithoutChairpersonInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
+  export type MeetingUpdateManyWithoutNoteTakerNestedInput = {
+    create?: XOR<MeetingCreateWithoutNoteTakerInput, MeetingUncheckedCreateWithoutNoteTakerInput> | MeetingCreateWithoutNoteTakerInput[] | MeetingUncheckedCreateWithoutNoteTakerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutNoteTakerInput | MeetingCreateOrConnectWithoutNoteTakerInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutNoteTakerInput | MeetingUpsertWithWhereUniqueWithoutNoteTakerInput[]
+    createMany?: MeetingCreateManyNoteTakerInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutNoteTakerInput | MeetingUpdateWithWhereUniqueWithoutNoteTakerInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutNoteTakerInput | MeetingUpdateManyWithWhereWithoutNoteTakerInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
   export type VoteUncheckedUpdateManyWithoutMembershipNestedInput = {
     create?: XOR<VoteCreateWithoutMembershipInput, VoteUncheckedCreateWithoutMembershipInput> | VoteCreateWithoutMembershipInput[] | VoteUncheckedCreateWithoutMembershipInput[]
     connectOrCreate?: VoteCreateOrConnectWithoutMembershipInput | VoteCreateOrConnectWithoutMembershipInput[]
@@ -83165,6 +83453,34 @@ export namespace Prisma {
     update?: LoanVoteUpdateWithWhereUniqueWithoutMembershipInput | LoanVoteUpdateWithWhereUniqueWithoutMembershipInput[]
     updateMany?: LoanVoteUpdateManyWithWhereWithoutMembershipInput | LoanVoteUpdateManyWithWhereWithoutMembershipInput[]
     deleteMany?: LoanVoteScalarWhereInput | LoanVoteScalarWhereInput[]
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutChairpersonNestedInput = {
+    create?: XOR<MeetingCreateWithoutChairpersonInput, MeetingUncheckedCreateWithoutChairpersonInput> | MeetingCreateWithoutChairpersonInput[] | MeetingUncheckedCreateWithoutChairpersonInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutChairpersonInput | MeetingCreateOrConnectWithoutChairpersonInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutChairpersonInput | MeetingUpsertWithWhereUniqueWithoutChairpersonInput[]
+    createMany?: MeetingCreateManyChairpersonInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutChairpersonInput | MeetingUpdateWithWhereUniqueWithoutChairpersonInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutChairpersonInput | MeetingUpdateManyWithWhereWithoutChairpersonInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput = {
+    create?: XOR<MeetingCreateWithoutNoteTakerInput, MeetingUncheckedCreateWithoutNoteTakerInput> | MeetingCreateWithoutNoteTakerInput[] | MeetingUncheckedCreateWithoutNoteTakerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutNoteTakerInput | MeetingCreateOrConnectWithoutNoteTakerInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutNoteTakerInput | MeetingUpsertWithWhereUniqueWithoutNoteTakerInput[]
+    createMany?: MeetingCreateManyNoteTakerInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutNoteTakerInput | MeetingUpdateWithWhereUniqueWithoutNoteTakerInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutNoteTakerInput | MeetingUpdateManyWithWhereWithoutNoteTakerInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTransactionsInput = {
@@ -83418,6 +83734,10 @@ export namespace Prisma {
     update?: XOR<XOR<SavingsGoalUpdateToOneWithWhereWithoutAiAnalysesInput, SavingsGoalUpdateWithoutAiAnalysesInput>, SavingsGoalUncheckedUpdateWithoutAiAnalysesInput>
   }
 
+  export type MeetingCreateagendaInput = {
+    set: string[]
+  }
+
   export type GroupCreateNestedOneWithoutMeetingsInput = {
     create?: XOR<GroupCreateWithoutMeetingsInput, GroupUncheckedCreateWithoutMeetingsInput>
     connectOrCreate?: GroupCreateOrConnectWithoutMeetingsInput
@@ -83431,11 +83751,28 @@ export namespace Prisma {
     connect?: MeetingAttendeeWhereUniqueInput | MeetingAttendeeWhereUniqueInput[]
   }
 
+  export type MembershipCreateNestedOneWithoutChairedMeetingsInput = {
+    create?: XOR<MembershipCreateWithoutChairedMeetingsInput, MembershipUncheckedCreateWithoutChairedMeetingsInput>
+    connectOrCreate?: MembershipCreateOrConnectWithoutChairedMeetingsInput
+    connect?: MembershipWhereUniqueInput
+  }
+
+  export type MembershipCreateNestedOneWithoutNoteTakerMeetingsInput = {
+    create?: XOR<MembershipCreateWithoutNoteTakerMeetingsInput, MembershipUncheckedCreateWithoutNoteTakerMeetingsInput>
+    connectOrCreate?: MembershipCreateOrConnectWithoutNoteTakerMeetingsInput
+    connect?: MembershipWhereUniqueInput
+  }
+
   export type MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput = {
     create?: XOR<MeetingAttendeeCreateWithoutMeetingInput, MeetingAttendeeUncheckedCreateWithoutMeetingInput> | MeetingAttendeeCreateWithoutMeetingInput[] | MeetingAttendeeUncheckedCreateWithoutMeetingInput[]
     connectOrCreate?: MeetingAttendeeCreateOrConnectWithoutMeetingInput | MeetingAttendeeCreateOrConnectWithoutMeetingInput[]
     createMany?: MeetingAttendeeCreateManyMeetingInputEnvelope
     connect?: MeetingAttendeeWhereUniqueInput | MeetingAttendeeWhereUniqueInput[]
+  }
+
+  export type MeetingUpdateagendaInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type GroupUpdateOneRequiredWithoutMeetingsNestedInput = {
@@ -83458,6 +83795,26 @@ export namespace Prisma {
     update?: MeetingAttendeeUpdateWithWhereUniqueWithoutMeetingInput | MeetingAttendeeUpdateWithWhereUniqueWithoutMeetingInput[]
     updateMany?: MeetingAttendeeUpdateManyWithWhereWithoutMeetingInput | MeetingAttendeeUpdateManyWithWhereWithoutMeetingInput[]
     deleteMany?: MeetingAttendeeScalarWhereInput | MeetingAttendeeScalarWhereInput[]
+  }
+
+  export type MembershipUpdateOneWithoutChairedMeetingsNestedInput = {
+    create?: XOR<MembershipCreateWithoutChairedMeetingsInput, MembershipUncheckedCreateWithoutChairedMeetingsInput>
+    connectOrCreate?: MembershipCreateOrConnectWithoutChairedMeetingsInput
+    upsert?: MembershipUpsertWithoutChairedMeetingsInput
+    disconnect?: MembershipWhereInput | boolean
+    delete?: MembershipWhereInput | boolean
+    connect?: MembershipWhereUniqueInput
+    update?: XOR<XOR<MembershipUpdateToOneWithWhereWithoutChairedMeetingsInput, MembershipUpdateWithoutChairedMeetingsInput>, MembershipUncheckedUpdateWithoutChairedMeetingsInput>
+  }
+
+  export type MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput = {
+    create?: XOR<MembershipCreateWithoutNoteTakerMeetingsInput, MembershipUncheckedCreateWithoutNoteTakerMeetingsInput>
+    connectOrCreate?: MembershipCreateOrConnectWithoutNoteTakerMeetingsInput
+    upsert?: MembershipUpsertWithoutNoteTakerMeetingsInput
+    disconnect?: MembershipWhereInput | boolean
+    delete?: MembershipWhereInput | boolean
+    connect?: MembershipWhereUniqueInput
+    update?: XOR<XOR<MembershipUpdateToOneWithWhereWithoutNoteTakerMeetingsInput, MembershipUpdateWithoutNoteTakerMeetingsInput>, MembershipUncheckedUpdateWithoutNoteTakerMeetingsInput>
   }
 
   export type MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput = {
@@ -85663,6 +86020,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateWithoutUserInput = {
@@ -85678,6 +86037,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipCreateOrConnectWithoutUserInput = {
@@ -87838,6 +88199,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateWithoutGroupInput = {
@@ -87853,6 +88216,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipCreateOrConnectWithoutGroupInput = {
@@ -87913,6 +88278,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
@@ -87920,18 +88286,23 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
+    chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+    noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
   }
 
   export type MeetingUncheckedCreateWithoutGroupInput = {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
     attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
   }
 
@@ -88321,6 +88692,7 @@ export namespace Prisma {
     id?: StringFilter<"Meeting"> | string
     title?: StringFilter<"Meeting"> | string
     description?: StringNullableFilter<"Meeting"> | string | null
+    agenda?: StringNullableListFilter<"Meeting">
     date?: DateTimeFilter<"Meeting"> | Date | string
     location?: StringNullableFilter<"Meeting"> | string | null
     isVirtual?: BoolFilter<"Meeting"> | boolean
@@ -88328,6 +88700,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     groupId?: StringFilter<"Meeting"> | string
+    chairpersonMembershipId?: StringNullableFilter<"Meeting"> | string | null
+    noteTakerMembershipId?: StringNullableFilter<"Meeting"> | string | null
   }
 
   export type GroupInvitationUpsertWithWhereUniqueWithoutGroupInput = {
@@ -88756,6 +89130,90 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MeetingCreateWithoutChairpersonInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutMeetingsInput
+    attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
+    noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+  }
+
+  export type MeetingUncheckedCreateWithoutChairpersonInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupId: string
+    noteTakerMembershipId?: string | null
+    attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutChairpersonInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutChairpersonInput, MeetingUncheckedCreateWithoutChairpersonInput>
+  }
+
+  export type MeetingCreateManyChairpersonInputEnvelope = {
+    data: MeetingCreateManyChairpersonInput | MeetingCreateManyChairpersonInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingCreateWithoutNoteTakerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutMeetingsInput
+    attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
+    chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+  }
+
+  export type MeetingUncheckedCreateWithoutNoteTakerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupId: string
+    chairpersonMembershipId?: string | null
+    attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutNoteTakerInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutNoteTakerInput, MeetingUncheckedCreateWithoutNoteTakerInput>
+  }
+
+  export type MeetingCreateManyNoteTakerInputEnvelope = {
+    data: MeetingCreateManyNoteTakerInput | MeetingCreateManyNoteTakerInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutMembershipsInput = {
     update: XOR<UserUpdateWithoutMembershipsInput, UserUncheckedUpdateWithoutMembershipsInput>
     create: XOR<UserCreateWithoutMembershipsInput, UserUncheckedCreateWithoutMembershipsInput>
@@ -89022,6 +89480,38 @@ export namespace Prisma {
   export type LoanVoteUpdateManyWithWhereWithoutMembershipInput = {
     where: LoanVoteScalarWhereInput
     data: XOR<LoanVoteUpdateManyMutationInput, LoanVoteUncheckedUpdateManyWithoutMembershipInput>
+  }
+
+  export type MeetingUpsertWithWhereUniqueWithoutChairpersonInput = {
+    where: MeetingWhereUniqueInput
+    update: XOR<MeetingUpdateWithoutChairpersonInput, MeetingUncheckedUpdateWithoutChairpersonInput>
+    create: XOR<MeetingCreateWithoutChairpersonInput, MeetingUncheckedCreateWithoutChairpersonInput>
+  }
+
+  export type MeetingUpdateWithWhereUniqueWithoutChairpersonInput = {
+    where: MeetingWhereUniqueInput
+    data: XOR<MeetingUpdateWithoutChairpersonInput, MeetingUncheckedUpdateWithoutChairpersonInput>
+  }
+
+  export type MeetingUpdateManyWithWhereWithoutChairpersonInput = {
+    where: MeetingScalarWhereInput
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyWithoutChairpersonInput>
+  }
+
+  export type MeetingUpsertWithWhereUniqueWithoutNoteTakerInput = {
+    where: MeetingWhereUniqueInput
+    update: XOR<MeetingUpdateWithoutNoteTakerInput, MeetingUncheckedUpdateWithoutNoteTakerInput>
+    create: XOR<MeetingCreateWithoutNoteTakerInput, MeetingUncheckedCreateWithoutNoteTakerInput>
+  }
+
+  export type MeetingUpdateWithWhereUniqueWithoutNoteTakerInput = {
+    where: MeetingWhereUniqueInput
+    data: XOR<MeetingUpdateWithoutNoteTakerInput, MeetingUncheckedUpdateWithoutNoteTakerInput>
+  }
+
+  export type MeetingUpdateManyWithWhereWithoutNoteTakerInput = {
+    where: MeetingScalarWhereInput
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyWithoutNoteTakerInput>
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -90244,6 +90734,84 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MembershipCreateWithoutChairedMeetingsInput = {
+    id?: string
+    role?: $Enums.MembershipRole
+    joinedAt?: Date | string
+    status?: $Enums.MembershipStatus
+    balance?: Decimal | DecimalJsLike | number | string
+    totalContributed?: Decimal | DecimalJsLike | number | string
+    lastContribution?: Date | string | null
+    user: UserCreateNestedOneWithoutMembershipsInput
+    group: GroupCreateNestedOneWithoutMembershipsInput
+    votes?: VoteCreateNestedManyWithoutMembershipInput
+    meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
+    voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
+    loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+  }
+
+  export type MembershipUncheckedCreateWithoutChairedMeetingsInput = {
+    id?: string
+    userId: string
+    groupId: string
+    role?: $Enums.MembershipRole
+    joinedAt?: Date | string
+    status?: $Enums.MembershipStatus
+    balance?: Decimal | DecimalJsLike | number | string
+    totalContributed?: Decimal | DecimalJsLike | number | string
+    lastContribution?: Date | string | null
+    votes?: VoteUncheckedCreateNestedManyWithoutMembershipInput
+    meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
+    voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
+    loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+  }
+
+  export type MembershipCreateOrConnectWithoutChairedMeetingsInput = {
+    where: MembershipWhereUniqueInput
+    create: XOR<MembershipCreateWithoutChairedMeetingsInput, MembershipUncheckedCreateWithoutChairedMeetingsInput>
+  }
+
+  export type MembershipCreateWithoutNoteTakerMeetingsInput = {
+    id?: string
+    role?: $Enums.MembershipRole
+    joinedAt?: Date | string
+    status?: $Enums.MembershipStatus
+    balance?: Decimal | DecimalJsLike | number | string
+    totalContributed?: Decimal | DecimalJsLike | number | string
+    lastContribution?: Date | string | null
+    user: UserCreateNestedOneWithoutMembershipsInput
+    group: GroupCreateNestedOneWithoutMembershipsInput
+    votes?: VoteCreateNestedManyWithoutMembershipInput
+    meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
+    voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
+    loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+  }
+
+  export type MembershipUncheckedCreateWithoutNoteTakerMeetingsInput = {
+    id?: string
+    userId: string
+    groupId: string
+    role?: $Enums.MembershipRole
+    joinedAt?: Date | string
+    status?: $Enums.MembershipStatus
+    balance?: Decimal | DecimalJsLike | number | string
+    totalContributed?: Decimal | DecimalJsLike | number | string
+    lastContribution?: Date | string | null
+    votes?: VoteUncheckedCreateNestedManyWithoutMembershipInput
+    meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
+    voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
+    loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+  }
+
+  export type MembershipCreateOrConnectWithoutNoteTakerMeetingsInput = {
+    where: MembershipWhereUniqueInput
+    create: XOR<MembershipCreateWithoutNoteTakerMeetingsInput, MembershipUncheckedCreateWithoutNoteTakerMeetingsInput>
+  }
+
   export type GroupUpsertWithoutMeetingsInput = {
     update: XOR<GroupUpdateWithoutMeetingsInput, GroupUncheckedUpdateWithoutMeetingsInput>
     create: XOR<GroupCreateWithoutMeetingsInput, GroupUncheckedCreateWithoutMeetingsInput>
@@ -90351,10 +90919,101 @@ export namespace Prisma {
     data: XOR<MeetingAttendeeUpdateManyMutationInput, MeetingAttendeeUncheckedUpdateManyWithoutMeetingInput>
   }
 
+  export type MembershipUpsertWithoutChairedMeetingsInput = {
+    update: XOR<MembershipUpdateWithoutChairedMeetingsInput, MembershipUncheckedUpdateWithoutChairedMeetingsInput>
+    create: XOR<MembershipCreateWithoutChairedMeetingsInput, MembershipUncheckedCreateWithoutChairedMeetingsInput>
+    where?: MembershipWhereInput
+  }
+
+  export type MembershipUpdateToOneWithWhereWithoutChairedMeetingsInput = {
+    where?: MembershipWhereInput
+    data: XOR<MembershipUpdateWithoutChairedMeetingsInput, MembershipUncheckedUpdateWithoutChairedMeetingsInput>
+  }
+
+  export type MembershipUpdateWithoutChairedMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalContributed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lastContribution?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutMembershipsNestedInput
+    group?: GroupUpdateOneRequiredWithoutMembershipsNestedInput
+    votes?: VoteUpdateManyWithoutMembershipNestedInput
+    meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
+    voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
+    loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+  }
+
+  export type MembershipUncheckedUpdateWithoutChairedMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalContributed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lastContribution?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
+    meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
+    voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
+    loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+  }
+
+  export type MembershipUpsertWithoutNoteTakerMeetingsInput = {
+    update: XOR<MembershipUpdateWithoutNoteTakerMeetingsInput, MembershipUncheckedUpdateWithoutNoteTakerMeetingsInput>
+    create: XOR<MembershipCreateWithoutNoteTakerMeetingsInput, MembershipUncheckedCreateWithoutNoteTakerMeetingsInput>
+    where?: MembershipWhereInput
+  }
+
+  export type MembershipUpdateToOneWithWhereWithoutNoteTakerMeetingsInput = {
+    where?: MembershipWhereInput
+    data: XOR<MembershipUpdateWithoutNoteTakerMeetingsInput, MembershipUncheckedUpdateWithoutNoteTakerMeetingsInput>
+  }
+
+  export type MembershipUpdateWithoutNoteTakerMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalContributed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lastContribution?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutMembershipsNestedInput
+    group?: GroupUpdateOneRequiredWithoutMembershipsNestedInput
+    votes?: VoteUpdateManyWithoutMembershipNestedInput
+    meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
+    voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
+    loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+  }
+
+  export type MembershipUncheckedUpdateWithoutNoteTakerMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalContributed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lastContribution?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
+    meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
+    voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
+    loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+  }
+
   export type MeetingCreateWithoutAttendeesInput = {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
@@ -90362,12 +91021,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     group: GroupCreateNestedOneWithoutMeetingsInput
+    chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+    noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
   }
 
   export type MeetingUncheckedCreateWithoutAttendeesInput = {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
@@ -90375,6 +91037,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
   }
 
   export type MeetingCreateOrConnectWithoutAttendeesInput = {
@@ -90395,6 +91059,8 @@ export namespace Prisma {
     votes?: VoteCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateWithoutMeetingAttendeesInput = {
@@ -90410,6 +91076,8 @@ export namespace Prisma {
     votes?: VoteUncheckedCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipCreateOrConnectWithoutMeetingAttendeesInput = {
@@ -90432,6 +91100,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -90439,12 +91108,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
+    chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+    noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutAttendeesInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -90452,6 +91124,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MembershipUpsertWithoutMeetingAttendeesInput = {
@@ -90478,6 +91152,8 @@ export namespace Prisma {
     votes?: VoteUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutMeetingAttendeesInput = {
@@ -90493,6 +91169,8 @@ export namespace Prisma {
     votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipCreateWithoutVotesInput = {
@@ -90508,6 +91186,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateWithoutVotesInput = {
@@ -90523,6 +91203,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipCreateOrConnectWithoutVotesInput = {
@@ -90578,6 +91260,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutVotesInput = {
@@ -90593,6 +91277,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type VoteResultUpsertWithWhereUniqueWithoutVoteInput = {
@@ -90653,6 +91339,8 @@ export namespace Prisma {
     votes?: VoteCreateNestedManyWithoutMembershipInput
     meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateWithoutVoteResultsInput = {
@@ -90668,6 +91356,8 @@ export namespace Prisma {
     votes?: VoteUncheckedCreateNestedManyWithoutMembershipInput
     meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipCreateOrConnectWithoutVoteResultsInput = {
@@ -90734,6 +91424,8 @@ export namespace Prisma {
     votes?: VoteUpdateManyWithoutMembershipNestedInput
     meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutVoteResultsInput = {
@@ -90749,6 +91441,8 @@ export namespace Prisma {
     votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -92834,6 +93528,8 @@ export namespace Prisma {
     votes?: VoteCreateNestedManyWithoutMembershipInput
     meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipUncheckedCreateWithoutLoanVotesInput = {
@@ -92849,6 +93545,8 @@ export namespace Prisma {
     votes?: VoteUncheckedCreateNestedManyWithoutMembershipInput
     meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
   }
 
   export type MembershipCreateOrConnectWithoutLoanVotesInput = {
@@ -93000,6 +93698,8 @@ export namespace Prisma {
     votes?: VoteUpdateManyWithoutMembershipNestedInput
     meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutLoanVotesInput = {
@@ -93015,6 +93715,8 @@ export namespace Prisma {
     votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type UserCreateWithoutIndividualLoansInput = {
@@ -96552,6 +97254,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutUserInput = {
@@ -96567,6 +97271,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateManyWithoutUserInput = {
@@ -97484,12 +98190,15 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
     date: Date | string
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
   }
 
   export type GroupInvitationCreateManyGroupInput = {
@@ -97561,6 +98270,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutGroupInput = {
@@ -97576,6 +98287,8 @@ export namespace Prisma {
     meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MembershipUncheckedUpdateManyWithoutGroupInput = {
@@ -97643,6 +98356,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
@@ -97650,18 +98364,23 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
+    chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+    noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutGroupInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
@@ -97669,12 +98388,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GroupInvitationUpdateWithoutGroupInput = {
@@ -97887,6 +98609,36 @@ export namespace Prisma {
     loanRequestId: string
   }
 
+  export type MeetingCreateManyChairpersonInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupId: string
+    noteTakerMembershipId?: string | null
+  }
+
+  export type MeetingCreateManyNoteTakerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupId: string
+    chairpersonMembershipId?: string | null
+  }
+
   export type VoteUpdateWithoutMembershipInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -97989,6 +98741,100 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     loanRequestId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MeetingUpdateWithoutChairpersonInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
+    attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
+    noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutChairpersonInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutChairpersonInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MeetingUpdateWithoutNoteTakerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
+    attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
+    chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutNoteTakerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutNoteTakerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SavingsTransactionCreateManySavingsGoalInput = {

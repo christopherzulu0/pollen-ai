@@ -489,8 +489,8 @@ export default function MemberAaveClient() {
       }
 
       // Reset form
-      setActionDialog({ type: null })
-      setAmount("")
+    setActionDialog({ type: null })
+    setAmount("")
       
       // Invalidate and refetch ledger data
       queryClient.invalidateQueries({ queryKey: ["memberLedger"] })

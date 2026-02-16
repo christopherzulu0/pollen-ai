@@ -246,10 +246,12 @@ model Membership {
   lastContribution DateTime?
 
   // Relations
-  votes            Vote[]
-  meetingAttendees MeetingAttendee[]
-  voteResults      VoteResult[]
-  loanVotes        LoanVote[]        @relation("MembershipLoanVotes")
+  votes             Vote[]
+  meetingAttendees  MeetingAttendee[]
+  voteResults       VoteResult[]
+  loanVotes         LoanVote[]        @relation("MembershipLoanVotes")
+  chairedMeetings   Meeting[]         @relation("MeetingChairperson")
+  noteTakerMeetings Meeting[]         @relation("MeetingNoteTaker")
 
   @@unique([userId, groupId])
 }
@@ -351,18 +353,23 @@ model AIGoalAnalysis {
 // ==========================================
 
 model Meeting {
-  id          String            @id @default(cuid())
-  title       String
-  description String?
-  date        DateTime
-  location    String?
-  isVirtual   Boolean           @default(false)
-  meetingLink String?
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  groupId     String
-  group       Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  attendees   MeetingAttendee[]
+  id                      String            @id @default(cuid())
+  title                   String
+  description             String?
+  agenda                  String[]          @default([])
+  date                    DateTime
+  location                String?
+  isVirtual               Boolean           @default(false)
+  meetingLink             String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  groupId                 String
+  group                   Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  attendees               MeetingAttendee[]
+  chairpersonMembershipId String?
+  chairperson             Membership?       @relation("MeetingChairperson", fields: [chairpersonMembershipId], references: [id])
+  noteTakerMembershipId   String?
+  noteTaker               Membership?       @relation("MeetingNoteTaker", fields: [noteTakerMembershipId], references: [id])
 }
 
 model MeetingAttendee {
