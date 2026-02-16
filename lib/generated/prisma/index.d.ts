@@ -59,6 +59,11 @@ export type Service = $Result.DefaultSelection<Prisma.$ServicePayload>
  */
 export type Group = $Result.DefaultSelection<Prisma.$GroupPayload>
 /**
+ * Model GroupBudget
+ * 
+ */
+export type GroupBudget = $Result.DefaultSelection<Prisma.$GroupBudgetPayload>
+/**
  * Model Membership
  * 
  */
@@ -885,6 +890,16 @@ export class PrismaClient<
     * ```
     */
   get group(): Prisma.GroupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.groupBudget`: Exposes CRUD operations for the **GroupBudget** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GroupBudgets
+    * const groupBudgets = await prisma.groupBudget.findMany()
+    * ```
+    */
+  get groupBudget(): Prisma.GroupBudgetDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.membership`: Exposes CRUD operations for the **Membership** model.
@@ -1748,6 +1763,7 @@ export namespace Prisma {
     UserFollow: 'UserFollow',
     Service: 'Service',
     Group: 'Group',
+    GroupBudget: 'GroupBudget',
     Membership: 'Membership',
     Transaction: 'Transaction',
     PersonalSavings: 'PersonalSavings',
@@ -1805,7 +1821,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "aIGoalAnalysis" | "meeting" | "meetingFinancialGoal" | "meetingGoalContribution" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan" | "contactMessage" | "meetingRequest" | "insuranceProduct" | "insurancePolicy" | "insuranceClaim" | "insurancePremium" | "ledgerEntry" | "walletExecution" | "villageLedger" | "villageLedgerEntry" | "interestFlow" | "yieldSource" | "interestDistribution" | "dailyReconciliation" | "reconciliationAlert" | "memberBalance" | "hubAsset" | "aavePosition" | "aaveSupply" | "aaveBorrow" | "aaveTransaction"
+      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "groupBudget" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "aIGoalAnalysis" | "meeting" | "meetingFinancialGoal" | "meetingGoalContribution" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan" | "contactMessage" | "meetingRequest" | "insuranceProduct" | "insurancePolicy" | "insuranceClaim" | "insurancePremium" | "ledgerEntry" | "walletExecution" | "villageLedger" | "villageLedgerEntry" | "interestFlow" | "yieldSource" | "interestDistribution" | "dailyReconciliation" | "reconciliationAlert" | "memberBalance" | "hubAsset" | "aavePosition" | "aaveSupply" | "aaveBorrow" | "aaveTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2472,6 +2488,80 @@ export namespace Prisma {
           count: {
             args: Prisma.GroupCountArgs<ExtArgs>
             result: $Utils.Optional<GroupCountAggregateOutputType> | number
+          }
+        }
+      }
+      GroupBudget: {
+        payload: Prisma.$GroupBudgetPayload<ExtArgs>
+        fields: Prisma.GroupBudgetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GroupBudgetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GroupBudgetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>
+          }
+          findFirst: {
+            args: Prisma.GroupBudgetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GroupBudgetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>
+          }
+          findMany: {
+            args: Prisma.GroupBudgetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>[]
+          }
+          create: {
+            args: Prisma.GroupBudgetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>
+          }
+          createMany: {
+            args: Prisma.GroupBudgetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GroupBudgetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>[]
+          }
+          delete: {
+            args: Prisma.GroupBudgetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>
+          }
+          update: {
+            args: Prisma.GroupBudgetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>
+          }
+          deleteMany: {
+            args: Prisma.GroupBudgetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GroupBudgetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GroupBudgetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>[]
+          }
+          upsert: {
+            args: Prisma.GroupBudgetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupBudgetPayload>
+          }
+          aggregate: {
+            args: Prisma.GroupBudgetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGroupBudget>
+          }
+          groupBy: {
+            args: Prisma.GroupBudgetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GroupBudgetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GroupBudgetCountArgs<ExtArgs>
+            result: $Utils.Optional<GroupBudgetCountAggregateOutputType> | number
           }
         }
       }
@@ -5700,6 +5790,7 @@ export namespace Prisma {
     userFollow?: UserFollowOmit
     service?: ServiceOmit
     group?: GroupOmit
+    groupBudget?: GroupBudgetOmit
     membership?: MembershipOmit
     transaction?: TransactionOmit
     personalSavings?: PersonalSavingsOmit
@@ -16591,6 +16682,7 @@ export namespace Prisma {
     insurancePolicies?: boolean | Group$insurancePoliciesArgs<ExtArgs>
     villageLedger?: boolean | Group$villageLedgerArgs<ExtArgs>
     aavePosition?: boolean | Group$aavePositionArgs<ExtArgs>
+    groupBudget?: boolean | Group$groupBudgetArgs<ExtArgs>
     _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["group"]>
 
@@ -16704,6 +16796,7 @@ export namespace Prisma {
     insurancePolicies?: boolean | Group$insurancePoliciesArgs<ExtArgs>
     villageLedger?: boolean | Group$villageLedgerArgs<ExtArgs>
     aavePosition?: boolean | Group$aavePositionArgs<ExtArgs>
+    groupBudget?: boolean | Group$groupBudgetArgs<ExtArgs>
     _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16726,6 +16819,7 @@ export namespace Prisma {
       insurancePolicies: Prisma.$InsurancePolicyPayload<ExtArgs>[]
       villageLedger: Prisma.$VillageLedgerPayload<ExtArgs> | null
       aavePosition: Prisma.$AavePositionPayload<ExtArgs> | null
+      groupBudget: Prisma.$GroupBudgetPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17161,6 +17255,7 @@ export namespace Prisma {
     insurancePolicies<T extends Group$insurancePoliciesArgs<ExtArgs> = {}>(args?: Subset<T, Group$insurancePoliciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InsurancePolicyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     villageLedger<T extends Group$villageLedgerArgs<ExtArgs> = {}>(args?: Subset<T, Group$villageLedgerArgs<ExtArgs>>): Prisma__VillageLedgerClient<$Result.GetResult<Prisma.$VillageLedgerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     aavePosition<T extends Group$aavePositionArgs<ExtArgs> = {}>(args?: Subset<T, Group$aavePositionArgs<ExtArgs>>): Prisma__AavePositionClient<$Result.GetResult<Prisma.$AavePositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    groupBudget<T extends Group$groupBudgetArgs<ExtArgs> = {}>(args?: Subset<T, Group$groupBudgetArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17821,6 +17916,25 @@ export namespace Prisma {
   }
 
   /**
+   * Group.groupBudget
+   */
+  export type Group$groupBudgetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    where?: GroupBudgetWhereInput
+  }
+
+  /**
    * Group without action
    */
   export type GroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17836,6 +17950,1124 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: GroupInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GroupBudget
+   */
+
+  export type AggregateGroupBudget = {
+    _count: GroupBudgetCountAggregateOutputType | null
+    _avg: GroupBudgetAvgAggregateOutputType | null
+    _sum: GroupBudgetSumAggregateOutputType | null
+    _min: GroupBudgetMinAggregateOutputType | null
+    _max: GroupBudgetMaxAggregateOutputType | null
+  }
+
+  export type GroupBudgetAvgAggregateOutputType = {
+    monthlyAmount: number | null
+    spentAmount: number | null
+  }
+
+  export type GroupBudgetSumAggregateOutputType = {
+    monthlyAmount: number | null
+    spentAmount: number | null
+  }
+
+  export type GroupBudgetMinAggregateOutputType = {
+    id: string | null
+    groupId: string | null
+    monthlyAmount: number | null
+    spentAmount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GroupBudgetMaxAggregateOutputType = {
+    id: string | null
+    groupId: string | null
+    monthlyAmount: number | null
+    spentAmount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GroupBudgetCountAggregateOutputType = {
+    id: number
+    groupId: number
+    monthlyAmount: number
+    spentAmount: number
+    categories: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GroupBudgetAvgAggregateInputType = {
+    monthlyAmount?: true
+    spentAmount?: true
+  }
+
+  export type GroupBudgetSumAggregateInputType = {
+    monthlyAmount?: true
+    spentAmount?: true
+  }
+
+  export type GroupBudgetMinAggregateInputType = {
+    id?: true
+    groupId?: true
+    monthlyAmount?: true
+    spentAmount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GroupBudgetMaxAggregateInputType = {
+    id?: true
+    groupId?: true
+    monthlyAmount?: true
+    spentAmount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GroupBudgetCountAggregateInputType = {
+    id?: true
+    groupId?: true
+    monthlyAmount?: true
+    spentAmount?: true
+    categories?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GroupBudgetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GroupBudget to aggregate.
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupBudgets to fetch.
+     */
+    orderBy?: GroupBudgetOrderByWithRelationInput | GroupBudgetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GroupBudgetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupBudgets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupBudgets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GroupBudgets
+    **/
+    _count?: true | GroupBudgetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GroupBudgetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GroupBudgetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GroupBudgetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GroupBudgetMaxAggregateInputType
+  }
+
+  export type GetGroupBudgetAggregateType<T extends GroupBudgetAggregateArgs> = {
+        [P in keyof T & keyof AggregateGroupBudget]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGroupBudget[P]>
+      : GetScalarType<T[P], AggregateGroupBudget[P]>
+  }
+
+
+
+
+  export type GroupBudgetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupBudgetWhereInput
+    orderBy?: GroupBudgetOrderByWithAggregationInput | GroupBudgetOrderByWithAggregationInput[]
+    by: GroupBudgetScalarFieldEnum[] | GroupBudgetScalarFieldEnum
+    having?: GroupBudgetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GroupBudgetCountAggregateInputType | true
+    _avg?: GroupBudgetAvgAggregateInputType
+    _sum?: GroupBudgetSumAggregateInputType
+    _min?: GroupBudgetMinAggregateInputType
+    _max?: GroupBudgetMaxAggregateInputType
+  }
+
+  export type GroupBudgetGroupByOutputType = {
+    id: string
+    groupId: string
+    monthlyAmount: number
+    spentAmount: number
+    categories: JsonValue
+    createdAt: Date
+    updatedAt: Date
+    _count: GroupBudgetCountAggregateOutputType | null
+    _avg: GroupBudgetAvgAggregateOutputType | null
+    _sum: GroupBudgetSumAggregateOutputType | null
+    _min: GroupBudgetMinAggregateOutputType | null
+    _max: GroupBudgetMaxAggregateOutputType | null
+  }
+
+  type GetGroupBudgetGroupByPayload<T extends GroupBudgetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GroupBudgetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GroupBudgetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GroupBudgetGroupByOutputType[P]>
+            : GetScalarType<T[P], GroupBudgetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GroupBudgetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    monthlyAmount?: boolean
+    spentAmount?: boolean
+    categories?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupBudget"]>
+
+  export type GroupBudgetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    monthlyAmount?: boolean
+    spentAmount?: boolean
+    categories?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupBudget"]>
+
+  export type GroupBudgetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    monthlyAmount?: boolean
+    spentAmount?: boolean
+    categories?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupBudget"]>
+
+  export type GroupBudgetSelectScalar = {
+    id?: boolean
+    groupId?: boolean
+    monthlyAmount?: boolean
+    spentAmount?: boolean
+    categories?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GroupBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupId" | "monthlyAmount" | "spentAmount" | "categories" | "createdAt" | "updatedAt", ExtArgs["result"]["groupBudget"]>
+  export type GroupBudgetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type GroupBudgetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type GroupBudgetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+
+  export type $GroupBudgetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GroupBudget"
+    objects: {
+      group: Prisma.$GroupPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      groupId: string
+      monthlyAmount: number
+      spentAmount: number
+      categories: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["groupBudget"]>
+    composites: {}
+  }
+
+  type GroupBudgetGetPayload<S extends boolean | null | undefined | GroupBudgetDefaultArgs> = $Result.GetResult<Prisma.$GroupBudgetPayload, S>
+
+  type GroupBudgetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GroupBudgetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GroupBudgetCountAggregateInputType | true
+    }
+
+  export interface GroupBudgetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GroupBudget'], meta: { name: 'GroupBudget' } }
+    /**
+     * Find zero or one GroupBudget that matches the filter.
+     * @param {GroupBudgetFindUniqueArgs} args - Arguments to find a GroupBudget
+     * @example
+     * // Get one GroupBudget
+     * const groupBudget = await prisma.groupBudget.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GroupBudgetFindUniqueArgs>(args: SelectSubset<T, GroupBudgetFindUniqueArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GroupBudget that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GroupBudgetFindUniqueOrThrowArgs} args - Arguments to find a GroupBudget
+     * @example
+     * // Get one GroupBudget
+     * const groupBudget = await prisma.groupBudget.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GroupBudgetFindUniqueOrThrowArgs>(args: SelectSubset<T, GroupBudgetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GroupBudget that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetFindFirstArgs} args - Arguments to find a GroupBudget
+     * @example
+     * // Get one GroupBudget
+     * const groupBudget = await prisma.groupBudget.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GroupBudgetFindFirstArgs>(args?: SelectSubset<T, GroupBudgetFindFirstArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GroupBudget that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetFindFirstOrThrowArgs} args - Arguments to find a GroupBudget
+     * @example
+     * // Get one GroupBudget
+     * const groupBudget = await prisma.groupBudget.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GroupBudgetFindFirstOrThrowArgs>(args?: SelectSubset<T, GroupBudgetFindFirstOrThrowArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GroupBudgets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GroupBudgets
+     * const groupBudgets = await prisma.groupBudget.findMany()
+     * 
+     * // Get first 10 GroupBudgets
+     * const groupBudgets = await prisma.groupBudget.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const groupBudgetWithIdOnly = await prisma.groupBudget.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GroupBudgetFindManyArgs>(args?: SelectSubset<T, GroupBudgetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GroupBudget.
+     * @param {GroupBudgetCreateArgs} args - Arguments to create a GroupBudget.
+     * @example
+     * // Create one GroupBudget
+     * const GroupBudget = await prisma.groupBudget.create({
+     *   data: {
+     *     // ... data to create a GroupBudget
+     *   }
+     * })
+     * 
+     */
+    create<T extends GroupBudgetCreateArgs>(args: SelectSubset<T, GroupBudgetCreateArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GroupBudgets.
+     * @param {GroupBudgetCreateManyArgs} args - Arguments to create many GroupBudgets.
+     * @example
+     * // Create many GroupBudgets
+     * const groupBudget = await prisma.groupBudget.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GroupBudgetCreateManyArgs>(args?: SelectSubset<T, GroupBudgetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GroupBudgets and returns the data saved in the database.
+     * @param {GroupBudgetCreateManyAndReturnArgs} args - Arguments to create many GroupBudgets.
+     * @example
+     * // Create many GroupBudgets
+     * const groupBudget = await prisma.groupBudget.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GroupBudgets and only return the `id`
+     * const groupBudgetWithIdOnly = await prisma.groupBudget.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GroupBudgetCreateManyAndReturnArgs>(args?: SelectSubset<T, GroupBudgetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GroupBudget.
+     * @param {GroupBudgetDeleteArgs} args - Arguments to delete one GroupBudget.
+     * @example
+     * // Delete one GroupBudget
+     * const GroupBudget = await prisma.groupBudget.delete({
+     *   where: {
+     *     // ... filter to delete one GroupBudget
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GroupBudgetDeleteArgs>(args: SelectSubset<T, GroupBudgetDeleteArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GroupBudget.
+     * @param {GroupBudgetUpdateArgs} args - Arguments to update one GroupBudget.
+     * @example
+     * // Update one GroupBudget
+     * const groupBudget = await prisma.groupBudget.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GroupBudgetUpdateArgs>(args: SelectSubset<T, GroupBudgetUpdateArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GroupBudgets.
+     * @param {GroupBudgetDeleteManyArgs} args - Arguments to filter GroupBudgets to delete.
+     * @example
+     * // Delete a few GroupBudgets
+     * const { count } = await prisma.groupBudget.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GroupBudgetDeleteManyArgs>(args?: SelectSubset<T, GroupBudgetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GroupBudgets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GroupBudgets
+     * const groupBudget = await prisma.groupBudget.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GroupBudgetUpdateManyArgs>(args: SelectSubset<T, GroupBudgetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GroupBudgets and returns the data updated in the database.
+     * @param {GroupBudgetUpdateManyAndReturnArgs} args - Arguments to update many GroupBudgets.
+     * @example
+     * // Update many GroupBudgets
+     * const groupBudget = await prisma.groupBudget.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GroupBudgets and only return the `id`
+     * const groupBudgetWithIdOnly = await prisma.groupBudget.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GroupBudgetUpdateManyAndReturnArgs>(args: SelectSubset<T, GroupBudgetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GroupBudget.
+     * @param {GroupBudgetUpsertArgs} args - Arguments to update or create a GroupBudget.
+     * @example
+     * // Update or create a GroupBudget
+     * const groupBudget = await prisma.groupBudget.upsert({
+     *   create: {
+     *     // ... data to create a GroupBudget
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GroupBudget we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GroupBudgetUpsertArgs>(args: SelectSubset<T, GroupBudgetUpsertArgs<ExtArgs>>): Prisma__GroupBudgetClient<$Result.GetResult<Prisma.$GroupBudgetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GroupBudgets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetCountArgs} args - Arguments to filter GroupBudgets to count.
+     * @example
+     * // Count the number of GroupBudgets
+     * const count = await prisma.groupBudget.count({
+     *   where: {
+     *     // ... the filter for the GroupBudgets we want to count
+     *   }
+     * })
+    **/
+    count<T extends GroupBudgetCountArgs>(
+      args?: Subset<T, GroupBudgetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GroupBudgetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GroupBudget.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GroupBudgetAggregateArgs>(args: Subset<T, GroupBudgetAggregateArgs>): Prisma.PrismaPromise<GetGroupBudgetAggregateType<T>>
+
+    /**
+     * Group by GroupBudget.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupBudgetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GroupBudgetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GroupBudgetGroupByArgs['orderBy'] }
+        : { orderBy?: GroupBudgetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GroupBudgetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGroupBudgetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GroupBudget model
+   */
+  readonly fields: GroupBudgetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GroupBudget.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GroupBudgetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    group<T extends GroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupDefaultArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GroupBudget model
+   */
+  interface GroupBudgetFieldRefs {
+    readonly id: FieldRef<"GroupBudget", 'String'>
+    readonly groupId: FieldRef<"GroupBudget", 'String'>
+    readonly monthlyAmount: FieldRef<"GroupBudget", 'Float'>
+    readonly spentAmount: FieldRef<"GroupBudget", 'Float'>
+    readonly categories: FieldRef<"GroupBudget", 'Json'>
+    readonly createdAt: FieldRef<"GroupBudget", 'DateTime'>
+    readonly updatedAt: FieldRef<"GroupBudget", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GroupBudget findUnique
+   */
+  export type GroupBudgetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupBudget to fetch.
+     */
+    where: GroupBudgetWhereUniqueInput
+  }
+
+  /**
+   * GroupBudget findUniqueOrThrow
+   */
+  export type GroupBudgetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupBudget to fetch.
+     */
+    where: GroupBudgetWhereUniqueInput
+  }
+
+  /**
+   * GroupBudget findFirst
+   */
+  export type GroupBudgetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupBudget to fetch.
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupBudgets to fetch.
+     */
+    orderBy?: GroupBudgetOrderByWithRelationInput | GroupBudgetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GroupBudgets.
+     */
+    cursor?: GroupBudgetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupBudgets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupBudgets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GroupBudgets.
+     */
+    distinct?: GroupBudgetScalarFieldEnum | GroupBudgetScalarFieldEnum[]
+  }
+
+  /**
+   * GroupBudget findFirstOrThrow
+   */
+  export type GroupBudgetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupBudget to fetch.
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupBudgets to fetch.
+     */
+    orderBy?: GroupBudgetOrderByWithRelationInput | GroupBudgetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GroupBudgets.
+     */
+    cursor?: GroupBudgetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupBudgets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupBudgets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GroupBudgets.
+     */
+    distinct?: GroupBudgetScalarFieldEnum | GroupBudgetScalarFieldEnum[]
+  }
+
+  /**
+   * GroupBudget findMany
+   */
+  export type GroupBudgetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupBudgets to fetch.
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupBudgets to fetch.
+     */
+    orderBy?: GroupBudgetOrderByWithRelationInput | GroupBudgetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GroupBudgets.
+     */
+    cursor?: GroupBudgetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupBudgets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupBudgets.
+     */
+    skip?: number
+    distinct?: GroupBudgetScalarFieldEnum | GroupBudgetScalarFieldEnum[]
+  }
+
+  /**
+   * GroupBudget create
+   */
+  export type GroupBudgetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GroupBudget.
+     */
+    data: XOR<GroupBudgetCreateInput, GroupBudgetUncheckedCreateInput>
+  }
+
+  /**
+   * GroupBudget createMany
+   */
+  export type GroupBudgetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GroupBudgets.
+     */
+    data: GroupBudgetCreateManyInput | GroupBudgetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GroupBudget createManyAndReturn
+   */
+  export type GroupBudgetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * The data used to create many GroupBudgets.
+     */
+    data: GroupBudgetCreateManyInput | GroupBudgetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GroupBudget update
+   */
+  export type GroupBudgetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GroupBudget.
+     */
+    data: XOR<GroupBudgetUpdateInput, GroupBudgetUncheckedUpdateInput>
+    /**
+     * Choose, which GroupBudget to update.
+     */
+    where: GroupBudgetWhereUniqueInput
+  }
+
+  /**
+   * GroupBudget updateMany
+   */
+  export type GroupBudgetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GroupBudgets.
+     */
+    data: XOR<GroupBudgetUpdateManyMutationInput, GroupBudgetUncheckedUpdateManyInput>
+    /**
+     * Filter which GroupBudgets to update
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * Limit how many GroupBudgets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GroupBudget updateManyAndReturn
+   */
+  export type GroupBudgetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * The data used to update GroupBudgets.
+     */
+    data: XOR<GroupBudgetUpdateManyMutationInput, GroupBudgetUncheckedUpdateManyInput>
+    /**
+     * Filter which GroupBudgets to update
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * Limit how many GroupBudgets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GroupBudget upsert
+   */
+  export type GroupBudgetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GroupBudget to update in case it exists.
+     */
+    where: GroupBudgetWhereUniqueInput
+    /**
+     * In case the GroupBudget found by the `where` argument doesn't exist, create a new GroupBudget with this data.
+     */
+    create: XOR<GroupBudgetCreateInput, GroupBudgetUncheckedCreateInput>
+    /**
+     * In case the GroupBudget was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GroupBudgetUpdateInput, GroupBudgetUncheckedUpdateInput>
+  }
+
+  /**
+   * GroupBudget delete
+   */
+  export type GroupBudgetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
+    /**
+     * Filter which GroupBudget to delete.
+     */
+    where: GroupBudgetWhereUniqueInput
+  }
+
+  /**
+   * GroupBudget deleteMany
+   */
+  export type GroupBudgetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GroupBudgets to delete
+     */
+    where?: GroupBudgetWhereInput
+    /**
+     * Limit how many GroupBudgets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GroupBudget without action
+   */
+  export type GroupBudgetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupBudget
+     */
+    select?: GroupBudgetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupBudget
+     */
+    omit?: GroupBudgetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupBudgetInclude<ExtArgs> | null
   }
 
 
@@ -68840,6 +70072,19 @@ export namespace Prisma {
   export type GroupScalarFieldEnum = (typeof GroupScalarFieldEnum)[keyof typeof GroupScalarFieldEnum]
 
 
+  export const GroupBudgetScalarFieldEnum: {
+    id: 'id',
+    groupId: 'groupId',
+    monthlyAmount: 'monthlyAmount',
+    spentAmount: 'spentAmount',
+    categories: 'categories',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GroupBudgetScalarFieldEnum = (typeof GroupBudgetScalarFieldEnum)[keyof typeof GroupBudgetScalarFieldEnum]
+
+
   export const MembershipScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -69812,6 +71057,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'MembershipRole'
    */
   export type EnumMembershipRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MembershipRole'>
@@ -69885,20 +71144,6 @@ export namespace Prisma {
    * Reference to a field of type 'AttendanceStatus[]'
    */
   export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -70881,6 +72126,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyListRelationFilter
     villageLedger?: XOR<VillageLedgerNullableScalarRelationFilter, VillageLedgerWhereInput> | null
     aavePosition?: XOR<AavePositionNullableScalarRelationFilter, AavePositionWhereInput> | null
+    groupBudget?: XOR<GroupBudgetNullableScalarRelationFilter, GroupBudgetWhereInput> | null
   }
 
   export type GroupOrderByWithRelationInput = {
@@ -70923,6 +72169,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyOrderByRelationAggregateInput
     villageLedger?: VillageLedgerOrderByWithRelationInput
     aavePosition?: AavePositionOrderByWithRelationInput
+    groupBudget?: GroupBudgetOrderByWithRelationInput
   }
 
   export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -70968,6 +72215,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyListRelationFilter
     villageLedger?: XOR<VillageLedgerNullableScalarRelationFilter, VillageLedgerWhereInput> | null
     aavePosition?: XOR<AavePositionNullableScalarRelationFilter, AavePositionWhereInput> | null
+    groupBudget?: XOR<GroupBudgetNullableScalarRelationFilter, GroupBudgetWhereInput> | null
   }, "id">
 
   export type GroupOrderByWithAggregationInput = {
@@ -71040,6 +72288,73 @@ export namespace Prisma {
     bylaws?: StringNullableWithAggregatesFilter<"Group"> | string | null
     tags?: StringNullableWithAggregatesFilter<"Group"> | string | null
     status?: EnumGroupStatusWithAggregatesFilter<"Group"> | $Enums.GroupStatus
+  }
+
+  export type GroupBudgetWhereInput = {
+    AND?: GroupBudgetWhereInput | GroupBudgetWhereInput[]
+    OR?: GroupBudgetWhereInput[]
+    NOT?: GroupBudgetWhereInput | GroupBudgetWhereInput[]
+    id?: StringFilter<"GroupBudget"> | string
+    groupId?: StringFilter<"GroupBudget"> | string
+    monthlyAmount?: FloatFilter<"GroupBudget"> | number
+    spentAmount?: FloatFilter<"GroupBudget"> | number
+    categories?: JsonFilter<"GroupBudget">
+    createdAt?: DateTimeFilter<"GroupBudget"> | Date | string
+    updatedAt?: DateTimeFilter<"GroupBudget"> | Date | string
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+  }
+
+  export type GroupBudgetOrderByWithRelationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+    categories?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    group?: GroupOrderByWithRelationInput
+  }
+
+  export type GroupBudgetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    groupId?: string
+    AND?: GroupBudgetWhereInput | GroupBudgetWhereInput[]
+    OR?: GroupBudgetWhereInput[]
+    NOT?: GroupBudgetWhereInput | GroupBudgetWhereInput[]
+    monthlyAmount?: FloatFilter<"GroupBudget"> | number
+    spentAmount?: FloatFilter<"GroupBudget"> | number
+    categories?: JsonFilter<"GroupBudget">
+    createdAt?: DateTimeFilter<"GroupBudget"> | Date | string
+    updatedAt?: DateTimeFilter<"GroupBudget"> | Date | string
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+  }, "id" | "groupId">
+
+  export type GroupBudgetOrderByWithAggregationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+    categories?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GroupBudgetCountOrderByAggregateInput
+    _avg?: GroupBudgetAvgOrderByAggregateInput
+    _max?: GroupBudgetMaxOrderByAggregateInput
+    _min?: GroupBudgetMinOrderByAggregateInput
+    _sum?: GroupBudgetSumOrderByAggregateInput
+  }
+
+  export type GroupBudgetScalarWhereWithAggregatesInput = {
+    AND?: GroupBudgetScalarWhereWithAggregatesInput | GroupBudgetScalarWhereWithAggregatesInput[]
+    OR?: GroupBudgetScalarWhereWithAggregatesInput[]
+    NOT?: GroupBudgetScalarWhereWithAggregatesInput | GroupBudgetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GroupBudget"> | string
+    groupId?: StringWithAggregatesFilter<"GroupBudget"> | string
+    monthlyAmount?: FloatWithAggregatesFilter<"GroupBudget"> | number
+    spentAmount?: FloatWithAggregatesFilter<"GroupBudget"> | number
+    categories?: JsonWithAggregatesFilter<"GroupBudget">
+    createdAt?: DateTimeWithAggregatesFilter<"GroupBudget"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GroupBudget"> | Date | string
   }
 
   export type MembershipWhereInput = {
@@ -75958,6 +77273,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateInput = {
@@ -75999,6 +77315,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUpdateInput = {
@@ -76040,6 +77357,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateInput = {
@@ -76081,6 +77399,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupCreateManyInput = {
@@ -76176,6 +77495,75 @@ export namespace Prisma {
     bylaws?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumGroupStatusFieldUpdateOperationsInput | $Enums.GroupStatus
+  }
+
+  export type GroupBudgetCreateInput = {
+    id?: string
+    monthlyAmount: number
+    spentAmount?: number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutGroupBudgetInput
+  }
+
+  export type GroupBudgetUncheckedCreateInput = {
+    id?: string
+    groupId: string
+    monthlyAmount: number
+    spentAmount?: number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupBudgetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthlyAmount?: FloatFieldUpdateOperationsInput | number
+    spentAmount?: FloatFieldUpdateOperationsInput | number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutGroupBudgetNestedInput
+  }
+
+  export type GroupBudgetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    monthlyAmount?: FloatFieldUpdateOperationsInput | number
+    spentAmount?: FloatFieldUpdateOperationsInput | number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupBudgetCreateManyInput = {
+    id?: string
+    groupId: string
+    monthlyAmount: number
+    spentAmount?: number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupBudgetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthlyAmount?: FloatFieldUpdateOperationsInput | number
+    spentAmount?: FloatFieldUpdateOperationsInput | number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupBudgetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    monthlyAmount?: FloatFieldUpdateOperationsInput | number
+    spentAmount?: FloatFieldUpdateOperationsInput | number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MembershipCreateInput = {
@@ -81675,6 +83063,11 @@ export namespace Prisma {
     isNot?: AavePositionWhereInput | null
   }
 
+  export type GroupBudgetNullableScalarRelationFilter = {
+    is?: GroupBudgetWhereInput | null
+    isNot?: GroupBudgetWhereInput | null
+  }
+
   export type MeetingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -81880,6 +83273,98 @@ export namespace Prisma {
     _min?: NestedEnumGroupStatusFilter<$PrismaModel>
     _max?: NestedEnumGroupStatusFilter<$PrismaModel>
   }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type GroupScalarRelationFilter = {
+    is?: GroupWhereInput
+    isNot?: GroupWhereInput
+  }
+
+  export type GroupBudgetCountOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+    categories?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupBudgetAvgOrderByAggregateInput = {
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+  }
+
+  export type GroupBudgetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupBudgetMinOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupBudgetSumOrderByAggregateInput = {
+    monthlyAmount?: SortOrder
+    spentAmount?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
 
   export type EnumMembershipRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
@@ -81893,11 +83378,6 @@ export namespace Prisma {
     in?: $Enums.MembershipStatus[] | ListEnumMembershipStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.MembershipStatus[] | ListEnumMembershipStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumMembershipStatusFilter<$PrismaModel> | $Enums.MembershipStatus
-  }
-
-  export type GroupScalarRelationFilter = {
-    is?: GroupWhereInput
-    isNot?: GroupWhereInput
   }
 
   export type VoteListRelationFilter = {
@@ -82550,29 +84030,6 @@ export namespace Prisma {
     _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type MeetingNullableScalarRelationFilter = {
     is?: MeetingWhereInput | null
@@ -82614,32 +84071,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     meetingId?: SortOrder
     membershipId?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type VoteScalarRelationFilter = {
@@ -86092,6 +87523,12 @@ export namespace Prisma {
     connect?: AavePositionWhereUniqueInput
   }
 
+  export type GroupBudgetCreateNestedOneWithoutGroupInput = {
+    create?: XOR<GroupBudgetCreateWithoutGroupInput, GroupBudgetUncheckedCreateWithoutGroupInput>
+    connectOrCreate?: GroupBudgetCreateOrConnectWithoutGroupInput
+    connect?: GroupBudgetWhereUniqueInput
+  }
+
   export type MembershipUncheckedCreateNestedManyWithoutGroupInput = {
     create?: XOR<MembershipCreateWithoutGroupInput, MembershipUncheckedCreateWithoutGroupInput> | MembershipCreateWithoutGroupInput[] | MembershipUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: MembershipCreateOrConnectWithoutGroupInput | MembershipCreateOrConnectWithoutGroupInput[]
@@ -86151,6 +87588,12 @@ export namespace Prisma {
     create?: XOR<AavePositionCreateWithoutGroupInput, AavePositionUncheckedCreateWithoutGroupInput>
     connectOrCreate?: AavePositionCreateOrConnectWithoutGroupInput
     connect?: AavePositionWhereUniqueInput
+  }
+
+  export type GroupBudgetUncheckedCreateNestedOneWithoutGroupInput = {
+    create?: XOR<GroupBudgetCreateWithoutGroupInput, GroupBudgetUncheckedCreateWithoutGroupInput>
+    connectOrCreate?: GroupBudgetCreateOrConnectWithoutGroupInput
+    connect?: GroupBudgetWhereUniqueInput
   }
 
   export type EnumGroupPrivacyFieldUpdateOperationsInput = {
@@ -86315,6 +87758,16 @@ export namespace Prisma {
     update?: XOR<XOR<AavePositionUpdateToOneWithWhereWithoutGroupInput, AavePositionUpdateWithoutGroupInput>, AavePositionUncheckedUpdateWithoutGroupInput>
   }
 
+  export type GroupBudgetUpdateOneWithoutGroupNestedInput = {
+    create?: XOR<GroupBudgetCreateWithoutGroupInput, GroupBudgetUncheckedCreateWithoutGroupInput>
+    connectOrCreate?: GroupBudgetCreateOrConnectWithoutGroupInput
+    upsert?: GroupBudgetUpsertWithoutGroupInput
+    disconnect?: GroupBudgetWhereInput | boolean
+    delete?: GroupBudgetWhereInput | boolean
+    connect?: GroupBudgetWhereUniqueInput
+    update?: XOR<XOR<GroupBudgetUpdateToOneWithWhereWithoutGroupInput, GroupBudgetUpdateWithoutGroupInput>, GroupBudgetUncheckedUpdateWithoutGroupInput>
+  }
+
   export type MembershipUncheckedUpdateManyWithoutGroupNestedInput = {
     create?: XOR<MembershipCreateWithoutGroupInput, MembershipUncheckedCreateWithoutGroupInput> | MembershipCreateWithoutGroupInput[] | MembershipUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: MembershipCreateOrConnectWithoutGroupInput | MembershipCreateOrConnectWithoutGroupInput[]
@@ -86431,6 +87884,30 @@ export namespace Prisma {
     delete?: AavePositionWhereInput | boolean
     connect?: AavePositionWhereUniqueInput
     update?: XOR<XOR<AavePositionUpdateToOneWithWhereWithoutGroupInput, AavePositionUpdateWithoutGroupInput>, AavePositionUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput = {
+    create?: XOR<GroupBudgetCreateWithoutGroupInput, GroupBudgetUncheckedCreateWithoutGroupInput>
+    connectOrCreate?: GroupBudgetCreateOrConnectWithoutGroupInput
+    upsert?: GroupBudgetUpsertWithoutGroupInput
+    disconnect?: GroupBudgetWhereInput | boolean
+    delete?: GroupBudgetWhereInput | boolean
+    connect?: GroupBudgetWhereUniqueInput
+    update?: XOR<XOR<GroupBudgetUpdateToOneWithWhereWithoutGroupInput, GroupBudgetUpdateWithoutGroupInput>, GroupBudgetUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type GroupCreateNestedOneWithoutGroupBudgetInput = {
+    create?: XOR<GroupCreateWithoutGroupBudgetInput, GroupUncheckedCreateWithoutGroupBudgetInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutGroupBudgetInput
+    connect?: GroupWhereUniqueInput
+  }
+
+  export type GroupUpdateOneRequiredWithoutGroupBudgetNestedInput = {
+    create?: XOR<GroupCreateWithoutGroupBudgetInput, GroupUncheckedCreateWithoutGroupBudgetInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutGroupBudgetInput
+    upsert?: GroupUpsertWithoutGroupBudgetInput
+    connect?: GroupWhereUniqueInput
+    update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutGroupBudgetInput, GroupUpdateWithoutGroupBudgetInput>, GroupUncheckedUpdateWithoutGroupBudgetInput>
   }
 
   export type UserCreateNestedOneWithoutMembershipsInput = {
@@ -89083,6 +90560,29 @@ export namespace Prisma {
     _min?: NestedEnumGroupStatusFilter<$PrismaModel>
     _max?: NestedEnumGroupStatusFilter<$PrismaModel>
   }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumMembershipRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
@@ -89167,29 +90667,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
-  }
-  export type NestedJsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
@@ -89582,6 +91059,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutOwnerInput = {
@@ -89622,6 +91100,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutOwnerInput = {
@@ -92069,6 +93548,29 @@ export namespace Prisma {
     create: XOR<AavePositionCreateWithoutGroupInput, AavePositionUncheckedCreateWithoutGroupInput>
   }
 
+  export type GroupBudgetCreateWithoutGroupInput = {
+    id?: string
+    monthlyAmount: number
+    spentAmount?: number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupBudgetUncheckedCreateWithoutGroupInput = {
+    id?: string
+    monthlyAmount: number
+    spentAmount?: number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupBudgetCreateOrConnectWithoutGroupInput = {
+    where: GroupBudgetWhereUniqueInput
+    create: XOR<GroupBudgetCreateWithoutGroupInput, GroupBudgetUncheckedCreateWithoutGroupInput>
+  }
+
   export type UserUpsertWithoutOwnedGroupsInput = {
     update: XOR<UserUpdateWithoutOwnedGroupsInput, UserUncheckedUpdateWithoutOwnedGroupsInput>
     create: XOR<UserCreateWithoutOwnedGroupsInput, UserUncheckedCreateWithoutOwnedGroupsInput>
@@ -92378,6 +93880,215 @@ export namespace Prisma {
     transactions?: AaveTransactionUncheckedUpdateManyWithoutPositionNestedInput
   }
 
+  export type GroupBudgetUpsertWithoutGroupInput = {
+    update: XOR<GroupBudgetUpdateWithoutGroupInput, GroupBudgetUncheckedUpdateWithoutGroupInput>
+    create: XOR<GroupBudgetCreateWithoutGroupInput, GroupBudgetUncheckedCreateWithoutGroupInput>
+    where?: GroupBudgetWhereInput
+  }
+
+  export type GroupBudgetUpdateToOneWithWhereWithoutGroupInput = {
+    where?: GroupBudgetWhereInput
+    data: XOR<GroupBudgetUpdateWithoutGroupInput, GroupBudgetUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type GroupBudgetUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthlyAmount?: FloatFieldUpdateOperationsInput | number
+    spentAmount?: FloatFieldUpdateOperationsInput | number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupBudgetUncheckedUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monthlyAmount?: FloatFieldUpdateOperationsInput | number
+    spentAmount?: FloatFieldUpdateOperationsInput | number
+    categories?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupCreateWithoutGroupBudgetInput = {
+    id?: string
+    name: string
+    description?: string | null
+    logo?: string | null
+    groupCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    privacy?: $Enums.GroupPrivacy
+    governanceType?: $Enums.GovernanceType
+    contributionAmount?: Decimal | DecimalJsLike | number | string
+    contributionFrequency?: $Enums.ContributionFrequency
+    depositGoal?: Decimal | DecimalJsLike | number | string | null
+    latePenaltyFee?: Decimal | DecimalJsLike | number | string
+    gracePeriod?: number
+    interestRate?: Decimal | DecimalJsLike | number | string
+    allowEarlyWithdrawal?: boolean
+    earlyWithdrawalFee?: Decimal | DecimalJsLike | number | string
+    requireApproval?: boolean
+    autoReminders?: boolean
+    votingThreshold?: number
+    allowLateJoining?: boolean
+    groupDuration?: number | null
+    maxMembers?: number | null
+    meetingFrequency?: $Enums.MeetingFrequency
+    groupRules?: string | null
+    bylaws?: string | null
+    tags?: string | null
+    status?: $Enums.GroupStatus
+    owner: UserCreateNestedOneWithoutOwnedGroupsInput
+    memberships?: MembershipCreateNestedManyWithoutGroupInput
+    transactions?: TransactionCreateNestedManyWithoutGroupInput
+    meetings?: MeetingCreateNestedManyWithoutGroupInput
+    invitations?: GroupInvitationCreateNestedManyWithoutGroupInput
+    contributions?: ContributionCreateNestedManyWithoutGroupInput
+    loanRequests?: LoanRequestCreateNestedManyWithoutGroupInput
+    insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
+    villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
+    aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+  }
+
+  export type GroupUncheckedCreateWithoutGroupBudgetInput = {
+    id?: string
+    name: string
+    description?: string | null
+    logo?: string | null
+    groupCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerId: string
+    privacy?: $Enums.GroupPrivacy
+    governanceType?: $Enums.GovernanceType
+    contributionAmount?: Decimal | DecimalJsLike | number | string
+    contributionFrequency?: $Enums.ContributionFrequency
+    depositGoal?: Decimal | DecimalJsLike | number | string | null
+    latePenaltyFee?: Decimal | DecimalJsLike | number | string
+    gracePeriod?: number
+    interestRate?: Decimal | DecimalJsLike | number | string
+    allowEarlyWithdrawal?: boolean
+    earlyWithdrawalFee?: Decimal | DecimalJsLike | number | string
+    requireApproval?: boolean
+    autoReminders?: boolean
+    votingThreshold?: number
+    allowLateJoining?: boolean
+    groupDuration?: number | null
+    maxMembers?: number | null
+    meetingFrequency?: $Enums.MeetingFrequency
+    groupRules?: string | null
+    bylaws?: string | null
+    tags?: string | null
+    status?: $Enums.GroupStatus
+    memberships?: MembershipUncheckedCreateNestedManyWithoutGroupInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutGroupInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutGroupInput
+    invitations?: GroupInvitationUncheckedCreateNestedManyWithoutGroupInput
+    contributions?: ContributionUncheckedCreateNestedManyWithoutGroupInput
+    loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutGroupInput
+    insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
+    villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
+    aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+  }
+
+  export type GroupCreateOrConnectWithoutGroupBudgetInput = {
+    where: GroupWhereUniqueInput
+    create: XOR<GroupCreateWithoutGroupBudgetInput, GroupUncheckedCreateWithoutGroupBudgetInput>
+  }
+
+  export type GroupUpsertWithoutGroupBudgetInput = {
+    update: XOR<GroupUpdateWithoutGroupBudgetInput, GroupUncheckedUpdateWithoutGroupBudgetInput>
+    create: XOR<GroupCreateWithoutGroupBudgetInput, GroupUncheckedCreateWithoutGroupBudgetInput>
+    where?: GroupWhereInput
+  }
+
+  export type GroupUpdateToOneWithWhereWithoutGroupBudgetInput = {
+    where?: GroupWhereInput
+    data: XOR<GroupUpdateWithoutGroupBudgetInput, GroupUncheckedUpdateWithoutGroupBudgetInput>
+  }
+
+  export type GroupUpdateWithoutGroupBudgetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    privacy?: EnumGroupPrivacyFieldUpdateOperationsInput | $Enums.GroupPrivacy
+    governanceType?: EnumGovernanceTypeFieldUpdateOperationsInput | $Enums.GovernanceType
+    contributionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    contributionFrequency?: EnumContributionFrequencyFieldUpdateOperationsInput | $Enums.ContributionFrequency
+    depositGoal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    latePenaltyFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    gracePeriod?: IntFieldUpdateOperationsInput | number
+    interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    allowEarlyWithdrawal?: BoolFieldUpdateOperationsInput | boolean
+    earlyWithdrawalFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requireApproval?: BoolFieldUpdateOperationsInput | boolean
+    autoReminders?: BoolFieldUpdateOperationsInput | boolean
+    votingThreshold?: IntFieldUpdateOperationsInput | number
+    allowLateJoining?: BoolFieldUpdateOperationsInput | boolean
+    groupDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    maxMembers?: NullableIntFieldUpdateOperationsInput | number | null
+    meetingFrequency?: EnumMeetingFrequencyFieldUpdateOperationsInput | $Enums.MeetingFrequency
+    groupRules?: NullableStringFieldUpdateOperationsInput | string | null
+    bylaws?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupStatusFieldUpdateOperationsInput | $Enums.GroupStatus
+    owner?: UserUpdateOneRequiredWithoutOwnedGroupsNestedInput
+    memberships?: MembershipUpdateManyWithoutGroupNestedInput
+    transactions?: TransactionUpdateManyWithoutGroupNestedInput
+    meetings?: MeetingUpdateManyWithoutGroupNestedInput
+    invitations?: GroupInvitationUpdateManyWithoutGroupNestedInput
+    contributions?: ContributionUpdateManyWithoutGroupNestedInput
+    loanRequests?: LoanRequestUpdateManyWithoutGroupNestedInput
+    insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
+    villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
+    aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+  }
+
+  export type GroupUncheckedUpdateWithoutGroupBudgetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    privacy?: EnumGroupPrivacyFieldUpdateOperationsInput | $Enums.GroupPrivacy
+    governanceType?: EnumGovernanceTypeFieldUpdateOperationsInput | $Enums.GovernanceType
+    contributionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    contributionFrequency?: EnumContributionFrequencyFieldUpdateOperationsInput | $Enums.ContributionFrequency
+    depositGoal?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    latePenaltyFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    gracePeriod?: IntFieldUpdateOperationsInput | number
+    interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    allowEarlyWithdrawal?: BoolFieldUpdateOperationsInput | boolean
+    earlyWithdrawalFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    requireApproval?: BoolFieldUpdateOperationsInput | boolean
+    autoReminders?: BoolFieldUpdateOperationsInput | boolean
+    votingThreshold?: IntFieldUpdateOperationsInput | number
+    allowLateJoining?: BoolFieldUpdateOperationsInput | boolean
+    groupDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    maxMembers?: NullableIntFieldUpdateOperationsInput | number | null
+    meetingFrequency?: EnumMeetingFrequencyFieldUpdateOperationsInput | $Enums.MeetingFrequency
+    groupRules?: NullableStringFieldUpdateOperationsInput | string | null
+    bylaws?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupStatusFieldUpdateOperationsInput | $Enums.GroupStatus
+    memberships?: MembershipUncheckedUpdateManyWithoutGroupNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutGroupNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutGroupNestedInput
+    invitations?: GroupInvitationUncheckedUpdateManyWithoutGroupNestedInput
+    contributions?: ContributionUncheckedUpdateManyWithoutGroupNestedInput
+    loanRequests?: LoanRequestUncheckedUpdateManyWithoutGroupNestedInput
+    insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
+    villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
+    aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+  }
+
   export type UserCreateWithoutMembershipsInput = {
     id?: string
     name?: string | null
@@ -92487,6 +94198,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutMembershipsInput = {
@@ -92527,6 +94239,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutMembershipsInput = {
@@ -92908,6 +94621,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutMembershipsInput = {
@@ -92948,6 +94662,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type VoteUpsertWithWhereUniqueWithoutMembershipInput = {
@@ -93219,6 +94934,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutTransactionsInput = {
@@ -93259,6 +94975,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutTransactionsInput = {
@@ -93491,6 +95208,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutTransactionsInput = {
@@ -93531,6 +95249,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type WalletUpsertWithoutTransactionsInput = {
@@ -94261,6 +95980,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutMeetingsInput = {
@@ -94301,6 +96021,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutMeetingsInput = {
@@ -94531,6 +96252,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutMeetingsInput = {
@@ -94571,6 +96293,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type MeetingAttendeeUpsertWithWhereUniqueWithoutMeetingInput = {
@@ -96100,6 +97823,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutInvitationsInput = {
@@ -96140,6 +97864,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutInvitationsInput = {
@@ -96338,6 +98063,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutInvitationsInput = {
@@ -96378,6 +98104,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type UserUpsertWithoutSentInvitationsInput = {
@@ -96851,6 +98578,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutContributionsInput = {
@@ -96891,6 +98619,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutContributionsInput = {
@@ -97063,6 +98792,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutContributionsInput = {
@@ -97103,6 +98833,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type TransactionUpsertWithoutContributionInput = {
@@ -97259,6 +98990,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutLoanRequestsInput = {
@@ -97299,6 +99031,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutLoanRequestsInput = {
@@ -97506,6 +99239,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutLoanRequestsInput = {
@@ -97546,6 +99280,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type TransactionUpsertWithWhereUniqueWithoutLoanRequestInput = {
@@ -98272,6 +100007,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutInsurancePoliciesInput = {
@@ -98312,6 +100048,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutInsurancePoliciesInput = {
@@ -98588,6 +100325,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutInsurancePoliciesInput = {
@@ -98628,6 +100366,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type InsuranceClaimUpsertWithWhereUniqueWithoutPolicyInput = {
@@ -99424,6 +101163,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestCreateNestedManyWithoutGroupInput
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     aavePosition?: AavePositionCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutVillageLedgerInput = {
@@ -99464,6 +101204,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutGroupInput
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     aavePosition?: AavePositionUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutVillageLedgerInput = {
@@ -99556,6 +101297,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUpdateManyWithoutGroupNestedInput
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutVillageLedgerInput = {
@@ -99596,6 +101338,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutGroupNestedInput
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type VillageLedgerEntryUpsertWithWhereUniqueWithoutVillageLedgerInput = {
@@ -100592,6 +102335,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestCreateNestedManyWithoutGroupInput
     insurancePolicies?: InsurancePolicyCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetCreateNestedOneWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutAavePositionInput = {
@@ -100632,6 +102376,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUncheckedCreateNestedManyWithoutGroupInput
     insurancePolicies?: InsurancePolicyUncheckedCreateNestedManyWithoutGroupInput
     villageLedger?: VillageLedgerUncheckedCreateNestedOneWithoutGroupInput
+    groupBudget?: GroupBudgetUncheckedCreateNestedOneWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutAavePositionInput = {
@@ -100786,6 +102531,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUpdateManyWithoutGroupNestedInput
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutAavePositionInput = {
@@ -100826,6 +102572,7 @@ export namespace Prisma {
     loanRequests?: LoanRequestUncheckedUpdateManyWithoutGroupNestedInput
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type AaveSupplyUpsertWithWhereUniqueWithoutPositionInput = {
@@ -101503,6 +103250,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutOwnerInput = {
@@ -101543,6 +103291,7 @@ export namespace Prisma {
     insurancePolicies?: InsurancePolicyUncheckedUpdateManyWithoutGroupNestedInput
     villageLedger?: VillageLedgerUncheckedUpdateOneWithoutGroupNestedInput
     aavePosition?: AavePositionUncheckedUpdateOneWithoutGroupNestedInput
+    groupBudget?: GroupBudgetUncheckedUpdateOneWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateManyWithoutOwnerInput = {

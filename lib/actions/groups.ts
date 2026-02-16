@@ -226,11 +226,17 @@ export async function createGroupMeeting(data: {
       throw new Error("Group not found");
     }
 
-    // 2. Validate user is a member of the group
+    // 2. Validate user is a member and has permission (OWNER or ADMIN only)
     const membership = group.memberships.find((m) => m.user.clerkUserId === clerkUserId)
 
     if (!membership || membership.status !== "ACTIVE") {
       throw new Error("Only active group members can create meetings")
+    }
+
+    const isGroupOwner = group.ownerId === user.id
+    const role = (membership as { role: string }).role
+    if (!isGroupOwner && role !== "OWNER" && role !== "ADMIN") {
+      throw new Error("Only group owners or admins can create meetings")
     }
 
     const validMembershipIds = new Set(group.memberships.map((m) => m.id))

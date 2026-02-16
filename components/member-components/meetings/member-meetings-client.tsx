@@ -131,6 +131,8 @@ export function MemberMeetingsClient() {
   const [isLoadingGroups, setIsLoadingGroups] = useState(true)
   const [meetings, setMeetings] = useState<any[]>([])
   const [isLoadingMeetings, setIsLoadingMeetings] = useState(true)
+  const [minutesDialogMeetings, setMinutesDialogMeetings] = useState<any[]>([])
+  const [isLoadingMinutesDialog, setIsLoadingMinutesDialog] = useState(false)
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -150,8 +152,10 @@ export function MemberMeetingsClient() {
     }
   }, [isMounted])
 
-  // Use all fetched groups (backend already filters for visibility)
-  const myManagedGroups = groups;
+  // Groups where the user is OWNER or ADMIN (can create meetings)
+  const myManagedGroups = (groups || []).filter(
+    (g) => g.userMembershipRole === "OWNER" || g.userMembershipRole === "ADMIN"
+  )
   const canCreateMeeting = myManagedGroups.length > 0
 
   // Debug: Show how many groups were loaded
@@ -250,12 +254,35 @@ export function MemberMeetingsClient() {
     fetchMeetings()
   }, [fetchMeetings])
 
-  // Refetch meetings when Minutes or Goals dialog opens so they show latest data
+  // Refetch meetings when Goals dialog opens so it shows latest data
   useEffect(() => {
-    if (showMinutesDialog || showGoalsDialog) {
+    if (showGoalsDialog) {
       fetchMeetings()
     }
-  }, [showMinutesDialog, showGoalsDialog, fetchMeetings])
+  }, [showGoalsDialog, fetchMeetings])
+
+  // When Minutes dialog opens, fetch meetings from ALL groups the user is a member of
+  useEffect(() => {
+    if (!showMinutesDialog) return
+    let cancelled = false
+    setIsLoadingMinutesDialog(true)
+    getMeetings({ groupId: "all" })
+      .then((fetched) => {
+        if (!cancelled) setMinutesDialogMeetings(fetched ?? [])
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error("Failed to fetch meetings for minutes dialog:", err)
+          toast.error("Failed to load meeting minutes")
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoadingMinutesDialog(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [showMinutesDialog])
 
   const handleCreateMeeting = async () => {
     if (!newMeeting.title || !newMeeting.date || !newMeeting.time) {
@@ -495,30 +522,30 @@ export function MemberMeetingsClient() {
               <Target className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500" />
               <span className="text-xs sm:text-sm">Financial Goals</span>
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent"
               onClick={() => setShowBudgetDialog(true)}
             >
               <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
               <span className="text-xs sm:text-sm">Budget</span>
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               variant="outline"
               className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent"
               onClick={() => setShowMinutesDialog(true)}
             >
               <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
               <span className="text-xs sm:text-sm">Minutes</span>
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               variant="outline"
               className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent"
               onClick={() => setShowRewardsDialog(true)}
             >
               <Trophy className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
               <span className="text-xs sm:text-sm">Rewards</span>
-            </Button>
+            </Button> */}
             {/* 
              */}
             {/* <Button variant="outline" className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent">
@@ -756,9 +783,9 @@ export function MemberMeetingsClient() {
               <TabsTrigger value="goals" className="text-xs sm:text-sm">
                 Goals
               </TabsTrigger>
-              <TabsTrigger value="budget" className="text-xs sm:text-sm">
+              {/* <TabsTrigger value="budget" className="text-xs sm:text-sm">
                 Budget
-              </TabsTrigger>
+              </TabsTrigger> */}
               <TabsTrigger value="minutes" className="text-xs sm:text-sm">
                 Minutes
               </TabsTrigger>
@@ -828,7 +855,7 @@ export function MemberMeetingsClient() {
                     {selectedMeeting && getRsvpIcon(selectedMeeting.myRsvp)}
                     <span className="ml-1 capitalize">{selectedMeeting?.myRsvp}</span>
                   </Badge>
-                  {selectedMeeting?.status === "upcoming" && (
+                  {/* {selectedMeeting?.status === "upcoming" && (
                     <div className="flex gap-2 mt-4">
                       <Button size="sm">
                         <CheckCircle2 className="mr-2 h-4 w-4" />
@@ -839,7 +866,7 @@ export function MemberMeetingsClient() {
                         Decline
                       </Button>
                     </div>
-                  )}
+                  )} */}
                 </CardContent>
               </Card>
 
@@ -1139,7 +1166,7 @@ export function MemberMeetingsClient() {
               )}
             </TabsContent>
 
-            <TabsContent value="budget" className="space-y-4 mt-4">
+            {/* <TabsContent value="budget" className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Group Budget</h3>
                 {selectedMeeting?.myRole === "treasurer" && (
@@ -1194,7 +1221,7 @@ export function MemberMeetingsClient() {
                   )
                 })}
               </div>
-            </TabsContent>
+            </TabsContent> */}
 
             <TabsContent value="minutes" className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
@@ -2044,7 +2071,7 @@ export function MemberMeetingsClient() {
       </Dialog>
 
       {/* Budget Dialog */}
-      <Dialog open={showBudgetDialog} onOpenChange={setShowBudgetDialog}>
+      {/* <Dialog open={showBudgetDialog} onOpenChange={setShowBudgetDialog}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -2124,9 +2151,9 @@ export function MemberMeetingsClient() {
             )}
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
-      <Dialog open={showCreateBudgetDialog} onOpenChange={setShowCreateBudgetDialog}>
+      {/* <Dialog open={showCreateBudgetDialog} onOpenChange={setShowCreateBudgetDialog}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create Budget</DialogTitle>
@@ -2247,7 +2274,7 @@ export function MemberMeetingsClient() {
             </div>
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       <Dialog open={showRewardsDialog} onOpenChange={setShowRewardsDialog}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -2613,12 +2640,18 @@ export function MemberMeetingsClient() {
               <FileText className="h-5 w-5 text-orange-500" />
               Meeting Minutes & Records
             </DialogTitle>
-            <DialogDescription>View past meeting minutes and important decisions</DialogDescription>
+            <DialogDescription>View past meeting minutes and important decisions from all your groups</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
-            {/* Past Meetings with Minutes */}
-            {(meetings || [])
+            {isLoadingMinutesDialog ? (
+              <div className="py-8 text-center text-muted-foreground">
+                <p className="text-sm">Loading meeting minutes…</p>
+              </div>
+            ) : (
+              <>
+            {/* Past Meetings with Minutes (from all groups user is a member of) */}
+            {(minutesDialogMeetings || [])
               .filter(
                 (m: any) =>
                   m.status === "completed" &&
@@ -2733,7 +2766,7 @@ export function MemberMeetingsClient() {
                 </Card>
               ))}
 
-            {(meetings || []).filter(
+            {(minutesDialogMeetings || []).filter(
               (m: any) =>
                 m.status === "completed" &&
                 (m.minutesText ||
@@ -2745,6 +2778,8 @@ export function MemberMeetingsClient() {
                 <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p>No meeting minutes available yet</p>
               </div>
+            )}
+              </>
             )}
           </div>
         </DialogContent>
