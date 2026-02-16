@@ -89,6 +89,7 @@ export const USER_WITH_TOKENS_QUERY = defineQuery(`*[
   _id,
   connectedAccounts[]{
     _key,
+    provider,
     accountId,
     email,
     accessToken,

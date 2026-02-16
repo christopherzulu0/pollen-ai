@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -28,14 +28,22 @@ import {
   Wallet,
   BarChart3,
   Trophy,
+  Plus,
+  Trash2,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Progress } from "@/components/ui/progress"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { createGroupMeeting, getGroups } from "@/lib/actions/groups"
+import { getMeetings, updateMeetingRSVP } from "@/lib/actions/meetings"
+import { toast } from "sonner"
+import { GroupWithDetails } from "@/lib/types/groups"
 
 const mockMeetings = [
   {
@@ -191,6 +199,12 @@ const rolePermissions = {
 }
 
 export function MemberMeetingsClient() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   const [searchQuery, setSearchQuery] = useState("")
   const [groupFilter, setGroupFilter] = useState("all")
   const [selectedMeeting, setSelectedMeeting] = useState<(typeof mockMeetings)[0] | null>(null)
@@ -206,10 +220,132 @@ export function MemberMeetingsClient() {
   const [showCreatePollDialog, setShowCreatePollDialog] = useState(false)
   const [showCreateGoalDialog, setShowCreateGoalDialog] = useState(false)
   const [showCreateBudgetDialog, setShowCreateBudgetDialog] = useState(false)
+  const [showCreateMeetingDialog, setShowCreateMeetingDialog] = useState(false)
+  const [isCreatingMeeting, setIsCreatingMeeting] = useState(false)
   const [pollOptions, setPollOptions] = useState(["", ""])
   const [budgetCategories, setBudgetCategories] = useState([{ name: "", allocated: 0 }])
 
-  const filteredMeetings = mockMeetings.filter((meeting) => {
+  const [newMeeting, setNewMeeting] = useState({
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    isVirtual: true,
+    location: "",
+    groupId: "", // Will be set when groups load
+  })
+
+  const [groups, setGroups] = useState<GroupWithDetails[]>([])
+  const [isLoadingGroups, setIsLoadingGroups] = useState(true)
+  const [meetings, setMeetings] = useState<any[]>([])
+  const [isLoadingMeetings, setIsLoadingMeetings] = useState(true)
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const fetchedGroups = await getGroups()
+        setGroups(fetchedGroups)
+      } catch (error) {
+        console.error("Failed to fetch groups:", error)
+        toast.error("Failed to load groups")
+      } finally {
+        setIsLoadingGroups(false)
+      }
+    }
+
+    if (isMounted) {
+      fetchGroups()
+    }
+  }, [isMounted])
+
+  // Use all fetched groups (backend already filters for visibility)
+  const myManagedGroups = groups;
+  const canCreateMeeting = myManagedGroups.length > 0
+
+  // Debug: Show how many groups were loaded
+  useEffect(() => {
+    if (!isLoadingGroups && groups.length > 0) {
+      // toast.info(`Loaded ${groups.length} groups`)
+    }
+  }, [isLoadingGroups, groups.length])
+
+  // Auto-select first group when groups load
+  useEffect(() => {
+    if (myManagedGroups.length > 0 && !newMeeting.groupId) {
+      setNewMeeting(prev => ({ ...prev, groupId: myManagedGroups[0].id }))
+    }
+  }, [myManagedGroups, newMeeting.groupId])
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      try {
+        setIsLoadingMeetings(true)
+        const fetchedMeetings = await getMeetings({
+          groupId: groupFilter
+        })
+        setMeetings(fetchedMeetings)
+      } catch (error) {
+        console.error("Failed to fetch meetings:", error)
+        toast.error("Failed to load meetings")
+      } finally {
+        setIsLoadingMeetings(false)
+      }
+    }
+
+    fetchMeetings()
+  }, [groupFilter])
+
+  const handleCreateMeeting = async () => {
+    if (!newMeeting.title || !newMeeting.date || !newMeeting.time) {
+      toast.error("Please fill in all required fields")
+      return
+    }
+
+    try {
+      setIsCreatingMeeting(true)
+      const meetingDateTime = new Date(`${newMeeting.date}T${newMeeting.time}`)
+
+      const result = await createGroupMeeting({
+        groupId: newMeeting.groupId,
+        title: newMeeting.title,
+        description: newMeeting.description,
+        date: meetingDateTime,
+        isVirtual: newMeeting.isVirtual,
+        location: newMeeting.location,
+      })
+
+      if (result.success) {
+        if (result.warning) {
+          toast.warning(result.warning, { duration: 6000 })
+        } else {
+          toast.success("Meeting created successfully!")
+        }
+        setShowCreateMeetingDialog(false)
+        setNewMeeting({
+          title: "",
+          description: "",
+          date: "",
+          time: "",
+          isVirtual: true,
+          location: "",
+          location: "",
+          groupId: myManagedGroups.length > 0 ? myManagedGroups[0].id : "",
+        })
+        // Refresh meetings
+        const fetchedMeetings = await getMeetings({ groupId: groupFilter })
+        setMeetings(fetchedMeetings)
+      } else {
+        toast.error(result.error || "Failed to create meeting")
+      }
+    } catch (error) {
+      console.error("Error creating meeting:", error)
+      toast.error("An unexpected error occurred")
+    } finally {
+      setIsCreatingMeeting(false)
+    }
+  }
+
+  const filteredMeetings = (meetings || []).filter((meeting) => {
     const matchesSearch =
       meeting.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       meeting.group.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -220,9 +356,9 @@ export function MemberMeetingsClient() {
     return matchesSearch && matchesGroup && matchesTab
   })
 
-  const upcomingCount = mockMeetings.filter((m) => m.status === "upcoming").length
-  const pastCount = mockMeetings.filter((m) => m.status === "completed" || m.status === "cancelled").length
-  const confirmedCount = mockMeetings.filter((m) => m.myRsvp === "confirmed" && m.status === "upcoming").length
+  const upcomingCount = (meetings || []).filter((m) => m.status === "upcoming").length
+  const pastCount = (meetings || []).filter((m) => m.status === "completed" || m.status === "cancelled").length
+  const confirmedCount = (meetings || []).filter((m) => m.myRsvp === "confirmed" && m.status === "upcoming").length
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -265,16 +401,26 @@ export function MemberMeetingsClient() {
     }
   }
 
+  if (!isMounted) {
+    return null
+  }
+
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6 max-w-full overflow-x-hidden">
       {/* Header */}
-      <div className="flex flex-col gap-3 sm:gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div className="min-w-0">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold truncate">My Meetings</h2>
           <p className="text-sm text-muted-foreground mt-1 truncate">
             Manage your group meeting schedule and attendance
           </p>
         </div>
+        {canCreateMeeting && (
+          <Button onClick={() => setShowCreateMeetingDialog(true)} className="w-full sm:w-auto">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Meeting
+          </Button>
+        )}
       </div>
 
       {/* Stats Cards */}
@@ -333,9 +479,11 @@ export function MemberMeetingsClient() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Groups</SelectItem>
-                  <SelectItem value="g1">Savings Circle A</SelectItem>
-                  <SelectItem value="g2">Investment Group</SelectItem>
-                  <SelectItem value="g3">Community Savers</SelectItem>
+                  {groups.map((group) => (
+                    <SelectItem key={group.id} value={group.id}>
+                      {group.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -524,7 +672,21 @@ export function MemberMeetingsClient() {
                     <div className="flex flex-wrap gap-2 pt-2">
                       {meeting.status === "upcoming" && meeting.myRsvp === "pending" && (
                         <>
-                          <Button size="sm" className="text-xs sm:text-sm flex-1 sm:flex-initial">
+                          <Button
+                            size="sm"
+                            className="text-xs sm:text-sm flex-1 sm:flex-initial"
+                            onClick={async (e) => {
+                              e.stopPropagation()
+                              const result = await updateMeetingRSVP(meeting.id, "PRESENT")
+                              if (result.success) {
+                                toast.success("RSVP confirmed!")
+                                const fetchedMeetings = await getMeetings({ groupId: groupFilter })
+                                setMeetings(fetchedMeetings)
+                              } else {
+                                toast.error(result.error || "Failed to update RSVP")
+                              }
+                            }}
+                          >
                             <CheckCircle2 className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                             Confirm RSVP
                           </Button>
@@ -532,6 +694,17 @@ export function MemberMeetingsClient() {
                             variant="outline"
                             size="sm"
                             className="text-xs sm:text-sm flex-1 sm:flex-initial bg-transparent"
+                            onClick={async (e) => {
+                              e.stopPropagation()
+                              const result = await updateMeetingRSVP(meeting.id, "ABSENT")
+                              if (result.success) {
+                                toast.success("RSVP declined")
+                                const fetchedMeetings = await getMeetings({ groupId: groupFilter })
+                                setMeetings(fetchedMeetings)
+                              } else {
+                                toast.error(result.error || "Failed to update RSVP")
+                              }
+                            }}
                           >
                             <XCircle className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                             Decline
@@ -721,7 +894,7 @@ export function MemberMeetingsClient() {
                   </Button>
                 )}
               </div>
-              {selectedMeeting?.agenda.map((item, index) => (
+              {selectedMeeting?.agenda?.map((item, index) => (
                 <Card key={index} className="bg-muted/30">
                   <CardContent className="p-4">
                     <div className="flex gap-4">
@@ -751,7 +924,7 @@ export function MemberMeetingsClient() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <RadioGroup value={poll.myVote} className="space-y-3">
-                        {poll.options.map((option: string) => {
+                        {poll.options?.map((option: string) => {
                           const votes = poll.votes[option] || 0
                           const totalVotes = Object.values(poll.votes).reduce((a: any, b: any) => a + b, 0)
                           const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0
@@ -878,7 +1051,7 @@ export function MemberMeetingsClient() {
 
               <div className="space-y-3">
                 <h4 className="font-semibold text-sm">Budget Categories</h4>
-                {selectedMeeting?.budget?.categories.map((category) => {
+                {selectedMeeting?.budget?.categories?.map((category) => {
                   const percentage = (category.spent / category.allocated) * 100
 
                   return (
@@ -1572,19 +1745,17 @@ export function MemberMeetingsClient() {
                 {mockAttendanceRewards.map((member, idx) => (
                   <div
                     key={member.userId}
-                    className={`flex items-center justify-between p-3 rounded-lg ${
-                      member.userId === "u1" ? "bg-primary/10 border border-primary/20" : "bg-muted/30"
-                    }`}
+                    className={`flex items-center justify-between p-3 rounded-lg ${member.userId === "u1" ? "bg-primary/10 border border-primary/20" : "bg-muted/30"
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`flex items-center justify-center w-8 h-8 rounded-full font-bold ${
-                          idx === 0
-                            ? "bg-yellow-500/20 text-yellow-500"
-                            : idx === 1
-                              ? "bg-gray-400/20 text-gray-400"
-                              : "bg-orange-600/20 text-orange-600"
-                        }`}
+                        className={`flex items-center justify-center w-8 h-8 rounded-full font-bold ${idx === 0
+                          ? "bg-yellow-500/20 text-yellow-500"
+                          : idx === 1
+                            ? "bg-gray-400/20 text-gray-400"
+                            : "bg-orange-600/20 text-orange-600"
+                          }`}
                       >
                         {member.rank}
                       </div>
@@ -1932,7 +2103,7 @@ export function MemberMeetingsClient() {
                         <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
-                            <span>{new Date(meeting.date).toLocaleDateString()}</span>
+                            <span suppressHydrationWarning>{new Date(meeting.date).toLocaleDateString()}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Users className="h-3 w-3" />
@@ -2026,6 +2197,133 @@ export function MemberMeetingsClient() {
               </div>
             )}
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Meeting Dialog */}
+      <Dialog open={showCreateMeetingDialog} onOpenChange={setShowCreateMeetingDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Create New Meeting</DialogTitle>
+            <DialogDescription>
+              Schedule a meeting for your group members. (Found {myManagedGroups.length} groups)
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="groupId">Select Group</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    id="groupId"
+                    role="combobox"
+                    className="w-full justify-between"
+                  >
+                    {newMeeting.groupId
+                      ? myManagedGroups.find((g) => g.id === newMeeting.groupId)?.name ?? "Select a group"
+                      : "Select a group"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="z-[100] w-[var(--radix-select-trigger-width,20rem)] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search groups..." />
+                    <CommandList className="max-h-60 overflow-y-auto">
+                      <CommandGroup>
+                        {myManagedGroups.length > 0 ? (
+                          myManagedGroups.map((group) => (
+                            <CommandItem
+                              key={group.id}
+                              value={group.name}
+                              onSelect={() => {
+                                setNewMeeting({ ...newMeeting, groupId: group.id })
+                              }}
+                            >
+                              {group.name}
+                            </CommandItem>
+                          ))
+                        ) : (
+                          <CommandItem disabled value="no-groups">
+                            No groups available
+                          </CommandItem>
+                        )}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="title">Meeting Title</Label>
+              <Input
+                id="title"
+                placeholder="e.g., Monthly Review"
+                value={newMeeting.title}
+                onChange={(e) => setNewMeeting({ ...newMeeting, title: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description (Optional)</Label>
+              <Textarea
+                id="description"
+                placeholder="What is this meeting about?"
+                value={newMeeting.description}
+                onChange={(e) => setNewMeeting({ ...newMeeting, description: e.target.value })}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="date">Date</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={newMeeting.date}
+                  onChange={(e) => setNewMeeting({ ...newMeeting, date: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="time">Time</Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={newMeeting.time}
+                  onChange={(e) => setNewMeeting({ ...newMeeting, time: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="flex items-center space-x-2 py-2">
+              <Checkbox
+                id="isVirtual"
+                checked={newMeeting.isVirtual}
+                onCheckedChange={(checked) =>
+                  setNewMeeting({ ...newMeeting, isVirtual: !!checked })
+                }
+              />
+              <Label htmlFor="isVirtual" className="flex items-center gap-2 cursor-pointer">
+                <Video className="h-4 w-4 text-blue-500" />
+                Virtual Meeting (Google Meet)
+              </Label>
+            </div>
+            {!newMeeting.isVirtual && (
+              <div className="grid gap-2">
+                <Label htmlFor="location">Physical Location</Label>
+                <Input
+                  id="location"
+                  placeholder="e.g., Office Boardroom"
+                  value={newMeeting.location}
+                  onChange={(e) => setNewMeeting({ ...newMeeting, location: e.target.value })}
+                />
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateMeetingDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleCreateMeeting} disabled={isCreatingMeeting}>
+              {isCreatingMeeting ? "Creating..." : "Create Meeting"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

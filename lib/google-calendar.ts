@@ -71,6 +71,7 @@ export async function getCalendarClient(account: ConnectedAccountWithTokens) {
   });
 
   // Check if token needs refresh
+
   if (account.expiryDate && Date.now() >= account.expiryDate - 60000) {
     try {
       const { credentials } = await oauth2Client.refreshAccessToken();
@@ -87,7 +88,6 @@ export async function getCalendarClient(account: ConnectedAccountWithTokens) {
 
       oauth2Client.setCredentials(credentials);
     } catch (error) {
-      console.error("Failed to refresh token:", error);
       throw new Error("Token refresh failed. Please reconnect your account.");
     }
   }

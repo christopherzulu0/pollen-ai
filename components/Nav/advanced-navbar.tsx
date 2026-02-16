@@ -100,7 +100,7 @@ export function AdvancedNavbar() {
     if (userRole === 'org:admin' || userRole === 'admin') {
       router.push('/Super-user');
     } else if (userRole === 'org:member' || userRole === 'member') {
-      router.push('/dashboard');
+      router.push('/member');
     }
   }, [userRole, router]);
 
