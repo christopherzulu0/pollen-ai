@@ -94,6 +94,16 @@ export type AIGoalAnalysis = $Result.DefaultSelection<Prisma.$AIGoalAnalysisPayl
  */
 export type Meeting = $Result.DefaultSelection<Prisma.$MeetingPayload>
 /**
+ * Model MeetingFinancialGoal
+ * 
+ */
+export type MeetingFinancialGoal = $Result.DefaultSelection<Prisma.$MeetingFinancialGoalPayload>
+/**
+ * Model MeetingGoalContribution
+ * 
+ */
+export type MeetingGoalContribution = $Result.DefaultSelection<Prisma.$MeetingGoalContributionPayload>
+/**
  * Model MeetingAttendee
  * 
  */
@@ -947,6 +957,26 @@ export class PrismaClient<
   get meeting(): Prisma.MeetingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.meetingFinancialGoal`: Exposes CRUD operations for the **MeetingFinancialGoal** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MeetingFinancialGoals
+    * const meetingFinancialGoals = await prisma.meetingFinancialGoal.findMany()
+    * ```
+    */
+  get meetingFinancialGoal(): Prisma.MeetingFinancialGoalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.meetingGoalContribution`: Exposes CRUD operations for the **MeetingGoalContribution** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MeetingGoalContributions
+    * const meetingGoalContributions = await prisma.meetingGoalContribution.findMany()
+    * ```
+    */
+  get meetingGoalContribution(): Prisma.MeetingGoalContributionDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.meetingAttendee`: Exposes CRUD operations for the **MeetingAttendee** model.
     * Example usage:
     * ```ts
@@ -1725,6 +1755,8 @@ export namespace Prisma {
     SavingsTransaction: 'SavingsTransaction',
     AIGoalAnalysis: 'AIGoalAnalysis',
     Meeting: 'Meeting',
+    MeetingFinancialGoal: 'MeetingFinancialGoal',
+    MeetingGoalContribution: 'MeetingGoalContribution',
     MeetingAttendee: 'MeetingAttendee',
     Vote: 'Vote',
     VoteResult: 'VoteResult',
@@ -1773,7 +1805,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "aIGoalAnalysis" | "meeting" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan" | "contactMessage" | "meetingRequest" | "insuranceProduct" | "insurancePolicy" | "insuranceClaim" | "insurancePremium" | "ledgerEntry" | "walletExecution" | "villageLedger" | "villageLedgerEntry" | "interestFlow" | "yieldSource" | "interestDistribution" | "dailyReconciliation" | "reconciliationAlert" | "memberBalance" | "hubAsset" | "aavePosition" | "aaveSupply" | "aaveBorrow" | "aaveTransaction"
+      modelProps: "user" | "blogPost" | "blogCategory" | "blogComment" | "blogBookmark" | "blogLike" | "userFollow" | "service" | "group" | "membership" | "transaction" | "personalSavings" | "savingsGoal" | "savingsTransaction" | "aIGoalAnalysis" | "meeting" | "meetingFinancialGoal" | "meetingGoalContribution" | "meetingAttendee" | "vote" | "voteResult" | "notification" | "personalLoanDocuments" | "solarLoanDocuments" | "groupInvitation" | "wallet" | "contribution" | "loanRequest" | "loanVote" | "individualLoan" | "contactMessage" | "meetingRequest" | "insuranceProduct" | "insurancePolicy" | "insuranceClaim" | "insurancePremium" | "ledgerEntry" | "walletExecution" | "villageLedger" | "villageLedgerEntry" | "interestFlow" | "yieldSource" | "interestDistribution" | "dailyReconciliation" | "reconciliationAlert" | "memberBalance" | "hubAsset" | "aavePosition" | "aaveSupply" | "aaveBorrow" | "aaveTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2958,6 +2990,154 @@ export namespace Prisma {
           count: {
             args: Prisma.MeetingCountArgs<ExtArgs>
             result: $Utils.Optional<MeetingCountAggregateOutputType> | number
+          }
+        }
+      }
+      MeetingFinancialGoal: {
+        payload: Prisma.$MeetingFinancialGoalPayload<ExtArgs>
+        fields: Prisma.MeetingFinancialGoalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MeetingFinancialGoalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MeetingFinancialGoalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>
+          }
+          findFirst: {
+            args: Prisma.MeetingFinancialGoalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MeetingFinancialGoalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>
+          }
+          findMany: {
+            args: Prisma.MeetingFinancialGoalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>[]
+          }
+          create: {
+            args: Prisma.MeetingFinancialGoalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>
+          }
+          createMany: {
+            args: Prisma.MeetingFinancialGoalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MeetingFinancialGoalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>[]
+          }
+          delete: {
+            args: Prisma.MeetingFinancialGoalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>
+          }
+          update: {
+            args: Prisma.MeetingFinancialGoalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>
+          }
+          deleteMany: {
+            args: Prisma.MeetingFinancialGoalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MeetingFinancialGoalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MeetingFinancialGoalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>[]
+          }
+          upsert: {
+            args: Prisma.MeetingFinancialGoalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingFinancialGoalPayload>
+          }
+          aggregate: {
+            args: Prisma.MeetingFinancialGoalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMeetingFinancialGoal>
+          }
+          groupBy: {
+            args: Prisma.MeetingFinancialGoalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MeetingFinancialGoalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MeetingFinancialGoalCountArgs<ExtArgs>
+            result: $Utils.Optional<MeetingFinancialGoalCountAggregateOutputType> | number
+          }
+        }
+      }
+      MeetingGoalContribution: {
+        payload: Prisma.$MeetingGoalContributionPayload<ExtArgs>
+        fields: Prisma.MeetingGoalContributionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MeetingGoalContributionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MeetingGoalContributionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>
+          }
+          findFirst: {
+            args: Prisma.MeetingGoalContributionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MeetingGoalContributionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>
+          }
+          findMany: {
+            args: Prisma.MeetingGoalContributionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>[]
+          }
+          create: {
+            args: Prisma.MeetingGoalContributionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>
+          }
+          createMany: {
+            args: Prisma.MeetingGoalContributionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MeetingGoalContributionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>[]
+          }
+          delete: {
+            args: Prisma.MeetingGoalContributionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>
+          }
+          update: {
+            args: Prisma.MeetingGoalContributionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MeetingGoalContributionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MeetingGoalContributionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MeetingGoalContributionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>[]
+          }
+          upsert: {
+            args: Prisma.MeetingGoalContributionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingGoalContributionPayload>
+          }
+          aggregate: {
+            args: Prisma.MeetingGoalContributionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMeetingGoalContribution>
+          }
+          groupBy: {
+            args: Prisma.MeetingGoalContributionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MeetingGoalContributionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MeetingGoalContributionCountArgs<ExtArgs>
+            result: $Utils.Optional<MeetingGoalContributionCountAggregateOutputType> | number
           }
         }
       }
@@ -5527,6 +5707,8 @@ export namespace Prisma {
     savingsTransaction?: SavingsTransactionOmit
     aIGoalAnalysis?: AIGoalAnalysisOmit
     meeting?: MeetingOmit
+    meetingFinancialGoal?: MeetingFinancialGoalOmit
+    meetingGoalContribution?: MeetingGoalContributionOmit
     meetingAttendee?: MeetingAttendeeOmit
     vote?: VoteOmit
     voteResult?: VoteResultOmit
@@ -5959,6 +6141,7 @@ export namespace Prisma {
     loanVotes: number
     chairedMeetings: number
     noteTakerMeetings: number
+    meetingGoalContributions: number
   }
 
   export type MembershipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5968,6 +6151,7 @@ export namespace Prisma {
     loanVotes?: boolean | MembershipCountOutputTypeCountLoanVotesArgs
     chairedMeetings?: boolean | MembershipCountOutputTypeCountChairedMeetingsArgs
     noteTakerMeetings?: boolean | MembershipCountOutputTypeCountNoteTakerMeetingsArgs
+    meetingGoalContributions?: boolean | MembershipCountOutputTypeCountMeetingGoalContributionsArgs
   }
 
   // Custom InputTypes
@@ -6023,6 +6207,13 @@ export namespace Prisma {
     where?: MeetingWhereInput
   }
 
+  /**
+   * MembershipCountOutputType without action
+   */
+  export type MembershipCountOutputTypeCountMeetingGoalContributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingGoalContributionWhereInput
+  }
+
 
   /**
    * Count Type SavingsGoalCountOutputType
@@ -6070,10 +6261,14 @@ export namespace Prisma {
 
   export type MeetingCountOutputType = {
     attendees: number
+    votes: number
+    meetingFinancialGoals: number
   }
 
   export type MeetingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     attendees?: boolean | MeetingCountOutputTypeCountAttendeesArgs
+    votes?: boolean | MeetingCountOutputTypeCountVotesArgs
+    meetingFinancialGoals?: boolean | MeetingCountOutputTypeCountMeetingFinancialGoalsArgs
   }
 
   // Custom InputTypes
@@ -6092,6 +6287,51 @@ export namespace Prisma {
    */
   export type MeetingCountOutputTypeCountAttendeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MeetingAttendeeWhereInput
+  }
+
+  /**
+   * MeetingCountOutputType without action
+   */
+  export type MeetingCountOutputTypeCountVotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VoteWhereInput
+  }
+
+  /**
+   * MeetingCountOutputType without action
+   */
+  export type MeetingCountOutputTypeCountMeetingFinancialGoalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingFinancialGoalWhereInput
+  }
+
+
+  /**
+   * Count Type MeetingFinancialGoalCountOutputType
+   */
+
+  export type MeetingFinancialGoalCountOutputType = {
+    contributions: number
+  }
+
+  export type MeetingFinancialGoalCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contributions?: boolean | MeetingFinancialGoalCountOutputTypeCountContributionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MeetingFinancialGoalCountOutputType without action
+   */
+  export type MeetingFinancialGoalCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoalCountOutputType
+     */
+    select?: MeetingFinancialGoalCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MeetingFinancialGoalCountOutputType without action
+   */
+  export type MeetingFinancialGoalCountOutputTypeCountContributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingGoalContributionWhereInput
   }
 
 
@@ -17841,6 +18081,7 @@ export namespace Prisma {
     loanVotes?: boolean | Membership$loanVotesArgs<ExtArgs>
     chairedMeetings?: boolean | Membership$chairedMeetingsArgs<ExtArgs>
     noteTakerMeetings?: boolean | Membership$noteTakerMeetingsArgs<ExtArgs>
+    meetingGoalContributions?: boolean | Membership$meetingGoalContributionsArgs<ExtArgs>
     _count?: boolean | MembershipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membership"]>
 
@@ -17894,6 +18135,7 @@ export namespace Prisma {
     loanVotes?: boolean | Membership$loanVotesArgs<ExtArgs>
     chairedMeetings?: boolean | Membership$chairedMeetingsArgs<ExtArgs>
     noteTakerMeetings?: boolean | Membership$noteTakerMeetingsArgs<ExtArgs>
+    meetingGoalContributions?: boolean | Membership$meetingGoalContributionsArgs<ExtArgs>
     _count?: boolean | MembershipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MembershipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17916,6 +18158,7 @@ export namespace Prisma {
       loanVotes: Prisma.$LoanVotePayload<ExtArgs>[]
       chairedMeetings: Prisma.$MeetingPayload<ExtArgs>[]
       noteTakerMeetings: Prisma.$MeetingPayload<ExtArgs>[]
+      meetingGoalContributions: Prisma.$MeetingGoalContributionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18329,6 +18572,7 @@ export namespace Prisma {
     loanVotes<T extends Membership$loanVotesArgs<ExtArgs> = {}>(args?: Subset<T, Membership$loanVotesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chairedMeetings<T extends Membership$chairedMeetingsArgs<ExtArgs> = {}>(args?: Subset<T, Membership$chairedMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     noteTakerMeetings<T extends Membership$noteTakerMeetingsArgs<ExtArgs> = {}>(args?: Subset<T, Membership$noteTakerMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    meetingGoalContributions<T extends Membership$meetingGoalContributionsArgs<ExtArgs> = {}>(args?: Subset<T, Membership$meetingGoalContributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18904,6 +19148,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * Membership.meetingGoalContributions
+   */
+  export type Membership$meetingGoalContributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    where?: MeetingGoalContributionWhereInput
+    orderBy?: MeetingGoalContributionOrderByWithRelationInput | MeetingGoalContributionOrderByWithRelationInput[]
+    cursor?: MeetingGoalContributionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingGoalContributionScalarFieldEnum | MeetingGoalContributionScalarFieldEnum[]
   }
 
   /**
@@ -24931,6 +25199,8 @@ export namespace Prisma {
     location: string | null
     isVirtual: boolean | null
     meetingLink: string | null
+    minutesText: string | null
+    minutesFileUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
     groupId: string | null
@@ -24946,6 +25216,8 @@ export namespace Prisma {
     location: string | null
     isVirtual: boolean | null
     meetingLink: string | null
+    minutesText: string | null
+    minutesFileUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
     groupId: string | null
@@ -24962,6 +25234,11 @@ export namespace Prisma {
     location: number
     isVirtual: number
     meetingLink: number
+    minutesText: number
+    minutesFileUrl: number
+    minutesKeyDecisions: number
+    minutesActionItems: number
+    minutesActionItemsCompleted: number
     createdAt: number
     updatedAt: number
     groupId: number
@@ -24979,6 +25256,8 @@ export namespace Prisma {
     location?: true
     isVirtual?: true
     meetingLink?: true
+    minutesText?: true
+    minutesFileUrl?: true
     createdAt?: true
     updatedAt?: true
     groupId?: true
@@ -24994,6 +25273,8 @@ export namespace Prisma {
     location?: true
     isVirtual?: true
     meetingLink?: true
+    minutesText?: true
+    minutesFileUrl?: true
     createdAt?: true
     updatedAt?: true
     groupId?: true
@@ -25010,6 +25291,11 @@ export namespace Prisma {
     location?: true
     isVirtual?: true
     meetingLink?: true
+    minutesText?: true
+    minutesFileUrl?: true
+    minutesKeyDecisions?: true
+    minutesActionItems?: true
+    minutesActionItemsCompleted?: true
     createdAt?: true
     updatedAt?: true
     groupId?: true
@@ -25099,6 +25385,11 @@ export namespace Prisma {
     location: string | null
     isVirtual: boolean
     meetingLink: string | null
+    minutesText: string | null
+    minutesFileUrl: string | null
+    minutesKeyDecisions: string[]
+    minutesActionItems: string[]
+    minutesActionItemsCompleted: boolean[]
     createdAt: Date
     updatedAt: Date
     groupId: string
@@ -25132,6 +25423,11 @@ export namespace Prisma {
     location?: boolean
     isVirtual?: boolean
     meetingLink?: boolean
+    minutesText?: boolean
+    minutesFileUrl?: boolean
+    minutesKeyDecisions?: boolean
+    minutesActionItems?: boolean
+    minutesActionItemsCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
@@ -25141,6 +25437,8 @@ export namespace Prisma {
     attendees?: boolean | Meeting$attendeesArgs<ExtArgs>
     chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
     noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
+    votes?: boolean | Meeting$votesArgs<ExtArgs>
+    meetingFinancialGoals?: boolean | Meeting$meetingFinancialGoalsArgs<ExtArgs>
     _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
@@ -25153,6 +25451,11 @@ export namespace Prisma {
     location?: boolean
     isVirtual?: boolean
     meetingLink?: boolean
+    minutesText?: boolean
+    minutesFileUrl?: boolean
+    minutesKeyDecisions?: boolean
+    minutesActionItems?: boolean
+    minutesActionItemsCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
@@ -25172,6 +25475,11 @@ export namespace Prisma {
     location?: boolean
     isVirtual?: boolean
     meetingLink?: boolean
+    minutesText?: boolean
+    minutesFileUrl?: boolean
+    minutesKeyDecisions?: boolean
+    minutesActionItems?: boolean
+    minutesActionItemsCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
@@ -25191,6 +25499,11 @@ export namespace Prisma {
     location?: boolean
     isVirtual?: boolean
     meetingLink?: boolean
+    minutesText?: boolean
+    minutesFileUrl?: boolean
+    minutesKeyDecisions?: boolean
+    minutesActionItems?: boolean
+    minutesActionItemsCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     groupId?: boolean
@@ -25198,12 +25511,14 @@ export namespace Prisma {
     noteTakerMembershipId?: boolean
   }
 
-  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "agenda" | "date" | "location" | "isVirtual" | "meetingLink" | "createdAt" | "updatedAt" | "groupId" | "chairpersonMembershipId" | "noteTakerMembershipId", ExtArgs["result"]["meeting"]>
+  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "agenda" | "date" | "location" | "isVirtual" | "meetingLink" | "minutesText" | "minutesFileUrl" | "minutesKeyDecisions" | "minutesActionItems" | "minutesActionItemsCompleted" | "createdAt" | "updatedAt" | "groupId" | "chairpersonMembershipId" | "noteTakerMembershipId", ExtArgs["result"]["meeting"]>
   export type MeetingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     group?: boolean | GroupDefaultArgs<ExtArgs>
     attendees?: boolean | Meeting$attendeesArgs<ExtArgs>
     chairperson?: boolean | Meeting$chairpersonArgs<ExtArgs>
     noteTaker?: boolean | Meeting$noteTakerArgs<ExtArgs>
+    votes?: boolean | Meeting$votesArgs<ExtArgs>
+    meetingFinancialGoals?: boolean | Meeting$meetingFinancialGoalsArgs<ExtArgs>
     _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MeetingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25224,6 +25539,8 @@ export namespace Prisma {
       attendees: Prisma.$MeetingAttendeePayload<ExtArgs>[]
       chairperson: Prisma.$MembershipPayload<ExtArgs> | null
       noteTaker: Prisma.$MembershipPayload<ExtArgs> | null
+      votes: Prisma.$VotePayload<ExtArgs>[]
+      meetingFinancialGoals: Prisma.$MeetingFinancialGoalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -25234,6 +25551,11 @@ export namespace Prisma {
       location: string | null
       isVirtual: boolean
       meetingLink: string | null
+      minutesText: string | null
+      minutesFileUrl: string | null
+      minutesKeyDecisions: string[]
+      minutesActionItems: string[]
+      minutesActionItemsCompleted: boolean[]
       createdAt: Date
       updatedAt: Date
       groupId: string
@@ -25637,6 +25959,8 @@ export namespace Prisma {
     attendees<T extends Meeting$attendeesArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$attendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chairperson<T extends Meeting$chairpersonArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$chairpersonArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     noteTaker<T extends Meeting$noteTakerArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$noteTakerArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    votes<T extends Meeting$votesArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$votesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    meetingFinancialGoals<T extends Meeting$meetingFinancialGoalsArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$meetingFinancialGoalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25674,6 +25998,11 @@ export namespace Prisma {
     readonly location: FieldRef<"Meeting", 'String'>
     readonly isVirtual: FieldRef<"Meeting", 'Boolean'>
     readonly meetingLink: FieldRef<"Meeting", 'String'>
+    readonly minutesText: FieldRef<"Meeting", 'String'>
+    readonly minutesFileUrl: FieldRef<"Meeting", 'String'>
+    readonly minutesKeyDecisions: FieldRef<"Meeting", 'String[]'>
+    readonly minutesActionItems: FieldRef<"Meeting", 'String[]'>
+    readonly minutesActionItemsCompleted: FieldRef<"Meeting", 'Boolean[]'>
     readonly createdAt: FieldRef<"Meeting", 'DateTime'>
     readonly updatedAt: FieldRef<"Meeting", 'DateTime'>
     readonly groupId: FieldRef<"Meeting", 'String'>
@@ -26137,6 +26466,54 @@ export namespace Prisma {
   }
 
   /**
+   * Meeting.votes
+   */
+  export type Meeting$votesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vote
+     */
+    select?: VoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vote
+     */
+    omit?: VoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VoteInclude<ExtArgs> | null
+    where?: VoteWhereInput
+    orderBy?: VoteOrderByWithRelationInput | VoteOrderByWithRelationInput[]
+    cursor?: VoteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VoteScalarFieldEnum | VoteScalarFieldEnum[]
+  }
+
+  /**
+   * Meeting.meetingFinancialGoals
+   */
+  export type Meeting$meetingFinancialGoalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    where?: MeetingFinancialGoalWhereInput
+    orderBy?: MeetingFinancialGoalOrderByWithRelationInput | MeetingFinancialGoalOrderByWithRelationInput[]
+    cursor?: MeetingFinancialGoalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingFinancialGoalScalarFieldEnum | MeetingFinancialGoalScalarFieldEnum[]
+  }
+
+  /**
    * Meeting without action
    */
   export type MeetingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26152,6 +26529,2284 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MeetingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MeetingFinancialGoal
+   */
+
+  export type AggregateMeetingFinancialGoal = {
+    _count: MeetingFinancialGoalCountAggregateOutputType | null
+    _avg: MeetingFinancialGoalAvgAggregateOutputType | null
+    _sum: MeetingFinancialGoalSumAggregateOutputType | null
+    _min: MeetingFinancialGoalMinAggregateOutputType | null
+    _max: MeetingFinancialGoalMaxAggregateOutputType | null
+  }
+
+  export type MeetingFinancialGoalAvgAggregateOutputType = {
+    targetAmount: number | null
+    currentAmount: number | null
+  }
+
+  export type MeetingFinancialGoalSumAggregateOutputType = {
+    targetAmount: number | null
+    currentAmount: number | null
+  }
+
+  export type MeetingFinancialGoalMinAggregateOutputType = {
+    id: string | null
+    meetingId: string | null
+    name: string | null
+    targetAmount: number | null
+    currentAmount: number | null
+    deadline: Date | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MeetingFinancialGoalMaxAggregateOutputType = {
+    id: string | null
+    meetingId: string | null
+    name: string | null
+    targetAmount: number | null
+    currentAmount: number | null
+    deadline: Date | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MeetingFinancialGoalCountAggregateOutputType = {
+    id: number
+    meetingId: number
+    name: number
+    targetAmount: number
+    currentAmount: number
+    deadline: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MeetingFinancialGoalAvgAggregateInputType = {
+    targetAmount?: true
+    currentAmount?: true
+  }
+
+  export type MeetingFinancialGoalSumAggregateInputType = {
+    targetAmount?: true
+    currentAmount?: true
+  }
+
+  export type MeetingFinancialGoalMinAggregateInputType = {
+    id?: true
+    meetingId?: true
+    name?: true
+    targetAmount?: true
+    currentAmount?: true
+    deadline?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MeetingFinancialGoalMaxAggregateInputType = {
+    id?: true
+    meetingId?: true
+    name?: true
+    targetAmount?: true
+    currentAmount?: true
+    deadline?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MeetingFinancialGoalCountAggregateInputType = {
+    id?: true
+    meetingId?: true
+    name?: true
+    targetAmount?: true
+    currentAmount?: true
+    deadline?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MeetingFinancialGoalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MeetingFinancialGoal to aggregate.
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingFinancialGoals to fetch.
+     */
+    orderBy?: MeetingFinancialGoalOrderByWithRelationInput | MeetingFinancialGoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MeetingFinancialGoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingFinancialGoals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingFinancialGoals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MeetingFinancialGoals
+    **/
+    _count?: true | MeetingFinancialGoalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MeetingFinancialGoalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MeetingFinancialGoalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MeetingFinancialGoalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MeetingFinancialGoalMaxAggregateInputType
+  }
+
+  export type GetMeetingFinancialGoalAggregateType<T extends MeetingFinancialGoalAggregateArgs> = {
+        [P in keyof T & keyof AggregateMeetingFinancialGoal]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMeetingFinancialGoal[P]>
+      : GetScalarType<T[P], AggregateMeetingFinancialGoal[P]>
+  }
+
+
+
+
+  export type MeetingFinancialGoalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingFinancialGoalWhereInput
+    orderBy?: MeetingFinancialGoalOrderByWithAggregationInput | MeetingFinancialGoalOrderByWithAggregationInput[]
+    by: MeetingFinancialGoalScalarFieldEnum[] | MeetingFinancialGoalScalarFieldEnum
+    having?: MeetingFinancialGoalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MeetingFinancialGoalCountAggregateInputType | true
+    _avg?: MeetingFinancialGoalAvgAggregateInputType
+    _sum?: MeetingFinancialGoalSumAggregateInputType
+    _min?: MeetingFinancialGoalMinAggregateInputType
+    _max?: MeetingFinancialGoalMaxAggregateInputType
+  }
+
+  export type MeetingFinancialGoalGroupByOutputType = {
+    id: string
+    meetingId: string
+    name: string
+    targetAmount: number
+    currentAmount: number
+    deadline: Date | null
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MeetingFinancialGoalCountAggregateOutputType | null
+    _avg: MeetingFinancialGoalAvgAggregateOutputType | null
+    _sum: MeetingFinancialGoalSumAggregateOutputType | null
+    _min: MeetingFinancialGoalMinAggregateOutputType | null
+    _max: MeetingFinancialGoalMaxAggregateOutputType | null
+  }
+
+  type GetMeetingFinancialGoalGroupByPayload<T extends MeetingFinancialGoalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MeetingFinancialGoalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MeetingFinancialGoalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MeetingFinancialGoalGroupByOutputType[P]>
+            : GetScalarType<T[P], MeetingFinancialGoalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MeetingFinancialGoalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    meetingId?: boolean
+    name?: boolean
+    targetAmount?: boolean
+    currentAmount?: boolean
+    deadline?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    contributions?: boolean | MeetingFinancialGoal$contributionsArgs<ExtArgs>
+    _count?: boolean | MeetingFinancialGoalCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingFinancialGoal"]>
+
+  export type MeetingFinancialGoalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    meetingId?: boolean
+    name?: boolean
+    targetAmount?: boolean
+    currentAmount?: boolean
+    deadline?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingFinancialGoal"]>
+
+  export type MeetingFinancialGoalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    meetingId?: boolean
+    name?: boolean
+    targetAmount?: boolean
+    currentAmount?: boolean
+    deadline?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingFinancialGoal"]>
+
+  export type MeetingFinancialGoalSelectScalar = {
+    id?: boolean
+    meetingId?: boolean
+    name?: boolean
+    targetAmount?: boolean
+    currentAmount?: boolean
+    deadline?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MeetingFinancialGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "meetingId" | "name" | "targetAmount" | "currentAmount" | "deadline" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["meetingFinancialGoal"]>
+  export type MeetingFinancialGoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    contributions?: boolean | MeetingFinancialGoal$contributionsArgs<ExtArgs>
+    _count?: boolean | MeetingFinancialGoalCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MeetingFinancialGoalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+  }
+  export type MeetingFinancialGoalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+  }
+
+  export type $MeetingFinancialGoalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MeetingFinancialGoal"
+    objects: {
+      meeting: Prisma.$MeetingPayload<ExtArgs>
+      contributions: Prisma.$MeetingGoalContributionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      meetingId: string
+      name: string
+      targetAmount: number
+      currentAmount: number
+      deadline: Date | null
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["meetingFinancialGoal"]>
+    composites: {}
+  }
+
+  type MeetingFinancialGoalGetPayload<S extends boolean | null | undefined | MeetingFinancialGoalDefaultArgs> = $Result.GetResult<Prisma.$MeetingFinancialGoalPayload, S>
+
+  type MeetingFinancialGoalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MeetingFinancialGoalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MeetingFinancialGoalCountAggregateInputType | true
+    }
+
+  export interface MeetingFinancialGoalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MeetingFinancialGoal'], meta: { name: 'MeetingFinancialGoal' } }
+    /**
+     * Find zero or one MeetingFinancialGoal that matches the filter.
+     * @param {MeetingFinancialGoalFindUniqueArgs} args - Arguments to find a MeetingFinancialGoal
+     * @example
+     * // Get one MeetingFinancialGoal
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MeetingFinancialGoalFindUniqueArgs>(args: SelectSubset<T, MeetingFinancialGoalFindUniqueArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MeetingFinancialGoal that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MeetingFinancialGoalFindUniqueOrThrowArgs} args - Arguments to find a MeetingFinancialGoal
+     * @example
+     * // Get one MeetingFinancialGoal
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MeetingFinancialGoalFindUniqueOrThrowArgs>(args: SelectSubset<T, MeetingFinancialGoalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MeetingFinancialGoal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalFindFirstArgs} args - Arguments to find a MeetingFinancialGoal
+     * @example
+     * // Get one MeetingFinancialGoal
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MeetingFinancialGoalFindFirstArgs>(args?: SelectSubset<T, MeetingFinancialGoalFindFirstArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MeetingFinancialGoal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalFindFirstOrThrowArgs} args - Arguments to find a MeetingFinancialGoal
+     * @example
+     * // Get one MeetingFinancialGoal
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MeetingFinancialGoalFindFirstOrThrowArgs>(args?: SelectSubset<T, MeetingFinancialGoalFindFirstOrThrowArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MeetingFinancialGoals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MeetingFinancialGoals
+     * const meetingFinancialGoals = await prisma.meetingFinancialGoal.findMany()
+     * 
+     * // Get first 10 MeetingFinancialGoals
+     * const meetingFinancialGoals = await prisma.meetingFinancialGoal.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const meetingFinancialGoalWithIdOnly = await prisma.meetingFinancialGoal.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MeetingFinancialGoalFindManyArgs>(args?: SelectSubset<T, MeetingFinancialGoalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MeetingFinancialGoal.
+     * @param {MeetingFinancialGoalCreateArgs} args - Arguments to create a MeetingFinancialGoal.
+     * @example
+     * // Create one MeetingFinancialGoal
+     * const MeetingFinancialGoal = await prisma.meetingFinancialGoal.create({
+     *   data: {
+     *     // ... data to create a MeetingFinancialGoal
+     *   }
+     * })
+     * 
+     */
+    create<T extends MeetingFinancialGoalCreateArgs>(args: SelectSubset<T, MeetingFinancialGoalCreateArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MeetingFinancialGoals.
+     * @param {MeetingFinancialGoalCreateManyArgs} args - Arguments to create many MeetingFinancialGoals.
+     * @example
+     * // Create many MeetingFinancialGoals
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MeetingFinancialGoalCreateManyArgs>(args?: SelectSubset<T, MeetingFinancialGoalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MeetingFinancialGoals and returns the data saved in the database.
+     * @param {MeetingFinancialGoalCreateManyAndReturnArgs} args - Arguments to create many MeetingFinancialGoals.
+     * @example
+     * // Create many MeetingFinancialGoals
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MeetingFinancialGoals and only return the `id`
+     * const meetingFinancialGoalWithIdOnly = await prisma.meetingFinancialGoal.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MeetingFinancialGoalCreateManyAndReturnArgs>(args?: SelectSubset<T, MeetingFinancialGoalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MeetingFinancialGoal.
+     * @param {MeetingFinancialGoalDeleteArgs} args - Arguments to delete one MeetingFinancialGoal.
+     * @example
+     * // Delete one MeetingFinancialGoal
+     * const MeetingFinancialGoal = await prisma.meetingFinancialGoal.delete({
+     *   where: {
+     *     // ... filter to delete one MeetingFinancialGoal
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MeetingFinancialGoalDeleteArgs>(args: SelectSubset<T, MeetingFinancialGoalDeleteArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MeetingFinancialGoal.
+     * @param {MeetingFinancialGoalUpdateArgs} args - Arguments to update one MeetingFinancialGoal.
+     * @example
+     * // Update one MeetingFinancialGoal
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MeetingFinancialGoalUpdateArgs>(args: SelectSubset<T, MeetingFinancialGoalUpdateArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MeetingFinancialGoals.
+     * @param {MeetingFinancialGoalDeleteManyArgs} args - Arguments to filter MeetingFinancialGoals to delete.
+     * @example
+     * // Delete a few MeetingFinancialGoals
+     * const { count } = await prisma.meetingFinancialGoal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MeetingFinancialGoalDeleteManyArgs>(args?: SelectSubset<T, MeetingFinancialGoalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MeetingFinancialGoals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MeetingFinancialGoals
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MeetingFinancialGoalUpdateManyArgs>(args: SelectSubset<T, MeetingFinancialGoalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MeetingFinancialGoals and returns the data updated in the database.
+     * @param {MeetingFinancialGoalUpdateManyAndReturnArgs} args - Arguments to update many MeetingFinancialGoals.
+     * @example
+     * // Update many MeetingFinancialGoals
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MeetingFinancialGoals and only return the `id`
+     * const meetingFinancialGoalWithIdOnly = await prisma.meetingFinancialGoal.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MeetingFinancialGoalUpdateManyAndReturnArgs>(args: SelectSubset<T, MeetingFinancialGoalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MeetingFinancialGoal.
+     * @param {MeetingFinancialGoalUpsertArgs} args - Arguments to update or create a MeetingFinancialGoal.
+     * @example
+     * // Update or create a MeetingFinancialGoal
+     * const meetingFinancialGoal = await prisma.meetingFinancialGoal.upsert({
+     *   create: {
+     *     // ... data to create a MeetingFinancialGoal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MeetingFinancialGoal we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MeetingFinancialGoalUpsertArgs>(args: SelectSubset<T, MeetingFinancialGoalUpsertArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MeetingFinancialGoals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalCountArgs} args - Arguments to filter MeetingFinancialGoals to count.
+     * @example
+     * // Count the number of MeetingFinancialGoals
+     * const count = await prisma.meetingFinancialGoal.count({
+     *   where: {
+     *     // ... the filter for the MeetingFinancialGoals we want to count
+     *   }
+     * })
+    **/
+    count<T extends MeetingFinancialGoalCountArgs>(
+      args?: Subset<T, MeetingFinancialGoalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MeetingFinancialGoalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MeetingFinancialGoal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MeetingFinancialGoalAggregateArgs>(args: Subset<T, MeetingFinancialGoalAggregateArgs>): Prisma.PrismaPromise<GetMeetingFinancialGoalAggregateType<T>>
+
+    /**
+     * Group by MeetingFinancialGoal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFinancialGoalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MeetingFinancialGoalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MeetingFinancialGoalGroupByArgs['orderBy'] }
+        : { orderBy?: MeetingFinancialGoalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MeetingFinancialGoalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMeetingFinancialGoalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MeetingFinancialGoal model
+   */
+  readonly fields: MeetingFinancialGoalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MeetingFinancialGoal.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MeetingFinancialGoalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    meeting<T extends MeetingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MeetingDefaultArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    contributions<T extends MeetingFinancialGoal$contributionsArgs<ExtArgs> = {}>(args?: Subset<T, MeetingFinancialGoal$contributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MeetingFinancialGoal model
+   */
+  interface MeetingFinancialGoalFieldRefs {
+    readonly id: FieldRef<"MeetingFinancialGoal", 'String'>
+    readonly meetingId: FieldRef<"MeetingFinancialGoal", 'String'>
+    readonly name: FieldRef<"MeetingFinancialGoal", 'String'>
+    readonly targetAmount: FieldRef<"MeetingFinancialGoal", 'Float'>
+    readonly currentAmount: FieldRef<"MeetingFinancialGoal", 'Float'>
+    readonly deadline: FieldRef<"MeetingFinancialGoal", 'DateTime'>
+    readonly description: FieldRef<"MeetingFinancialGoal", 'String'>
+    readonly createdAt: FieldRef<"MeetingFinancialGoal", 'DateTime'>
+    readonly updatedAt: FieldRef<"MeetingFinancialGoal", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MeetingFinancialGoal findUnique
+   */
+  export type MeetingFinancialGoalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingFinancialGoal to fetch.
+     */
+    where: MeetingFinancialGoalWhereUniqueInput
+  }
+
+  /**
+   * MeetingFinancialGoal findUniqueOrThrow
+   */
+  export type MeetingFinancialGoalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingFinancialGoal to fetch.
+     */
+    where: MeetingFinancialGoalWhereUniqueInput
+  }
+
+  /**
+   * MeetingFinancialGoal findFirst
+   */
+  export type MeetingFinancialGoalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingFinancialGoal to fetch.
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingFinancialGoals to fetch.
+     */
+    orderBy?: MeetingFinancialGoalOrderByWithRelationInput | MeetingFinancialGoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MeetingFinancialGoals.
+     */
+    cursor?: MeetingFinancialGoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingFinancialGoals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingFinancialGoals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingFinancialGoals.
+     */
+    distinct?: MeetingFinancialGoalScalarFieldEnum | MeetingFinancialGoalScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingFinancialGoal findFirstOrThrow
+   */
+  export type MeetingFinancialGoalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingFinancialGoal to fetch.
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingFinancialGoals to fetch.
+     */
+    orderBy?: MeetingFinancialGoalOrderByWithRelationInput | MeetingFinancialGoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MeetingFinancialGoals.
+     */
+    cursor?: MeetingFinancialGoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingFinancialGoals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingFinancialGoals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingFinancialGoals.
+     */
+    distinct?: MeetingFinancialGoalScalarFieldEnum | MeetingFinancialGoalScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingFinancialGoal findMany
+   */
+  export type MeetingFinancialGoalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingFinancialGoals to fetch.
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingFinancialGoals to fetch.
+     */
+    orderBy?: MeetingFinancialGoalOrderByWithRelationInput | MeetingFinancialGoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MeetingFinancialGoals.
+     */
+    cursor?: MeetingFinancialGoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingFinancialGoals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingFinancialGoals.
+     */
+    skip?: number
+    distinct?: MeetingFinancialGoalScalarFieldEnum | MeetingFinancialGoalScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingFinancialGoal create
+   */
+  export type MeetingFinancialGoalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MeetingFinancialGoal.
+     */
+    data: XOR<MeetingFinancialGoalCreateInput, MeetingFinancialGoalUncheckedCreateInput>
+  }
+
+  /**
+   * MeetingFinancialGoal createMany
+   */
+  export type MeetingFinancialGoalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MeetingFinancialGoals.
+     */
+    data: MeetingFinancialGoalCreateManyInput | MeetingFinancialGoalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MeetingFinancialGoal createManyAndReturn
+   */
+  export type MeetingFinancialGoalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * The data used to create many MeetingFinancialGoals.
+     */
+    data: MeetingFinancialGoalCreateManyInput | MeetingFinancialGoalCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MeetingFinancialGoal update
+   */
+  export type MeetingFinancialGoalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MeetingFinancialGoal.
+     */
+    data: XOR<MeetingFinancialGoalUpdateInput, MeetingFinancialGoalUncheckedUpdateInput>
+    /**
+     * Choose, which MeetingFinancialGoal to update.
+     */
+    where: MeetingFinancialGoalWhereUniqueInput
+  }
+
+  /**
+   * MeetingFinancialGoal updateMany
+   */
+  export type MeetingFinancialGoalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MeetingFinancialGoals.
+     */
+    data: XOR<MeetingFinancialGoalUpdateManyMutationInput, MeetingFinancialGoalUncheckedUpdateManyInput>
+    /**
+     * Filter which MeetingFinancialGoals to update
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * Limit how many MeetingFinancialGoals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MeetingFinancialGoal updateManyAndReturn
+   */
+  export type MeetingFinancialGoalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * The data used to update MeetingFinancialGoals.
+     */
+    data: XOR<MeetingFinancialGoalUpdateManyMutationInput, MeetingFinancialGoalUncheckedUpdateManyInput>
+    /**
+     * Filter which MeetingFinancialGoals to update
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * Limit how many MeetingFinancialGoals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MeetingFinancialGoal upsert
+   */
+  export type MeetingFinancialGoalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MeetingFinancialGoal to update in case it exists.
+     */
+    where: MeetingFinancialGoalWhereUniqueInput
+    /**
+     * In case the MeetingFinancialGoal found by the `where` argument doesn't exist, create a new MeetingFinancialGoal with this data.
+     */
+    create: XOR<MeetingFinancialGoalCreateInput, MeetingFinancialGoalUncheckedCreateInput>
+    /**
+     * In case the MeetingFinancialGoal was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MeetingFinancialGoalUpdateInput, MeetingFinancialGoalUncheckedUpdateInput>
+  }
+
+  /**
+   * MeetingFinancialGoal delete
+   */
+  export type MeetingFinancialGoalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+    /**
+     * Filter which MeetingFinancialGoal to delete.
+     */
+    where: MeetingFinancialGoalWhereUniqueInput
+  }
+
+  /**
+   * MeetingFinancialGoal deleteMany
+   */
+  export type MeetingFinancialGoalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MeetingFinancialGoals to delete
+     */
+    where?: MeetingFinancialGoalWhereInput
+    /**
+     * Limit how many MeetingFinancialGoals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MeetingFinancialGoal.contributions
+   */
+  export type MeetingFinancialGoal$contributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    where?: MeetingGoalContributionWhereInput
+    orderBy?: MeetingGoalContributionOrderByWithRelationInput | MeetingGoalContributionOrderByWithRelationInput[]
+    cursor?: MeetingGoalContributionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingGoalContributionScalarFieldEnum | MeetingGoalContributionScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingFinancialGoal without action
+   */
+  export type MeetingFinancialGoalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingFinancialGoal
+     */
+    select?: MeetingFinancialGoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingFinancialGoal
+     */
+    omit?: MeetingFinancialGoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingFinancialGoalInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MeetingGoalContribution
+   */
+
+  export type AggregateMeetingGoalContribution = {
+    _count: MeetingGoalContributionCountAggregateOutputType | null
+    _avg: MeetingGoalContributionAvgAggregateOutputType | null
+    _sum: MeetingGoalContributionSumAggregateOutputType | null
+    _min: MeetingGoalContributionMinAggregateOutputType | null
+    _max: MeetingGoalContributionMaxAggregateOutputType | null
+  }
+
+  export type MeetingGoalContributionAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type MeetingGoalContributionSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type MeetingGoalContributionMinAggregateOutputType = {
+    id: string | null
+    goalId: string | null
+    membershipId: string | null
+    amount: number | null
+    createdAt: Date | null
+  }
+
+  export type MeetingGoalContributionMaxAggregateOutputType = {
+    id: string | null
+    goalId: string | null
+    membershipId: string | null
+    amount: number | null
+    createdAt: Date | null
+  }
+
+  export type MeetingGoalContributionCountAggregateOutputType = {
+    id: number
+    goalId: number
+    membershipId: number
+    amount: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type MeetingGoalContributionAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type MeetingGoalContributionSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type MeetingGoalContributionMinAggregateInputType = {
+    id?: true
+    goalId?: true
+    membershipId?: true
+    amount?: true
+    createdAt?: true
+  }
+
+  export type MeetingGoalContributionMaxAggregateInputType = {
+    id?: true
+    goalId?: true
+    membershipId?: true
+    amount?: true
+    createdAt?: true
+  }
+
+  export type MeetingGoalContributionCountAggregateInputType = {
+    id?: true
+    goalId?: true
+    membershipId?: true
+    amount?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type MeetingGoalContributionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MeetingGoalContribution to aggregate.
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingGoalContributions to fetch.
+     */
+    orderBy?: MeetingGoalContributionOrderByWithRelationInput | MeetingGoalContributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MeetingGoalContributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingGoalContributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingGoalContributions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MeetingGoalContributions
+    **/
+    _count?: true | MeetingGoalContributionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MeetingGoalContributionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MeetingGoalContributionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MeetingGoalContributionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MeetingGoalContributionMaxAggregateInputType
+  }
+
+  export type GetMeetingGoalContributionAggregateType<T extends MeetingGoalContributionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMeetingGoalContribution]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMeetingGoalContribution[P]>
+      : GetScalarType<T[P], AggregateMeetingGoalContribution[P]>
+  }
+
+
+
+
+  export type MeetingGoalContributionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingGoalContributionWhereInput
+    orderBy?: MeetingGoalContributionOrderByWithAggregationInput | MeetingGoalContributionOrderByWithAggregationInput[]
+    by: MeetingGoalContributionScalarFieldEnum[] | MeetingGoalContributionScalarFieldEnum
+    having?: MeetingGoalContributionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MeetingGoalContributionCountAggregateInputType | true
+    _avg?: MeetingGoalContributionAvgAggregateInputType
+    _sum?: MeetingGoalContributionSumAggregateInputType
+    _min?: MeetingGoalContributionMinAggregateInputType
+    _max?: MeetingGoalContributionMaxAggregateInputType
+  }
+
+  export type MeetingGoalContributionGroupByOutputType = {
+    id: string
+    goalId: string
+    membershipId: string
+    amount: number
+    createdAt: Date
+    _count: MeetingGoalContributionCountAggregateOutputType | null
+    _avg: MeetingGoalContributionAvgAggregateOutputType | null
+    _sum: MeetingGoalContributionSumAggregateOutputType | null
+    _min: MeetingGoalContributionMinAggregateOutputType | null
+    _max: MeetingGoalContributionMaxAggregateOutputType | null
+  }
+
+  type GetMeetingGoalContributionGroupByPayload<T extends MeetingGoalContributionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MeetingGoalContributionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MeetingGoalContributionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MeetingGoalContributionGroupByOutputType[P]>
+            : GetScalarType<T[P], MeetingGoalContributionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MeetingGoalContributionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    goalId?: boolean
+    membershipId?: boolean
+    amount?: boolean
+    createdAt?: boolean
+    goal?: boolean | MeetingFinancialGoalDefaultArgs<ExtArgs>
+    membership?: boolean | MembershipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingGoalContribution"]>
+
+  export type MeetingGoalContributionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    goalId?: boolean
+    membershipId?: boolean
+    amount?: boolean
+    createdAt?: boolean
+    goal?: boolean | MeetingFinancialGoalDefaultArgs<ExtArgs>
+    membership?: boolean | MembershipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingGoalContribution"]>
+
+  export type MeetingGoalContributionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    goalId?: boolean
+    membershipId?: boolean
+    amount?: boolean
+    createdAt?: boolean
+    goal?: boolean | MeetingFinancialGoalDefaultArgs<ExtArgs>
+    membership?: boolean | MembershipDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingGoalContribution"]>
+
+  export type MeetingGoalContributionSelectScalar = {
+    id?: boolean
+    goalId?: boolean
+    membershipId?: boolean
+    amount?: boolean
+    createdAt?: boolean
+  }
+
+  export type MeetingGoalContributionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "goalId" | "membershipId" | "amount" | "createdAt", ExtArgs["result"]["meetingGoalContribution"]>
+  export type MeetingGoalContributionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    goal?: boolean | MeetingFinancialGoalDefaultArgs<ExtArgs>
+    membership?: boolean | MembershipDefaultArgs<ExtArgs>
+  }
+  export type MeetingGoalContributionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    goal?: boolean | MeetingFinancialGoalDefaultArgs<ExtArgs>
+    membership?: boolean | MembershipDefaultArgs<ExtArgs>
+  }
+  export type MeetingGoalContributionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    goal?: boolean | MeetingFinancialGoalDefaultArgs<ExtArgs>
+    membership?: boolean | MembershipDefaultArgs<ExtArgs>
+  }
+
+  export type $MeetingGoalContributionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MeetingGoalContribution"
+    objects: {
+      goal: Prisma.$MeetingFinancialGoalPayload<ExtArgs>
+      membership: Prisma.$MembershipPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      goalId: string
+      membershipId: string
+      amount: number
+      createdAt: Date
+    }, ExtArgs["result"]["meetingGoalContribution"]>
+    composites: {}
+  }
+
+  type MeetingGoalContributionGetPayload<S extends boolean | null | undefined | MeetingGoalContributionDefaultArgs> = $Result.GetResult<Prisma.$MeetingGoalContributionPayload, S>
+
+  type MeetingGoalContributionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MeetingGoalContributionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MeetingGoalContributionCountAggregateInputType | true
+    }
+
+  export interface MeetingGoalContributionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MeetingGoalContribution'], meta: { name: 'MeetingGoalContribution' } }
+    /**
+     * Find zero or one MeetingGoalContribution that matches the filter.
+     * @param {MeetingGoalContributionFindUniqueArgs} args - Arguments to find a MeetingGoalContribution
+     * @example
+     * // Get one MeetingGoalContribution
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MeetingGoalContributionFindUniqueArgs>(args: SelectSubset<T, MeetingGoalContributionFindUniqueArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MeetingGoalContribution that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MeetingGoalContributionFindUniqueOrThrowArgs} args - Arguments to find a MeetingGoalContribution
+     * @example
+     * // Get one MeetingGoalContribution
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MeetingGoalContributionFindUniqueOrThrowArgs>(args: SelectSubset<T, MeetingGoalContributionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MeetingGoalContribution that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionFindFirstArgs} args - Arguments to find a MeetingGoalContribution
+     * @example
+     * // Get one MeetingGoalContribution
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MeetingGoalContributionFindFirstArgs>(args?: SelectSubset<T, MeetingGoalContributionFindFirstArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MeetingGoalContribution that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionFindFirstOrThrowArgs} args - Arguments to find a MeetingGoalContribution
+     * @example
+     * // Get one MeetingGoalContribution
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MeetingGoalContributionFindFirstOrThrowArgs>(args?: SelectSubset<T, MeetingGoalContributionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MeetingGoalContributions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MeetingGoalContributions
+     * const meetingGoalContributions = await prisma.meetingGoalContribution.findMany()
+     * 
+     * // Get first 10 MeetingGoalContributions
+     * const meetingGoalContributions = await prisma.meetingGoalContribution.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const meetingGoalContributionWithIdOnly = await prisma.meetingGoalContribution.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MeetingGoalContributionFindManyArgs>(args?: SelectSubset<T, MeetingGoalContributionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MeetingGoalContribution.
+     * @param {MeetingGoalContributionCreateArgs} args - Arguments to create a MeetingGoalContribution.
+     * @example
+     * // Create one MeetingGoalContribution
+     * const MeetingGoalContribution = await prisma.meetingGoalContribution.create({
+     *   data: {
+     *     // ... data to create a MeetingGoalContribution
+     *   }
+     * })
+     * 
+     */
+    create<T extends MeetingGoalContributionCreateArgs>(args: SelectSubset<T, MeetingGoalContributionCreateArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MeetingGoalContributions.
+     * @param {MeetingGoalContributionCreateManyArgs} args - Arguments to create many MeetingGoalContributions.
+     * @example
+     * // Create many MeetingGoalContributions
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MeetingGoalContributionCreateManyArgs>(args?: SelectSubset<T, MeetingGoalContributionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MeetingGoalContributions and returns the data saved in the database.
+     * @param {MeetingGoalContributionCreateManyAndReturnArgs} args - Arguments to create many MeetingGoalContributions.
+     * @example
+     * // Create many MeetingGoalContributions
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MeetingGoalContributions and only return the `id`
+     * const meetingGoalContributionWithIdOnly = await prisma.meetingGoalContribution.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MeetingGoalContributionCreateManyAndReturnArgs>(args?: SelectSubset<T, MeetingGoalContributionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MeetingGoalContribution.
+     * @param {MeetingGoalContributionDeleteArgs} args - Arguments to delete one MeetingGoalContribution.
+     * @example
+     * // Delete one MeetingGoalContribution
+     * const MeetingGoalContribution = await prisma.meetingGoalContribution.delete({
+     *   where: {
+     *     // ... filter to delete one MeetingGoalContribution
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MeetingGoalContributionDeleteArgs>(args: SelectSubset<T, MeetingGoalContributionDeleteArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MeetingGoalContribution.
+     * @param {MeetingGoalContributionUpdateArgs} args - Arguments to update one MeetingGoalContribution.
+     * @example
+     * // Update one MeetingGoalContribution
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MeetingGoalContributionUpdateArgs>(args: SelectSubset<T, MeetingGoalContributionUpdateArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MeetingGoalContributions.
+     * @param {MeetingGoalContributionDeleteManyArgs} args - Arguments to filter MeetingGoalContributions to delete.
+     * @example
+     * // Delete a few MeetingGoalContributions
+     * const { count } = await prisma.meetingGoalContribution.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MeetingGoalContributionDeleteManyArgs>(args?: SelectSubset<T, MeetingGoalContributionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MeetingGoalContributions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MeetingGoalContributions
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MeetingGoalContributionUpdateManyArgs>(args: SelectSubset<T, MeetingGoalContributionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MeetingGoalContributions and returns the data updated in the database.
+     * @param {MeetingGoalContributionUpdateManyAndReturnArgs} args - Arguments to update many MeetingGoalContributions.
+     * @example
+     * // Update many MeetingGoalContributions
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MeetingGoalContributions and only return the `id`
+     * const meetingGoalContributionWithIdOnly = await prisma.meetingGoalContribution.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MeetingGoalContributionUpdateManyAndReturnArgs>(args: SelectSubset<T, MeetingGoalContributionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MeetingGoalContribution.
+     * @param {MeetingGoalContributionUpsertArgs} args - Arguments to update or create a MeetingGoalContribution.
+     * @example
+     * // Update or create a MeetingGoalContribution
+     * const meetingGoalContribution = await prisma.meetingGoalContribution.upsert({
+     *   create: {
+     *     // ... data to create a MeetingGoalContribution
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MeetingGoalContribution we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MeetingGoalContributionUpsertArgs>(args: SelectSubset<T, MeetingGoalContributionUpsertArgs<ExtArgs>>): Prisma__MeetingGoalContributionClient<$Result.GetResult<Prisma.$MeetingGoalContributionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MeetingGoalContributions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionCountArgs} args - Arguments to filter MeetingGoalContributions to count.
+     * @example
+     * // Count the number of MeetingGoalContributions
+     * const count = await prisma.meetingGoalContribution.count({
+     *   where: {
+     *     // ... the filter for the MeetingGoalContributions we want to count
+     *   }
+     * })
+    **/
+    count<T extends MeetingGoalContributionCountArgs>(
+      args?: Subset<T, MeetingGoalContributionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MeetingGoalContributionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MeetingGoalContribution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MeetingGoalContributionAggregateArgs>(args: Subset<T, MeetingGoalContributionAggregateArgs>): Prisma.PrismaPromise<GetMeetingGoalContributionAggregateType<T>>
+
+    /**
+     * Group by MeetingGoalContribution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGoalContributionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MeetingGoalContributionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MeetingGoalContributionGroupByArgs['orderBy'] }
+        : { orderBy?: MeetingGoalContributionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MeetingGoalContributionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMeetingGoalContributionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MeetingGoalContribution model
+   */
+  readonly fields: MeetingGoalContributionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MeetingGoalContribution.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MeetingGoalContributionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    goal<T extends MeetingFinancialGoalDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MeetingFinancialGoalDefaultArgs<ExtArgs>>): Prisma__MeetingFinancialGoalClient<$Result.GetResult<Prisma.$MeetingFinancialGoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    membership<T extends MembershipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MembershipDefaultArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MeetingGoalContribution model
+   */
+  interface MeetingGoalContributionFieldRefs {
+    readonly id: FieldRef<"MeetingGoalContribution", 'String'>
+    readonly goalId: FieldRef<"MeetingGoalContribution", 'String'>
+    readonly membershipId: FieldRef<"MeetingGoalContribution", 'String'>
+    readonly amount: FieldRef<"MeetingGoalContribution", 'Float'>
+    readonly createdAt: FieldRef<"MeetingGoalContribution", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MeetingGoalContribution findUnique
+   */
+  export type MeetingGoalContributionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingGoalContribution to fetch.
+     */
+    where: MeetingGoalContributionWhereUniqueInput
+  }
+
+  /**
+   * MeetingGoalContribution findUniqueOrThrow
+   */
+  export type MeetingGoalContributionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingGoalContribution to fetch.
+     */
+    where: MeetingGoalContributionWhereUniqueInput
+  }
+
+  /**
+   * MeetingGoalContribution findFirst
+   */
+  export type MeetingGoalContributionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingGoalContribution to fetch.
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingGoalContributions to fetch.
+     */
+    orderBy?: MeetingGoalContributionOrderByWithRelationInput | MeetingGoalContributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MeetingGoalContributions.
+     */
+    cursor?: MeetingGoalContributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingGoalContributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingGoalContributions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingGoalContributions.
+     */
+    distinct?: MeetingGoalContributionScalarFieldEnum | MeetingGoalContributionScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingGoalContribution findFirstOrThrow
+   */
+  export type MeetingGoalContributionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingGoalContribution to fetch.
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingGoalContributions to fetch.
+     */
+    orderBy?: MeetingGoalContributionOrderByWithRelationInput | MeetingGoalContributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MeetingGoalContributions.
+     */
+    cursor?: MeetingGoalContributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingGoalContributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingGoalContributions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingGoalContributions.
+     */
+    distinct?: MeetingGoalContributionScalarFieldEnum | MeetingGoalContributionScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingGoalContribution findMany
+   */
+  export type MeetingGoalContributionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingGoalContributions to fetch.
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingGoalContributions to fetch.
+     */
+    orderBy?: MeetingGoalContributionOrderByWithRelationInput | MeetingGoalContributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MeetingGoalContributions.
+     */
+    cursor?: MeetingGoalContributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingGoalContributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingGoalContributions.
+     */
+    skip?: number
+    distinct?: MeetingGoalContributionScalarFieldEnum | MeetingGoalContributionScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingGoalContribution create
+   */
+  export type MeetingGoalContributionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MeetingGoalContribution.
+     */
+    data: XOR<MeetingGoalContributionCreateInput, MeetingGoalContributionUncheckedCreateInput>
+  }
+
+  /**
+   * MeetingGoalContribution createMany
+   */
+  export type MeetingGoalContributionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MeetingGoalContributions.
+     */
+    data: MeetingGoalContributionCreateManyInput | MeetingGoalContributionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MeetingGoalContribution createManyAndReturn
+   */
+  export type MeetingGoalContributionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * The data used to create many MeetingGoalContributions.
+     */
+    data: MeetingGoalContributionCreateManyInput | MeetingGoalContributionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MeetingGoalContribution update
+   */
+  export type MeetingGoalContributionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MeetingGoalContribution.
+     */
+    data: XOR<MeetingGoalContributionUpdateInput, MeetingGoalContributionUncheckedUpdateInput>
+    /**
+     * Choose, which MeetingGoalContribution to update.
+     */
+    where: MeetingGoalContributionWhereUniqueInput
+  }
+
+  /**
+   * MeetingGoalContribution updateMany
+   */
+  export type MeetingGoalContributionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MeetingGoalContributions.
+     */
+    data: XOR<MeetingGoalContributionUpdateManyMutationInput, MeetingGoalContributionUncheckedUpdateManyInput>
+    /**
+     * Filter which MeetingGoalContributions to update
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * Limit how many MeetingGoalContributions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MeetingGoalContribution updateManyAndReturn
+   */
+  export type MeetingGoalContributionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * The data used to update MeetingGoalContributions.
+     */
+    data: XOR<MeetingGoalContributionUpdateManyMutationInput, MeetingGoalContributionUncheckedUpdateManyInput>
+    /**
+     * Filter which MeetingGoalContributions to update
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * Limit how many MeetingGoalContributions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MeetingGoalContribution upsert
+   */
+  export type MeetingGoalContributionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MeetingGoalContribution to update in case it exists.
+     */
+    where: MeetingGoalContributionWhereUniqueInput
+    /**
+     * In case the MeetingGoalContribution found by the `where` argument doesn't exist, create a new MeetingGoalContribution with this data.
+     */
+    create: XOR<MeetingGoalContributionCreateInput, MeetingGoalContributionUncheckedCreateInput>
+    /**
+     * In case the MeetingGoalContribution was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MeetingGoalContributionUpdateInput, MeetingGoalContributionUncheckedUpdateInput>
+  }
+
+  /**
+   * MeetingGoalContribution delete
+   */
+  export type MeetingGoalContributionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
+    /**
+     * Filter which MeetingGoalContribution to delete.
+     */
+    where: MeetingGoalContributionWhereUniqueInput
+  }
+
+  /**
+   * MeetingGoalContribution deleteMany
+   */
+  export type MeetingGoalContributionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MeetingGoalContributions to delete
+     */
+    where?: MeetingGoalContributionWhereInput
+    /**
+     * Limit how many MeetingGoalContributions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MeetingGoalContribution without action
+   */
+  export type MeetingGoalContributionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingGoalContribution
+     */
+    select?: MeetingGoalContributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingGoalContribution
+     */
+    omit?: MeetingGoalContributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingGoalContributionInclude<ExtArgs> | null
   }
 
 
@@ -27226,6 +29881,7 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    meetingId: string | null
     membershipId: string | null
   }
 
@@ -27237,6 +29893,7 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    meetingId: string | null
     membershipId: string | null
   }
 
@@ -27249,6 +29906,7 @@ export namespace Prisma {
     endDate: number
     createdAt: number
     updatedAt: number
+    meetingId: number
     membershipId: number
     _all: number
   }
@@ -27262,6 +29920,7 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    meetingId?: true
     membershipId?: true
   }
 
@@ -27273,6 +29932,7 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    meetingId?: true
     membershipId?: true
   }
 
@@ -27285,6 +29945,7 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
+    meetingId?: true
     membershipId?: true
     _all?: true
   }
@@ -27370,6 +30031,7 @@ export namespace Prisma {
     endDate: Date
     createdAt: Date
     updatedAt: Date
+    meetingId: string | null
     membershipId: string
     _count: VoteCountAggregateOutputType | null
     _min: VoteMinAggregateOutputType | null
@@ -27399,7 +30061,9 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    meetingId?: boolean
     membershipId?: boolean
+    meeting?: boolean | Vote$meetingArgs<ExtArgs>
     membership?: boolean | MembershipDefaultArgs<ExtArgs>
     voteResults?: boolean | Vote$voteResultsArgs<ExtArgs>
     _count?: boolean | VoteCountOutputTypeDefaultArgs<ExtArgs>
@@ -27414,7 +30078,9 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    meetingId?: boolean
     membershipId?: boolean
+    meeting?: boolean | Vote$meetingArgs<ExtArgs>
     membership?: boolean | MembershipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vote"]>
 
@@ -27427,7 +30093,9 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    meetingId?: boolean
     membershipId?: boolean
+    meeting?: boolean | Vote$meetingArgs<ExtArgs>
     membership?: boolean | MembershipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vote"]>
 
@@ -27440,25 +30108,30 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    meetingId?: boolean
     membershipId?: boolean
   }
 
-  export type VoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "options" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "membershipId", ExtArgs["result"]["vote"]>
+  export type VoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "options" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "meetingId" | "membershipId", ExtArgs["result"]["vote"]>
   export type VoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | Vote$meetingArgs<ExtArgs>
     membership?: boolean | MembershipDefaultArgs<ExtArgs>
     voteResults?: boolean | Vote$voteResultsArgs<ExtArgs>
     _count?: boolean | VoteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VoteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | Vote$meetingArgs<ExtArgs>
     membership?: boolean | MembershipDefaultArgs<ExtArgs>
   }
   export type VoteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | Vote$meetingArgs<ExtArgs>
     membership?: boolean | MembershipDefaultArgs<ExtArgs>
   }
 
   export type $VotePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Vote"
     objects: {
+      meeting: Prisma.$MeetingPayload<ExtArgs> | null
       membership: Prisma.$MembershipPayload<ExtArgs>
       voteResults: Prisma.$VoteResultPayload<ExtArgs>[]
     }
@@ -27471,6 +30144,7 @@ export namespace Prisma {
       endDate: Date
       createdAt: Date
       updatedAt: Date
+      meetingId: string | null
       membershipId: string
     }, ExtArgs["result"]["vote"]>
     composites: {}
@@ -27866,6 +30540,7 @@ export namespace Prisma {
    */
   export interface Prisma__VoteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    meeting<T extends Vote$meetingArgs<ExtArgs> = {}>(args?: Subset<T, Vote$meetingArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     membership<T extends MembershipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MembershipDefaultArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     voteResults<T extends Vote$voteResultsArgs<ExtArgs> = {}>(args?: Subset<T, Vote$voteResultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VoteResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -27905,6 +30580,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Vote", 'DateTime'>
     readonly createdAt: FieldRef<"Vote", 'DateTime'>
     readonly updatedAt: FieldRef<"Vote", 'DateTime'>
+    readonly meetingId: FieldRef<"Vote", 'String'>
     readonly membershipId: FieldRef<"Vote", 'String'>
   }
     
@@ -28299,6 +30975,25 @@ export namespace Prisma {
      * Limit how many Votes to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Vote.meeting
+   */
+  export type Vote$meetingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
   }
 
   /**
@@ -66250,6 +68945,11 @@ export namespace Prisma {
     location: 'location',
     isVirtual: 'isVirtual',
     meetingLink: 'meetingLink',
+    minutesText: 'minutesText',
+    minutesFileUrl: 'minutesFileUrl',
+    minutesKeyDecisions: 'minutesKeyDecisions',
+    minutesActionItems: 'minutesActionItems',
+    minutesActionItemsCompleted: 'minutesActionItemsCompleted',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     groupId: 'groupId',
@@ -66258,6 +68958,32 @@ export namespace Prisma {
   };
 
   export type MeetingScalarFieldEnum = (typeof MeetingScalarFieldEnum)[keyof typeof MeetingScalarFieldEnum]
+
+
+  export const MeetingFinancialGoalScalarFieldEnum: {
+    id: 'id',
+    meetingId: 'meetingId',
+    name: 'name',
+    targetAmount: 'targetAmount',
+    currentAmount: 'currentAmount',
+    deadline: 'deadline',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MeetingFinancialGoalScalarFieldEnum = (typeof MeetingFinancialGoalScalarFieldEnum)[keyof typeof MeetingFinancialGoalScalarFieldEnum]
+
+
+  export const MeetingGoalContributionScalarFieldEnum: {
+    id: 'id',
+    goalId: 'goalId',
+    membershipId: 'membershipId',
+    amount: 'amount',
+    createdAt: 'createdAt'
+  };
+
+  export type MeetingGoalContributionScalarFieldEnum = (typeof MeetingGoalContributionScalarFieldEnum)[keyof typeof MeetingGoalContributionScalarFieldEnum]
 
 
   export const MeetingAttendeeScalarFieldEnum: {
@@ -66279,6 +69005,7 @@ export namespace Prisma {
     endDate: 'endDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    meetingId: 'meetingId',
     membershipId: 'membershipId'
   };
 
@@ -67137,6 +69864,13 @@ export namespace Prisma {
    * Reference to a field of type 'TransactionStatus[]'
    */
   export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean[]'
+   */
+  export type ListBooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean[]'>
     
 
 
@@ -68329,6 +71063,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteListRelationFilter
     chairedMeetings?: MeetingListRelationFilter
     noteTakerMeetings?: MeetingListRelationFilter
+    meetingGoalContributions?: MeetingGoalContributionListRelationFilter
   }
 
   export type MembershipOrderByWithRelationInput = {
@@ -68349,6 +71084,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteOrderByRelationAggregateInput
     chairedMeetings?: MeetingOrderByRelationAggregateInput
     noteTakerMeetings?: MeetingOrderByRelationAggregateInput
+    meetingGoalContributions?: MeetingGoalContributionOrderByRelationAggregateInput
   }
 
   export type MembershipWhereUniqueInput = Prisma.AtLeast<{
@@ -68373,6 +71109,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteListRelationFilter
     chairedMeetings?: MeetingListRelationFilter
     noteTakerMeetings?: MeetingListRelationFilter
+    meetingGoalContributions?: MeetingGoalContributionListRelationFilter
   }, "id" | "userId_groupId">
 
   export type MembershipOrderByWithAggregationInput = {
@@ -68852,6 +71589,11 @@ export namespace Prisma {
     location?: StringNullableFilter<"Meeting"> | string | null
     isVirtual?: BoolFilter<"Meeting"> | boolean
     meetingLink?: StringNullableFilter<"Meeting"> | string | null
+    minutesText?: StringNullableFilter<"Meeting"> | string | null
+    minutesFileUrl?: StringNullableFilter<"Meeting"> | string | null
+    minutesKeyDecisions?: StringNullableListFilter<"Meeting">
+    minutesActionItems?: StringNullableListFilter<"Meeting">
+    minutesActionItemsCompleted?: BoolNullableListFilter<"Meeting">
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     groupId?: StringFilter<"Meeting"> | string
@@ -68861,6 +71603,8 @@ export namespace Prisma {
     attendees?: MeetingAttendeeListRelationFilter
     chairperson?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
     noteTaker?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
+    votes?: VoteListRelationFilter
+    meetingFinancialGoals?: MeetingFinancialGoalListRelationFilter
   }
 
   export type MeetingOrderByWithRelationInput = {
@@ -68872,6 +71616,11 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     isVirtual?: SortOrder
     meetingLink?: SortOrderInput | SortOrder
+    minutesText?: SortOrderInput | SortOrder
+    minutesFileUrl?: SortOrderInput | SortOrder
+    minutesKeyDecisions?: SortOrder
+    minutesActionItems?: SortOrder
+    minutesActionItemsCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
@@ -68881,6 +71630,8 @@ export namespace Prisma {
     attendees?: MeetingAttendeeOrderByRelationAggregateInput
     chairperson?: MembershipOrderByWithRelationInput
     noteTaker?: MembershipOrderByWithRelationInput
+    votes?: VoteOrderByRelationAggregateInput
+    meetingFinancialGoals?: MeetingFinancialGoalOrderByRelationAggregateInput
   }
 
   export type MeetingWhereUniqueInput = Prisma.AtLeast<{
@@ -68895,6 +71646,11 @@ export namespace Prisma {
     location?: StringNullableFilter<"Meeting"> | string | null
     isVirtual?: BoolFilter<"Meeting"> | boolean
     meetingLink?: StringNullableFilter<"Meeting"> | string | null
+    minutesText?: StringNullableFilter<"Meeting"> | string | null
+    minutesFileUrl?: StringNullableFilter<"Meeting"> | string | null
+    minutesKeyDecisions?: StringNullableListFilter<"Meeting">
+    minutesActionItems?: StringNullableListFilter<"Meeting">
+    minutesActionItemsCompleted?: BoolNullableListFilter<"Meeting">
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     groupId?: StringFilter<"Meeting"> | string
@@ -68904,6 +71660,8 @@ export namespace Prisma {
     attendees?: MeetingAttendeeListRelationFilter
     chairperson?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
     noteTaker?: XOR<MembershipNullableScalarRelationFilter, MembershipWhereInput> | null
+    votes?: VoteListRelationFilter
+    meetingFinancialGoals?: MeetingFinancialGoalListRelationFilter
   }, "id">
 
   export type MeetingOrderByWithAggregationInput = {
@@ -68915,6 +71673,11 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     isVirtual?: SortOrder
     meetingLink?: SortOrderInput | SortOrder
+    minutesText?: SortOrderInput | SortOrder
+    minutesFileUrl?: SortOrderInput | SortOrder
+    minutesKeyDecisions?: SortOrder
+    minutesActionItems?: SortOrder
+    minutesActionItemsCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
@@ -68937,11 +71700,156 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
     isVirtual?: BoolWithAggregatesFilter<"Meeting"> | boolean
     meetingLink?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    minutesText?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    minutesFileUrl?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    minutesKeyDecisions?: StringNullableListFilter<"Meeting">
+    minutesActionItems?: StringNullableListFilter<"Meeting">
+    minutesActionItemsCompleted?: BoolNullableListFilter<"Meeting">
     createdAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     groupId?: StringWithAggregatesFilter<"Meeting"> | string
     chairpersonMembershipId?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
     noteTakerMembershipId?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+  }
+
+  export type MeetingFinancialGoalWhereInput = {
+    AND?: MeetingFinancialGoalWhereInput | MeetingFinancialGoalWhereInput[]
+    OR?: MeetingFinancialGoalWhereInput[]
+    NOT?: MeetingFinancialGoalWhereInput | MeetingFinancialGoalWhereInput[]
+    id?: StringFilter<"MeetingFinancialGoal"> | string
+    meetingId?: StringFilter<"MeetingFinancialGoal"> | string
+    name?: StringFilter<"MeetingFinancialGoal"> | string
+    targetAmount?: FloatFilter<"MeetingFinancialGoal"> | number
+    currentAmount?: FloatFilter<"MeetingFinancialGoal"> | number
+    deadline?: DateTimeNullableFilter<"MeetingFinancialGoal"> | Date | string | null
+    description?: StringNullableFilter<"MeetingFinancialGoal"> | string | null
+    createdAt?: DateTimeFilter<"MeetingFinancialGoal"> | Date | string
+    updatedAt?: DateTimeFilter<"MeetingFinancialGoal"> | Date | string
+    meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
+    contributions?: MeetingGoalContributionListRelationFilter
+  }
+
+  export type MeetingFinancialGoalOrderByWithRelationInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    name?: SortOrder
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+    deadline?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    meeting?: MeetingOrderByWithRelationInput
+    contributions?: MeetingGoalContributionOrderByRelationAggregateInput
+  }
+
+  export type MeetingFinancialGoalWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MeetingFinancialGoalWhereInput | MeetingFinancialGoalWhereInput[]
+    OR?: MeetingFinancialGoalWhereInput[]
+    NOT?: MeetingFinancialGoalWhereInput | MeetingFinancialGoalWhereInput[]
+    meetingId?: StringFilter<"MeetingFinancialGoal"> | string
+    name?: StringFilter<"MeetingFinancialGoal"> | string
+    targetAmount?: FloatFilter<"MeetingFinancialGoal"> | number
+    currentAmount?: FloatFilter<"MeetingFinancialGoal"> | number
+    deadline?: DateTimeNullableFilter<"MeetingFinancialGoal"> | Date | string | null
+    description?: StringNullableFilter<"MeetingFinancialGoal"> | string | null
+    createdAt?: DateTimeFilter<"MeetingFinancialGoal"> | Date | string
+    updatedAt?: DateTimeFilter<"MeetingFinancialGoal"> | Date | string
+    meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
+    contributions?: MeetingGoalContributionListRelationFilter
+  }, "id">
+
+  export type MeetingFinancialGoalOrderByWithAggregationInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    name?: SortOrder
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+    deadline?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MeetingFinancialGoalCountOrderByAggregateInput
+    _avg?: MeetingFinancialGoalAvgOrderByAggregateInput
+    _max?: MeetingFinancialGoalMaxOrderByAggregateInput
+    _min?: MeetingFinancialGoalMinOrderByAggregateInput
+    _sum?: MeetingFinancialGoalSumOrderByAggregateInput
+  }
+
+  export type MeetingFinancialGoalScalarWhereWithAggregatesInput = {
+    AND?: MeetingFinancialGoalScalarWhereWithAggregatesInput | MeetingFinancialGoalScalarWhereWithAggregatesInput[]
+    OR?: MeetingFinancialGoalScalarWhereWithAggregatesInput[]
+    NOT?: MeetingFinancialGoalScalarWhereWithAggregatesInput | MeetingFinancialGoalScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MeetingFinancialGoal"> | string
+    meetingId?: StringWithAggregatesFilter<"MeetingFinancialGoal"> | string
+    name?: StringWithAggregatesFilter<"MeetingFinancialGoal"> | string
+    targetAmount?: FloatWithAggregatesFilter<"MeetingFinancialGoal"> | number
+    currentAmount?: FloatWithAggregatesFilter<"MeetingFinancialGoal"> | number
+    deadline?: DateTimeNullableWithAggregatesFilter<"MeetingFinancialGoal"> | Date | string | null
+    description?: StringNullableWithAggregatesFilter<"MeetingFinancialGoal"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MeetingFinancialGoal"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MeetingFinancialGoal"> | Date | string
+  }
+
+  export type MeetingGoalContributionWhereInput = {
+    AND?: MeetingGoalContributionWhereInput | MeetingGoalContributionWhereInput[]
+    OR?: MeetingGoalContributionWhereInput[]
+    NOT?: MeetingGoalContributionWhereInput | MeetingGoalContributionWhereInput[]
+    id?: StringFilter<"MeetingGoalContribution"> | string
+    goalId?: StringFilter<"MeetingGoalContribution"> | string
+    membershipId?: StringFilter<"MeetingGoalContribution"> | string
+    amount?: FloatFilter<"MeetingGoalContribution"> | number
+    createdAt?: DateTimeFilter<"MeetingGoalContribution"> | Date | string
+    goal?: XOR<MeetingFinancialGoalScalarRelationFilter, MeetingFinancialGoalWhereInput>
+    membership?: XOR<MembershipScalarRelationFilter, MembershipWhereInput>
+  }
+
+  export type MeetingGoalContributionOrderByWithRelationInput = {
+    id?: SortOrder
+    goalId?: SortOrder
+    membershipId?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    goal?: MeetingFinancialGoalOrderByWithRelationInput
+    membership?: MembershipOrderByWithRelationInput
+  }
+
+  export type MeetingGoalContributionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MeetingGoalContributionWhereInput | MeetingGoalContributionWhereInput[]
+    OR?: MeetingGoalContributionWhereInput[]
+    NOT?: MeetingGoalContributionWhereInput | MeetingGoalContributionWhereInput[]
+    goalId?: StringFilter<"MeetingGoalContribution"> | string
+    membershipId?: StringFilter<"MeetingGoalContribution"> | string
+    amount?: FloatFilter<"MeetingGoalContribution"> | number
+    createdAt?: DateTimeFilter<"MeetingGoalContribution"> | Date | string
+    goal?: XOR<MeetingFinancialGoalScalarRelationFilter, MeetingFinancialGoalWhereInput>
+    membership?: XOR<MembershipScalarRelationFilter, MembershipWhereInput>
+  }, "id">
+
+  export type MeetingGoalContributionOrderByWithAggregationInput = {
+    id?: SortOrder
+    goalId?: SortOrder
+    membershipId?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    _count?: MeetingGoalContributionCountOrderByAggregateInput
+    _avg?: MeetingGoalContributionAvgOrderByAggregateInput
+    _max?: MeetingGoalContributionMaxOrderByAggregateInput
+    _min?: MeetingGoalContributionMinOrderByAggregateInput
+    _sum?: MeetingGoalContributionSumOrderByAggregateInput
+  }
+
+  export type MeetingGoalContributionScalarWhereWithAggregatesInput = {
+    AND?: MeetingGoalContributionScalarWhereWithAggregatesInput | MeetingGoalContributionScalarWhereWithAggregatesInput[]
+    OR?: MeetingGoalContributionScalarWhereWithAggregatesInput[]
+    NOT?: MeetingGoalContributionScalarWhereWithAggregatesInput | MeetingGoalContributionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MeetingGoalContribution"> | string
+    goalId?: StringWithAggregatesFilter<"MeetingGoalContribution"> | string
+    membershipId?: StringWithAggregatesFilter<"MeetingGoalContribution"> | string
+    amount?: FloatWithAggregatesFilter<"MeetingGoalContribution"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MeetingGoalContribution"> | Date | string
   }
 
   export type MeetingAttendeeWhereInput = {
@@ -69010,7 +71918,9 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Vote"> | Date | string
     createdAt?: DateTimeFilter<"Vote"> | Date | string
     updatedAt?: DateTimeFilter<"Vote"> | Date | string
+    meetingId?: StringNullableFilter<"Vote"> | string | null
     membershipId?: StringFilter<"Vote"> | string
+    meeting?: XOR<MeetingNullableScalarRelationFilter, MeetingWhereInput> | null
     membership?: XOR<MembershipScalarRelationFilter, MembershipWhereInput>
     voteResults?: VoteResultListRelationFilter
   }
@@ -69024,7 +71934,9 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    meetingId?: SortOrderInput | SortOrder
     membershipId?: SortOrder
+    meeting?: MeetingOrderByWithRelationInput
     membership?: MembershipOrderByWithRelationInput
     voteResults?: VoteResultOrderByRelationAggregateInput
   }
@@ -69041,7 +71953,9 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Vote"> | Date | string
     createdAt?: DateTimeFilter<"Vote"> | Date | string
     updatedAt?: DateTimeFilter<"Vote"> | Date | string
+    meetingId?: StringNullableFilter<"Vote"> | string | null
     membershipId?: StringFilter<"Vote"> | string
+    meeting?: XOR<MeetingNullableScalarRelationFilter, MeetingWhereInput> | null
     membership?: XOR<MembershipScalarRelationFilter, MembershipWhereInput>
     voteResults?: VoteResultListRelationFilter
   }, "id">
@@ -69055,6 +71969,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    meetingId?: SortOrderInput | SortOrder
     membershipId?: SortOrder
     _count?: VoteCountOrderByAggregateInput
     _max?: VoteMaxOrderByAggregateInput
@@ -69073,6 +71988,7 @@ export namespace Prisma {
     endDate?: DateTimeWithAggregatesFilter<"Vote"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Vote"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Vote"> | Date | string
+    meetingId?: StringNullableWithAggregatesFilter<"Vote"> | string | null
     membershipId?: StringWithAggregatesFilter<"Vote"> | string
   }
 
@@ -73278,6 +76194,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateInput = {
@@ -73296,6 +76213,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUpdateInput = {
@@ -73314,6 +76232,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateInput = {
@@ -73332,6 +76251,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipCreateManyInput = {
@@ -73843,12 +76763,19 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     group: GroupCreateNestedOneWithoutMeetingsInput
     attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
     chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
     noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+    votes?: VoteCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateInput = {
@@ -73860,12 +76787,19 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
     chairpersonMembershipId?: string | null
     noteTakerMembershipId?: string | null
     attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+    votes?: VoteUncheckedCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUpdateInput = {
@@ -73877,12 +76811,19 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
     attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
     chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
     noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+    votes?: VoteUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateInput = {
@@ -73894,12 +76835,19 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+    votes?: VoteUncheckedUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingCreateManyInput = {
@@ -73911,6 +76859,11 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
@@ -73927,6 +76880,11 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -73940,11 +76898,157 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MeetingFinancialGoalCreateInput = {
+    id?: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    meeting: MeetingCreateNestedOneWithoutMeetingFinancialGoalsInput
+    contributions?: MeetingGoalContributionCreateNestedManyWithoutGoalInput
+  }
+
+  export type MeetingFinancialGoalUncheckedCreateInput = {
+    id?: string
+    meetingId: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutGoalInput
+  }
+
+  export type MeetingFinancialGoalUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneRequiredWithoutMeetingFinancialGoalsNestedInput
+    contributions?: MeetingGoalContributionUpdateManyWithoutGoalNestedInput
+  }
+
+  export type MeetingFinancialGoalUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contributions?: MeetingGoalContributionUncheckedUpdateManyWithoutGoalNestedInput
+  }
+
+  export type MeetingFinancialGoalCreateManyInput = {
+    id?: string
+    meetingId: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingFinancialGoalUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingFinancialGoalUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingGoalContributionCreateInput = {
+    id?: string
+    amount: number
+    createdAt?: Date | string
+    goal: MeetingFinancialGoalCreateNestedOneWithoutContributionsInput
+    membership: MembershipCreateNestedOneWithoutMeetingGoalContributionsInput
+  }
+
+  export type MeetingGoalContributionUncheckedCreateInput = {
+    id?: string
+    goalId: string
+    membershipId: string
+    amount: number
+    createdAt?: Date | string
+  }
+
+  export type MeetingGoalContributionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    goal?: MeetingFinancialGoalUpdateOneRequiredWithoutContributionsNestedInput
+    membership?: MembershipUpdateOneRequiredWithoutMeetingGoalContributionsNestedInput
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    goalId?: StringFieldUpdateOperationsInput | string
+    membershipId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingGoalContributionCreateManyInput = {
+    id?: string
+    goalId: string
+    membershipId: string
+    amount: number
+    createdAt?: Date | string
+  }
+
+  export type MeetingGoalContributionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    goalId?: StringFieldUpdateOperationsInput | string
+    membershipId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MeetingAttendeeCreateInput = {
@@ -74003,6 +77107,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meeting?: MeetingCreateNestedOneWithoutVotesInput
     membership: MembershipCreateNestedOneWithoutVotesInput
     voteResults?: VoteResultCreateNestedManyWithoutVoteInput
   }
@@ -74016,6 +77121,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meetingId?: string | null
     membershipId: string
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutVoteInput
   }
@@ -74029,6 +77135,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneWithoutVotesNestedInput
     membership?: MembershipUpdateOneRequiredWithoutVotesNestedInput
     voteResults?: VoteResultUpdateManyWithoutVoteNestedInput
   }
@@ -74042,6 +77149,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
     membershipId?: StringFieldUpdateOperationsInput | string
     voteResults?: VoteResultUncheckedUpdateManyWithoutVoteNestedInput
   }
@@ -74055,6 +77163,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meetingId?: string | null
     membershipId: string
   }
 
@@ -74078,6 +77187,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
     membershipId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -78808,6 +81918,12 @@ export namespace Prisma {
     none?: VoteResultWhereInput
   }
 
+  export type MeetingGoalContributionListRelationFilter = {
+    every?: MeetingGoalContributionWhereInput
+    some?: MeetingGoalContributionWhereInput
+    none?: MeetingGoalContributionWhereInput
+  }
+
   export type VoteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -78817,6 +81933,10 @@ export namespace Prisma {
   }
 
   export type VoteResultOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MeetingGoalContributionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -79217,9 +82337,27 @@ export namespace Prisma {
     remainingAmount?: SortOrder
   }
 
+  export type BoolNullableListFilter<$PrismaModel = never> = {
+    equals?: boolean[] | ListBooleanFieldRefInput<$PrismaModel> | null
+    has?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    hasEvery?: boolean[] | ListBooleanFieldRefInput<$PrismaModel>
+    hasSome?: boolean[] | ListBooleanFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type MembershipNullableScalarRelationFilter = {
     is?: MembershipWhereInput | null
     isNot?: MembershipWhereInput | null
+  }
+
+  export type MeetingFinancialGoalListRelationFilter = {
+    every?: MeetingFinancialGoalWhereInput
+    some?: MeetingFinancialGoalWhereInput
+    none?: MeetingFinancialGoalWhereInput
+  }
+
+  export type MeetingFinancialGoalOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type MeetingCountOrderByAggregateInput = {
@@ -79231,6 +82369,11 @@ export namespace Prisma {
     location?: SortOrder
     isVirtual?: SortOrder
     meetingLink?: SortOrder
+    minutesText?: SortOrder
+    minutesFileUrl?: SortOrder
+    minutesKeyDecisions?: SortOrder
+    minutesActionItems?: SortOrder
+    minutesActionItemsCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
@@ -79246,6 +82389,8 @@ export namespace Prisma {
     location?: SortOrder
     isVirtual?: SortOrder
     meetingLink?: SortOrder
+    minutesText?: SortOrder
+    minutesFileUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
@@ -79261,6 +82406,8 @@ export namespace Prisma {
     location?: SortOrder
     isVirtual?: SortOrder
     meetingLink?: SortOrder
+    minutesText?: SortOrder
+    minutesFileUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     groupId?: SortOrder
@@ -79268,21 +82415,104 @@ export namespace Prisma {
     noteTakerMembershipId?: SortOrder
   }
 
-  export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
-  }
-
   export type MeetingScalarRelationFilter = {
     is?: MeetingWhereInput
     isNot?: MeetingWhereInput
   }
 
+  export type MeetingFinancialGoalCountOrderByAggregateInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    name?: SortOrder
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+    deadline?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingFinancialGoalAvgOrderByAggregateInput = {
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+  }
+
+  export type MeetingFinancialGoalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    name?: SortOrder
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+    deadline?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingFinancialGoalMinOrderByAggregateInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    name?: SortOrder
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+    deadline?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingFinancialGoalSumOrderByAggregateInput = {
+    targetAmount?: SortOrder
+    currentAmount?: SortOrder
+  }
+
+  export type MeetingFinancialGoalScalarRelationFilter = {
+    is?: MeetingFinancialGoalWhereInput
+    isNot?: MeetingFinancialGoalWhereInput
+  }
+
   export type MembershipScalarRelationFilter = {
     is?: MembershipWhereInput
     isNot?: MembershipWhereInput
+  }
+
+  export type MeetingGoalContributionCountOrderByAggregateInput = {
+    id?: SortOrder
+    goalId?: SortOrder
+    membershipId?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MeetingGoalContributionAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type MeetingGoalContributionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    goalId?: SortOrder
+    membershipId?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MeetingGoalContributionMinOrderByAggregateInput = {
+    id?: SortOrder
+    goalId?: SortOrder
+    membershipId?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MeetingGoalContributionSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
   }
 
   export type MeetingAttendeeMeetingIdMembershipIdCompoundUniqueInput = {
@@ -79344,6 +82574,11 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type MeetingNullableScalarRelationFilter = {
+    is?: MeetingWhereInput | null
+    isNot?: MeetingWhereInput | null
+  }
+
   export type VoteCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -79353,6 +82588,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    meetingId?: SortOrder
     membershipId?: SortOrder
   }
 
@@ -79364,6 +82600,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    meetingId?: SortOrder
     membershipId?: SortOrder
   }
 
@@ -79375,6 +82612,7 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    meetingId?: SortOrder
     membershipId?: SortOrder
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> =
@@ -83249,6 +86487,13 @@ export namespace Prisma {
     connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
   }
 
+  export type MeetingGoalContributionCreateNestedManyWithoutMembershipInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutMembershipInput, MeetingGoalContributionUncheckedCreateWithoutMembershipInput> | MeetingGoalContributionCreateWithoutMembershipInput[] | MeetingGoalContributionUncheckedCreateWithoutMembershipInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutMembershipInput | MeetingGoalContributionCreateOrConnectWithoutMembershipInput[]
+    createMany?: MeetingGoalContributionCreateManyMembershipInputEnvelope
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+  }
+
   export type VoteUncheckedCreateNestedManyWithoutMembershipInput = {
     create?: XOR<VoteCreateWithoutMembershipInput, VoteUncheckedCreateWithoutMembershipInput> | VoteCreateWithoutMembershipInput[] | VoteUncheckedCreateWithoutMembershipInput[]
     connectOrCreate?: VoteCreateOrConnectWithoutMembershipInput | VoteCreateOrConnectWithoutMembershipInput[]
@@ -83289,6 +86534,13 @@ export namespace Prisma {
     connectOrCreate?: MeetingCreateOrConnectWithoutNoteTakerInput | MeetingCreateOrConnectWithoutNoteTakerInput[]
     createMany?: MeetingCreateManyNoteTakerInputEnvelope
     connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
+  export type MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutMembershipInput, MeetingGoalContributionUncheckedCreateWithoutMembershipInput> | MeetingGoalContributionCreateWithoutMembershipInput[] | MeetingGoalContributionUncheckedCreateWithoutMembershipInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutMembershipInput | MeetingGoalContributionCreateOrConnectWithoutMembershipInput[]
+    createMany?: MeetingGoalContributionCreateManyMembershipInputEnvelope
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
   }
 
   export type EnumMembershipRoleFieldUpdateOperationsInput = {
@@ -83399,6 +86651,20 @@ export namespace Prisma {
     deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
   }
 
+  export type MeetingGoalContributionUpdateManyWithoutMembershipNestedInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutMembershipInput, MeetingGoalContributionUncheckedCreateWithoutMembershipInput> | MeetingGoalContributionCreateWithoutMembershipInput[] | MeetingGoalContributionUncheckedCreateWithoutMembershipInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutMembershipInput | MeetingGoalContributionCreateOrConnectWithoutMembershipInput[]
+    upsert?: MeetingGoalContributionUpsertWithWhereUniqueWithoutMembershipInput | MeetingGoalContributionUpsertWithWhereUniqueWithoutMembershipInput[]
+    createMany?: MeetingGoalContributionCreateManyMembershipInputEnvelope
+    set?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    disconnect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    delete?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    update?: MeetingGoalContributionUpdateWithWhereUniqueWithoutMembershipInput | MeetingGoalContributionUpdateWithWhereUniqueWithoutMembershipInput[]
+    updateMany?: MeetingGoalContributionUpdateManyWithWhereWithoutMembershipInput | MeetingGoalContributionUpdateManyWithWhereWithoutMembershipInput[]
+    deleteMany?: MeetingGoalContributionScalarWhereInput | MeetingGoalContributionScalarWhereInput[]
+  }
+
   export type VoteUncheckedUpdateManyWithoutMembershipNestedInput = {
     create?: XOR<VoteCreateWithoutMembershipInput, VoteUncheckedCreateWithoutMembershipInput> | VoteCreateWithoutMembershipInput[] | VoteUncheckedCreateWithoutMembershipInput[]
     connectOrCreate?: VoteCreateOrConnectWithoutMembershipInput | VoteCreateOrConnectWithoutMembershipInput[]
@@ -83481,6 +86747,20 @@ export namespace Prisma {
     update?: MeetingUpdateWithWhereUniqueWithoutNoteTakerInput | MeetingUpdateWithWhereUniqueWithoutNoteTakerInput[]
     updateMany?: MeetingUpdateManyWithWhereWithoutNoteTakerInput | MeetingUpdateManyWithWhereWithoutNoteTakerInput[]
     deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutMembershipInput, MeetingGoalContributionUncheckedCreateWithoutMembershipInput> | MeetingGoalContributionCreateWithoutMembershipInput[] | MeetingGoalContributionUncheckedCreateWithoutMembershipInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutMembershipInput | MeetingGoalContributionCreateOrConnectWithoutMembershipInput[]
+    upsert?: MeetingGoalContributionUpsertWithWhereUniqueWithoutMembershipInput | MeetingGoalContributionUpsertWithWhereUniqueWithoutMembershipInput[]
+    createMany?: MeetingGoalContributionCreateManyMembershipInputEnvelope
+    set?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    disconnect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    delete?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    update?: MeetingGoalContributionUpdateWithWhereUniqueWithoutMembershipInput | MeetingGoalContributionUpdateWithWhereUniqueWithoutMembershipInput[]
+    updateMany?: MeetingGoalContributionUpdateManyWithWhereWithoutMembershipInput | MeetingGoalContributionUpdateManyWithWhereWithoutMembershipInput[]
+    deleteMany?: MeetingGoalContributionScalarWhereInput | MeetingGoalContributionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTransactionsInput = {
@@ -83738,6 +87018,18 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type MeetingCreateminutesKeyDecisionsInput = {
+    set: string[]
+  }
+
+  export type MeetingCreateminutesActionItemsInput = {
+    set: string[]
+  }
+
+  export type MeetingCreateminutesActionItemsCompletedInput = {
+    set: boolean[]
+  }
+
   export type GroupCreateNestedOneWithoutMeetingsInput = {
     create?: XOR<GroupCreateWithoutMeetingsInput, GroupUncheckedCreateWithoutMeetingsInput>
     connectOrCreate?: GroupCreateOrConnectWithoutMeetingsInput
@@ -83763,6 +87055,20 @@ export namespace Prisma {
     connect?: MembershipWhereUniqueInput
   }
 
+  export type VoteCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<VoteCreateWithoutMeetingInput, VoteUncheckedCreateWithoutMeetingInput> | VoteCreateWithoutMeetingInput[] | VoteUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: VoteCreateOrConnectWithoutMeetingInput | VoteCreateOrConnectWithoutMeetingInput[]
+    createMany?: VoteCreateManyMeetingInputEnvelope
+    connect?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+  }
+
+  export type MeetingFinancialGoalCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<MeetingFinancialGoalCreateWithoutMeetingInput, MeetingFinancialGoalUncheckedCreateWithoutMeetingInput> | MeetingFinancialGoalCreateWithoutMeetingInput[] | MeetingFinancialGoalUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingFinancialGoalCreateOrConnectWithoutMeetingInput | MeetingFinancialGoalCreateOrConnectWithoutMeetingInput[]
+    createMany?: MeetingFinancialGoalCreateManyMeetingInputEnvelope
+    connect?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+  }
+
   export type MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput = {
     create?: XOR<MeetingAttendeeCreateWithoutMeetingInput, MeetingAttendeeUncheckedCreateWithoutMeetingInput> | MeetingAttendeeCreateWithoutMeetingInput[] | MeetingAttendeeUncheckedCreateWithoutMeetingInput[]
     connectOrCreate?: MeetingAttendeeCreateOrConnectWithoutMeetingInput | MeetingAttendeeCreateOrConnectWithoutMeetingInput[]
@@ -83770,9 +87076,38 @@ export namespace Prisma {
     connect?: MeetingAttendeeWhereUniqueInput | MeetingAttendeeWhereUniqueInput[]
   }
 
+  export type VoteUncheckedCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<VoteCreateWithoutMeetingInput, VoteUncheckedCreateWithoutMeetingInput> | VoteCreateWithoutMeetingInput[] | VoteUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: VoteCreateOrConnectWithoutMeetingInput | VoteCreateOrConnectWithoutMeetingInput[]
+    createMany?: VoteCreateManyMeetingInputEnvelope
+    connect?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+  }
+
+  export type MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<MeetingFinancialGoalCreateWithoutMeetingInput, MeetingFinancialGoalUncheckedCreateWithoutMeetingInput> | MeetingFinancialGoalCreateWithoutMeetingInput[] | MeetingFinancialGoalUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingFinancialGoalCreateOrConnectWithoutMeetingInput | MeetingFinancialGoalCreateOrConnectWithoutMeetingInput[]
+    createMany?: MeetingFinancialGoalCreateManyMeetingInputEnvelope
+    connect?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+  }
+
   export type MeetingUpdateagendaInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type MeetingUpdateminutesKeyDecisionsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type MeetingUpdateminutesActionItemsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type MeetingUpdateminutesActionItemsCompletedInput = {
+    set?: boolean[]
+    push?: boolean | boolean[]
   }
 
   export type GroupUpdateOneRequiredWithoutMeetingsNestedInput = {
@@ -83817,6 +87152,34 @@ export namespace Prisma {
     update?: XOR<XOR<MembershipUpdateToOneWithWhereWithoutNoteTakerMeetingsInput, MembershipUpdateWithoutNoteTakerMeetingsInput>, MembershipUncheckedUpdateWithoutNoteTakerMeetingsInput>
   }
 
+  export type VoteUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<VoteCreateWithoutMeetingInput, VoteUncheckedCreateWithoutMeetingInput> | VoteCreateWithoutMeetingInput[] | VoteUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: VoteCreateOrConnectWithoutMeetingInput | VoteCreateOrConnectWithoutMeetingInput[]
+    upsert?: VoteUpsertWithWhereUniqueWithoutMeetingInput | VoteUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: VoteCreateManyMeetingInputEnvelope
+    set?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    disconnect?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    delete?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    connect?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    update?: VoteUpdateWithWhereUniqueWithoutMeetingInput | VoteUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: VoteUpdateManyWithWhereWithoutMeetingInput | VoteUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: VoteScalarWhereInput | VoteScalarWhereInput[]
+  }
+
+  export type MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<MeetingFinancialGoalCreateWithoutMeetingInput, MeetingFinancialGoalUncheckedCreateWithoutMeetingInput> | MeetingFinancialGoalCreateWithoutMeetingInput[] | MeetingFinancialGoalUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingFinancialGoalCreateOrConnectWithoutMeetingInput | MeetingFinancialGoalCreateOrConnectWithoutMeetingInput[]
+    upsert?: MeetingFinancialGoalUpsertWithWhereUniqueWithoutMeetingInput | MeetingFinancialGoalUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: MeetingFinancialGoalCreateManyMeetingInputEnvelope
+    set?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    disconnect?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    delete?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    connect?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    update?: MeetingFinancialGoalUpdateWithWhereUniqueWithoutMeetingInput | MeetingFinancialGoalUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: MeetingFinancialGoalUpdateManyWithWhereWithoutMeetingInput | MeetingFinancialGoalUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: MeetingFinancialGoalScalarWhereInput | MeetingFinancialGoalScalarWhereInput[]
+  }
+
   export type MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput = {
     create?: XOR<MeetingAttendeeCreateWithoutMeetingInput, MeetingAttendeeUncheckedCreateWithoutMeetingInput> | MeetingAttendeeCreateWithoutMeetingInput[] | MeetingAttendeeUncheckedCreateWithoutMeetingInput[]
     connectOrCreate?: MeetingAttendeeCreateOrConnectWithoutMeetingInput | MeetingAttendeeCreateOrConnectWithoutMeetingInput[]
@@ -83829,6 +87192,118 @@ export namespace Prisma {
     update?: MeetingAttendeeUpdateWithWhereUniqueWithoutMeetingInput | MeetingAttendeeUpdateWithWhereUniqueWithoutMeetingInput[]
     updateMany?: MeetingAttendeeUpdateManyWithWhereWithoutMeetingInput | MeetingAttendeeUpdateManyWithWhereWithoutMeetingInput[]
     deleteMany?: MeetingAttendeeScalarWhereInput | MeetingAttendeeScalarWhereInput[]
+  }
+
+  export type VoteUncheckedUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<VoteCreateWithoutMeetingInput, VoteUncheckedCreateWithoutMeetingInput> | VoteCreateWithoutMeetingInput[] | VoteUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: VoteCreateOrConnectWithoutMeetingInput | VoteCreateOrConnectWithoutMeetingInput[]
+    upsert?: VoteUpsertWithWhereUniqueWithoutMeetingInput | VoteUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: VoteCreateManyMeetingInputEnvelope
+    set?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    disconnect?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    delete?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    connect?: VoteWhereUniqueInput | VoteWhereUniqueInput[]
+    update?: VoteUpdateWithWhereUniqueWithoutMeetingInput | VoteUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: VoteUpdateManyWithWhereWithoutMeetingInput | VoteUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: VoteScalarWhereInput | VoteScalarWhereInput[]
+  }
+
+  export type MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<MeetingFinancialGoalCreateWithoutMeetingInput, MeetingFinancialGoalUncheckedCreateWithoutMeetingInput> | MeetingFinancialGoalCreateWithoutMeetingInput[] | MeetingFinancialGoalUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingFinancialGoalCreateOrConnectWithoutMeetingInput | MeetingFinancialGoalCreateOrConnectWithoutMeetingInput[]
+    upsert?: MeetingFinancialGoalUpsertWithWhereUniqueWithoutMeetingInput | MeetingFinancialGoalUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: MeetingFinancialGoalCreateManyMeetingInputEnvelope
+    set?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    disconnect?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    delete?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    connect?: MeetingFinancialGoalWhereUniqueInput | MeetingFinancialGoalWhereUniqueInput[]
+    update?: MeetingFinancialGoalUpdateWithWhereUniqueWithoutMeetingInput | MeetingFinancialGoalUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: MeetingFinancialGoalUpdateManyWithWhereWithoutMeetingInput | MeetingFinancialGoalUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: MeetingFinancialGoalScalarWhereInput | MeetingFinancialGoalScalarWhereInput[]
+  }
+
+  export type MeetingCreateNestedOneWithoutMeetingFinancialGoalsInput = {
+    create?: XOR<MeetingCreateWithoutMeetingFinancialGoalsInput, MeetingUncheckedCreateWithoutMeetingFinancialGoalsInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutMeetingFinancialGoalsInput
+    connect?: MeetingWhereUniqueInput
+  }
+
+  export type MeetingGoalContributionCreateNestedManyWithoutGoalInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutGoalInput, MeetingGoalContributionUncheckedCreateWithoutGoalInput> | MeetingGoalContributionCreateWithoutGoalInput[] | MeetingGoalContributionUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutGoalInput | MeetingGoalContributionCreateOrConnectWithoutGoalInput[]
+    createMany?: MeetingGoalContributionCreateManyGoalInputEnvelope
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+  }
+
+  export type MeetingGoalContributionUncheckedCreateNestedManyWithoutGoalInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutGoalInput, MeetingGoalContributionUncheckedCreateWithoutGoalInput> | MeetingGoalContributionCreateWithoutGoalInput[] | MeetingGoalContributionUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutGoalInput | MeetingGoalContributionCreateOrConnectWithoutGoalInput[]
+    createMany?: MeetingGoalContributionCreateManyGoalInputEnvelope
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+  }
+
+  export type MeetingUpdateOneRequiredWithoutMeetingFinancialGoalsNestedInput = {
+    create?: XOR<MeetingCreateWithoutMeetingFinancialGoalsInput, MeetingUncheckedCreateWithoutMeetingFinancialGoalsInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutMeetingFinancialGoalsInput
+    upsert?: MeetingUpsertWithoutMeetingFinancialGoalsInput
+    connect?: MeetingWhereUniqueInput
+    update?: XOR<XOR<MeetingUpdateToOneWithWhereWithoutMeetingFinancialGoalsInput, MeetingUpdateWithoutMeetingFinancialGoalsInput>, MeetingUncheckedUpdateWithoutMeetingFinancialGoalsInput>
+  }
+
+  export type MeetingGoalContributionUpdateManyWithoutGoalNestedInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutGoalInput, MeetingGoalContributionUncheckedCreateWithoutGoalInput> | MeetingGoalContributionCreateWithoutGoalInput[] | MeetingGoalContributionUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutGoalInput | MeetingGoalContributionCreateOrConnectWithoutGoalInput[]
+    upsert?: MeetingGoalContributionUpsertWithWhereUniqueWithoutGoalInput | MeetingGoalContributionUpsertWithWhereUniqueWithoutGoalInput[]
+    createMany?: MeetingGoalContributionCreateManyGoalInputEnvelope
+    set?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    disconnect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    delete?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    update?: MeetingGoalContributionUpdateWithWhereUniqueWithoutGoalInput | MeetingGoalContributionUpdateWithWhereUniqueWithoutGoalInput[]
+    updateMany?: MeetingGoalContributionUpdateManyWithWhereWithoutGoalInput | MeetingGoalContributionUpdateManyWithWhereWithoutGoalInput[]
+    deleteMany?: MeetingGoalContributionScalarWhereInput | MeetingGoalContributionScalarWhereInput[]
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateManyWithoutGoalNestedInput = {
+    create?: XOR<MeetingGoalContributionCreateWithoutGoalInput, MeetingGoalContributionUncheckedCreateWithoutGoalInput> | MeetingGoalContributionCreateWithoutGoalInput[] | MeetingGoalContributionUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: MeetingGoalContributionCreateOrConnectWithoutGoalInput | MeetingGoalContributionCreateOrConnectWithoutGoalInput[]
+    upsert?: MeetingGoalContributionUpsertWithWhereUniqueWithoutGoalInput | MeetingGoalContributionUpsertWithWhereUniqueWithoutGoalInput[]
+    createMany?: MeetingGoalContributionCreateManyGoalInputEnvelope
+    set?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    disconnect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    delete?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    connect?: MeetingGoalContributionWhereUniqueInput | MeetingGoalContributionWhereUniqueInput[]
+    update?: MeetingGoalContributionUpdateWithWhereUniqueWithoutGoalInput | MeetingGoalContributionUpdateWithWhereUniqueWithoutGoalInput[]
+    updateMany?: MeetingGoalContributionUpdateManyWithWhereWithoutGoalInput | MeetingGoalContributionUpdateManyWithWhereWithoutGoalInput[]
+    deleteMany?: MeetingGoalContributionScalarWhereInput | MeetingGoalContributionScalarWhereInput[]
+  }
+
+  export type MeetingFinancialGoalCreateNestedOneWithoutContributionsInput = {
+    create?: XOR<MeetingFinancialGoalCreateWithoutContributionsInput, MeetingFinancialGoalUncheckedCreateWithoutContributionsInput>
+    connectOrCreate?: MeetingFinancialGoalCreateOrConnectWithoutContributionsInput
+    connect?: MeetingFinancialGoalWhereUniqueInput
+  }
+
+  export type MembershipCreateNestedOneWithoutMeetingGoalContributionsInput = {
+    create?: XOR<MembershipCreateWithoutMeetingGoalContributionsInput, MembershipUncheckedCreateWithoutMeetingGoalContributionsInput>
+    connectOrCreate?: MembershipCreateOrConnectWithoutMeetingGoalContributionsInput
+    connect?: MembershipWhereUniqueInput
+  }
+
+  export type MeetingFinancialGoalUpdateOneRequiredWithoutContributionsNestedInput = {
+    create?: XOR<MeetingFinancialGoalCreateWithoutContributionsInput, MeetingFinancialGoalUncheckedCreateWithoutContributionsInput>
+    connectOrCreate?: MeetingFinancialGoalCreateOrConnectWithoutContributionsInput
+    upsert?: MeetingFinancialGoalUpsertWithoutContributionsInput
+    connect?: MeetingFinancialGoalWhereUniqueInput
+    update?: XOR<XOR<MeetingFinancialGoalUpdateToOneWithWhereWithoutContributionsInput, MeetingFinancialGoalUpdateWithoutContributionsInput>, MeetingFinancialGoalUncheckedUpdateWithoutContributionsInput>
+  }
+
+  export type MembershipUpdateOneRequiredWithoutMeetingGoalContributionsNestedInput = {
+    create?: XOR<MembershipCreateWithoutMeetingGoalContributionsInput, MembershipUncheckedCreateWithoutMeetingGoalContributionsInput>
+    connectOrCreate?: MembershipCreateOrConnectWithoutMeetingGoalContributionsInput
+    upsert?: MembershipUpsertWithoutMeetingGoalContributionsInput
+    connect?: MembershipWhereUniqueInput
+    update?: XOR<XOR<MembershipUpdateToOneWithWhereWithoutMeetingGoalContributionsInput, MembershipUpdateWithoutMeetingGoalContributionsInput>, MembershipUncheckedUpdateWithoutMeetingGoalContributionsInput>
   }
 
   export type MeetingCreateNestedOneWithoutAttendeesInput = {
@@ -83863,6 +87338,12 @@ export namespace Prisma {
     update?: XOR<XOR<MembershipUpdateToOneWithWhereWithoutMeetingAttendeesInput, MembershipUpdateWithoutMeetingAttendeesInput>, MembershipUncheckedUpdateWithoutMeetingAttendeesInput>
   }
 
+  export type MeetingCreateNestedOneWithoutVotesInput = {
+    create?: XOR<MeetingCreateWithoutVotesInput, MeetingUncheckedCreateWithoutVotesInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutVotesInput
+    connect?: MeetingWhereUniqueInput
+  }
+
   export type MembershipCreateNestedOneWithoutVotesInput = {
     create?: XOR<MembershipCreateWithoutVotesInput, MembershipUncheckedCreateWithoutVotesInput>
     connectOrCreate?: MembershipCreateOrConnectWithoutVotesInput
@@ -83881,6 +87362,16 @@ export namespace Prisma {
     connectOrCreate?: VoteResultCreateOrConnectWithoutVoteInput | VoteResultCreateOrConnectWithoutVoteInput[]
     createMany?: VoteResultCreateManyVoteInputEnvelope
     connect?: VoteResultWhereUniqueInput | VoteResultWhereUniqueInput[]
+  }
+
+  export type MeetingUpdateOneWithoutVotesNestedInput = {
+    create?: XOR<MeetingCreateWithoutVotesInput, MeetingUncheckedCreateWithoutVotesInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutVotesInput
+    upsert?: MeetingUpsertWithoutVotesInput
+    disconnect?: MeetingWhereInput | boolean
+    delete?: MeetingWhereInput | boolean
+    connect?: MeetingWhereUniqueInput
+    update?: XOR<XOR<MeetingUpdateToOneWithWhereWithoutVotesInput, MeetingUpdateWithoutVotesInput>, MeetingUncheckedUpdateWithoutVotesInput>
   }
 
   export type MembershipUpdateOneRequiredWithoutVotesNestedInput = {
@@ -86022,6 +89513,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutUserInput = {
@@ -86039,6 +89531,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutUserInput = {
@@ -88201,6 +91694,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutGroupInput = {
@@ -88218,6 +91712,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutGroupInput = {
@@ -88283,11 +91778,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
     chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
     noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+    votes?: VoteCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateWithoutGroupInput = {
@@ -88299,11 +91801,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     chairpersonMembershipId?: string | null
     noteTakerMembershipId?: string | null
     attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+    votes?: VoteUncheckedCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingCreateOrConnectWithoutGroupInput = {
@@ -88697,6 +92206,11 @@ export namespace Prisma {
     location?: StringNullableFilter<"Meeting"> | string | null
     isVirtual?: BoolFilter<"Meeting"> | boolean
     meetingLink?: StringNullableFilter<"Meeting"> | string | null
+    minutesText?: StringNullableFilter<"Meeting"> | string | null
+    minutesFileUrl?: StringNullableFilter<"Meeting"> | string | null
+    minutesKeyDecisions?: StringNullableListFilter<"Meeting">
+    minutesActionItems?: StringNullableListFilter<"Meeting">
+    minutesActionItemsCompleted?: BoolNullableListFilter<"Meeting">
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     groupId?: StringFilter<"Meeting"> | string
@@ -89029,6 +92543,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meeting?: MeetingCreateNestedOneWithoutVotesInput
     voteResults?: VoteResultCreateNestedManyWithoutVoteInput
   }
 
@@ -89041,6 +92556,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meetingId?: string | null
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutVoteInput
   }
 
@@ -89139,11 +92655,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     group: GroupCreateNestedOneWithoutMeetingsInput
     attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
     noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+    votes?: VoteCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateWithoutChairpersonInput = {
@@ -89155,11 +92678,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
     noteTakerMembershipId?: string | null
     attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+    votes?: VoteUncheckedCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingCreateOrConnectWithoutChairpersonInput = {
@@ -89181,11 +92711,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     group: GroupCreateNestedOneWithoutMeetingsInput
     attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
     chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+    votes?: VoteCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateWithoutNoteTakerInput = {
@@ -89197,11 +92734,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
     chairpersonMembershipId?: string | null
     attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+    votes?: VoteUncheckedCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingCreateOrConnectWithoutNoteTakerInput = {
@@ -89211,6 +92755,30 @@ export namespace Prisma {
 
   export type MeetingCreateManyNoteTakerInputEnvelope = {
     data: MeetingCreateManyNoteTakerInput | MeetingCreateManyNoteTakerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingGoalContributionCreateWithoutMembershipInput = {
+    id?: string
+    amount: number
+    createdAt?: Date | string
+    goal: MeetingFinancialGoalCreateNestedOneWithoutContributionsInput
+  }
+
+  export type MeetingGoalContributionUncheckedCreateWithoutMembershipInput = {
+    id?: string
+    goalId: string
+    amount: number
+    createdAt?: Date | string
+  }
+
+  export type MeetingGoalContributionCreateOrConnectWithoutMembershipInput = {
+    where: MeetingGoalContributionWhereUniqueInput
+    create: XOR<MeetingGoalContributionCreateWithoutMembershipInput, MeetingGoalContributionUncheckedCreateWithoutMembershipInput>
+  }
+
+  export type MeetingGoalContributionCreateManyMembershipInputEnvelope = {
+    data: MeetingGoalContributionCreateManyMembershipInput | MeetingGoalContributionCreateManyMembershipInput[]
     skipDuplicates?: boolean
   }
 
@@ -89410,6 +92978,7 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Vote"> | Date | string
     createdAt?: DateTimeFilter<"Vote"> | Date | string
     updatedAt?: DateTimeFilter<"Vote"> | Date | string
+    meetingId?: StringNullableFilter<"Vote"> | string | null
     membershipId?: StringFilter<"Vote"> | string
   }
 
@@ -89512,6 +93081,33 @@ export namespace Prisma {
   export type MeetingUpdateManyWithWhereWithoutNoteTakerInput = {
     where: MeetingScalarWhereInput
     data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyWithoutNoteTakerInput>
+  }
+
+  export type MeetingGoalContributionUpsertWithWhereUniqueWithoutMembershipInput = {
+    where: MeetingGoalContributionWhereUniqueInput
+    update: XOR<MeetingGoalContributionUpdateWithoutMembershipInput, MeetingGoalContributionUncheckedUpdateWithoutMembershipInput>
+    create: XOR<MeetingGoalContributionCreateWithoutMembershipInput, MeetingGoalContributionUncheckedCreateWithoutMembershipInput>
+  }
+
+  export type MeetingGoalContributionUpdateWithWhereUniqueWithoutMembershipInput = {
+    where: MeetingGoalContributionWhereUniqueInput
+    data: XOR<MeetingGoalContributionUpdateWithoutMembershipInput, MeetingGoalContributionUncheckedUpdateWithoutMembershipInput>
+  }
+
+  export type MeetingGoalContributionUpdateManyWithWhereWithoutMembershipInput = {
+    where: MeetingGoalContributionScalarWhereInput
+    data: XOR<MeetingGoalContributionUpdateManyMutationInput, MeetingGoalContributionUncheckedUpdateManyWithoutMembershipInput>
+  }
+
+  export type MeetingGoalContributionScalarWhereInput = {
+    AND?: MeetingGoalContributionScalarWhereInput | MeetingGoalContributionScalarWhereInput[]
+    OR?: MeetingGoalContributionScalarWhereInput[]
+    NOT?: MeetingGoalContributionScalarWhereInput | MeetingGoalContributionScalarWhereInput[]
+    id?: StringFilter<"MeetingGoalContribution"> | string
+    goalId?: StringFilter<"MeetingGoalContribution"> | string
+    membershipId?: StringFilter<"MeetingGoalContribution"> | string
+    amount?: FloatFilter<"MeetingGoalContribution"> | number
+    createdAt?: DateTimeFilter<"MeetingGoalContribution"> | Date | string
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -90749,6 +94345,7 @@ export namespace Prisma {
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutChairedMeetingsInput = {
@@ -90766,6 +94363,7 @@ export namespace Prisma {
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutChairedMeetingsInput = {
@@ -90788,6 +94386,7 @@ export namespace Prisma {
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutNoteTakerMeetingsInput = {
@@ -90805,11 +94404,82 @@ export namespace Prisma {
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutNoteTakerMeetingsInput = {
     where: MembershipWhereUniqueInput
     create: XOR<MembershipCreateWithoutNoteTakerMeetingsInput, MembershipUncheckedCreateWithoutNoteTakerMeetingsInput>
+  }
+
+  export type VoteCreateWithoutMeetingInput = {
+    id?: string
+    title: string
+    description?: string | null
+    options: JsonNullValueInput | InputJsonValue
+    startDate: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    membership: MembershipCreateNestedOneWithoutVotesInput
+    voteResults?: VoteResultCreateNestedManyWithoutVoteInput
+  }
+
+  export type VoteUncheckedCreateWithoutMeetingInput = {
+    id?: string
+    title: string
+    description?: string | null
+    options: JsonNullValueInput | InputJsonValue
+    startDate: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    membershipId: string
+    voteResults?: VoteResultUncheckedCreateNestedManyWithoutVoteInput
+  }
+
+  export type VoteCreateOrConnectWithoutMeetingInput = {
+    where: VoteWhereUniqueInput
+    create: XOR<VoteCreateWithoutMeetingInput, VoteUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type VoteCreateManyMeetingInputEnvelope = {
+    data: VoteCreateManyMeetingInput | VoteCreateManyMeetingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingFinancialGoalCreateWithoutMeetingInput = {
+    id?: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contributions?: MeetingGoalContributionCreateNestedManyWithoutGoalInput
+  }
+
+  export type MeetingFinancialGoalUncheckedCreateWithoutMeetingInput = {
+    id?: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutGoalInput
+  }
+
+  export type MeetingFinancialGoalCreateOrConnectWithoutMeetingInput = {
+    where: MeetingFinancialGoalWhereUniqueInput
+    create: XOR<MeetingFinancialGoalCreateWithoutMeetingInput, MeetingFinancialGoalUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type MeetingFinancialGoalCreateManyMeetingInputEnvelope = {
+    data: MeetingFinancialGoalCreateManyMeetingInput | MeetingFinancialGoalCreateManyMeetingInput[]
+    skipDuplicates?: boolean
   }
 
   export type GroupUpsertWithoutMeetingsInput = {
@@ -90945,6 +94615,7 @@ export namespace Prisma {
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutChairedMeetingsInput = {
@@ -90962,6 +94633,7 @@ export namespace Prisma {
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUpsertWithoutNoteTakerMeetingsInput = {
@@ -90990,6 +94662,7 @@ export namespace Prisma {
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutNoteTakerMeetingsInput = {
@@ -91007,6 +94680,354 @@ export namespace Prisma {
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
+  }
+
+  export type VoteUpsertWithWhereUniqueWithoutMeetingInput = {
+    where: VoteWhereUniqueInput
+    update: XOR<VoteUpdateWithoutMeetingInput, VoteUncheckedUpdateWithoutMeetingInput>
+    create: XOR<VoteCreateWithoutMeetingInput, VoteUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type VoteUpdateWithWhereUniqueWithoutMeetingInput = {
+    where: VoteWhereUniqueInput
+    data: XOR<VoteUpdateWithoutMeetingInput, VoteUncheckedUpdateWithoutMeetingInput>
+  }
+
+  export type VoteUpdateManyWithWhereWithoutMeetingInput = {
+    where: VoteScalarWhereInput
+    data: XOR<VoteUpdateManyMutationInput, VoteUncheckedUpdateManyWithoutMeetingInput>
+  }
+
+  export type MeetingFinancialGoalUpsertWithWhereUniqueWithoutMeetingInput = {
+    where: MeetingFinancialGoalWhereUniqueInput
+    update: XOR<MeetingFinancialGoalUpdateWithoutMeetingInput, MeetingFinancialGoalUncheckedUpdateWithoutMeetingInput>
+    create: XOR<MeetingFinancialGoalCreateWithoutMeetingInput, MeetingFinancialGoalUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type MeetingFinancialGoalUpdateWithWhereUniqueWithoutMeetingInput = {
+    where: MeetingFinancialGoalWhereUniqueInput
+    data: XOR<MeetingFinancialGoalUpdateWithoutMeetingInput, MeetingFinancialGoalUncheckedUpdateWithoutMeetingInput>
+  }
+
+  export type MeetingFinancialGoalUpdateManyWithWhereWithoutMeetingInput = {
+    where: MeetingFinancialGoalScalarWhereInput
+    data: XOR<MeetingFinancialGoalUpdateManyMutationInput, MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingInput>
+  }
+
+  export type MeetingFinancialGoalScalarWhereInput = {
+    AND?: MeetingFinancialGoalScalarWhereInput | MeetingFinancialGoalScalarWhereInput[]
+    OR?: MeetingFinancialGoalScalarWhereInput[]
+    NOT?: MeetingFinancialGoalScalarWhereInput | MeetingFinancialGoalScalarWhereInput[]
+    id?: StringFilter<"MeetingFinancialGoal"> | string
+    meetingId?: StringFilter<"MeetingFinancialGoal"> | string
+    name?: StringFilter<"MeetingFinancialGoal"> | string
+    targetAmount?: FloatFilter<"MeetingFinancialGoal"> | number
+    currentAmount?: FloatFilter<"MeetingFinancialGoal"> | number
+    deadline?: DateTimeNullableFilter<"MeetingFinancialGoal"> | Date | string | null
+    description?: StringNullableFilter<"MeetingFinancialGoal"> | string | null
+    createdAt?: DateTimeFilter<"MeetingFinancialGoal"> | Date | string
+    updatedAt?: DateTimeFilter<"MeetingFinancialGoal"> | Date | string
+  }
+
+  export type MeetingCreateWithoutMeetingFinancialGoalsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutMeetingsInput
+    attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
+    chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+    noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+    votes?: VoteCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateWithoutMeetingFinancialGoalsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupId: string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
+    attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+    votes?: VoteUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutMeetingFinancialGoalsInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutMeetingFinancialGoalsInput, MeetingUncheckedCreateWithoutMeetingFinancialGoalsInput>
+  }
+
+  export type MeetingGoalContributionCreateWithoutGoalInput = {
+    id?: string
+    amount: number
+    createdAt?: Date | string
+    membership: MembershipCreateNestedOneWithoutMeetingGoalContributionsInput
+  }
+
+  export type MeetingGoalContributionUncheckedCreateWithoutGoalInput = {
+    id?: string
+    membershipId: string
+    amount: number
+    createdAt?: Date | string
+  }
+
+  export type MeetingGoalContributionCreateOrConnectWithoutGoalInput = {
+    where: MeetingGoalContributionWhereUniqueInput
+    create: XOR<MeetingGoalContributionCreateWithoutGoalInput, MeetingGoalContributionUncheckedCreateWithoutGoalInput>
+  }
+
+  export type MeetingGoalContributionCreateManyGoalInputEnvelope = {
+    data: MeetingGoalContributionCreateManyGoalInput | MeetingGoalContributionCreateManyGoalInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingUpsertWithoutMeetingFinancialGoalsInput = {
+    update: XOR<MeetingUpdateWithoutMeetingFinancialGoalsInput, MeetingUncheckedUpdateWithoutMeetingFinancialGoalsInput>
+    create: XOR<MeetingCreateWithoutMeetingFinancialGoalsInput, MeetingUncheckedCreateWithoutMeetingFinancialGoalsInput>
+    where?: MeetingWhereInput
+  }
+
+  export type MeetingUpdateToOneWithWhereWithoutMeetingFinancialGoalsInput = {
+    where?: MeetingWhereInput
+    data: XOR<MeetingUpdateWithoutMeetingFinancialGoalsInput, MeetingUncheckedUpdateWithoutMeetingFinancialGoalsInput>
+  }
+
+  export type MeetingUpdateWithoutMeetingFinancialGoalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
+    attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
+    chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+    noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+    votes?: VoteUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutMeetingFinancialGoalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+    votes?: VoteUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingGoalContributionUpsertWithWhereUniqueWithoutGoalInput = {
+    where: MeetingGoalContributionWhereUniqueInput
+    update: XOR<MeetingGoalContributionUpdateWithoutGoalInput, MeetingGoalContributionUncheckedUpdateWithoutGoalInput>
+    create: XOR<MeetingGoalContributionCreateWithoutGoalInput, MeetingGoalContributionUncheckedCreateWithoutGoalInput>
+  }
+
+  export type MeetingGoalContributionUpdateWithWhereUniqueWithoutGoalInput = {
+    where: MeetingGoalContributionWhereUniqueInput
+    data: XOR<MeetingGoalContributionUpdateWithoutGoalInput, MeetingGoalContributionUncheckedUpdateWithoutGoalInput>
+  }
+
+  export type MeetingGoalContributionUpdateManyWithWhereWithoutGoalInput = {
+    where: MeetingGoalContributionScalarWhereInput
+    data: XOR<MeetingGoalContributionUpdateManyMutationInput, MeetingGoalContributionUncheckedUpdateManyWithoutGoalInput>
+  }
+
+  export type MeetingFinancialGoalCreateWithoutContributionsInput = {
+    id?: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    meeting: MeetingCreateNestedOneWithoutMeetingFinancialGoalsInput
+  }
+
+  export type MeetingFinancialGoalUncheckedCreateWithoutContributionsInput = {
+    id?: string
+    meetingId: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingFinancialGoalCreateOrConnectWithoutContributionsInput = {
+    where: MeetingFinancialGoalWhereUniqueInput
+    create: XOR<MeetingFinancialGoalCreateWithoutContributionsInput, MeetingFinancialGoalUncheckedCreateWithoutContributionsInput>
+  }
+
+  export type MembershipCreateWithoutMeetingGoalContributionsInput = {
+    id?: string
+    role?: $Enums.MembershipRole
+    joinedAt?: Date | string
+    status?: $Enums.MembershipStatus
+    balance?: Decimal | DecimalJsLike | number | string
+    totalContributed?: Decimal | DecimalJsLike | number | string
+    lastContribution?: Date | string | null
+    user: UserCreateNestedOneWithoutMembershipsInput
+    group: GroupCreateNestedOneWithoutMembershipsInput
+    votes?: VoteCreateNestedManyWithoutMembershipInput
+    meetingAttendees?: MeetingAttendeeCreateNestedManyWithoutMembershipInput
+    voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
+    loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+  }
+
+  export type MembershipUncheckedCreateWithoutMeetingGoalContributionsInput = {
+    id?: string
+    userId: string
+    groupId: string
+    role?: $Enums.MembershipRole
+    joinedAt?: Date | string
+    status?: $Enums.MembershipStatus
+    balance?: Decimal | DecimalJsLike | number | string
+    totalContributed?: Decimal | DecimalJsLike | number | string
+    lastContribution?: Date | string | null
+    votes?: VoteUncheckedCreateNestedManyWithoutMembershipInput
+    meetingAttendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMembershipInput
+    voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
+    loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
+    chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
+    noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+  }
+
+  export type MembershipCreateOrConnectWithoutMeetingGoalContributionsInput = {
+    where: MembershipWhereUniqueInput
+    create: XOR<MembershipCreateWithoutMeetingGoalContributionsInput, MembershipUncheckedCreateWithoutMeetingGoalContributionsInput>
+  }
+
+  export type MeetingFinancialGoalUpsertWithoutContributionsInput = {
+    update: XOR<MeetingFinancialGoalUpdateWithoutContributionsInput, MeetingFinancialGoalUncheckedUpdateWithoutContributionsInput>
+    create: XOR<MeetingFinancialGoalCreateWithoutContributionsInput, MeetingFinancialGoalUncheckedCreateWithoutContributionsInput>
+    where?: MeetingFinancialGoalWhereInput
+  }
+
+  export type MeetingFinancialGoalUpdateToOneWithWhereWithoutContributionsInput = {
+    where?: MeetingFinancialGoalWhereInput
+    data: XOR<MeetingFinancialGoalUpdateWithoutContributionsInput, MeetingFinancialGoalUncheckedUpdateWithoutContributionsInput>
+  }
+
+  export type MeetingFinancialGoalUpdateWithoutContributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneRequiredWithoutMeetingFinancialGoalsNestedInput
+  }
+
+  export type MeetingFinancialGoalUncheckedUpdateWithoutContributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MembershipUpsertWithoutMeetingGoalContributionsInput = {
+    update: XOR<MembershipUpdateWithoutMeetingGoalContributionsInput, MembershipUncheckedUpdateWithoutMeetingGoalContributionsInput>
+    create: XOR<MembershipCreateWithoutMeetingGoalContributionsInput, MembershipUncheckedCreateWithoutMeetingGoalContributionsInput>
+    where?: MembershipWhereInput
+  }
+
+  export type MembershipUpdateToOneWithWhereWithoutMeetingGoalContributionsInput = {
+    where?: MembershipWhereInput
+    data: XOR<MembershipUpdateWithoutMeetingGoalContributionsInput, MembershipUncheckedUpdateWithoutMeetingGoalContributionsInput>
+  }
+
+  export type MembershipUpdateWithoutMeetingGoalContributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalContributed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lastContribution?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutMembershipsNestedInput
+    group?: GroupUpdateOneRequiredWithoutMembershipsNestedInput
+    votes?: VoteUpdateManyWithoutMembershipNestedInput
+    meetingAttendees?: MeetingAttendeeUpdateManyWithoutMembershipNestedInput
+    voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
+    loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+  }
+
+  export type MembershipUncheckedUpdateWithoutMeetingGoalContributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMembershipStatusFieldUpdateOperationsInput | $Enums.MembershipStatus
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalContributed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lastContribution?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votes?: VoteUncheckedUpdateManyWithoutMembershipNestedInput
+    meetingAttendees?: MeetingAttendeeUncheckedUpdateManyWithoutMembershipNestedInput
+    voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
+    loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
+    chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
+    noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
   }
 
   export type MeetingCreateWithoutAttendeesInput = {
@@ -91018,11 +95039,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     group: GroupCreateNestedOneWithoutMeetingsInput
     chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
     noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+    votes?: VoteCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateWithoutAttendeesInput = {
@@ -91034,11 +95062,18 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
     chairpersonMembershipId?: string | null
     noteTakerMembershipId?: string | null
+    votes?: VoteUncheckedCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingCreateOrConnectWithoutAttendeesInput = {
@@ -91061,6 +95096,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutMeetingAttendeesInput = {
@@ -91078,6 +95114,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutMeetingAttendeesInput = {
@@ -91105,11 +95142,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
     chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
     noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+    votes?: VoteUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutAttendeesInput = {
@@ -91121,11 +95165,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    votes?: VoteUncheckedUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MembershipUpsertWithoutMeetingAttendeesInput = {
@@ -91154,6 +95205,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutMeetingAttendeesInput = {
@@ -91171,6 +95223,58 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
+  }
+
+  export type MeetingCreateWithoutVotesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutMeetingsInput
+    attendees?: MeetingAttendeeCreateNestedManyWithoutMeetingInput
+    chairperson?: MembershipCreateNestedOneWithoutChairedMeetingsInput
+    noteTaker?: MembershipCreateNestedOneWithoutNoteTakerMeetingsInput
+    meetingFinancialGoals?: MeetingFinancialGoalCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateWithoutVotesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: MeetingCreateagendaInput | string[]
+    date: Date | string
+    location?: string | null
+    isVirtual?: boolean
+    meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupId: string
+    chairpersonMembershipId?: string | null
+    noteTakerMembershipId?: string | null
+    attendees?: MeetingAttendeeUncheckedCreateNestedManyWithoutMeetingInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutVotesInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutVotesInput, MeetingUncheckedCreateWithoutVotesInput>
   }
 
   export type MembershipCreateWithoutVotesInput = {
@@ -91188,6 +95292,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutVotesInput = {
@@ -91205,6 +95310,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutVotesInput = {
@@ -91236,6 +95342,63 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MeetingUpsertWithoutVotesInput = {
+    update: XOR<MeetingUpdateWithoutVotesInput, MeetingUncheckedUpdateWithoutVotesInput>
+    create: XOR<MeetingCreateWithoutVotesInput, MeetingUncheckedCreateWithoutVotesInput>
+    where?: MeetingWhereInput
+  }
+
+  export type MeetingUpdateToOneWithWhereWithoutVotesInput = {
+    where?: MeetingWhereInput
+    data: XOR<MeetingUpdateWithoutVotesInput, MeetingUncheckedUpdateWithoutVotesInput>
+  }
+
+  export type MeetingUpdateWithoutVotesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
+    attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
+    chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+    noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutVotesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: MeetingUpdateagendaInput | string[]
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isVirtual?: BoolFieldUpdateOperationsInput | boolean
+    meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+    attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
   export type MembershipUpsertWithoutVotesInput = {
     update: XOR<MembershipUpdateWithoutVotesInput, MembershipUncheckedUpdateWithoutVotesInput>
     create: XOR<MembershipCreateWithoutVotesInput, MembershipUncheckedCreateWithoutVotesInput>
@@ -91262,6 +95425,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutVotesInput = {
@@ -91279,6 +95443,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type VoteResultUpsertWithWhereUniqueWithoutVoteInput = {
@@ -91306,6 +95471,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meeting?: MeetingCreateNestedOneWithoutVotesInput
     membership: MembershipCreateNestedOneWithoutVotesInput
   }
 
@@ -91318,6 +95484,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meetingId?: string | null
     membershipId: string
   }
 
@@ -91341,6 +95508,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutVoteResultsInput = {
@@ -91358,6 +95526,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutVoteResultsInput = {
@@ -91385,6 +95554,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneWithoutVotesNestedInput
     membership?: MembershipUpdateOneRequiredWithoutVotesNestedInput
   }
 
@@ -91397,6 +95567,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
     membershipId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -91426,6 +95597,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutVoteResultsInput = {
@@ -91443,6 +95615,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -93530,6 +97703,7 @@ export namespace Prisma {
     voteResults?: VoteResultCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipUncheckedCreateWithoutLoanVotesInput = {
@@ -93547,6 +97721,7 @@ export namespace Prisma {
     voteResults?: VoteResultUncheckedCreateNestedManyWithoutMembershipInput
     chairedMeetings?: MeetingUncheckedCreateNestedManyWithoutChairpersonInput
     noteTakerMeetings?: MeetingUncheckedCreateNestedManyWithoutNoteTakerInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedCreateNestedManyWithoutMembershipInput
   }
 
   export type MembershipCreateOrConnectWithoutLoanVotesInput = {
@@ -93700,6 +97875,7 @@ export namespace Prisma {
     voteResults?: VoteResultUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutLoanVotesInput = {
@@ -93717,6 +97893,7 @@ export namespace Prisma {
     voteResults?: VoteResultUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type UserCreateWithoutIndividualLoansInput = {
@@ -97256,6 +101433,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutUserInput = {
@@ -97273,6 +101451,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateManyWithoutUserInput = {
@@ -98195,6 +102374,11 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     chairpersonMembershipId?: string | null
@@ -98272,6 +102456,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateWithoutGroupInput = {
@@ -98289,6 +102474,7 @@ export namespace Prisma {
     loanVotes?: LoanVoteUncheckedUpdateManyWithoutMembershipNestedInput
     chairedMeetings?: MeetingUncheckedUpdateManyWithoutChairpersonNestedInput
     noteTakerMeetings?: MeetingUncheckedUpdateManyWithoutNoteTakerNestedInput
+    meetingGoalContributions?: MeetingGoalContributionUncheckedUpdateManyWithoutMembershipNestedInput
   }
 
   export type MembershipUncheckedUpdateManyWithoutGroupInput = {
@@ -98361,11 +102547,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
     chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
     noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+    votes?: VoteUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutGroupInput = {
@@ -98377,11 +102570,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+    votes?: VoteUncheckedUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateManyWithoutGroupInput = {
@@ -98393,6 +102593,11 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98584,6 +102789,7 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+    meetingId?: string | null
   }
 
   export type MeetingAttendeeCreateManyMembershipInput = {
@@ -98618,6 +102824,11 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
@@ -98633,10 +102844,22 @@ export namespace Prisma {
     location?: string | null
     isVirtual?: boolean
     meetingLink?: string | null
+    minutesText?: string | null
+    minutesFileUrl?: string | null
+    minutesKeyDecisions?: MeetingCreateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingCreateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingCreateminutesActionItemsCompletedInput | boolean[]
     createdAt?: Date | string
     updatedAt?: Date | string
     groupId: string
     chairpersonMembershipId?: string | null
+  }
+
+  export type MeetingGoalContributionCreateManyMembershipInput = {
+    id?: string
+    goalId: string
+    amount: number
+    createdAt?: Date | string
   }
 
   export type VoteUpdateWithoutMembershipInput = {
@@ -98648,6 +102871,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneWithoutVotesNestedInput
     voteResults?: VoteResultUpdateManyWithoutVoteNestedInput
   }
 
@@ -98660,6 +102884,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
     voteResults?: VoteResultUncheckedUpdateManyWithoutVoteNestedInput
   }
 
@@ -98672,6 +102897,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MeetingAttendeeUpdateWithoutMembershipInput = {
@@ -98752,11 +102978,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
     attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
     noteTaker?: MembershipUpdateOneWithoutNoteTakerMeetingsNestedInput
+    votes?: VoteUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutChairpersonInput = {
@@ -98768,11 +103001,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
     noteTakerMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+    votes?: VoteUncheckedUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateManyWithoutChairpersonInput = {
@@ -98784,6 +103024,11 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
@@ -98799,11 +103044,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     group?: GroupUpdateOneRequiredWithoutMeetingsNestedInput
     attendees?: MeetingAttendeeUpdateManyWithoutMeetingNestedInput
     chairperson?: MembershipUpdateOneWithoutChairedMeetingsNestedInput
+    votes?: VoteUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutNoteTakerInput = {
@@ -98815,11 +103067,18 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: MeetingAttendeeUncheckedUpdateManyWithoutMeetingNestedInput
+    votes?: VoteUncheckedUpdateManyWithoutMeetingNestedInput
+    meetingFinancialGoals?: MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateManyWithoutNoteTakerInput = {
@@ -98831,10 +103090,36 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     isVirtual?: BoolFieldUpdateOperationsInput | boolean
     meetingLink?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesText?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    minutesKeyDecisions?: MeetingUpdateminutesKeyDecisionsInput | string[]
+    minutesActionItems?: MeetingUpdateminutesActionItemsInput | string[]
+    minutesActionItemsCompleted?: MeetingUpdateminutesActionItemsCompletedInput | boolean[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     groupId?: StringFieldUpdateOperationsInput | string
     chairpersonMembershipId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MeetingGoalContributionUpdateWithoutMembershipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    goal?: MeetingFinancialGoalUpdateOneRequiredWithoutContributionsNestedInput
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateWithoutMembershipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    goalId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateManyWithoutMembershipInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    goalId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SavingsTransactionCreateManySavingsGoalInput = {
@@ -98951,6 +103236,29 @@ export namespace Prisma {
     status?: $Enums.AttendanceStatus
   }
 
+  export type VoteCreateManyMeetingInput = {
+    id?: string
+    title: string
+    description?: string | null
+    options: JsonNullValueInput | InputJsonValue
+    startDate: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    membershipId: string
+  }
+
+  export type MeetingFinancialGoalCreateManyMeetingInput = {
+    id?: string
+    name: string
+    targetAmount: number
+    currentAmount?: number
+    deadline?: Date | string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type MeetingAttendeeUpdateWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
@@ -98967,6 +103275,107 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     membershipId?: StringFieldUpdateOperationsInput | string
     status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+  }
+
+  export type VoteUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: JsonNullValueInput | InputJsonValue
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membership?: MembershipUpdateOneRequiredWithoutVotesNestedInput
+    voteResults?: VoteResultUpdateManyWithoutVoteNestedInput
+  }
+
+  export type VoteUncheckedUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: JsonNullValueInput | InputJsonValue
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipId?: StringFieldUpdateOperationsInput | string
+    voteResults?: VoteResultUncheckedUpdateManyWithoutVoteNestedInput
+  }
+
+  export type VoteUncheckedUpdateManyWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: JsonNullValueInput | InputJsonValue
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membershipId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MeetingFinancialGoalUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contributions?: MeetingGoalContributionUpdateManyWithoutGoalNestedInput
+  }
+
+  export type MeetingFinancialGoalUncheckedUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contributions?: MeetingGoalContributionUncheckedUpdateManyWithoutGoalNestedInput
+  }
+
+  export type MeetingFinancialGoalUncheckedUpdateManyWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    targetAmount?: FloatFieldUpdateOperationsInput | number
+    currentAmount?: FloatFieldUpdateOperationsInput | number
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingGoalContributionCreateManyGoalInput = {
+    id?: string
+    membershipId: string
+    amount: number
+    createdAt?: Date | string
+  }
+
+  export type MeetingGoalContributionUpdateWithoutGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    membership?: MembershipUpdateOneRequiredWithoutMeetingGoalContributionsNestedInput
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateWithoutGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    membershipId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingGoalContributionUncheckedUpdateManyWithoutGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    membershipId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VoteResultCreateManyVoteInput = {

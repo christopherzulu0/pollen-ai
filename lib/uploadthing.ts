@@ -185,6 +185,20 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       return { url: file.url }
     }),
+
+  meetingMinutesUploader: f({
+    pdf: { maxFileSize: "10MB", maxFileCount: 1 },
+    "application/msword": { maxFileSize: "10MB" },
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+      maxFileSize: "10MB",
+    },
+  })
+    .middleware(async ({ req }) => {
+      return { userId: "user-id" }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { url: file.url ?? file.ufsUrl }
+    }),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

@@ -49,10 +49,16 @@ export async function getMeetings(filters?: {
                     select: {
                         id: true,
                         name: true,
+                        ownerId: true,
                         _count: {
                             select: {
                                 memberships: true
                             }
+                        },
+                        memberships: {
+                            where: { userId: user.id, status: "ACTIVE" },
+                            select: { role: true },
+                            take: 1
                         }
                     }
                 },
@@ -74,7 +80,8 @@ export async function getMeetings(filters?: {
                     include: {
                         user: true
                     }
-                }
+                },
+                meetingFinancialGoals: true
             },
             orderBy: {
                 date: "asc"
@@ -104,6 +111,17 @@ export async function getMeetings(filters?: {
             const chairUser = meeting.chairperson?.user
             const noteTakerUser = meeting.noteTaker?.user
 
+            const groupRole =
+                meeting.group.ownerId === user.id
+                    ? "OWNER"
+                    : (meeting.group.memberships as { role: string }[])?.[0]?.role ?? "MEMBER"
+            const canCreatePoll = groupRole === "OWNER" || groupRole === "ADMIN"
+            const canEditMinutes =
+                isNoteTaker ||
+                isChairperson ||
+                groupRole === "OWNER" ||
+                groupRole === "ADMIN"
+
             return {
                 id: meeting.id,
                 title: meeting.title,
@@ -119,12 +137,27 @@ export async function getMeetings(filters?: {
                 location: meeting.location || "TBD",
                 isVirtual: meeting.isVirtual,
                 meetingLink: meeting.meetingLink,
+                minutesText: meeting.minutesText ?? null,
+                minutesFileUrl: meeting.minutesFileUrl ?? null,
+                minutesKeyDecisions: (meeting as any).minutesKeyDecisions ?? [],
+                minutesActionItems: (meeting as any).minutesActionItems ?? [],
+                minutesActionItemsCompleted: (meeting as any).minutesActionItemsCompleted ?? [],
+                financialGoals: ((meeting as any).meetingFinancialGoals ?? []).map((g: { id: string; name: string; targetAmount: number; currentAmount: number; deadline: Date | null; description: string | null }) => ({
+                    id: g.id,
+                    name: g.name,
+                    target: Number(g.targetAmount),
+                    current: Number(g.currentAmount),
+                    deadline: g.deadline ? g.deadline.toISOString() : null,
+                    description: g.description ?? null,
+                })),
                 status,
                 group: {
                     id: meeting.group.id,
                     name: meeting.group.name,
                     members: meeting.group._count.memberships
                 },
+                canCreatePoll,
+                canEditMinutes,
                 myRsvp: userAttendee?.status === "PRESENT" ? "confirmed" :
                     userAttendee?.status === "ABSENT" ? "declined" :
                         "pending",

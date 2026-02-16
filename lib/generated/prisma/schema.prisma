@@ -246,12 +246,13 @@ model Membership {
   lastContribution DateTime?
 
   // Relations
-  votes             Vote[]
-  meetingAttendees  MeetingAttendee[]
-  voteResults       VoteResult[]
-  loanVotes         LoanVote[]        @relation("MembershipLoanVotes")
-  chairedMeetings   Meeting[]         @relation("MeetingChairperson")
-  noteTakerMeetings Meeting[]         @relation("MeetingNoteTaker")
+  votes                    Vote[]
+  meetingAttendees         MeetingAttendee[]
+  voteResults              VoteResult[]
+  loanVotes                LoanVote[]                @relation("MembershipLoanVotes")
+  chairedMeetings          Meeting[]                 @relation("MeetingChairperson")
+  noteTakerMeetings        Meeting[]                 @relation("MeetingNoteTaker")
+  meetingGoalContributions MeetingGoalContribution[]
 
   @@unique([userId, groupId])
 }
@@ -353,23 +354,59 @@ model AIGoalAnalysis {
 // ==========================================
 
 model Meeting {
-  id                      String            @id @default(cuid())
-  title                   String
-  description             String?
-  agenda                  String[]          @default([])
-  date                    DateTime
-  location                String?
-  isVirtual               Boolean           @default(false)
-  meetingLink             String?
-  createdAt               DateTime          @default(now())
-  updatedAt               DateTime          @updatedAt
-  groupId                 String
-  group                   Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  attendees               MeetingAttendee[]
-  chairpersonMembershipId String?
-  chairperson             Membership?       @relation("MeetingChairperson", fields: [chairpersonMembershipId], references: [id])
-  noteTakerMembershipId   String?
-  noteTaker               Membership?       @relation("MeetingNoteTaker", fields: [noteTakerMembershipId], references: [id])
+  id                          String                 @id @default(cuid())
+  title                       String
+  description                 String?
+  agenda                      String[]               @default([])
+  date                        DateTime
+  location                    String?
+  isVirtual                   Boolean                @default(false)
+  meetingLink                 String?
+  minutesText                 String?
+  minutesFileUrl              String?
+  minutesKeyDecisions         String[]               @default([])
+  minutesActionItems          String[]               @default([])
+  minutesActionItemsCompleted Boolean[]              @default([])
+  createdAt                   DateTime               @default(now())
+  updatedAt                   DateTime               @updatedAt
+  groupId                     String
+  group                       Group                  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  attendees                   MeetingAttendee[]
+  chairpersonMembershipId     String?
+  chairperson                 Membership?            @relation("MeetingChairperson", fields: [chairpersonMembershipId], references: [id])
+  noteTakerMembershipId       String?
+  noteTaker                   Membership?            @relation("MeetingNoteTaker", fields: [noteTakerMembershipId], references: [id])
+  votes                       Vote[]
+  meetingFinancialGoals       MeetingFinancialGoal[]
+}
+
+model MeetingFinancialGoal {
+  id            String                    @id @default(cuid())
+  meetingId     String
+  meeting       Meeting                   @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  name          String
+  targetAmount  Float
+  currentAmount Float                     @default(0)
+  deadline      DateTime?
+  description   String?
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+  contributions MeetingGoalContribution[]
+
+  @@index([meetingId])
+}
+
+model MeetingGoalContribution {
+  id           String               @id @default(cuid())
+  goalId       String
+  goal         MeetingFinancialGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  membershipId String
+  membership   Membership           @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  amount       Float
+  createdAt    DateTime             @default(now())
+
+  @@index([goalId])
+  @@index([membershipId])
 }
 
 model MeetingAttendee {
@@ -392,6 +429,8 @@ model Vote {
   endDate      DateTime
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  meetingId    String?
+  meeting      Meeting?     @relation(fields: [meetingId], references: [id], onDelete: Cascade)
   membershipId String
   membership   Membership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
   voteResults  VoteResult[]

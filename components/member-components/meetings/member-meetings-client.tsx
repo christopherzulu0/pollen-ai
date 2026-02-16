@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -44,146 +44,12 @@ import { createGroupMeeting, getGroups, getGroupMemberships } from "@/lib/action
 import { getMeetings, updateMeetingRSVP } from "@/lib/actions/meetings"
 import { toast } from "sonner"
 import { GroupWithDetails } from "@/lib/types/groups"
+import { useMeetingPolls, useCreatePoll, useSubmitVote } from "@/hooks/usePolls"
+import { useMeetingMinutes, useSaveMeetingMinutes } from "@/hooks/useMinutes"
+import { useMeetingGoals, useCreateGoal, useContributeToGoal } from "@/hooks/useGoals"
+import { useUploadThing } from "@/lib/uploadthing-react"
 
-const mockMeetings = [
-  {
-    id: "1",
-    title: "Monthly Financial Review",
-    description: "Review group finances, approve loan requests, and discuss investment opportunities",
-    date: "2024-03-20",
-    time: "10:00 AM",
-    duration: "2 hours",
-    location: "Conference Room A",
-    isVirtual: false,
-    meetingLink: null,
-    zoomMeetingId: "123-456-789",
-    zoomPassword: "finance2024",
-    status: "upcoming",
-    group: { id: "g1", name: "Savings Circle A", members: 15 },
-    myRsvp: "confirmed",
-    attendees: 12,
-    totalMembers: 15,
-    myRole: "treasurer",
-    subGroup: "Finance Committee",
-    agenda: [
-      "Opening remarks and attendance",
-      "Financial report presentation",
-      "Loan request reviews (3 pending)",
-      "Investment opportunity discussion",
-      "AOB and closing",
-    ],
-    organizer: { name: "John Doe", avatar: "/thoughtful-man-in-library.png", role: "chairperson" },
-    polls: [
-      {
-        id: "p1",
-        question: "Should we invest in government bonds?",
-        options: ["Yes", "No", "Need more info"],
-        votes: { Yes: 8, No: 2, "Need more info": 2 },
-        myVote: "Yes",
-        status: "active",
-      },
-    ],
-    financialGoals: [
-      { id: "fg1", name: "Emergency Fund", target: 50000, current: 32000, deadline: "2024-06-30" },
-      { id: "fg2", name: "Investment Portfolio", target: 100000, current: 65000, deadline: "2024-12-31" },
-    ],
-    budget: {
-      monthly: 5000,
-      spent: 3200,
-      categories: [
-        { name: "Loans", allocated: 2000, spent: 1500 },
-        { name: "Operations", allocated: 1500, spent: 900 },
-        { name: "Emergency", allocated: 1000, spent: 500 },
-        { name: "Investments", allocated: 500, spent: 300 },
-      ],
-    },
-  },
-  {
-    id: "2",
-    title: "Investment Strategy Discussion",
-    description: "Quarterly review of investment portfolio and strategy planning for Q2",
-    date: "2024-03-22",
-    time: "2:00 PM",
-    duration: "1.5 hours",
-    location: "Zoom Meeting",
-    isVirtual: true,
-    meetingLink: "https://zoom.us/j/123456789",
-    zoomMeetingId: "987-654-321",
-    zoomPassword: "investQ2",
-    status: "upcoming",
-    group: { id: "g2", name: "Investment Group", members: 8 },
-    myRsvp: "pending",
-    attendees: 6,
-    totalMembers: 8,
-    myRole: "member",
-    agenda: [
-      "Q1 performance review",
-      "Portfolio rebalancing discussion",
-      "New investment opportunities",
-      "Risk assessment update",
-    ],
-    organizer: { name: "David Lee", avatar: null, role: "member" },
-  },
-  {
-    id: "3",
-    title: "Emergency Fund Planning",
-    description: "Discuss and establish emergency fund policies for the group",
-    date: "2024-03-15",
-    time: "3:00 PM",
-    duration: "1 hour",
-    location: "Community Center",
-    isVirtual: false,
-    meetingLink: null,
-    status: "completed",
-    group: { id: "g3", name: "Community Savers", members: 20 },
-    myRsvp: "attended",
-    attendees: 18,
-    totalMembers: 20,
-    myRole: "secretary",
-    agenda: ["Introduction to emergency funds", "Policy proposals", "Voting on proposals", "Implementation timeline"],
-    organizer: { name: "Grace Taylor", avatar: null, role: "chairperson" },
-    minutes: "Meeting was productive. Approved emergency fund policy with 85% vote. Implementation starts April 1st.",
-  },
-  {
-    id: "4",
-    title: "New Member Orientation",
-    description: "Welcome and onboard new members to the savings group",
-    date: "2024-03-10",
-    time: "11:00 AM",
-    duration: "45 minutes",
-    location: "Google Meet",
-    isVirtual: true,
-    meetingLink: "https://meet.google.com/abc-defg-hij",
-    status: "completed",
-    group: { id: "g1", name: "Savings Circle A", members: 15 },
-    myRsvp: "attended",
-    attendees: 14,
-    totalMembers: 15,
-    myRole: "member",
-    agenda: ["Group introduction", "Rules and bylaws review", "Payment schedules", "Q&A session"],
-    organizer: { name: "John Doe", avatar: "/thoughtful-man-in-library.png", role: "chairperson" },
-    minutes: "Successful orientation. Two new members onboarded. Both completed registration forms.",
-  },
-  {
-    id: "5",
-    title: "Year-End Celebration",
-    description: "Celebrate achievements and plan for next year",
-    date: "2024-03-08",
-    time: "5:00 PM",
-    duration: "3 hours",
-    location: "Restaurant & Event Hall",
-    isVirtual: false,
-    meetingLink: null,
-    status: "cancelled",
-    group: { id: "g2", name: "Investment Group", members: 8 },
-    myRsvp: "declined",
-    attendees: 0,
-    totalMembers: 8,
-    myRole: "member",
-    agenda: ["Year in review", "Awards and recognition", "Next year goals", "Social networking"],
-    organizer: { name: "David Lee", avatar: null, role: "member" },
-  },
-]
+
 
 const mockAttendanceRewards = [
   { userId: "u1", name: "You", attendanceRate: 95, points: 475, rank: 1, badge: "Perfect Attendance", rewards: 50 },
@@ -207,7 +73,7 @@ export function MemberMeetingsClient() {
 
   const [searchQuery, setSearchQuery] = useState("")
   const [groupFilter, setGroupFilter] = useState("all")
-  const [selectedMeeting, setSelectedMeeting] = useState<(typeof mockMeetings)[0] | null>(null)
+  const [selectedMeeting, setSelectedMeeting] = useState<any>(null)
   const [activeTab, setActiveTab] = useState("upcoming")
   const [showPollDialog, setShowPollDialog] = useState(false)
   const [showGoalsDialog, setShowGoalsDialog] = useState(false)
@@ -218,12 +84,30 @@ export function MemberMeetingsClient() {
   const [selectedPoll, setSelectedPoll] = useState<any>(null)
 
   const [showCreatePollDialog, setShowCreatePollDialog] = useState(false)
+  const [createPollMeetingId, setCreatePollMeetingId] = useState<string | null>(null)
+  const [pollTitle, setPollTitle] = useState("")
+  const [pollDescription, setPollDescription] = useState("")
+  const [pollEndDate, setPollEndDate] = useState("")
   const [showCreateGoalDialog, setShowCreateGoalDialog] = useState(false)
+  const [createGoalMeetingId, setCreateGoalMeetingId] = useState<string | null>(null)
+  const [goalName, setGoalName] = useState("")
+  const [goalTarget, setGoalTarget] = useState("")
+  const [goalCurrent, setGoalCurrent] = useState("0")
+  const [goalDeadline, setGoalDeadline] = useState("")
+  const [goalDescription, setGoalDescription] = useState("")
+  const [showContributeDialog, setShowContributeDialog] = useState(false)
+  const [contributeGoalId, setContributeGoalId] = useState<string | null>(null)
+  const [contributeGoalName, setContributeGoalName] = useState("")
+  const [contributeAmount, setContributeAmount] = useState("")
   const [showCreateBudgetDialog, setShowCreateBudgetDialog] = useState(false)
   const [showCreateMeetingDialog, setShowCreateMeetingDialog] = useState(false)
   const [isCreatingMeeting, setIsCreatingMeeting] = useState(false)
   const [pollOptions, setPollOptions] = useState(["", ""])
+  const [pollSelectedOptions, setPollSelectedOptions] = useState<Record<string, string>>({})
   const [budgetCategories, setBudgetCategories] = useState([{ name: "", allocated: 0 }])
+  const [minutesTextEdit, setMinutesTextEdit] = useState("")
+  const [minutesKeyDecisionsEdit, setMinutesKeyDecisionsEdit] = useState<string[]>([])
+  const [minutesActionItemsEdit, setMinutesActionItemsEdit] = useState<{ text: string; completed: boolean }[]>([])
 
   const [newMeeting, setNewMeeting] = useState({
     title: "",
@@ -302,24 +186,76 @@ export function MemberMeetingsClient() {
     return () => { cancelled = true }
   }, [newMeeting.groupId])
 
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        setIsLoadingMeetings(true)
-        const fetchedMeetings = await getMeetings({
-          groupId: groupFilter
-        })
-        setMeetings(fetchedMeetings)
-      } catch (error) {
-        console.error("Failed to fetch meetings:", error)
-        toast.error("Failed to load meetings")
-      } finally {
-        setIsLoadingMeetings(false)
-      }
-    }
+  const meetingIdForPolls = selectedMeeting?.id ?? null
+  const meetingIdForCreate = createPollMeetingId ?? meetingIdForPolls
+  const { data: meetingPolls = [], isLoading: isLoadingPolls } = useMeetingPolls(meetingIdForPolls)
+  const createPollMutation = useCreatePoll(meetingIdForCreate)
+  const submitVoteMutation = useSubmitVote(meetingIdForPolls)
 
-    fetchMeetings()
+  const meetingIdForMinutes = selectedMeeting?.id ?? null
+  const { data: meetingMinutes, isLoading: isLoadingMinutes } = useMeetingMinutes(meetingIdForMinutes)
+  const saveMinutesMutation = useSaveMeetingMinutes(meetingIdForMinutes)
+
+  const meetingIdForGoals = selectedMeeting?.id ?? null
+  const { data: meetingGoals = [], isLoading: isLoadingGoals } = useMeetingGoals(meetingIdForGoals)
+  const createGoalMutation = useCreateGoal(createGoalMeetingId ?? meetingIdForGoals)
+  const contributeToGoalMutation = useContributeToGoal(meetingIdForGoals)
+  const minutesFileInputRef = useRef<HTMLInputElement>(null)
+  const { startUpload: startMinutesUpload, isUploading: isUploadingMinutes } = useUploadThing(
+    "meetingMinutesUploader",
+    {
+      onClientUploadComplete: (res) => {
+        if (res?.[0]?.url && meetingIdForMinutes) {
+          saveMinutesMutation.mutate(
+            { minutesFileUrl: res[0].url },
+            {
+              onSuccess: () => toast.success("Minutes document uploaded"),
+              onError: (e) => toast.error(e?.message ?? "Failed to save document link"),
+            }
+          )
+        }
+      },
+      onUploadError: (e) => {
+        toast.error(e?.message ?? "Upload failed")
+      },
+    }
+  )
+
+  useEffect(() => {
+    setMinutesTextEdit(meetingMinutes?.minutesText ?? "")
+    setMinutesKeyDecisionsEdit(meetingMinutes?.minutesKeyDecisions ?? [])
+    const items = meetingMinutes?.minutesActionItems ?? []
+    const completed = meetingMinutes?.minutesActionItemsCompleted ?? []
+    setMinutesActionItemsEdit(
+      items.map((text, i) => ({ text, completed: completed[i] ?? false }))
+    )
+  }, [meetingMinutes?.minutesText, meetingMinutes?.minutesKeyDecisions, meetingMinutes?.minutesActionItems, meetingMinutes?.minutesActionItemsCompleted, meetingIdForMinutes])
+
+  const fetchMeetings = useCallback(async () => {
+    try {
+      setIsLoadingMeetings(true)
+      const fetchedMeetings = await getMeetings({
+        groupId: groupFilter
+      })
+      setMeetings(fetchedMeetings)
+    } catch (error) {
+      console.error("Failed to fetch meetings:", error)
+      toast.error("Failed to load meetings")
+    } finally {
+      setIsLoadingMeetings(false)
+    }
   }, [groupFilter])
+
+  useEffect(() => {
+    fetchMeetings()
+  }, [fetchMeetings])
+
+  // Refetch meetings when Minutes or Goals dialog opens so they show latest data
+  useEffect(() => {
+    if (showMinutesDialog || showGoalsDialog) {
+      fetchMeetings()
+    }
+  }, [showMinutesDialog, showGoalsDialog, fetchMeetings])
 
   const handleCreateMeeting = async () => {
     if (!newMeeting.title || !newMeeting.date || !newMeeting.time) {
@@ -583,22 +519,16 @@ export function MemberMeetingsClient() {
               <Trophy className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
               <span className="text-xs sm:text-sm">Rewards</span>
             </Button>
-            <Button
-              variant="outline"
-              className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent"
-              onClick={() => setShowSubGroupsDialog(true)}
-            >
-              <GitBranch className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-500" />
-              <span className="text-xs sm:text-sm">Sub-Groups</span>
-            </Button>
-            <Button variant="outline" className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent">
+            {/* 
+             */}
+            {/* <Button variant="outline" className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent">
               <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-red-500" />
               <span className="text-xs sm:text-sm">My Role</span>
             </Button>
             <Button variant="outline" className="flex flex-col h-auto py-3 sm:py-4 gap-2 bg-transparent">
               <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-500" />
               <span className="text-xs sm:text-sm">Analytics</span>
-            </Button>
+            </Button> */}
           </div>
         </CardContent>
       </Card>
@@ -913,16 +843,64 @@ export function MemberMeetingsClient() {
                 </CardContent>
               </Card>
 
-              {selectedMeeting?.minutes && (
+              {(meetingMinutes?.minutesText ||
+                meetingMinutes?.minutesFileUrl ||
+                (meetingMinutes?.minutesKeyDecisions?.length ?? 0) > 0 ||
+                (meetingMinutes?.minutesActionItems?.length ?? 0) > 0) && (
                 <Card className="bg-muted/30">
                   <CardHeader className="pb-3 flex flex-row items-center justify-between">
                     <CardTitle className="text-sm text-muted-foreground">Meeting Minutes</CardTitle>
-                    <Button variant="ghost" size="sm">
-                      <Download className="h-4 w-4" />
-                    </Button>
+                    {meetingMinutes.minutesFileUrl && (
+                      <Button variant="ghost" size="sm" asChild>
+                        <a href={meetingMinutes.minutesFileUrl} target="_blank" rel="noopener noreferrer">
+                          <Download className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm">{selectedMeeting.minutes}</p>
+                  <CardContent className="space-y-3">
+                    {meetingMinutes.minutesText && (
+                      <p className="text-sm whitespace-pre-wrap">{meetingMinutes.minutesText}</p>
+                    )}
+                    {(meetingMinutes?.minutesKeyDecisions?.length ?? 0) > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold text-muted-foreground mb-1">Key Decisions</h4>
+                        <ul className="list-disc list-inside text-sm space-y-0.5">
+                          {meetingMinutes.minutesKeyDecisions.map((item: string, i: number) => (
+                            <li key={i}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {(meetingMinutes?.minutesActionItems?.length ?? 0) > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold text-muted-foreground mb-1">Action Items</h4>
+                        <ul className="text-sm space-y-1">
+                          {meetingMinutes.minutesActionItems.map((item: string, i: number) => {
+                            const completed = meetingMinutes?.minutesActionItemsCompleted?.[i] ?? false
+                            return (
+                              <li key={i} className="flex items-center gap-2">
+                                <Checkbox checked={completed} disabled className="shrink-0" />
+                                <span className={completed ? "line-through text-muted-foreground" : ""}>{item}</span>
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                    {meetingMinutes.minutesFileUrl &&
+                      !meetingMinutes.minutesText &&
+                      (meetingMinutes?.minutesKeyDecisions?.length ?? 0) === 0 &&
+                      (meetingMinutes?.minutesActionItems?.length ?? 0) === 0 && (
+                        <a
+                          href={meetingMinutes.minutesFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary hover:underline"
+                        >
+                          View minutes document
+                        </a>
+                      )}
                   </CardContent>
                 </Card>
               )}
@@ -956,107 +934,209 @@ export function MemberMeetingsClient() {
             <TabsContent value="polls" className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Active Polls & Voting</h3>
-                <Badge variant="outline" className="bg-purple-500/10 text-purple-500">
-                  {selectedMeeting?.polls?.length || 0} Active
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="bg-purple-500/10 text-purple-500">
+                    {meetingPolls.filter((p) => p.status === "active").length} Active
+                  </Badge>
+                  {meetingIdForPolls && selectedMeeting?.canCreatePoll && (
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setCreatePollMeetingId(meetingIdForPolls)
+                        setShowCreatePollDialog(true)
+                      }}
+                    >
+                      <Vote className="mr-2 h-4 w-4" />
+                      Create Poll
+                    </Button>
+                  )}
+                </div>
               </div>
 
-              <div className="space-y-4">
-                {selectedMeeting?.polls?.map((poll) => (
-                  <Card key={poll.id} className="bg-muted/30">
-                    <CardHeader>
-                      <CardTitle className="text-base">{poll.question}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <RadioGroup value={poll.myVote} className="space-y-3">
-                        {poll.options?.map((option: string) => {
-                          const votes = poll.votes[option] || 0
-                          const totalVotes = Object.values(poll.votes).reduce((a: any, b: any) => a + b, 0)
-                          const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0
-
-                          return (
-                            <div key={option} className="space-y-2">
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value={option} id={`poll-${poll.id}-${option}`} />
-                                <Label htmlFor={`poll-${poll.id}-${option}`} className="flex-1 cursor-pointer">
-                                  {option}
-                                </Label>
-                                <span className="text-sm text-muted-foreground">
-                                  {votes} votes ({percentage.toFixed(0)}%)
-                                </span>
+              {isLoadingPolls ? (
+                <p className="text-sm text-muted-foreground">Loading polls...</p>
+              ) : (
+                <div className="space-y-4">
+                  {meetingPolls.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">No polls for this meeting yet.</p>
+                  ) : (
+                    meetingPolls.map((poll) => {
+                      const selectedOption = pollSelectedOptions[poll.id] ?? poll.myVote ?? ""
+                      const totalVotes = Object.values(poll.votes).reduce((a, b) => a + b, 0)
+                      return (
+                        <Card key={poll.id} className="bg-muted/30">
+                          <CardHeader>
+                            <div className="flex flex-wrap items-start justify-between gap-2">
+                              <div className="flex-1 min-w-0">
+                                <CardTitle className="text-base">{poll.title}</CardTitle>
+                                {poll.description && (
+                                  <p className="text-sm text-muted-foreground">{poll.description}</p>
+                                )}
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {poll.status === "active"
+                                    ? `Closes at ${new Date(poll.endDate).toLocaleString(undefined, { dateStyle: "short", timeStyle: "short" })}`
+                                    : `Closed at ${new Date(poll.endDate).toLocaleString(undefined, { dateStyle: "short", timeStyle: "short" })}`}
+                                </p>
                               </div>
-                              <Progress value={percentage} className="h-2" />
+                              <Badge
+                                variant="outline"
+                                className={poll.status === "active" ? "bg-green-500/10 text-green-500" : "bg-muted text-muted-foreground"}
+                              >
+                                {poll.status === "active" ? "Open" : "Closed"}
+                              </Badge>
                             </div>
-                          )
-                        })}
-                      </RadioGroup>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <RadioGroup
+                              value={selectedOption}
+                              onValueChange={(value) =>
+                                setPollSelectedOptions((prev) => ({ ...prev, [poll.id]: value }))
+                              }
+                              className="space-y-3"
+                            >
+                              {poll.options?.map((option: string) => {
+                                const votes = poll.votes[option] ?? 0
+                                const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0
 
-                      <div className="flex gap-2 pt-2">
-                        <Button size="sm" className="flex-1">
-                          Submit Vote
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          View Results
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                                return (
+                                  <div key={option} className="space-y-2">
+                                    <div className="flex items-center space-x-2">
+                                      <RadioGroupItem
+                                        value={option}
+                                        id={`poll-${poll.id}-${option}`}
+                                        disabled={poll.status === "ended"}
+                                      />
+                                      <Label htmlFor={`poll-${poll.id}-${option}`} className="flex-1 cursor-pointer">
+                                        {option}
+                                      </Label>
+                                      <span className="text-sm text-muted-foreground">
+                                        {votes} votes ({percentage.toFixed(0)}%)
+                                      </span>
+                                    </div>
+                                    <Progress value={percentage} className="h-2" />
+                                  </div>
+                                )
+                              })}
+                            </RadioGroup>
+
+                            {poll.status === "active" && (
+                              <Button
+                                size="sm"
+                                className="flex-1"
+                                disabled={!selectedOption || submitVoteMutation.isPending}
+                                onClick={async () => {
+                                  if (!selectedOption) return
+                                  try {
+                                    await submitVoteMutation.mutateAsync({
+                                      voteId: poll.id,
+                                      selectedOption,
+                                    })
+                                    toast.success("Vote submitted")
+                                  } catch (e) {
+                                    toast.error(e instanceof Error ? e.message : "Failed to submit vote")
+                                  }
+                                }}
+                              >
+                                {submitVoteMutation.isPending ? "Submitting..." : "Submit Vote"}
+                              </Button>
+                            )}
+                            {poll.myVote && (
+                              <Badge variant="outline" className="bg-blue-500/10 text-blue-500">
+                                You voted: {poll.myVote}
+                              </Badge>
+                            )}
+                          </CardContent>
+                        </Card>
+                      )
+                    })
+                  )}
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="goals" className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Shared Financial Goals</h3>
-                <Button size="sm">
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setCreateGoalMeetingId(selectedMeeting?.id ?? null)
+                    setGoalName("")
+                    setGoalTarget("")
+                    setGoalCurrent("0")
+                    setGoalDeadline("")
+                    setGoalDescription("")
+                    setShowGoalsDialog(false)
+                    setShowCreateGoalDialog(true)
+                  }}
+                >
                   <Target className="mr-2 h-4 w-4" />
                   Add Goal
                 </Button>
               </div>
 
-              <div className="space-y-4">
-                {selectedMeeting?.financialGoals?.map((goal) => {
-                  const progress = (goal.current / goal.target) * 100
-
-                  return (
-                    <Card key={goal.id} className="bg-muted/30">
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <CardTitle className="text-base">{goal.name}</CardTitle>
-                            <p className="text-sm text-muted-foreground">
-                              Deadline: {new Date(goal.deadline).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <Badge
-                            variant="outline"
-                            className={
-                              progress >= 100 ? "bg-green-500/10 text-green-500" : "bg-blue-500/10 text-blue-500"
-                            }
-                          >
-                            {progress.toFixed(0)}%
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Current</span>
-                          <span className="font-semibold">${goal.current.toLocaleString()}</span>
-                        </div>
-                        <Progress value={progress} className="h-3" />
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Target</span>
-                          <span className="font-semibold">${goal.target.toLocaleString()}</span>
-                        </div>
-                        <Button size="sm" className="w-full">
-                          <DollarSign className="mr-2 h-4 w-4" />
-                          Contribute
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )
-                })}
-              </div>
+              {isLoadingGoals ? (
+                <p className="text-sm text-muted-foreground">Loading goals…</p>
+              ) : (
+                <div className="space-y-4">
+                  {meetingGoals.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">No financial goals for this meeting yet.</p>
+                  ) : (
+                    meetingGoals.map((goal) => {
+                      const progress = goal.target > 0 ? (goal.current / goal.target) * 100 : 0
+                      return (
+                        <Card key={goal.id} className="bg-muted/30">
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <CardTitle className="text-base">{goal.name}</CardTitle>
+                                <p className="text-sm text-muted-foreground">
+                                  {goal.deadline
+                                    ? `Deadline: ${new Date(goal.deadline).toLocaleDateString()}`
+                                    : "No deadline"}
+                                </p>
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className={
+                                  progress >= 100 ? "bg-green-500/10 text-green-500" : "bg-blue-500/10 text-blue-500"
+                                }
+                              >
+                                {progress.toFixed(0)}%
+                              </Badge>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Current</span>
+                              <span className="font-semibold">${goal.current.toLocaleString()}</span>
+                            </div>
+                            <Progress value={Math.min(progress, 100)} className="h-3" />
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Target</span>
+                              <span className="font-semibold">${goal.target.toLocaleString()}</span>
+                            </div>
+                            <Button
+                              size="sm"
+                              className="w-full"
+                              variant="outline"
+                              onClick={() => {
+                                setContributeGoalId(goal.id)
+                                setContributeGoalName(goal.name)
+                                setContributeAmount("")
+                                setShowContributeDialog(true)
+                              }}
+                            >
+                              <DollarSign className="mr-2 h-4 w-4" />
+                              Contribute
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      )
+                    })
+                  )}
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="budget" className="space-y-4 mt-4">
@@ -1119,60 +1199,249 @@ export function MemberMeetingsClient() {
             <TabsContent value="minutes" className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Meeting Minutes</h3>
-                {selectedMeeting?.myRole === "secretary" && (
-                  <Button size="sm">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Edit Minutes
-                  </Button>
+                {meetingMinutes?.canEditMinutes && (
+                  <span className="text-xs text-muted-foreground">You can add or edit minutes</span>
                 )}
               </div>
 
-              <Card className="bg-muted/30">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold mb-2">Attendance</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {selectedMeeting?.attendees} of {selectedMeeting?.totalMembers} members present
-                      </p>
-                    </div>
+              {isLoadingMinutes ? (
+                <Card className="bg-muted/30">
+                  <CardContent className="p-6">
+                    <p className="text-sm text-muted-foreground">Loading minutes…</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="bg-muted/30">
+                  <CardContent className="p-6 space-y-4">
+                    {meetingMinutes?.canEditMinutes && (
+                      <div className="space-y-3">
+                        <Label>Upload minutes document (PDF or Word)</Label>
+                        <div className="flex flex-wrap gap-2 items-center">
+                          <input
+                            ref={minutesFileInputRef}
+                            type="file"
+                            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            className="hidden"
+                            onChange={(e) => {
+                              const files = e.target.files
+                              if (files?.length) startMinutesUpload(Array.from(files))
+                              e.target.value = ""
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            disabled={isUploadingMinutes}
+                            onClick={() => minutesFileInputRef.current?.click()}
+                          >
+                            {isUploadingMinutes ? "Uploading…" : "Choose file"}
+                          </Button>
+                          <span className="text-xs text-muted-foreground">
+                            {meetingMinutes?.minutesFileUrl ? "Document attached" : "Optional"}
+                          </span>
+                        </div>
+                        <div>
+                          <Label htmlFor="minutes-text">Summary or notes (optional)</Label>
+                          <Textarea
+                            id="minutes-text"
+                            placeholder="Add a short summary or key points…"
+                            value={minutesTextEdit}
+                            onChange={(e) => setMinutesTextEdit(e.target.value)}
+                            className="min-h-[120px] mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label className="mb-2 block">Key Decisions</Label>
+                          <div className="space-y-2">
+                            {minutesKeyDecisionsEdit.map((item, idx) => (
+                              <div key={idx} className="flex gap-2 items-center">
+                                <Input
+                                  placeholder="e.g. Approved investment in government bonds (8-2 vote)"
+                                  value={item}
+                                  onChange={(e) => {
+                                    const next = [...minutesKeyDecisionsEdit]
+                                    next[idx] = e.target.value
+                                    setMinutesKeyDecisionsEdit(next)
+                                  }}
+                                  className="flex-1"
+                                />
+                                <Button
+                                  type="button"
+                                  size="icon"
+                                  variant="ghost"
+                                  className="shrink-0 text-muted-foreground hover:text-destructive"
+                                  onClick={() =>
+                                    setMinutesKeyDecisionsEdit((prev) =>
+                                      prev.filter((_, i) => i !== idx)
+                                    )
+                                  }
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            ))}
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => setMinutesKeyDecisionsEdit((prev) => [...prev, ""])}
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              Add key decision
+                            </Button>
+                          </div>
+                        </div>
+                        <div>
+                          <Label className="mb-2 block">Action Items</Label>
+                          <div className="space-y-2">
+                            {minutesActionItemsEdit.map((item, idx) => (
+                              <div key={idx} className="flex gap-2 items-center">
+                                <Checkbox
+                                  checked={item.completed}
+                                  onCheckedChange={(checked) => {
+                                    setMinutesActionItemsEdit((prev) =>
+                                      prev.map((x, i) =>
+                                        i === idx ? { ...x, completed: !!checked } : x
+                                      )
+                                    )
+                                  }}
+                                  className="shrink-0"
+                                />
+                                <Input
+                                  placeholder="e.g. Treasurer to process loan disbursements by March 25"
+                                  value={item.text}
+                                  onChange={(e) => {
+                                    setMinutesActionItemsEdit((prev) =>
+                                      prev.map((x, i) =>
+                                        i === idx ? { ...x, text: e.target.value } : x
+                                      )
+                                    )
+                                  }}
+                                  className={`flex-1 ${item.completed ? "line-through text-muted-foreground" : ""}`}
+                                />
+                                <Button
+                                  type="button"
+                                  size="icon"
+                                  variant="ghost"
+                                  className="shrink-0 text-muted-foreground hover:text-destructive"
+                                  onClick={() =>
+                                    setMinutesActionItemsEdit((prev) =>
+                                      prev.filter((_, i) => i !== idx)
+                                    )
+                                  }
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            ))}
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                setMinutesActionItemsEdit((prev) => [...prev, { text: "", completed: false }])
+                              }
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              Add action item
+                            </Button>
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          disabled={saveMinutesMutation.isPending}
+                          onClick={async () => {
+                            try {
+                              await saveMinutesMutation.mutateAsync({
+                                minutesText: minutesTextEdit || null,
+                                minutesFileUrl: meetingMinutes?.minutesFileUrl ?? undefined,
+                                minutesKeyDecisions: minutesKeyDecisionsEdit.filter((s) => s.trim()),
+                                minutesActionItems: minutesActionItemsEdit.map((x) => x.text.trim()).filter(Boolean),
+                                minutesActionItemsCompleted: minutesActionItemsEdit
+                                  .filter((x) => x.text.trim())
+                                  .map((x) => x.completed),
+                              })
+                              toast.success("Minutes saved")
+                            } catch (e) {
+                              toast.error(e instanceof Error ? e.message : "Failed to save minutes")
+                            }
+                          }}
+                        >
+                          {saveMinutesMutation.isPending ? "Saving…" : "Save minutes"}
+                        </Button>
+                      </div>
+                    )}
 
-                    <div>
-                      <h4 className="font-semibold mb-2">Key Decisions</h4>
-                      <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                        <li>Approved investment in government bonds (8-2 vote)</li>
-                        <li>Increased emergency fund target to $50,000</li>
-                        <li>Approved 3 loan requests totaling $15,000</li>
-                      </ul>
-                    </div>
+                    {(meetingMinutes?.minutesText ||
+                      meetingMinutes?.minutesFileUrl ||
+                      (meetingMinutes?.minutesKeyDecisions?.length ?? 0) > 0 ||
+                      (meetingMinutes?.minutesActionItems?.length ?? 0) > 0) ? (
+                      <div className="space-y-3 pt-2 border-t">
+                        <h4 className="font-semibold">Saved minutes</h4>
+                        {meetingMinutes.minutesText && (
+                          <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                            {meetingMinutes.minutesText}
+                          </p>
+                        )}
+                        {(meetingMinutes?.minutesKeyDecisions?.length ?? 0) > 0 && (
+                          <div>
+                            <h5 className="text-sm font-semibold mb-1">Key Decisions</h5>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                              {meetingMinutes.minutesKeyDecisions.map((item: string, i: number) => (
+                                <li key={i}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {(meetingMinutes?.minutesActionItems?.length ?? 0) > 0 && (
+                          <div>
+                            <h5 className="text-sm font-semibold mb-1">Action Items</h5>
+                            <ul className="space-y-2 text-sm text-muted-foreground">
+                              {meetingMinutes.minutesActionItems.map((item: string, i: number) => {
+                                const completed = meetingMinutes?.minutesActionItemsCompleted?.[i] ?? false
+                                return (
+                                  <li key={i} className="flex items-center gap-2">
+                                    <Checkbox checked={completed} disabled className="shrink-0" />
+                                    <span className={completed ? "line-through" : ""}>{item}</span>
+                                  </li>
+                                )
+                              })}
+                            </ul>
+                          </div>
+                        )}
+                        {meetingMinutes.minutesFileUrl && (
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" asChild>
+                              <a href={meetingMinutes.minutesFileUrl} target="_blank" rel="noopener noreferrer">
+                                <Download className="mr-2 h-4 w-4" />
+                                Download document
+                              </a>
+                            </Button>
+                            <Button size="sm" variant="outline" asChild>
+                              <a href={meetingMinutes.minutesFileUrl} target="_blank" rel="noopener noreferrer">
+                                <FileText className="mr-2 h-4 w-4" />
+                                View full minutes
+                              </a>
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    ) : !meetingMinutes?.canEditMinutes ? (
+                      <p className="text-sm text-muted-foreground">No minutes for this meeting yet.</p>
+                    ) : null}
+                  </CardContent>
+                </Card>
+              )}
 
-                    <div>
-                      <h4 className="font-semibold mb-2">Action Items</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2 text-sm">
-                          <Checkbox className="mt-1" />
-                          <span>Treasurer to process approved loan disbursements by March 25</span>
-                        </li>
-                        <li className="flex items-start gap-2 text-sm">
-                          <Checkbox checked className="mt-1" />
-                          <span>Secretary to send bond investment documents to all members</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="flex gap-2 pt-4">
-                      <Button size="sm" variant="outline" className="flex-1 bg-transparent">
-                        <Download className="mr-2 h-4 w-4" />
-                        Download PDF
-                      </Button>
-                      <Button size="sm" variant="outline" className="flex-1 bg-transparent">
-                        <FileText className="mr-2 h-4 w-4" />
-                        View Full Minutes
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {selectedMeeting && (
+                <div className="text-sm text-muted-foreground">
+                  <h4 className="font-semibold mb-1">Attendance</h4>
+                  <p>
+                    {selectedMeeting.attendees} of {selectedMeeting.totalMembers} members present
+                  </p>
+                </div>
+              )}
             </TabsContent>
 
           
@@ -1191,82 +1460,68 @@ export function MemberMeetingsClient() {
             <DialogDescription>Participate in group decisions and investment voting</DialogDescription>
           </DialogHeader>
 
-          <div className="flex justify-end mb-4">
-            <Button
-              onClick={() => {
-                setShowPollDialog(false)
-                setShowCreatePollDialog(true)
-              }}
-              size="sm"
-            >
-              <Vote className="h-4 w-4 mr-2" />
-              Create Poll
-            </Button>
-          </div>
+          {(meetings || []).some((m: any) => m.canCreatePoll) && (
+            <div className="flex justify-end mb-4">
+              <Button
+                onClick={() => {
+                  setShowPollDialog(false)
+                  setCreatePollMeetingId(null)
+                  setShowCreatePollDialog(true)
+                }}
+                size="sm"
+              >
+                <Vote className="h-4 w-4 mr-2" />
+                Create Poll
+              </Button>
+            </div>
+          )}
 
           <div className="space-y-4">
-            {mockMeetings
-              .filter((m) => m.polls && m.polls.length > 0)
-              .map((meeting) =>
-                meeting.polls?.map((poll) => {
-                  const totalVotes = Object.values(poll.votes).reduce((a: any, b: any) => a + b, 0)
-                  return (
-                    <Card key={poll.id} className="bg-card/50">
-                      <CardHeader>
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1">
-                            <CardTitle className="text-base">{poll.question}</CardTitle>
-                            <p className="text-sm text-muted-foreground mt-1">{meeting.group.name}</p>
-                          </div>
-                          <Badge
-                            variant="outline"
-                            className={`${poll.status === "active" ? "bg-green-500/10 text-green-500" : "bg-gray-500/10 text-gray-500"}`}
-                          >
-                            {poll.status}
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <RadioGroup value={poll.myVote} disabled={poll.status !== "active"}>
-                          {poll.options.map((option: string) => {
-                            const votes = poll.votes[option] || 0
-                            const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0
-                            return (
-                              <div key={option} className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value={option} id={`${poll.id}-${option}`} />
-                                    <Label htmlFor={`${poll.id}-${option}`} className="text-sm">
-                                      {option}
-                                    </Label>
-                                  </div>
-                                  <span className="text-sm text-muted-foreground">
-                                    {votes} votes ({percentage.toFixed(0)}%)
-                                  </span>
-                                </div>
-                                <Progress value={percentage} className="h-2" />
-                              </div>
-                            )
-                          })}
-                        </RadioGroup>
-                        <div className="flex items-center justify-between pt-2 border-t">
-                          <span className="text-sm text-muted-foreground">Total votes: {totalVotes}</span>
-                          {poll.myVote && (
-                            <Badge variant="outline" className="bg-blue-500/10 text-blue-500">
-                              You voted: {poll.myVote}
-                            </Badge>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )
-                }),
-              )}
+            {(meetings || []).filter((m) => m.status === "upcoming").length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <Vote className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                <p className="font-medium">No upcoming meetings</p>
+                <p className="text-sm mt-1">Polls are shown per meeting. Create or open a meeting, then go to the Polls tab to view and vote on polls.</p>
+              </div>
+            ) : (
+              <>
+                <p className="text-sm text-muted-foreground">Open a meeting and go to the Polls tab to view and vote on polls.</p>
+                <div className="grid gap-2">
+                  {(meetings || [])
+                    .filter((m) => m.status === "upcoming")
+                    .slice(0, 5)
+                    .map((meeting) => (
+                      <Button
+                        key={meeting.id}
+                        variant="outline"
+                        className="justify-start"
+                        onClick={() => {
+                          setShowPollDialog(false)
+                          setSelectedMeeting(meeting as any)
+                        }}
+                      >
+                        {meeting.title} – {meeting.group.name}
+                      </Button>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showCreatePollDialog} onOpenChange={setShowCreatePollDialog}>
+      <Dialog
+        open={showCreatePollDialog}
+        onOpenChange={(open) => {
+          setShowCreatePollDialog(open)
+          if (!open) {
+            setPollTitle("")
+            setPollDescription("")
+            setPollEndDate("")
+            setPollOptions(["", ""])
+          }
+        }}
+      >
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Poll</DialogTitle>
@@ -1274,23 +1529,74 @@ export function MemberMeetingsClient() {
           </DialogHeader>
 
           <div className="space-y-4">
+            {!meetingIdForCreate ? (
+              <div className="space-y-2">
+                <Label>Select Meeting *</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-between font-normal"
+                    >
+                      {createPollMeetingId
+                        ? (() => {
+                            const m = (meetings || []).find((x) => x.id === createPollMeetingId)
+                            return m ? `${m.title} – ${m.group.name}` : "Choose a meeting"
+                          })()
+                        : "Choose a meeting to add the poll to"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="z-[200] w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search meetings..." />
+                      <CommandList className="max-h-60 overflow-y-auto">
+                        <CommandGroup>
+                          {(meetings || [])
+                            .filter((m) => m.status === "upcoming")
+                            .map((m) => (
+                              <CommandItem
+                                key={m.id}
+                                value={`${m.title} ${m.group.name} ${m.date}`}
+                                onSelect={() => setCreatePollMeetingId(m.id)}
+                              >
+                                <span className="truncate">
+                                  {m.title} – {m.group.name} ({m.date})
+                                </span>
+                              </CommandItem>
+                            ))}
+                          {(meetings || []).filter((m) => m.status === "upcoming").length === 0 ? (
+                            <div className="py-6 text-center text-sm text-muted-foreground">
+                              No upcoming meetings. Create a meeting first or open a meeting and use Create Poll in the Polls tab.
+                            </div>
+                          ) : null}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <p className="text-xs text-muted-foreground">Or open a meeting and use Create Poll in the Polls tab.</p>
+              </div>
+            ) : null}
+
             <div className="space-y-2">
               <Label htmlFor="poll-question">Poll Question *</Label>
-              <Input id="poll-question" placeholder="e.g., Should we invest in government bonds?" />
+              <Input
+                id="poll-question"
+                placeholder="e.g., Should we invest in government bonds?"
+                value={pollTitle}
+                onChange={(e) => setPollTitle(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="poll-group">Select Group *</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose a group" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="g1">Savings Circle A</SelectItem>
-                  <SelectItem value="g2">Investment Group</SelectItem>
-                  <SelectItem value="g3">Community Savers</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="poll-description">Description (optional)</Label>
+              <Textarea
+                id="poll-description"
+                placeholder="Brief context for the poll"
+                value={pollDescription}
+                onChange={(e) => setPollDescription(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
@@ -1327,26 +1633,69 @@ export function MemberMeetingsClient() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="poll-deadline">Voting Deadline</Label>
-              <Input id="poll-deadline" type="datetime-local" />
+              <Label htmlFor="poll-deadline">Voting Deadline *</Label>
+              <Input
+                id="poll-deadline"
+                type="datetime-local"
+                value={pollEndDate}
+                onChange={(e) => setPollEndDate(e.target.value)}
+              />
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox id="allow-multiple" />
-              <Label htmlFor="allow-multiple" className="text-sm font-normal">
-                Allow members to change their vote
-              </Label>
-            </div>
+            {meetingIdForCreate &&
+              (selectedMeeting?.id === meetingIdForCreate
+                ? !selectedMeeting?.canCreatePoll
+                : !(meetings || []).find((m: any) => m.id === meetingIdForCreate)?.canCreatePoll) && (
+              <p className="text-sm text-amber-600 dark:text-amber-500">
+                Only the group owner or an admin can create polls for this meeting.
+              </p>
+            )}
 
             <div className="flex gap-2 pt-4">
               <Button
                 className="flex-1"
-                onClick={() => {
-                  // Handle create poll
-                  setShowCreatePollDialog(false)
+                disabled={
+                  !meetingIdForCreate ||
+                  (selectedMeeting?.id === meetingIdForCreate
+                    ? !selectedMeeting?.canCreatePoll
+                    : !(meetings || []).find((m: any) => m.id === meetingIdForCreate)?.canCreatePoll) ||
+                  !pollTitle.trim() ||
+                  pollOptions.filter((o) => o.trim()).length < 2 ||
+                  !pollEndDate ||
+                  createPollMutation.isPending
+                }
+                onClick={async () => {
+                  const meetingId = createPollMeetingId ?? selectedMeeting?.id
+                  if (!meetingId) return
+                  const options = pollOptions.map((o) => o.trim()).filter(Boolean)
+                  if (options.length < 2) {
+                    toast.error("At least 2 options are required")
+                    return
+                  }
+                  if (!pollEndDate || new Date(pollEndDate) <= new Date()) {
+                    toast.error("End date must be in the future")
+                    return
+                  }
+                  try {
+                    await createPollMutation.mutateAsync({
+                      meetingId,
+                      title: pollTitle.trim(),
+                      description: pollDescription.trim() || undefined,
+                      options,
+                      endDate: pollEndDate,
+                    })
+                    toast.success("Poll created")
+                    setShowCreatePollDialog(false)
+                    setPollTitle("")
+                    setPollDescription("")
+                    setPollEndDate("")
+                    setPollOptions(["", ""])
+                  } catch (e) {
+                    toast.error(e instanceof Error ? e.message : "Failed to create poll")
+                  }
                 }}
               >
-                Create Poll
+                {createPollMutation.isPending ? "Creating..." : "Create Poll"}
               </Button>
               <Button
                 variant="outline"
@@ -1372,67 +1721,94 @@ export function MemberMeetingsClient() {
           </DialogHeader>
 
           <div className="flex justify-end mb-4">
-            <Button
+            {/* <Button
+              size="sm"
               onClick={() => {
+                setCreateGoalMeetingId(null)
+                setGoalName("")
+                setGoalTarget("")
+                setGoalCurrent("0")
+                setGoalDeadline("")
+                setGoalDescription("")
                 setShowGoalsDialog(false)
                 setShowCreateGoalDialog(true)
               }}
-              size="sm"
             >
               <Target className="h-4 w-4 mr-2" />
               Create Goal
-            </Button>
+            </Button> */}
           </div>
 
           <div className="space-y-4">
-            {mockMeetings
-              .filter((m) => m.financialGoals && m.financialGoals.length > 0)
-              .map((meeting) =>
-                meeting.financialGoals?.map((goal) => {
-                  const progress = (goal.current / goal.target) * 100
-                  const remaining = goal.target - goal.current
-                  return (
-                    <Card key={goal.id} className="bg-card/50">
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <CardTitle className="text-base">{goal.name}</CardTitle>
-                            <p className="text-sm text-muted-foreground mt-1">{meeting.group.name}</p>
-                          </div>
-                          <Badge variant="outline" className="bg-blue-500/10 text-blue-500">
-                            {progress.toFixed(0)}%
-                          </Badge>
+            {(meetings || [])
+              .filter((m: any) => m.financialGoals && m.financialGoals.length > 0)
+              .flatMap((meeting: any) =>
+                (meeting.financialGoals ?? []).map((goal: any) => ({ meeting, goal }))
+              )
+              .map(({ meeting, goal }) => {
+                const progress = goal.target > 0 ? (goal.current / goal.target) * 100 : 0
+                const remaining = Math.max(0, goal.target - goal.current)
+                return (
+                  <Card key={goal.id} className="bg-card/50">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle className="text-base">{goal.name}</CardTitle>
+                          <p className="text-sm text-muted-foreground mt-1">{meeting.group?.name}</p>
                         </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span>Progress</span>
-                            <span className="font-semibold">
-                              ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
-                            </span>
-                          </div>
-                          <Progress value={progress} className="h-3" />
+                        <Badge variant="outline" className="bg-blue-500/10 text-blue-500">
+                          {progress.toFixed(0)}%
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progress</span>
+                          <span className="font-semibold">
+                            ${Number(goal.current).toLocaleString()} / ${Number(goal.target).toLocaleString()}
+                          </span>
                         </div>
-                        <div className="grid grid-cols-2 gap-4 pt-2 border-t">
-                          <div>
-                            <p className="text-xs text-muted-foreground">Remaining</p>
-                            <p className="text-sm font-semibold">${remaining.toLocaleString()}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-muted-foreground">Deadline</p>
-                            <p className="text-sm font-semibold">{new Date(goal.deadline).toLocaleDateString()}</p>
-                          </div>
+                        <Progress value={Math.min(progress, 100)} className="h-3" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4 pt-2 border-t">
+                        <div>
+                          <p className="text-xs text-muted-foreground">Remaining</p>
+                          <p className="text-sm font-semibold">${remaining.toLocaleString()}</p>
                         </div>
-                        <Button size="sm" className="w-full">
-                          <DollarSign className="h-4 w-4 mr-2" />
-                          Contribute
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )
-                }),
-              )}
+                        <div>
+                          <p className="text-xs text-muted-foreground">Deadline</p>
+                          <p className="text-sm font-semibold">
+                            {goal.deadline
+                              ? new Date(goal.deadline).toLocaleDateString()
+                              : "—"}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        className="w-full"
+                        variant="outline"
+                        onClick={() => {
+                          setContributeGoalId(goal.id)
+                          setContributeGoalName(goal.name)
+                          setContributeAmount("")
+                          setShowContributeDialog(true)
+                        }}
+                      >
+                        <DollarSign className="h-4 w-4 mr-2" />
+                        Contribute
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            {(meetings || []).filter((m: any) => m.financialGoals?.length).length === 0 && (
+              <div className="text-center py-8 text-muted-foreground">
+                <Target className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                <p>No financial goals yet</p>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
@@ -1441,27 +1817,37 @@ export function MemberMeetingsClient() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create Financial Goal</DialogTitle>
-            <DialogDescription>Set a new financial target for your group</DialogDescription>
+            <DialogDescription>Set a new financial target for a meeting</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="goal-name">Goal Name *</Label>
-              <Input id="goal-name" placeholder="e.g., Emergency Fund" />
+              <Label htmlFor="goal-meeting">Select Meeting *</Label>
+              <Select
+                value={createGoalMeetingId ?? ""}
+                onValueChange={(v) => setCreateGoalMeetingId(v || null)}
+              >
+                <SelectTrigger id="goal-meeting">
+                  <SelectValue placeholder="Choose a meeting" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(meetings || []).map((m: any) => (
+                    <SelectItem key={m.id} value={m.id}>
+                      {m.title} — {m.group?.name} ({new Date(m.date).toLocaleDateString()})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="goal-group">Select Group *</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose a group" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="g1">Savings Circle A</SelectItem>
-                  <SelectItem value="g2">Investment Group</SelectItem>
-                  <SelectItem value="g3">Community Savers</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="goal-name">Goal Name *</Label>
+              <Input
+                id="goal-name"
+                placeholder="e.g., Emergency Fund"
+                value={goalName}
+                onChange={(e) => setGoalName(e.target.value)}
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -1469,7 +1855,15 @@ export function MemberMeetingsClient() {
                 <Label htmlFor="goal-target">Target Amount *</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input id="goal-target" type="number" placeholder="50000" className="pl-9" />
+                  <Input
+                    id="goal-target"
+                    type="number"
+                    min={1}
+                    placeholder="50000"
+                    className="pl-9"
+                    value={goalTarget}
+                    onChange={(e) => setGoalTarget(e.target.value)}
+                  />
                 </div>
               </div>
 
@@ -1477,35 +1871,170 @@ export function MemberMeetingsClient() {
                 <Label htmlFor="goal-current">Current Amount</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input id="goal-current" type="number" placeholder="0" className="pl-9" />
+                  <Input
+                    id="goal-current"
+                    type="number"
+                    min={0}
+                    placeholder="0"
+                    className="pl-9"
+                    value={goalCurrent}
+                    onChange={(e) => setGoalCurrent(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="goal-deadline">Target Deadline *</Label>
-              <Input id="goal-deadline" type="date" />
+              <Label htmlFor="goal-deadline">Target Deadline (optional)</Label>
+              <Input
+                id="goal-deadline"
+                type="date"
+                value={goalDeadline}
+                onChange={(e) => setGoalDeadline(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="goal-description">Description (Optional)</Label>
-              <Textarea id="goal-description" placeholder="Describe the purpose of this financial goal..." rows={3} />
+              <Label htmlFor="goal-description">Description (optional)</Label>
+              <Textarea
+                id="goal-description"
+                placeholder="Describe the purpose of this financial goal..."
+                rows={3}
+                value={goalDescription}
+                onChange={(e) => setGoalDescription(e.target.value)}
+              />
             </div>
 
             <div className="flex gap-2 pt-4">
               <Button
                 className="flex-1"
-                onClick={() => {
-                  // Handle create goal
-                  setShowCreateGoalDialog(false)
+                disabled={
+                  !createGoalMeetingId ||
+                  !goalName.trim() ||
+                  !goalTarget ||
+                  Number(goalTarget) <= 0 ||
+                  createGoalMutation.isPending
+                }
+                onClick={async () => {
+                  const meetingId = createGoalMeetingId
+                  if (!meetingId) {
+                    toast.error("Select a meeting")
+                    return
+                  }
+                  if (!goalName.trim()) {
+                    toast.error("Enter a goal name")
+                    return
+                  }
+                  const target = Number(goalTarget)
+                  if (target <= 0 || Number.isNaN(target)) {
+                    toast.error("Enter a valid target amount")
+                    return
+                  }
+                  try {
+                    await createGoalMutation.mutateAsync({
+                      meetingId,
+                      name: goalName.trim(),
+                      targetAmount: target,
+                      currentAmount: Number(goalCurrent) || 0,
+                      deadline: goalDeadline || null,
+                      description: goalDescription.trim() || null,
+                    })
+                    toast.success("Goal created")
+                    setShowCreateGoalDialog(false)
+                    setGoalName("")
+                    setGoalTarget("")
+                    setGoalCurrent("0")
+                    setGoalDeadline("")
+                    setGoalDescription("")
+                    setCreateGoalMeetingId(null)
+                  } catch (e) {
+                    toast.error(e instanceof Error ? e.message : "Failed to create goal")
+                  }
                 }}
               >
-                Create Goal
+                {createGoalMutation.isPending ? "Creating…" : "Create Goal"}
               </Button>
               <Button
                 variant="outline"
                 className="flex-1 bg-transparent"
                 onClick={() => setShowCreateGoalDialog(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Contribute to Goal Dialog */}
+      <Dialog open={showContributeDialog} onOpenChange={setShowContributeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Contribute to goal</DialogTitle>
+            <DialogDescription>
+              {contributeGoalName ? `Add to "${contributeGoalName}"` : "Enter amount to contribute"}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="contribute-amount">Amount ($) *</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="contribute-amount"
+                  type="number"
+                  min={0.01}
+                  step={0.01}
+                  placeholder="0.00"
+                  className="pl-9"
+                  value={contributeAmount}
+                  onChange={(e) => setContributeAmount(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                className="flex-1"
+                disabled={
+                  !contributeGoalId ||
+                  !contributeAmount ||
+                  Number(contributeAmount) <= 0 ||
+                  contributeToGoalMutation.isPending
+                }
+                onClick={async () => {
+                  if (!contributeGoalId) return
+                  const amount = Number(contributeAmount)
+                  if (amount <= 0 || Number.isNaN(amount)) {
+                    toast.error("Enter a valid amount")
+                    return
+                  }
+                  try {
+                    await contributeToGoalMutation.mutateAsync({
+                      goalId: contributeGoalId,
+                      amount,
+                    })
+                    toast.success("Contribution added")
+                    setShowContributeDialog(false)
+                    setContributeGoalId(null)
+                    setContributeGoalName("")
+                    setContributeAmount("")
+                    fetchMeetings()
+                  } catch (e) {
+                    toast.error(e instanceof Error ? e.message : "Failed to contribute")
+                  }
+                }}
+              >
+                {contributeToGoalMutation.isPending ? "Adding…" : "Contribute"}
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 bg-transparent"
+                onClick={() => {
+                  setShowContributeDialog(false)
+                  setContributeGoalId(null)
+                  setContributeGoalName("")
+                  setContributeAmount("")
+                }}
               >
                 Cancel
               </Button>
@@ -1539,9 +2068,9 @@ export function MemberMeetingsClient() {
           </div>
 
           <div className="space-y-4">
-            {mockMeetings
-              .filter((m) => m.budget)
-              .map((meeting) => {
+            {(meetings || [])
+              .filter((m: any) => m.budget)
+              .map((meeting: any) => {
                 const budget = meeting.budget!
                 const spentPercentage = (budget.spent / budget.monthly) * 100
                 return (
@@ -1587,6 +2116,12 @@ export function MemberMeetingsClient() {
                   </Card>
                 )
               })}
+            {(meetings || []).filter((m: any) => m.budget).length === 0 && (
+              <div className="text-center py-8 text-muted-foreground">
+                <Wallet className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                <p>No budget data yet</p>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
@@ -2083,9 +2618,16 @@ export function MemberMeetingsClient() {
 
           <div className="space-y-4">
             {/* Past Meetings with Minutes */}
-            {mockMeetings
-              .filter((m) => m.status === "completed" && m.minutes)
-              .map((meeting) => (
+            {(meetings || [])
+              .filter(
+                (m: any) =>
+                  m.status === "completed" &&
+                  (m.minutesText ||
+                    m.minutesFileUrl ||
+                    (m.minutesKeyDecisions?.length ?? 0) > 0 ||
+                    (m.minutesActionItems?.length ?? 0) > 0)
+              )
+              .map((meeting: any) => (
                 <Card key={meeting.id} className="bg-card border-border">
                   <CardHeader>
                     <div className="flex items-start justify-between gap-4">
@@ -2105,84 +2647,100 @@ export function MemberMeetingsClient() {
                           </div>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline">
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </Button>
+                      {meeting.minutesFileUrl && (
+                        <Button size="sm" variant="outline" asChild>
+                          <a href={meeting.minutesFileUrl} target="_blank" rel="noopener noreferrer">
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {/* Minutes Summary */}
-                      <div>
-                        <h4 className="text-sm font-semibold mb-2">Summary</h4>
-                        <p className="text-sm text-muted-foreground">{meeting.minutes}</p>
-                      </div>
-
-                      {/* Key Decisions */}
-                      <div>
-                        <h4 className="text-sm font-semibold mb-2">Key Decisions</h4>
-                        <div className="space-y-2">
-                          <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Approved emergency fund policy with 85% majority vote</span>
-                          </div>
-                          <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Loan requests for Sarah M. and James K. were approved</span>
-                          </div>
+                      {meeting.minutesText && (
+                        <div>
+                          <h4 className="text-sm font-semibold mb-2">Summary</h4>
+                          <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                            {meeting.minutesText}
+                          </p>
                         </div>
-                      </div>
-
-                      {/* Action Items */}
-                      <div>
-                        <h4 className="text-sm font-semibold mb-2">Action Items</h4>
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2 text-sm">
-                            <div className="flex items-start gap-2 flex-1">
-                              <AlertCircle className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                              <span>Treasurer to prepare Q1 financial report</span>
-                            </div>
-                            <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
-                              Done
-                            </Badge>
-                          </div>
-                          <div className="flex items-start justify-between gap-2 text-sm">
-                            <div className="flex items-start gap-2 flex-1">
-                              <AlertCircle className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                              <span>Secretary to update group bylaws document</span>
-                            </div>
-                            <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
-                              In Progress
-                            </Badge>
-                          </div>
+                      )}
+                      {(meeting.minutesKeyDecisions?.length ?? 0) > 0 && (
+                        <div>
+                          <h4 className="text-sm font-semibold mb-2">Key Decisions</h4>
+                          <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                            {meeting.minutesKeyDecisions.map((item: string, i: number) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
                         </div>
-                      </div>
-
-                      {/* Attendees */}
-                      <div>
-                        <h4 className="text-sm font-semibold mb-2">Attendees</h4>
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline" className="text-xs">
-                            John Doe (Chairperson)
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            Sarah M.
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            James K.
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            +{meeting.attendees - 3} more
-                          </Badge>
+                      )}
+                      {(meeting.minutesActionItems?.length ?? 0) > 0 && (
+                        <div>
+                          <h4 className="text-sm font-semibold mb-2">Action Items</h4>
+                          <ul className="space-y-2 text-sm text-muted-foreground">
+                            {meeting.minutesActionItems.map((item: string, i: number) => {
+                              const completed = meeting.minutesActionItemsCompleted?.[i] ?? false
+                              return (
+                                <li key={i} className="flex items-center gap-2">
+                                  <Checkbox checked={completed} disabled className="shrink-0" />
+                                  <span className={completed ? "line-through" : ""}>{item}</span>
+                                </li>
+                              )
+                            })}
+                          </ul>
                         </div>
-                      </div>
+                      )}
+                      {meeting.minutesFileUrl && !meeting.minutesText &&
+                        (meeting.minutesKeyDecisions?.length ?? 0) === 0 &&
+                        (meeting.minutesActionItems?.length ?? 0) === 0 && (
+                          <div>
+                            <Button size="sm" variant="outline" asChild>
+                              <a
+                                href={meeting.minutesFileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2"
+                              >
+                                <FileText className="h-4 w-4" />
+                                View minutes document
+                              </a>
+                            </Button>
+                          </div>
+                        )}
+                      {meeting.minutesFileUrl &&
+                        (meeting.minutesText ||
+                          (meeting.minutesKeyDecisions?.length ?? 0) > 0 ||
+                          (meeting.minutesActionItems?.length ?? 0) > 0) && (
+                          <div>
+                            <Button size="sm" variant="outline" asChild>
+                              <a
+                                href={meeting.minutesFileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2"
+                              >
+                                <FileText className="h-4 w-4" />
+                                View full minutes document
+                              </a>
+                            </Button>
+                          </div>
+                        )}
                     </div>
                   </CardContent>
                 </Card>
               ))}
 
-            {mockMeetings.filter((m) => m.status === "completed" && m.minutes).length === 0 && (
+            {(meetings || []).filter(
+              (m: any) =>
+                m.status === "completed" &&
+                (m.minutesText ||
+                  m.minutesFileUrl ||
+                  (m.minutesKeyDecisions?.length ?? 0) > 0 ||
+                  (m.minutesActionItems?.length ?? 0) > 0)
+            ).length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
                 <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p>No meeting minutes available yet</p>
