@@ -937,12 +937,12 @@ export function MemberMeetingsClient() {
             <TabsContent value="agenda" className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Meeting Agenda</h3>
-                {selectedMeeting?.myRole === "chairperson" && (
+                {/* {selectedMeeting?.myRole === "chairperson" && (
                   <Button size="sm">
                     <FileText className="mr-2 h-4 w-4" />
                     Edit Agenda
                   </Button>
-                )}
+                )} */}
               </div>
               {selectedMeeting?.agenda?.map((item, index) => (
                 <Card key={index} className="bg-muted/30">
