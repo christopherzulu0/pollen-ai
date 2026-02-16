@@ -144,14 +144,50 @@ export async function requestToJoin(groupId: string) {
   return joinGroup(groupId)
 }
 
+/** Returns active group memberships for chairperson/note-taker selection when creating a meeting. Caller must be a member of the group. */
+export async function getGroupMemberships(groupId: string): Promise<{ id: string; user: { name: string | null; email: string } }[]> {
+  try {
+    const { userId: clerkUserId } = await auth()
+    if (!clerkUserId) return []
+    const dbUser = await prisma.user.findUnique({ where: { clerkUserId } })
+    if (!dbUser) return []
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      select: {
+        ownerId: true,
+        memberships: {
+          where: { status: "ACTIVE" },
+          select: {
+            id: true,
+            userId: true,
+            user: { select: { name: true, email: true } },
+          },
+        },
+      },
+    })
+    if (!group) return []
+    const isMember = group.ownerId === dbUser.id || group.memberships.some((m) => m.userId === dbUser.id)
+    if (!isMember) return []
+    return group.memberships.map((m) => ({
+      id: m.id,
+      user: { name: m.user.name, email: m.user.email },
+    }))
+  } catch {
+    return []
+  }
+}
+
 export async function createGroupMeeting(data: {
   groupId: string;
   title: string;
   description?: string;
+  agenda?: string[];
   date: Date;
   isVirtual: boolean;
   location?: string;
-}): Promise<{ success: boolean; error?: string; warning?: string }> {
+  chairpersonMembershipId?: string;
+  noteTakerMembershipId?: string;
+}): Promise<{ success: boolean; error?: string; warning?: string; meeting?: any }> {
   try {
     const { userId: clerkUserId } = await auth();
     if (!clerkUserId) {
@@ -196,6 +232,16 @@ export async function createGroupMeeting(data: {
     if (!membership || membership.status !== "ACTIVE") {
       throw new Error("Only active group members can create meetings")
     }
+
+    const validMembershipIds = new Set(group.memberships.map((m) => m.id))
+    const chairpersonMembershipId =
+      data.chairpersonMembershipId && validMembershipIds.has(data.chairpersonMembershipId)
+        ? data.chairpersonMembershipId
+        : null
+    const noteTakerMembershipId =
+      data.noteTakerMembershipId && validMembershipIds.has(data.noteTakerMembershipId)
+        ? data.noteTakerMembershipId
+        : null
 
     let meetingLink = data.location || null;
     let googleEventId = null;
@@ -254,12 +300,15 @@ export async function createGroupMeeting(data: {
     const meeting = await prisma.meeting.create({
       data: {
         title: data.title,
-        description: data.description,
+        description: data.description ?? null,
+        agenda: data.agenda?.filter((s) => s.trim().length > 0) ?? [],
         date: data.date,
-        location: data.isVirtual ? "Virtual Meeting" : data.location,
+        location: data.isVirtual ? "Virtual Meeting" : data.location ?? null,
         isVirtual: data.isVirtual,
         meetingLink: meetingLink,
         groupId: data.groupId,
+        chairpersonMembershipId,
+        noteTakerMembershipId,
         attendees: {
           create: group.memberships.map((m) => ({
             membershipId: m.id,

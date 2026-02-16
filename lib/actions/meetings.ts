@@ -32,7 +32,7 @@ export async function getMeetings(filters?: {
         }
 
         // Get meetings where user is a member of the group
-        const meetings = await prisma.meeting.findMany({
+        const meetings = await (prisma.meeting as any).findMany({
             where: {
                 ...where,
                 group: {
@@ -64,6 +64,16 @@ export async function getMeetings(filters?: {
                             }
                         }
                     }
+                },
+                chairperson: {
+                    include: {
+                        user: true
+                    }
+                },
+                noteTaker: {
+                    include: {
+                        user: true
+                    }
                 }
             },
             orderBy: {
@@ -72,9 +82,9 @@ export async function getMeetings(filters?: {
         })
 
         // Transform to match the expected format
-        return meetings.map((meeting) => {
-            const userAttendee = meeting.attendees.find(
-                (a) => a.membership.userId === user.id
+        return (meetings as any[]).map((meeting) => {
+            const userAttendee = (meeting.attendees as any[]).find(
+                (a: any) => a.membership.userId === user.id
             )
 
             // Determine status based on date
@@ -82,10 +92,23 @@ export async function getMeetings(filters?: {
             const now = new Date()
             const status = meetingDate > now ? "upcoming" : "completed"
 
+            const isChairperson = meeting.chairperson?.userId === user.id
+            const isNoteTaker = meeting.noteTaker?.userId === user.id
+
+            const myRole = isChairperson
+                ? "chairperson"
+                : isNoteTaker
+                    ? "note_taker"
+                    : "member"
+
+            const chairUser = meeting.chairperson?.user
+            const noteTakerUser = meeting.noteTaker?.user
+
             return {
                 id: meeting.id,
                 title: meeting.title,
                 description: meeting.description || "",
+                agenda: meeting.agenda ?? [],
                 date: meeting.date.toISOString().split("T")[0],
                 time: meeting.date.toLocaleTimeString("en-US", {
                     hour: "numeric",
@@ -105,14 +128,26 @@ export async function getMeetings(filters?: {
                 myRsvp: userAttendee?.status === "PRESENT" ? "confirmed" :
                     userAttendee?.status === "ABSENT" ? "declined" :
                         "pending",
-                attendees: meeting.attendees.filter((a) => a.status === "PRESENT").length,
+                attendees: (meeting.attendees as any[]).filter((a: any) => a.status === "PRESENT").length,
                 totalMembers: meeting.group._count.memberships,
-                myRole: userAttendee?.membership.user ? "member" : undefined,
+                myRole,
                 organizer: {
-                    name: "Group Admin",
+                    name: chairUser?.name || chairUser?.email || "Group Admin",
                     avatar: null,
-                    role: "admin"
-                }
+                    role: "chairperson"
+                },
+                chairperson: chairUser
+                    ? {
+                        name: chairUser.name || chairUser.email,
+                        email: chairUser.email
+                    }
+                    : null,
+                noteTaker: noteTakerUser
+                    ? {
+                        name: noteTakerUser.name || noteTakerUser.email,
+                        email: noteTakerUser.email
+                    }
+                    : null
             }
         })
     } catch (error) {

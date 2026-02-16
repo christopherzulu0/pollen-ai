@@ -40,7 +40,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { createGroupMeeting, getGroups } from "@/lib/actions/groups"
+import { createGroupMeeting, getGroups, getGroupMemberships } from "@/lib/actions/groups"
 import { getMeetings, updateMeetingRSVP } from "@/lib/actions/meetings"
 import { toast } from "sonner"
 import { GroupWithDetails } from "@/lib/types/groups"
@@ -235,6 +235,14 @@ export function MemberMeetingsClient() {
     groupId: "", // Will be set when groups load
   })
 
+  const [agendaItems, setAgendaItems] = useState<string[]>([""])
+  const [chairpersonMembershipId, setChairpersonMembershipId] = useState<string>("")
+  const [noteTakerMembershipId, setNoteTakerMembershipId] = useState<string>("")
+  const [groupMembers, setGroupMembers] = useState<{ id: string; user: { name: string | null; email: string } }[]>([])
+  const [isLoadingGroupMembers, setIsLoadingGroupMembers] = useState(false)
+  const [chairpersonPopoverOpen, setChairpersonPopoverOpen] = useState(false)
+  const [noteTakerPopoverOpen, setNoteTakerPopoverOpen] = useState(false)
+
   const [groups, setGroups] = useState<GroupWithDetails[]>([])
   const [isLoadingGroups, setIsLoadingGroups] = useState(true)
   const [meetings, setMeetings] = useState<any[]>([])
@@ -276,6 +284,24 @@ export function MemberMeetingsClient() {
     }
   }, [myManagedGroups, newMeeting.groupId])
 
+  // Fetch group members for chairperson/note-taker when group is selected (e.g. in create meeting dialog)
+  useEffect(() => {
+    if (!newMeeting.groupId) {
+      setGroupMembers([])
+      return
+    }
+    let cancelled = false
+    setIsLoadingGroupMembers(true)
+    getGroupMemberships(newMeeting.groupId).then((members) => {
+      if (!cancelled) {
+        setGroupMembers(members)
+      }
+    }).finally(() => {
+      if (!cancelled) setIsLoadingGroupMembers(false)
+    })
+    return () => { cancelled = true }
+  }, [newMeeting.groupId])
+
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
@@ -305,13 +331,20 @@ export function MemberMeetingsClient() {
       setIsCreatingMeeting(true)
       const meetingDateTime = new Date(`${newMeeting.date}T${newMeeting.time}`)
 
+      const agendaArray = agendaItems
+        .map((s) => s.trim())
+        .filter(Boolean)
+
       const result = await createGroupMeeting({
         groupId: newMeeting.groupId,
         title: newMeeting.title,
-        description: newMeeting.description,
+        description: newMeeting.description?.trim() || undefined,
+        agenda: agendaArray.length > 0 ? agendaArray : undefined,
         date: meetingDateTime,
         isVirtual: newMeeting.isVirtual,
         location: newMeeting.location,
+        chairpersonMembershipId: chairpersonMembershipId || undefined,
+        noteTakerMembershipId: noteTakerMembershipId || undefined,
       })
 
       if (result.success) {
@@ -328,9 +361,11 @@ export function MemberMeetingsClient() {
           time: "",
           isVirtual: true,
           location: "",
-          location: "",
           groupId: myManagedGroups.length > 0 ? myManagedGroups[0].id : "",
         })
+        setAgendaItems([""])
+        setChairpersonMembershipId("")
+        setNoteTakerMembershipId("")
         // Refresh meetings
         const fetchedMeetings = await getMeetings({ groupId: groupFilter })
         setMeetings(fetchedMeetings)
@@ -712,17 +747,29 @@ export function MemberMeetingsClient() {
                         </>
                       )}
                       {meeting.isVirtual && meeting.status === "upcoming" && meeting.meetingLink && (
-                        <Button size="sm" className="text-xs sm:text-sm flex-1 sm:flex-initial" variant="default">
-                          <Video className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                          Join Meeting
-                        </Button>
+                        <a
+                          href={meeting.meetingLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 sm:flex-initial"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Button
+                            size="sm"
+                            className="w-full text-xs sm:text-sm"
+                            variant="default"
+                          >
+                            <Video className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                            Join Meeting
+                          </Button>
+                        </a>
                       )}
-                      {meeting.zoomMeetingId && meeting.status === "upcoming" && (
+                      {/* {meeting.zoomMeetingId && meeting.status === "upcoming" && (
                         <Button size="sm" className="text-xs sm:text-sm bg-blue-500 hover:bg-blue-600">
                           <Video className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                           Join Zoom
                         </Button>
-                      )}
+                      )} */}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -785,9 +832,7 @@ export function MemberMeetingsClient() {
               <TabsTrigger value="minutes" className="text-xs sm:text-sm">
                 Minutes
               </TabsTrigger>
-              <TabsTrigger value="zoom" className="text-xs sm:text-sm">
-                Video
-              </TabsTrigger>
+            
             </TabsList>
 
             {/* Details Tab */}
@@ -1130,60 +1175,7 @@ export function MemberMeetingsClient() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="zoom" className="space-y-4 mt-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Video Meeting Details</h3>
-                <Badge variant="outline" className="bg-blue-500/10 text-blue-500">
-                  <Video className="mr-1 h-3 w-3" />
-                  Zoom
-                </Badge>
-              </div>
-
-              <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-blue-500/20 p-3 rounded-lg">
-                      <Video className="h-8 w-8 text-blue-500" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-semibold">Zoom Meeting Ready</p>
-                      <p className="text-sm text-muted-foreground">Meeting starts at {selectedMeeting?.time}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-background rounded-lg">
-                      <span className="text-sm text-muted-foreground">Meeting ID</span>
-                      <span className="font-mono font-semibold">{selectedMeeting?.zoomMeetingId}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-background rounded-lg">
-                      <span className="text-sm text-muted-foreground">Password</span>
-                      <span className="font-mono font-semibold">{selectedMeeting?.zoomPassword}</span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button className="flex-1 bg-blue-500 hover:bg-blue-600">
-                      <Video className="mr-2 h-4 w-4" />
-                      Join Zoom Meeting
-                    </Button>
-                    <Button variant="outline">
-                      <Download className="mr-2 h-4 w-4" />
-                      Copy Link
-                    </Button>
-                  </div>
-
-                  <div className="pt-4 border-t border-border">
-                    <p className="text-xs text-muted-foreground mb-3">Quick Tips:</p>
-                    <ul className="space-y-1 text-xs text-muted-foreground">
-                      <li>• Join 5 minutes early to test your audio and video</li>
-                      <li>• Use headphones to reduce background noise</li>
-                      <li>• Mute your microphone when not speaking</li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+          
           </Tabs>
         </DialogContent>
       </Dialog>
@@ -2202,119 +2194,303 @@ export function MemberMeetingsClient() {
 
       {/* Create Meeting Dialog */}
       <Dialog open={showCreateMeetingDialog} onOpenChange={setShowCreateMeetingDialog}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[560px] max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Create New Meeting</DialogTitle>
             <DialogDescription>
               Schedule a meeting for your group members. (Found {myManagedGroups.length} groups)
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="groupId">Select Group</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    id="groupId"
-                    role="combobox"
-                    className="w-full justify-between"
-                  >
-                    {newMeeting.groupId
-                      ? myManagedGroups.find((g) => g.id === newMeeting.groupId)?.name ?? "Select a group"
-                      : "Select a group"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="z-[100] w-[var(--radix-select-trigger-width,20rem)] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search groups..." />
-                    <CommandList className="max-h-60 overflow-y-auto">
-                      <CommandGroup>
-                        {myManagedGroups.length > 0 ? (
-                          myManagedGroups.map((group) => (
-                            <CommandItem
-                              key={group.id}
-                              value={group.name}
-                              onSelect={() => {
-                                setNewMeeting({ ...newMeeting, groupId: group.id })
-                              }}
-                            >
-                              {group.name}
+          <div className="flex-1 overflow-y-auto pt-2">
+          <Tabs defaultValue="details">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="details">Details</TabsTrigger>
+              <TabsTrigger value="agenda">Agenda</TabsTrigger>
+            </TabsList>
+            <TabsContent value="details" className="mt-4 space-y-4">
+              <div className="grid gap-2">
+                <Label htmlFor="groupId">Select Group</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      id="groupId"
+                      role="combobox"
+                      className="w-full justify-between"
+                    >
+                      {newMeeting.groupId
+                        ? myManagedGroups.find((g) => g.id === newMeeting.groupId)?.name ?? "Select a group"
+                        : "Select a group"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="z-[100] w-[var(--radix-select-trigger-width,20rem)] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search groups..." />
+                      <CommandList className="max-h-60 overflow-y-auto">
+                        <CommandGroup>
+                          {myManagedGroups.length > 0 ? (
+                            myManagedGroups.map((group) => (
+                              <CommandItem
+                                key={group.id}
+                                value={group.name}
+                                onSelect={() => {
+                                  setNewMeeting({ ...newMeeting, groupId: group.id })
+                                }}
+                              >
+                                {group.name}
+                              </CommandItem>
+                            ))
+                          ) : (
+                            <CommandItem disabled value="no-groups">
+                              No groups available
                             </CommandItem>
-                          ))
-                        ) : (
-                          <CommandItem disabled value="no-groups">
-                            No groups available
-                          </CommandItem>
-                        )}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="title">Meeting Title</Label>
-              <Input
-                id="title"
-                placeholder="e.g., Monthly Review"
-                value={newMeeting.title}
-                onChange={(e) => setNewMeeting({ ...newMeeting, title: e.target.value })}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="description">Description (Optional)</Label>
-              <Textarea
-                id="description"
-                placeholder="What is this meeting about?"
-                value={newMeeting.description}
-                onChange={(e) => setNewMeeting({ ...newMeeting, description: e.target.value })}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+                          )}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
               <div className="grid gap-2">
-                <Label htmlFor="date">Date</Label>
+                <Label htmlFor="title">Meeting Title</Label>
                 <Input
-                  id="date"
-                  type="date"
-                  value={newMeeting.date}
-                  onChange={(e) => setNewMeeting({ ...newMeeting, date: e.target.value })}
+                  id="title"
+                  placeholder="e.g., Monthly Review"
+                  value={newMeeting.title}
+                  onChange={(e) => setNewMeeting({ ...newMeeting, title: e.target.value })}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="time">Time</Label>
-                <Input
-                  id="time"
-                  type="time"
-                  value={newMeeting.time}
-                  onChange={(e) => setNewMeeting({ ...newMeeting, time: e.target.value })}
+                <Label htmlFor="description">Description (Optional)</Label>
+                <Textarea
+                  id="description"
+                  placeholder="What is this meeting about?"
+                  value={newMeeting.description}
+                  onChange={(e) => setNewMeeting({ ...newMeeting, description: e.target.value })}
                 />
               </div>
-            </div>
-            <div className="flex items-center space-x-2 py-2">
-              <Checkbox
-                id="isVirtual"
-                checked={newMeeting.isVirtual}
-                onCheckedChange={(checked) =>
-                  setNewMeeting({ ...newMeeting, isVirtual: !!checked })
-                }
-              />
-              <Label htmlFor="isVirtual" className="flex items-center gap-2 cursor-pointer">
-                <Video className="h-4 w-4 text-blue-500" />
-                Virtual Meeting (Google Meet)
-              </Label>
-            </div>
-            {!newMeeting.isVirtual && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="date">Date</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={newMeeting.date}
+                    onChange={(e) => setNewMeeting({ ...newMeeting, date: e.target.value })}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="time">Time</Label>
+                  <Input
+                    id="time"
+                    type="time"
+                    value={newMeeting.time}
+                    onChange={(e) => setNewMeeting({ ...newMeeting, time: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 py-2">
+                <Checkbox
+                  id="isVirtual"
+                  checked={newMeeting.isVirtual}
+                  onCheckedChange={(checked) =>
+                    setNewMeeting({ ...newMeeting, isVirtual: !!checked })
+                  }
+                />
+                <Label htmlFor="isVirtual" className="flex items-center gap-2 cursor-pointer">
+                  <Video className="h-4 w-4 text-blue-500" />
+                  Virtual Meeting (Google Meet)
+                </Label>
+              </div>
+              {!newMeeting.isVirtual && (
+                <div className="grid gap-2">
+                  <Label htmlFor="location">Physical Location</Label>
+                  <Input
+                    id="location"
+                    placeholder="e.g., Office Boardroom"
+                    value={newMeeting.location}
+                    onChange={(e) => setNewMeeting({ ...newMeeting, location: e.target.value })}
+                  />
+                </div>
+              )}
+            </TabsContent>
+            <TabsContent value="agenda" className="mt-4 space-y-4">
               <div className="grid gap-2">
-                <Label htmlFor="location">Physical Location</Label>
-                <Input
-                  id="location"
-                  placeholder="e.g., Office Boardroom"
-                  value={newMeeting.location}
-                  onChange={(e) => setNewMeeting({ ...newMeeting, location: e.target.value })}
-                />
+                <Label>Meeting Agenda (Optional)</Label>
+                <p className="text-xs text-muted-foreground">
+                  Add structured agenda items in the order they will be discussed.
+                </p>
+                <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
+                  {agendaItems.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <span className="w-6 text-xs text-muted-foreground text-right">
+                        {index + 1}.
+                      </span>
+                      <Input
+                        placeholder="e.g., Review last month&apos;s savings and contributions"
+                        value={item}
+                        onChange={(e) => {
+                          const next = [...agendaItems]
+                          next[index] = e.target.value
+                          setAgendaItems(next)
+                        }}
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="text-muted-foreground"
+                        onClick={() => {
+                          if (agendaItems.length === 1) {
+                            setAgendaItems([""])
+                            return
+                          }
+                          setAgendaItems(agendaItems.filter((_, i) => i !== index))
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="mt-1 w-full justify-center"
+                  onClick={() => setAgendaItems((prev) => [...prev, ""])}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add agenda item
+                </Button>
               </div>
-            )}
+              <div className="grid gap-2 pt-2 border-t">
+                <Label>Roles (Optional)</Label>
+                <p className="text-xs text-muted-foreground">
+                  Select a group member to chair the meeting and one to take notes. Only members of the selected group are shown.
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="space-y-1">
+                    <Label htmlFor="chairperson">Chairperson</Label>
+                    <Popover open={chairpersonPopoverOpen} onOpenChange={setChairpersonPopoverOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          id="chairperson"
+                          role="combobox"
+                          className="w-full justify-between font-normal"
+                          disabled={!newMeeting.groupId}
+                        >
+                          {isLoadingGroupMembers
+                            ? "Loading members..."
+                            : chairpersonMembershipId
+                              ? groupMembers.find((m) => m.id === chairpersonMembershipId)?.user.name ||
+                                groupMembers.find((m) => m.id === chairpersonMembershipId)?.user.email ||
+                                "Select member"
+                              : "Select member"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                        <Command>
+                          <CommandInput placeholder="Search member..." />
+                          <CommandList>
+                            <CommandGroup>
+                              <CommandItem
+                                value="none"
+                                onSelect={() => {
+                                  setChairpersonMembershipId("")
+                                  setChairpersonPopoverOpen(false)
+                                }}
+                              >
+                                None
+                              </CommandItem>
+                              {groupMembers.length === 0 && !isLoadingGroupMembers ? (
+                                <div className="py-6 text-center text-sm text-muted-foreground">
+                                  No members in this group
+                                </div>
+                              ) : (
+                                groupMembers.map((m) => (
+                                  <CommandItem
+                                    key={m.id}
+                                    value={[m.user.name, m.user.email].filter(Boolean).join(" ")}
+                                    onSelect={() => {
+                                      setChairpersonMembershipId(m.id)
+                                      setChairpersonPopoverOpen(false)
+                                    }}
+                                  >
+                                    {m.user.name || m.user.email}
+                                  </CommandItem>
+                                ))
+                              )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="noteTaker">Minutes taker</Label>
+                    <Popover open={noteTakerPopoverOpen} onOpenChange={setNoteTakerPopoverOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          id="noteTaker"
+                          role="combobox"
+                          className="w-full justify-between font-normal"
+                          disabled={!newMeeting.groupId}
+                        >
+                          {isLoadingGroupMembers
+                            ? "Loading members..."
+                            : noteTakerMembershipId
+                              ? groupMembers.find((m) => m.id === noteTakerMembershipId)?.user.name ||
+                                groupMembers.find((m) => m.id === noteTakerMembershipId)?.user.email ||
+                                "Select member"
+                              : "Select member"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                        <Command>
+                          <CommandInput placeholder="Search member..." />
+                          <CommandList>
+                            <CommandGroup>
+                              <CommandItem
+                                value="none"
+                                onSelect={() => {
+                                  setNoteTakerMembershipId("")
+                                  setNoteTakerPopoverOpen(false)
+                                }}
+                              >
+                                None
+                              </CommandItem>
+                              {groupMembers.length === 0 && !isLoadingGroupMembers ? (
+                                <div className="py-6 text-center text-sm text-muted-foreground">
+                                  No members in this group
+                                </div>
+                              ) : (
+                                groupMembers.map((m) => (
+                                  <CommandItem
+                                    key={m.id}
+                                    value={[m.user.name, m.user.email].filter(Boolean).join(" ")}
+                                    onSelect={() => {
+                                      setNoteTakerMembershipId(m.id)
+                                      setNoteTakerPopoverOpen(false)
+                                    }}
+                                  >
+                                    {m.user.name || m.user.email}
+                                  </CommandItem>
+                                ))
+                              )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCreateMeetingDialog(false)}>

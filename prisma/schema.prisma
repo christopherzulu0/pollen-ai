@@ -250,6 +250,8 @@ model Membership {
   meetingAttendees MeetingAttendee[]
   voteResults      VoteResult[]
   loanVotes        LoanVote[]        @relation("MembershipLoanVotes")
+  chairedMeetings  Meeting[]         @relation("MeetingChairperson")
+  noteTakerMeetings Meeting[]        @relation("MeetingNoteTaker")
 
   @@unique([userId, groupId])
 }
@@ -354,6 +356,7 @@ model Meeting {
   id          String            @id @default(cuid())
   title       String
   description String?
+  agenda      String[]          @default([])
   date        DateTime
   location    String?
   isVirtual   Boolean           @default(false)
@@ -363,6 +366,10 @@ model Meeting {
   groupId     String
   group       Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
   attendees   MeetingAttendee[]
+  chairpersonMembershipId String?
+  chairperson             Membership?       @relation("MeetingChairperson", fields: [chairpersonMembershipId], references: [id])
+  noteTakerMembershipId   String?
+  noteTaker               Membership?       @relation("MeetingNoteTaker", fields: [noteTakerMembershipId], references: [id])
 }
 
 model MeetingAttendee {
