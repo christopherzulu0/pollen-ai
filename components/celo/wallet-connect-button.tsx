@@ -50,10 +50,15 @@ export function WalletConnectButton() {
     refreshBalance,
   } = useCeloWallet()
 
+  const [mounted, setMounted] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const isWalletInstalled = typeof window !== 'undefined' && window.ethereum
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isWalletInstalled = mounted && typeof window !== 'undefined' && !!window.ethereum
 
   const handleConnect = async () => {
     // Check if wallet is installed first
@@ -134,6 +139,22 @@ export function WalletConnectButton() {
 
   // Show error dialog if there's an error
   const showError = error && !isConnected
+
+  // Avoid hydration mismatch: render a static placeholder until after mount.
+  // Server and first client render must match (no Radix, no window checks).
+  if (!mounted) {
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        className="gap-2 bg-gradient-to-r from-[#4C4EFB] to-[#6366F1] text-white border-none hover:opacity-90"
+      >
+        <Wallet className="h-4 w-4" />
+        <span className="hidden md:inline">Connect Wallet</span>
+        <span className="md:hidden">Connect</span>
+      </Button>
+    )
+  }
 
   if (isLoading && !isConnected) {
     return (

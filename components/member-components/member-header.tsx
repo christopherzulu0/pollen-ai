@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import WalletConnectButton from "../celo/wallet-connect-button"
 
 interface MemberHeaderProps {
   onMenuClick: () => void
@@ -34,6 +35,7 @@ export function MemberHeader({ onMenuClick }: MemberHeaderProps) {
       </div>
 
       <div className="flex items-center gap-4">
+        <WalletConnectButton/>
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-primary" />

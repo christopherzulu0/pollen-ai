@@ -264,21 +264,21 @@ function BlogManagerContent() {
                 <CardContent className="p-3 sm:p-4">
                   <p className="text-xs sm:text-sm text-muted-foreground font-medium">Published</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground mt-1">{stats.published}</p>
-                </CardContent>
-              </Card>
+          </CardContent>
+        </Card>
               <Card className="bg-card border border-border border-l-4 border-l-warning">
                 <CardContent className="p-3 sm:p-4">
                   <p className="text-xs sm:text-sm text-muted-foreground font-medium">Drafts</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground mt-1">{stats.draft}</p>
-                </CardContent>
-              </Card>
+          </CardContent>
+        </Card>
               <Card className="bg-card border border-border border-l-4 border-l-info">
                 <CardContent className="p-3 sm:p-4">
                   <p className="text-xs sm:text-sm text-muted-foreground font-medium">Total Views</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground mt-1">{stats.totalViews.toLocaleString()}</p>
-                </CardContent>
-              </Card>
-            </div>
+          </CardContent>
+        </Card>
+      </div>
           </div>
 
           {/* Search, Filter, and Sort */}
@@ -474,14 +474,14 @@ function BlogManagerContent() {
 
                     {/* Author and Date */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1">
                         <span>By {post.author}</span>
-                      </span>
+                        </span>
                       <span className="hidden sm:inline">•</span>
-                      <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {post.date}
-                      </span>
+                        </span>
                     </div>
 
                     {/* Stats Row */}
@@ -495,9 +495,9 @@ function BlogManagerContent() {
                         <span className="font-medium text-secondary">{post.engagement}% engagement</span>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+          </div>
+        </CardContent>
+      </Card>
               ))
             )}
           </div>

@@ -139,21 +139,20 @@ export function useMutateJoinRequest() {
             // Snapshot previous values for all join-request queries
             const previousQueries = queryClient.getQueriesData({ queryKey: ["join-requests"] });
 
-            // Optimistically update all join-request queries
-            queryClient.setQueriesData<JoinRequest[]>(
+            // Optimistically update all join-request queries (cache holds FetchJoinRequestsResponse, not array)
+            queryClient.setQueriesData<FetchJoinRequestsResponse>(
                 { queryKey: ["join-requests"] },
                 (old) => {
-                    if (!old) return old;
+                    if (!old || !Array.isArray(old.joinRequests)) return old;
 
-                    if (action === "DECLINE") {
-                        // Remove the request from the list
-                        return old.filter((request) => request.id !== id);
-                    } else {
-                        // Update status to ACTIVE
-                        return old.map((request) =>
-                            request.id === id ? { ...request, status: "ACTIVE" as const } : request
-                        );
-                    }
+                    const joinRequests =
+                        action === "DECLINE"
+                            ? old.joinRequests.filter((request) => request.id !== id)
+                            : old.joinRequests.map((request) =>
+                                  request.id === id ? { ...request, status: "ACTIVE" as const } : request
+                              );
+
+                    return { ...old, joinRequests };
                 }
             );
 

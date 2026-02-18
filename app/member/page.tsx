@@ -1,29 +1,27 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
-  Wallet,
   TrendingUp,
-  TrendingDown,
   Users,
   PiggyBank,
   ArrowUpRight,
   ArrowDownLeft,
   ArrowRight,
-  CreditCard,
   Shield,
   Calendar,
   Target,
   Coins,
   Landmark,
   Blocks,
-  Bell,
   ChevronRight,
+  ChevronLeft,
   Eye,
   EyeOff,
   Copy,
@@ -34,107 +32,12 @@ import {
   HandCoins,
   Receipt,
   CircleDollarSign,
+  Search,
 } from "lucide-react"
-
-// Mock user data derived from schema models
-const userData = {
-  name: "Alice Mwamba",
-  email: "alice@example.com",
-  memberId: "POL-2024-0042",
-  memberSince: "2024-01-15",
-}
-
-// MemberBalance data
-const memberBalance = {
-  fiatBalance: 12450.00,
-  fiatCurrency: "ZMW",
-  celoBalance: 45.23,
-  cusdBalance: 1250.00,
-  ceurBalance: 0,
-  lockedFiat: 2000.00,
-  lockedCelo: 10.00,
-  availableFiat: 10450.00,
-  availableCelo: 35.23,
-  totalInterestEarned: 856.40,
-  pendingInterest: 42.50,
-  primaryWalletAddress: "0x742d35Cc6634C0532925a3b8...f0bEb",
-}
-
-// Wallet data
-const walletData = {
-  celoAddress: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
-  celoBalance: "45.23",
-  cusdBalance: "1250.00",
-  ceurBalance: "0.00",
-  network: "alfajores",
-  isConnected: true,
-}
-
-// Membership data
-const memberships = [
-  { groupId: "g1", groupName: "Village Savings Group", role: "MEMBER", status: "ACTIVE", balance: 4500, totalContributed: 12000, contributionStreak: 8 },
-  { groupId: "g2", groupName: "Women Empowerment Fund", role: "ADMIN", status: "ACTIVE", balance: 2800, totalContributed: 8500, contributionStreak: 12 },
-  { groupId: "g3", groupName: "Agri-Business Circle", role: "MEMBER", status: "ACTIVE", balance: 1200, totalContributed: 3600, contributionStreak: 3 },
-]
-
-// Personal savings & goals
-const personalSavings = { balance: 3950.00 }
-const savingsGoals = [
-  { id: "sg1", name: "Emergency Fund", targetAmount: 10000, currentAmount: 7500, deadline: "2026-06-30", isCompleted: false },
-  { id: "sg2", name: "School Fees", targetAmount: 5000, currentAmount: 4200, deadline: "2026-03-01", isCompleted: false },
-  { id: "sg3", name: "Business Capital", targetAmount: 20000, currentAmount: 3800, deadline: "2026-12-31", isCompleted: false },
-]
-
-// Recent transactions (from Transaction model)
-const recentTransactions = [
-  { id: "t1", type: "CONTRIBUTION", amount: 500, status: "COMPLETED", description: "Monthly contribution - Village Savings", createdAt: "2026-02-15T10:30:00", groupName: "Village Savings Group" },
-  { id: "t2", type: "INTEREST", amount: 42.50, status: "COMPLETED", description: "AAVE yield distribution", createdAt: "2026-02-14T00:00:00", groupName: null },
-  { id: "t3", type: "DEPOSIT", amount: 2000, status: "COMPLETED", description: "Mobile money deposit", createdAt: "2026-02-13T14:20:00", groupName: null },
-  { id: "t4", type: "LOAN_REPAYMENT", amount: 850, status: "COMPLETED", description: "Loan repayment installment", createdAt: "2026-02-12T09:15:00", groupName: "Women Empowerment Fund" },
-  { id: "t5", type: "WITHDRAWAL", amount: 1000, status: "PENDING", description: "Bank withdrawal request", createdAt: "2026-02-11T16:45:00", groupName: null },
-]
-
-// Loan data
-const activeLoan = {
-  id: "lr1",
-  amount: 5000,
-  status: "REPAYING",
-  purpose: "Business expansion",
-  interestRate: 5,
-  repaymentDate: "2026-08-15",
-  totalRepaid: 2550,
-  remainingBalance: 2450,
-  nextPaymentDate: "2026-03-01",
-  nextPaymentAmount: 850,
-  groupName: "Women Empowerment Fund",
-}
-
-// Insurance data
-const activeInsurance = [
-  { policyNumber: "POL-INS-001", productType: "crop", coverageAmount: 15000, premiumAmount: 150, status: "active", nextPremiumDue: "2026-03-15" },
-]
-
-// Upcoming meetings
-const upcomingMeetings = [
-  { id: "m1", title: "Monthly General Meeting", date: "2026-02-22T14:00:00", groupName: "Village Savings Group", isVirtual: false, location: "Community Hall" },
-  { id: "m2", title: "Loan Review Session", date: "2026-02-25T10:00:00", groupName: "Women Empowerment Fund", isVirtual: true, meetingLink: "https://meet.google.com/xyz" },
-]
-
-// Interest distribution
-const interestSummary = {
-  totalEarned: 856.40,
-  thisMonth: 42.50,
-  lastMonth: 38.20,
-  monthlyGrowth: 11.26,
-  sources: [
-    { name: "AAVE Supply", rate: 2.5, earned: 520 },
-    { name: "Group Lending", rate: 4.2, earned: 280 },
-    { name: "Staking", rate: 1.8, earned: 56.40 },
-  ],
-}
-
-// Notifications count
-const unreadNotifications = 3
+import { useMemberOverview } from "@/hooks/useMemberOverview"
+import { useCeloWallet } from "@/lib/celo/context"
+import { WalletConnectButton } from "@/components/celo/wallet-connect-button"
+import { toast } from "sonner"
 
 function formatCurrency(amount: number, currency = "ZMW") {
   if (currency === "CELO" || currency === "cUSD" || currency === "cEUR") {
@@ -185,21 +88,77 @@ function getTransactionBg(type: string) {
     case "LOAN_REPAYMENT": return "bg-red-500/10"
     case "CONTRIBUTION": return "bg-blue-500/10"
     case "LOAN_DISBURSEMENT": return "bg-amber-500/10"
-    default: return "bg-muted/50"
+    default:   return "bg-muted/50"
   }
+}
+
+const TRANSACTIONS_PAGE_SIZE = 3
+const GROUPS_PAGE_SIZE = 3
+const MEETINGS_PAGE_SIZE = 3
+const GOALS_PAGE_SIZE = 3
+
+function paginate<T>(items: T[], page: number, pageSize: number) {
+  const total = items.length
+  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const currentPage = Math.min(Math.max(1, page), totalPages)
+  const start = (currentPage - 1) * pageSize
+  const slice = items.slice(start, start + pageSize)
+  return {
+    items: slice,
+    currentPage,
+    totalPages,
+    total,
+    hasPrev: currentPage > 1,
+    hasNext: currentPage < totalPages,
+  }
+}
+
+function matchesSearch(text: string | null | undefined, q: string): boolean {
+  if (!q.trim()) return true
+  return (text ?? "").toLowerCase().includes(q.trim().toLowerCase())
 }
 
 export default function MemberOverviewClient() {
   const [balanceVisible, setBalanceVisible] = useState(true)
   const [copiedAddress, setCopiedAddress] = useState(false)
+  const [transactionsPage, setTransactionsPage] = useState(1)
+  const [goalsPage, setGoalsPage] = useState(1)
+  const [groupsPage, setGroupsPage] = useState(1)
+  const [meetingsPage, setMeetingsPage] = useState(1)
+  const [transactionsSearch, setTransactionsSearch] = useState("")
+  const [goalsSearch, setGoalsSearch] = useState("")
+  const [groupsSearch, setGroupsSearch] = useState("")
+  const [meetingsSearch, setMeetingsSearch] = useState("")
 
-  const totalFiatValue = memberBalance.fiatBalance + (memberBalance.cusdBalance * 27.5) + (memberBalance.celoBalance * 15.8)
+  const { data: overview, isLoading, isError, error } = useMemberOverview()
+  const { address, isConnected, network, formattedBalance } = useCeloWallet()
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(error instanceof Error ? error.message : "Failed to load dashboard")
+    }
+  }, [isError, error])
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(walletData.celoAddress)
+    if (!address) return
+    navigator.clipboard.writeText(address)
     setCopiedAddress(true)
     setTimeout(() => setCopiedAddress(false), 2000)
   }
+
+  if (isLoading || !overview) {
+    return (
+      <div className="p-4 sm:p-6 flex items-center justify-center min-h-[40vh]">
+        <div className="text-center text-muted-foreground">Loading dashboard…</div>
+      </div>
+    )
+  }
+
+  const { user: userData, memberBalance, memberships, personalSavings, savingsGoals, recentTransactions, activeLoan, activeInsurance, upcomingMeetings, interestSummary, unreadNotifications } = overview
+
+  const celoNum = isConnected && formattedBalance?.celo ? Number.parseFloat(formattedBalance.celo) : memberBalance.celoBalance
+  const cusdNum = isConnected && formattedBalance?.cusd ? Number.parseFloat(formattedBalance.cusd) : memberBalance.cusdBalance
+  const totalFiatValue = memberBalance.fiatBalance + (cusdNum * 27.5) + (celoNum * 15.8)
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
@@ -207,14 +166,16 @@ export default function MemberOverviewClient() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
           <Avatar className="h-14 w-14 border-2 border-primary/20">
-            <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">AM</AvatarFallback>
+            <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">
+              {userData.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "M"}
+            </AvatarFallback>
           </Avatar>
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-balance">
               Welcome back, {userData.name.split(" ")[0]}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Member ID: {userData.memberId}
+              {userData.memberId ? `Member ID: ${userData.memberId}` : userData.email}
             </p>
           </div>
         </div>
@@ -254,7 +215,7 @@ export default function MemberOverviewClient() {
                 <span className="text-xs text-muted-foreground">from last month</span>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              <div className="grid grid-cols-3 gap-3 sm:gap-4">
               <div className="text-center p-3 bg-background/50 rounded-lg">
                 <Landmark className="h-4 w-4 text-blue-400 mx-auto mb-1" />
                 <p className="text-xs text-muted-foreground">Fiat (ZMW)</p>
@@ -263,12 +224,12 @@ export default function MemberOverviewClient() {
               <div className="text-center p-3 bg-background/50 rounded-lg">
                 <Blocks className="h-4 w-4 text-amber-400 mx-auto mb-1" />
                 <p className="text-xs text-muted-foreground">CELO</p>
-                <p className="text-sm font-bold">{balanceVisible ? `${memberBalance.celoBalance}` : "****"}</p>
+                <p className="text-sm font-bold">{balanceVisible ? `${celoNum}` : "****"}</p>
               </div>
               <div className="text-center p-3 bg-background/50 rounded-lg">
                 <CircleDollarSign className="h-4 w-4 text-emerald-400 mx-auto mb-1" />
                 <p className="text-xs text-muted-foreground">cUSD</p>
-                <p className="text-sm font-bold">{balanceVisible ? `${memberBalance.cusdBalance}` : "****"}</p>
+                <p className="text-sm font-bold">{balanceVisible ? `${cusdNum}` : "****"}</p>
               </div>
             </div>
           </div>
@@ -283,13 +244,17 @@ export default function MemberOverviewClient() {
               <div className="h-9 w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
                 <TrendingUp className="h-4 w-4 text-emerald-400" />
               </div>
-              <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px]">
-                +{interestSummary.monthlyGrowth}%
-              </Badge>
+              {interestSummary.monthlyGrowth != null && (
+                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px]">
+                  +{interestSummary.monthlyGrowth}%
+                </Badge>
+              )}
             </div>
             <p className="text-xs text-muted-foreground">Interest Earned</p>
             <p className="text-xl font-bold">{balanceVisible ? formatCurrency(memberBalance.totalInterestEarned) : "****"}</p>
-            <p className="text-xs text-muted-foreground mt-1">K {interestSummary.thisMonth} this month</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {interestSummary.thisMonth != null ? `K ${interestSummary.thisMonth} this month` : "Total interest"}
+            </p>
           </CardContent>
         </Card>
 
@@ -336,7 +301,9 @@ export default function MemberOverviewClient() {
               </Badge>
             </div>
             <p className="text-xs text-muted-foreground">Insurance Cover</p>
-            <p className="text-xl font-bold">{balanceVisible ? formatCurrency(activeInsurance[0].coverageAmount) : "****"}</p>
+            <p className="text-xl font-bold">
+              {balanceVisible && activeInsurance.length > 0 ? formatCurrency(activeInsurance[0].coverageAmount) : balanceVisible ? "K 0" : "****"}
+            </p>
             <p className="text-xs text-muted-foreground mt-1">{activeInsurance.length} active {activeInsurance.length === 1 ? "policy" : "policies"}</p>
           </CardContent>
         </Card>
@@ -352,37 +319,47 @@ export default function MemberOverviewClient() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-base font-semibold">Celo Wallet</CardTitle>
-                  <CardDescription className="text-xs">Connected to {walletData.network} network</CardDescription>
+                  <CardDescription className="text-xs">
+                    {isConnected && network ? `Connected to ${network} network` : "Connect your wallet for live balances"}
+                  </CardDescription>
                 </div>
-                <Badge className={`text-xs ${walletData.isConnected ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-400 border-red-500/20"}`}>
-                  {walletData.isConnected ? "Connected" : "Disconnected"}
+                <Badge className={`text-xs ${isConnected ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-400 border-red-500/20"}`}>
+                  {isConnected ? "Connected" : "Disconnected"}
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-5 pt-0">
-              <div className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-lg mb-4">
-                <code className="text-xs text-muted-foreground flex-1 truncate font-mono">{walletData.celoAddress}</code>
-                <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={handleCopyAddress}>
-                  {copiedAddress ? <CheckCircle className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
-                </Button>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg text-center">
-                  <p className="text-xs text-muted-foreground mb-0.5">CELO</p>
-                  <p className="text-base font-bold">{walletData.celoBalance}</p>
-                  <p className="text-[10px] text-muted-foreground">~K {(Number.parseFloat(walletData.celoBalance) * 15.8).toFixed(0)}</p>
+              {!isConnected ? (
+                <div className="py-4 flex justify-center">
+                  <WalletConnectButton />
                 </div>
-                <div className="p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg text-center">
-                  <p className="text-xs text-muted-foreground mb-0.5">cUSD</p>
-                  <p className="text-base font-bold">{walletData.cusdBalance}</p>
-                  <p className="text-[10px] text-muted-foreground">~K {(Number.parseFloat(walletData.cusdBalance) * 27.5).toFixed(0)}</p>
-                </div>
-                <div className="p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg text-center">
-                  <p className="text-xs text-muted-foreground mb-0.5">cEUR</p>
-                  <p className="text-base font-bold">{walletData.ceurBalance}</p>
-                  <p className="text-[10px] text-muted-foreground">~K 0</p>
-                </div>
-              </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-lg mb-4">
+                    <code className="text-xs text-muted-foreground flex-1 truncate font-mono">{address ?? ""}</code>
+                    <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={handleCopyAddress}>
+                      {copiedAddress ? <CheckCircle className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg text-center">
+                      <p className="text-xs text-muted-foreground mb-0.5">CELO</p>
+                      <p className="text-base font-bold">{formattedBalance?.celo ?? "0"}</p>
+                      <p className="text-[10px] text-muted-foreground">~K {(Number.parseFloat(formattedBalance?.celo ?? "0") * 15.8).toFixed(0)}</p>
+                    </div>
+                    <div className="p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg text-center">
+                      <p className="text-xs text-muted-foreground mb-0.5">cUSD</p>
+                      <p className="text-base font-bold">{formattedBalance?.cusd ?? "0"}</p>
+                      <p className="text-[10px] text-muted-foreground">~K {(Number.parseFloat(formattedBalance?.cusd ?? "0") * 27.5).toFixed(0)}</p>
+                    </div>
+                    <div className="p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg text-center">
+                      <p className="text-xs text-muted-foreground mb-0.5">cEUR</p>
+                      <p className="text-base font-bold">{formattedBalance?.ceur ?? "0"}</p>
+                      <p className="text-[10px] text-muted-foreground">~K 0</p>
+                    </div>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
@@ -397,40 +374,84 @@ export default function MemberOverviewClient() {
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-5 pt-0 space-y-2">
-              {recentTransactions.map((tx) => (
-                <div key={tx.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
-                  <div className={`h-9 w-9 rounded-lg flex items-center justify-center shrink-0 ${getTransactionBg(tx.type)}`}>
-                    <span className={getTransactionColor(tx.type)}>{getTransactionIcon(tx.type)}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{tx.description}</p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span>{formatDate(tx.createdAt)}</span>
-                      {tx.groupName && (
-                        <>
-                          <span className="text-border">|</span>
-                          <span className="truncate">{tx.groupName}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className={`text-sm font-semibold ${
-                      tx.type === "DEPOSIT" || tx.type === "INTEREST" || tx.type === "LOAN_DISBURSEMENT"
-                        ? "text-emerald-400" : "text-red-400"
-                    }`}>
-                      {tx.type === "DEPOSIT" || tx.type === "INTEREST" || tx.type === "LOAN_DISBURSEMENT" ? "+" : "-"}
-                      {formatCurrency(tx.amount)}
-                    </p>
-                    <Badge className={`text-[10px] h-4 ${
-                      tx.status === "COMPLETED" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
-                    }`}>
-                      {tx.status === "COMPLETED" ? <CheckCircle className="h-2.5 w-2.5 mr-0.5" /> : <Clock className="h-2.5 w-2.5 mr-0.5" />}
-                      {tx.status}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search by description, group, type..."
+                  value={transactionsSearch}
+                  onChange={(e) => {
+                    setTransactionsSearch(e.target.value)
+                    setTransactionsPage(1)
+                  }}
+                  className="pl-8 h-8 text-sm"
+                />
+              </div>
+              {(() => {
+                const filtered = recentTransactions.filter(
+                  (tx) =>
+                    matchesSearch(tx.description, transactionsSearch) ||
+                    matchesSearch(tx.groupName, transactionsSearch) ||
+                    matchesSearch(tx.type, transactionsSearch) ||
+                    matchesSearch(tx.status, transactionsSearch) ||
+                    (tx.amount != null && String(tx.amount).includes(transactionsSearch.trim()))
+                )
+                const { items, currentPage, totalPages, hasPrev, hasNext } = paginate(filtered, transactionsPage, TRANSACTIONS_PAGE_SIZE)
+                return (
+                  <>
+                    {items.length === 0 ? (
+                      <p className="text-sm text-muted-foreground py-2">
+                        {recentTransactions.length === 0 ? "No transactions yet." : "No transactions match your search."}
+                      </p>
+                    ) : (
+                      items.map((tx) => (
+                        <div key={tx.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
+                          <div className={`h-9 w-9 rounded-lg flex items-center justify-center shrink-0 ${getTransactionBg(tx.type)}`}>
+                            <span className={getTransactionColor(tx.type)}>{getTransactionIcon(tx.type)}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{tx.description ?? "Transaction"}</p>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <span>{formatDate(tx.createdAt)}</span>
+                              {tx.groupName && (
+                                <>
+                                  <span className="text-border">|</span>
+                                  <span className="truncate">{tx.groupName}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className={`text-sm font-semibold ${
+                              tx.type === "DEPOSIT" || tx.type === "INTEREST" || tx.type === "LOAN_DISBURSEMENT"
+                                ? "text-emerald-400" : "text-red-400"
+                            }`}>
+                              {tx.type === "DEPOSIT" || tx.type === "INTEREST" || tx.type === "LOAN_DISBURSEMENT" ? "+" : "-"}
+                              {formatCurrency(tx.amount)}
+                            </p>
+                            <Badge className={`text-[10px] h-4 ${
+                              tx.status === "COMPLETED" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                            }`}>
+                              {tx.status === "COMPLETED" ? <CheckCircle className="h-2.5 w-2.5 mr-0.5" /> : <Clock className="h-2.5 w-2.5 mr-0.5" />}
+                              {tx.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    {totalPages > 1 && (
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasPrev} onClick={() => setTransactionsPage((p) => p - 1)}>
+                          <ChevronLeft className="h-3.5 w-3.5 mr-0.5" /> Prev
+                        </Button>
+                        <span className="text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasNext} onClick={() => setTransactionsPage((p) => p + 1)}>
+                          Next <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
             </CardContent>
           </Card>
 
@@ -473,17 +494,19 @@ export default function MemberOverviewClient() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">Repayment Progress</span>
-                    <span className="font-medium">{((activeLoan.totalRepaid / activeLoan.amount) * 100).toFixed(0)}%</span>
+                    <span className="font-medium">{activeLoan.amount > 0 ? ((activeLoan.totalRepaid / activeLoan.amount) * 100).toFixed(0) : 0}%</span>
                   </div>
-                  <Progress value={(activeLoan.totalRepaid / activeLoan.amount) * 100} className="h-2" />
+                  <Progress value={activeLoan.amount > 0 ? (activeLoan.totalRepaid / activeLoan.amount) * 100 : 0} className="h-2" />
                 </div>
-                <div className="mt-3 p-2.5 bg-amber-500/5 border border-amber-500/10 rounded-lg flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-3.5 w-3.5 text-amber-400" />
-                    <span className="text-xs text-muted-foreground">Next payment: <span className="text-foreground font-medium">{formatDate(activeLoan.nextPaymentDate!)}</span></span>
+                {activeLoan.nextPaymentDate != null && activeLoan.nextPaymentAmount != null && (
+                  <div className="mt-3 p-2.5 bg-amber-500/5 border border-amber-500/10 rounded-lg flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-3.5 w-3.5 text-amber-400" />
+                      <span className="text-xs text-muted-foreground">Next payment: <span className="text-foreground font-medium">{formatDate(activeLoan.nextPaymentDate)}</span></span>
+                    </div>
+                    <span className="text-sm font-bold text-amber-400">{formatCurrency(activeLoan.nextPaymentAmount)}</span>
                   </div>
-                  <span className="text-sm font-bold text-amber-400">{formatCurrency(activeLoan.nextPaymentAmount!)}</span>
-                </div>
+                )}
               </CardContent>
             </Card>
           )}
@@ -502,25 +525,68 @@ export default function MemberOverviewClient() {
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-5 pt-0 space-y-3">
-              {savingsGoals.map((goal) => {
-                const progress = (goal.currentAmount / goal.targetAmount) * 100
-                return (
-                  <div key={goal.id} className="p-3 bg-muted/30 rounded-lg space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Target className="h-3.5 w-3.5 text-primary" />
-                        <p className="text-sm font-medium">{goal.name}</p>
-                      </div>
-                      <span className="text-xs text-muted-foreground">{progress.toFixed(0)}%</span>
-                    </div>
-                    <Progress value={progress} className="h-1.5" />
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}</span>
-                      <span>Due {formatDate(goal.deadline!)}</span>
-                    </div>
-                  </div>
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search goals by name..."
+                  value={goalsSearch}
+                  onChange={(e) => {
+                    setGoalsSearch(e.target.value)
+                    setGoalsPage(1)
+                  }}
+                  className="pl-8 h-8 text-sm"
+                />
+              </div>
+              {(() => {
+                const filtered = savingsGoals.filter(
+                  (goal) =>
+                    matchesSearch(goal.name, goalsSearch) ||
+                    matchesSearch(goal.deadline, goalsSearch) ||
+                    (goal.targetAmount != null && String(goal.targetAmount).includes(goalsSearch.trim())) ||
+                    (goal.currentAmount != null && String(goal.currentAmount).includes(goalsSearch.trim()))
                 )
-              })}
+                const { items, currentPage, totalPages, hasPrev, hasNext } = paginate(filtered, goalsPage, GOALS_PAGE_SIZE)
+                return (
+                  <>
+                    {items.length === 0 ? (
+                      <p className="text-sm text-muted-foreground py-2">
+                        {savingsGoals.length === 0 ? "No savings goals yet." : "No goals match your search."}
+                      </p>
+                    ) : (
+                      items.map((goal) => {
+                        const progress = goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0
+                        return (
+                          <div key={goal.id} className="p-3 bg-muted/30 rounded-lg space-y-2">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Target className="h-3.5 w-3.5 text-primary" />
+                                <p className="text-sm font-medium">{goal.name}</p>
+                              </div>
+                              <span className="text-xs text-muted-foreground">{progress.toFixed(0)}%</span>
+                            </div>
+                            <Progress value={progress} className="h-1.5" />
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span>{formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}</span>
+                              {goal.deadline ? <span>Due {formatDate(goal.deadline)}</span> : null}
+                            </div>
+                          </div>
+                        )
+                      })
+                    )}
+                    {totalPages > 1 && (
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasPrev} onClick={() => setGoalsPage((p) => p - 1)}>
+                          <ChevronLeft className="h-3.5 w-3.5 mr-0.5" /> Prev
+                        </Button>
+                        <span className="text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasNext} onClick={() => setGoalsPage((p) => p + 1)}>
+                          Next <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
             </CardContent>
           </Card>
 
@@ -535,25 +601,64 @@ export default function MemberOverviewClient() {
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-5 pt-0 space-y-2">
-              {memberships.map((m) => (
-                <div key={m.groupId} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
-                  <Avatar className="h-9 w-9">
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-                      {m.groupName.split(" ").map(w => w[0]).join("").slice(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{m.groupName}</p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Badge className="bg-primary/10 text-primary text-[10px] h-4 border-primary/20">{m.role}</Badge>
-                      <span>Streak: {m.contributionStreak}</span>
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-sm font-bold">{formatCurrency(m.balance)}</p>
-                  </div>
-                </div>
-              ))}
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search groups by name or role..."
+                  value={groupsSearch}
+                  onChange={(e) => {
+                    setGroupsSearch(e.target.value)
+                    setGroupsPage(1)
+                  }}
+                  className="pl-8 h-8 text-sm"
+                />
+              </div>
+              {(() => {
+                const filtered = memberships.filter(
+                  (m) => matchesSearch(m.groupName, groupsSearch) || matchesSearch(m.role, groupsSearch)
+                )
+                const { items, currentPage, totalPages, hasPrev, hasNext } = paginate(filtered, groupsPage, GROUPS_PAGE_SIZE)
+                return (
+                  <>
+                    {items.length === 0 ? (
+                      <p className="text-sm text-muted-foreground py-2">
+                        {memberships.length === 0 ? "No groups yet." : "No groups match your search."}
+                      </p>
+                    ) : (
+                      items.map((m) => (
+                        <div key={m.groupId} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
+                          <Avatar className="h-9 w-9">
+                            <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                              {m.groupName.split(" ").map(w => w[0]).join("").slice(0, 2)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{m.groupName}</p>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <Badge className="bg-primary/10 text-primary text-[10px] h-4 border-primary/20">{m.role}</Badge>
+                              <span>Streak: {m.contributionStreak}</span>
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm font-bold">{formatCurrency(m.balance)}</p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    {totalPages > 1 && (
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasPrev} onClick={() => setGroupsPage((p) => p - 1)}>
+                          <ChevronLeft className="h-3.5 w-3.5 mr-0.5" /> Prev
+                        </Button>
+                        <span className="text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasNext} onClick={() => setGroupsPage((p) => p + 1)}>
+                          Next <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
             </CardContent>
           </Card>
 
@@ -564,12 +669,12 @@ export default function MemberOverviewClient() {
                 <CardTitle className="text-base font-semibold">Yield Sources</CardTitle>
                 <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-xs">
                   <Coins className="h-3 w-3 mr-1" />
-                  +K {interestSummary.thisMonth}/mo
+                  {interestSummary.thisMonth != null ? `+K ${interestSummary.thisMonth}/mo` : "Interest"}
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-5 pt-0 space-y-2">
-              {interestSummary.sources.map((source, idx) => (
+              {(interestSummary.sources ?? []).length > 0 ? (interestSummary.sources ?? []).map((source, idx) => (
                 <div key={idx} className="flex items-center justify-between p-2.5 bg-muted/30 rounded-lg">
                   <div className="flex items-center gap-2">
                     <div className="h-7 w-7 rounded-md bg-emerald-500/10 flex items-center justify-center">
@@ -582,7 +687,9 @@ export default function MemberOverviewClient() {
                   </div>
                   <p className="text-sm font-bold text-emerald-400">+{formatCurrency(source.earned)}</p>
                 </div>
-              ))}
+              )) : (
+                <p className="text-sm text-muted-foreground">No yield sources yet.</p>
+              )}
             </CardContent>
           </Card>
 
@@ -597,23 +704,65 @@ export default function MemberOverviewClient() {
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-5 pt-0 space-y-2">
-              {upcomingMeetings.map((meeting) => (
-                <div key={meeting.id} className="p-3 bg-muted/30 rounded-lg">
-                  <div className="flex items-start justify-between gap-2 mb-1.5">
-                    <p className="text-sm font-medium">{meeting.title}</p>
-                    <Badge className={`text-[10px] h-4 shrink-0 ${meeting.isVirtual ? "bg-blue-500/10 text-blue-400" : "bg-muted text-muted-foreground"}`}>
-                      {meeting.isVirtual ? "Virtual" : "In-person"}
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-1">{meeting.groupName}</p>
-                  <div className="flex items-center gap-2 text-xs">
-                    <Calendar className="h-3 w-3 text-primary" />
-                    <span className="text-muted-foreground">
-                      {formatDate(meeting.date)} at {formatTime(meeting.date)}
-                    </span>
-                  </div>
-                </div>
-              ))}
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search by title, group, location..."
+                  value={meetingsSearch}
+                  onChange={(e) => {
+                    setMeetingsSearch(e.target.value)
+                    setMeetingsPage(1)
+                  }}
+                  className="pl-8 h-8 text-sm"
+                />
+              </div>
+              {(() => {
+                const filtered = upcomingMeetings.filter(
+                  (meeting) =>
+                    matchesSearch(meeting.title, meetingsSearch) ||
+                    matchesSearch(meeting.groupName, meetingsSearch) ||
+                    matchesSearch(meeting.location, meetingsSearch)
+                )
+                const { items, currentPage, totalPages, hasPrev, hasNext } = paginate(filtered, meetingsPage, MEETINGS_PAGE_SIZE)
+                return (
+                  <>
+                    {items.length === 0 ? (
+                      <p className="text-sm text-muted-foreground py-2">
+                        {upcomingMeetings.length === 0 ? "No upcoming meetings." : "No meetings match your search."}
+                      </p>
+                    ) : (
+                      items.map((meeting) => (
+                        <div key={meeting.id} className="p-3 bg-muted/30 rounded-lg">
+                          <div className="flex items-start justify-between gap-2 mb-1.5">
+                            <p className="text-sm font-medium">{meeting.title}</p>
+                            <Badge className={`text-[10px] h-4 shrink-0 ${meeting.isVirtual ? "bg-blue-500/10 text-blue-400" : "bg-muted text-muted-foreground"}`}>
+                              {meeting.isVirtual ? "Virtual" : "In-person"}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-1">{meeting.groupName}</p>
+                          <div className="flex items-center gap-2 text-xs">
+                            <Calendar className="h-3 w-3 text-primary" />
+                            <span className="text-muted-foreground">
+                              {formatDate(meeting.date)} at {formatTime(meeting.date)}
+                            </span>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    {totalPages > 1 && (
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasPrev} onClick={() => setMeetingsPage((p) => p - 1)}>
+                          <ChevronLeft className="h-3.5 w-3.5 mr-0.5" /> Prev
+                        </Button>
+                        <span className="text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
+                        <Button variant="ghost" size="sm" className="h-7 text-xs" disabled={!hasNext} onClick={() => setMeetingsPage((p) => p + 1)}>
+                          Next <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
             </CardContent>
           </Card>
 
@@ -626,7 +775,7 @@ export default function MemberOverviewClient() {
                     <Shield className="h-4 w-4 text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold">Crop Insurance</p>
+                    <p className="text-sm font-semibold">{activeInsurance[0].productType ? `${activeInsurance[0].productType.charAt(0).toUpperCase() + activeInsurance[0].productType.slice(1)} Insurance` : "Insurance"}</p>
                     <p className="text-xs text-muted-foreground">{activeInsurance[0].policyNumber}</p>
                   </div>
                 </div>
@@ -640,10 +789,12 @@ export default function MemberOverviewClient() {
                     <p className="text-sm font-bold">{formatCurrency(activeInsurance[0].premiumAmount)}/mo</p>
                   </div>
                 </div>
-                <div className="mt-3 p-2 bg-amber-500/5 border border-amber-500/10 rounded-lg flex items-center gap-2">
-                  <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-                  <span className="text-xs text-muted-foreground">Next premium due: <span className="text-foreground font-medium">{formatDate(activeInsurance[0].nextPremiumDue!)}</span></span>
-                </div>
+                {activeInsurance[0].nextPremiumDue && (
+                  <div className="mt-3 p-2 bg-amber-500/5 border border-amber-500/10 rounded-lg flex items-center gap-2">
+                    <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                    <span className="text-xs text-muted-foreground">Next premium due: <span className="text-foreground font-medium">{formatDate(activeInsurance[0].nextPremiumDue)}</span></span>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}

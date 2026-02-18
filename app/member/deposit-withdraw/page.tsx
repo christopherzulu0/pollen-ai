@@ -286,28 +286,12 @@ export default function DepositWithdraw() {
                     const formData = new FormData(e.currentTarget)
                     handleDeposit(
                       formData.get("amount") as string,
-                      formData.get("account") as string,
+                      "Wallet",
                       formData.get("momoNumber") as string,
                     )
                   }}
                   className="space-y-4"
                 >
-                  <div>
-                    <Label htmlFor="deposit-account">Select Account</Label>
-                    <Select name="account" defaultValue="Wallet">
-                      <SelectTrigger id="deposit-account" className="mt-1">
-                        <SelectValue placeholder="Select account" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Wallet">Wallet</SelectItem>
-                        {groups.map((group) => (
-                          <SelectItem key={group.id} value={group.name}>
-                            {group.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
                   <div>
                     <Label htmlFor="deposit-amount">Amount</Label>
                     <div className="relative mt-1">
