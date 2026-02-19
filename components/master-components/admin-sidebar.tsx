@@ -50,7 +50,7 @@ export function AdminSidebar({ currentView, onViewChange, collapsed, onCollapsed
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-10 flex h-[calc(100vh-5rem)] flex-col border-r border-border bg-sidebar transition-all duration-300",
+        "fixed left-0 top-0 z-10 flex h-screen flex-col border-r border-border bg-sidebar transition-all duration-300",
         collapsed ? "w-16" : "w-64",
       )}
     >

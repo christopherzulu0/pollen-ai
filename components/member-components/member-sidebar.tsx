@@ -44,7 +44,7 @@ const navSections = [
       { path: "/member/personal-savings", label: "Personal Savings", icon: PiggyBank },
       { path: "/member/payments", label: "Payments", icon: CreditCard },
       { path: "/member/deposit-withdraw", label: "Deposit or Withdraw", icon: ArrowDownUp },
-      { path: "/member/transactions", label: "Transactions", icon: ArrowLeftRight },
+      // { path: "/member/transactions", label: "Transactions", icon: ArrowLeftRight },
     ],
   },
   {
@@ -58,18 +58,18 @@ const navSections = [
       { path: "/member/join-group", label: "Join Group", icon: DollarSign },
     ],
   },
-  {
-    title: "DeFi",
-    items: [{ path: "/member/aave", label: "AAVE v4", icon: TrendingUp }],
-  },
+  // {
+  //   title: "DeFi",
+  //   items: [{ path: "/member/aave", label: "AAVE v4", icon: TrendingUp }],
+  // },
   {
     title: "Insurance",
     items: [{ path: "/member/insurance", label: "Insurance Portal", icon: Shield }],
   },
-  {
-    title: "Account",
-    items: [{ path: "/member/profile", label: "Profile", icon: User }],
-  },
+  // {
+  //   title: "Account",
+  //   items: [{ path: "/member/profile", label: "Profile", icon: User }],
+  // },
 ]
 
 export function MemberSidebar({ collapsed, onCollapsedChange }: MemberSidebarProps) {
@@ -79,7 +79,7 @@ export function MemberSidebar({ collapsed, onCollapsedChange }: MemberSidebarPro
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0  z-10 flex h-[calc(100vh-5rem)] flex-col border-r border-border bg-sidebar transition-all duration-300",
+        "fixed left-0 top-0 z-10 flex h-screen flex-col border-r border-border bg-sidebar transition-all duration-300",
         collapsed ? "w-16" : "w-64",
       )}
     >

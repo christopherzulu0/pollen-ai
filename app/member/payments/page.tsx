@@ -277,6 +277,71 @@ export default function Payments() {
     return transaction.type === "DEPOSIT" ? "Personal Deposit" : "Personal Withdrawal"
   }
 
+  const downloadReceipt = (tx: Transaction) => {
+    const dateStr = format(new Date(tx.createdAt), "yyyy-MM-dd_HH-mm")
+    const description = getTransactionDescription(tx)
+    const amountStr = formatAmount(tx.amount)
+    const typeLabel = tx.type === "DEPOSIT" ? "Deposit" : "Withdrawal"
+    const sign = tx.type === "DEPOSIT" ? "+" : "-"
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receipt - ${typeLabel} - ${dateStr}</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 400px; margin: 24px auto; padding: 24px; color: #111; position: relative; }
+    .watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); font-size: 4rem; font-weight: 700; color: rgba(0,0,0,0.06); pointer-events: none; user-select: none; white-space: nowrap; z-index: 0; }
+    .receipt-content { position: relative; z-index: 1; }
+    h1 { font-size: 18px; margin: 0 0 8px 0; }
+    .meta { font-size: 12px; color: #666; margin-bottom: 24px; }
+    .amount { font-size: 28px; font-weight: 700; margin: 16px 0; }
+    .amount.deposit { color: #059669; }
+    .amount.withdrawal { color: #dc2626; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    tr { border-bottom: 1px solid #e5e7eb; }
+    td { padding: 10px 0; }
+    td:first-child { color: #6b7280; }
+    td:last-child { text-align: right; font-weight: 500; }
+    .footer { margin-top: 32px; font-size: 11px; color: #9ca3af; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="watermark" aria-hidden="true">Pollen</div>
+  <div class="receipt-content">
+    <h1>Transaction Receipt</h1>
+    <div class="meta">${format(new Date(tx.createdAt), "PPP 'at' p")}</div>
+    <div class="amount ${tx.type === "DEPOSIT" ? "deposit" : "withdrawal"}">${sign} ${amountStr}</div>
+    <table>
+      <tr><td>Transaction ID</td><td>${tx.id}</td></tr>
+      <tr><td>Type</td><td>${typeLabel}</td></tr>
+      <tr><td>Status</td><td>${tx.status}</td></tr>
+      <tr><td>Description</td><td>${description}</td></tr>
+      <tr><td>Mobile Number</td><td>${tx.momoNumber || "—"}</td></tr>
+      ${tx.reference ? `<tr><td>Reference</td><td>${tx.reference}</td></tr>` : ""}
+      <tr><td>Account</td><td>${tx.group ? `Group - ${tx.group.name}` : "Personal Wallet"}</td></tr>
+    </table>
+    <div class="footer">Generated from Pollen · This is not a tax document.</div>
+  </div>
+</body>
+</html>`
+
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `receipt-${typeLabel}-${dateStr}.html`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    toast({
+      title: "Receipt downloaded",
+      description: "Open the file to view or print your receipt.",
+    })
+  }
+
   // Handle sort
   const requestSort = (key: keyof Transaction | "group.name") => {
     let direction: "ascending" | "descending" = "ascending"
@@ -319,32 +384,32 @@ export default function Payments() {
     })
   }
 
-  // Get status icon
+  // Get status icon (use standard Tailwind colors so icons are visible)
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "COMPLETED":
-        return <CheckCircle className="h-4 w-4 text-success" />
+        return <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
       case "PENDING":
-        return <Clock className="h-4 w-4 text-warning" />
+        return <Clock className="h-4 w-4 shrink-0 text-amber-600" />
       case "FAILED":
-        return <AlertTriangle className="h-4 w-4 text-destructive" />
+        return <AlertTriangle className="h-4 w-4 shrink-0 text-red-600" />
       default:
-        return null
+        return <Clock className="h-4 w-4 shrink-0 text-muted-foreground" />
     }
   }
 
   // Get transaction type icon
   const getTypeIcon = (transaction: Transaction) => {
     if (transaction.isBlockchain) {
-      return <Coins className="h-4 w-4 text-warning" />
+      return <Coins className="h-4 w-4 shrink-0 text-amber-600" />
     }
     switch (transaction.type) {
       case "DEPOSIT":
-        return <ArrowDownCircle className="h-4 w-4 text-success" />
+        return <ArrowDownCircle className="h-4 w-4 shrink-0 text-emerald-600" />
       case "WITHDRAWAL":
-        return <ArrowUpCircle className="h-4 w-4 text-destructive" />
+        return <ArrowUpCircle className="h-4 w-4 shrink-0 text-red-600" />
       default:
-        return null
+        return <ArrowDownCircle className="h-4 w-4 shrink-0 text-muted-foreground" />
     }
   }
 
@@ -796,12 +861,12 @@ export default function Payments() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <div
-                          className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                          className={`h-8 w-8 shrink-0 rounded-full flex items-center justify-center ${
                             transaction.isBlockchain
-                              ? "bg-warning/20"
+                              ? "bg-amber-100 dark:bg-amber-950/50"
                               : transaction.type === "DEPOSIT"
-                                ? "bg-success/20"
-                                : "bg-destructive/20"
+                                ? "bg-emerald-100 dark:bg-emerald-950/50"
+                                : "bg-red-100 dark:bg-red-950/50"
                           }`}
                         >
                           {getTypeIcon(transaction)}
@@ -841,9 +906,9 @@ export default function Payments() {
                     <TableCell
                       className={`text-right text-sm font-medium ${
                         transaction.isBlockchain
-                          ? "text-warning"
+                          ? "text-amber-600"
                           : transaction.type === "DEPOSIT"
-                            ? "text-success"
+                            ? "text-emerald-600"
                             : "text-destructive"
                       }`}
                     >
@@ -860,11 +925,11 @@ export default function Payments() {
                           variant="outline"
                           className={`text-xs px-1.5 py-0 ${
                             transaction.isBlockchain
-                              ? "border-warning/30 bg-warning/10 text-warning"
+                              ? "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-400"
                               : transaction.status === "COMPLETED"
-                                ? "border-success/30 bg-success/10 text-success"
+                                ? "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400"
                                 : transaction.status === "PENDING"
-                                  ? "border-warning/30 bg-warning/10 text-warning"
+                                  ? "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-400"
                                   : "border-destructive/30 bg-destructive/10 text-destructive"
                           }
                         `}
@@ -1034,7 +1099,12 @@ export default function Payments() {
                 <Separator />
 
                 <div className="pt-3 space-y-3">
-                  <Button variant="default" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm h-9">
+                  <Button
+                    variant="default"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm h-9 gap-2"
+                    onClick={() => selectedTransaction && downloadReceipt(selectedTransaction)}
+                  >
+                    <Download className="h-4 w-4" />
                     Download Receipt
                   </Button>
 
