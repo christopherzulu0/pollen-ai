@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import { Menu, X, Search, Bell, Sun, Moon, Command, ChevronRight } from 'lucide-react';
+import { Menu, X, Search, Command, ChevronRight, ChevronDown, Mic, Globe, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,12 +10,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useRouter, usePathname } from 'next/navigation';
 import { SignedOut, SignedIn, UserButton, useUser } from '@clerk/nextjs';
 import { CommandPalette } from './command-palette';
 import { MegaMenu } from './menus';
 import { useTheme } from 'next-themes';
 import { PollenLogo } from '../shared/pollen-logo';
+import { VoiceNavigator } from '@/components/voice/voice-navigator';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NavLink {
   label: string;
@@ -51,6 +54,20 @@ export function AdvancedNavbar() {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
   const { theme, setTheme } = useTheme();
+  const { language, languages, isTranslating, handleLanguageChange } = useLanguage();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const isHomePage = pathname === '/';
+
+  const handleVoiceClick = useCallback(() => {
+    const voiceButton = document.querySelector(
+      '[aria-label="Start voice navigation"], [aria-label="Stop listening"]',
+    ) as HTMLButtonElement | null;
+    if (voiceButton) {
+      voiceButton.click();
+    }
+  }, []);
 
   // Hydration fix
   useEffect(() => {
@@ -200,7 +217,7 @@ export function AdvancedNavbar() {
             {/* Logo Section */}
             <div className="flex items-center gap-2 shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
-                <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300" />
+                <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300 " />
                 <span
                   className={`text-2xl font-black tracking-tight transition-colors duration-300 ${useLightNavbar ? 'text-gray-900 dark:text-white' : 'text-white'
                     }`}
@@ -227,51 +244,82 @@ export function AdvancedNavbar() {
 
             {/* Right Controls Section */}
             <div className="hidden lg:flex items-center gap-2 lg:gap-4">
-              {/* Search Button */}
-              {/* <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`p-2 rounded-full transition-all duration-200 ${
-                  isScrolled
-                    ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                    : 'text-white/80 hover:bg-white/10'
-                }`}
-                aria-label="Search"
-                title="Search"
-              >
-                <Search className="h-5 w-5" />
-              </button> */}
+              {isMounted && (
+                <TooltipProvider delayDuration={200}>
+                  {/* Voice Navigator Button */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className={`relative rounded-full h-10 w-10 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 text-white border-0 shadow-lg hover:shadow-2xl transition-all duration-200 hover:scale-105 active:scale-95 ${
+                          useLightNavbar ? '' : 'hover:brightness-110'
+                        }`}
+                        onClick={handleVoiceClick}
+                      >
+                        <Mic className="h-4 w-4" />
+                        <span className="sr-only">Voice Navigator</span>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="mt-2">
+                      <p>Voice Navigator</p>
+                    </TooltipContent>
+                  </Tooltip>
 
-              {/* Notifications Dropdown */}
-              {/* <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className={`relative p-2 rounded-full transition-all duration-200 ${
-                      isScrolled
-                        ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                        : 'text-white/80 hover:bg-white/10'
-                    }`}
-                    aria-label="Notifications"
-                    title="Notifications"
-                  >
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
-                  <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Notifications</h3>
-                  </div>
-                  {NOTIFICATIONS.map((notif) => (
-                    <DropdownMenuItem
-                      key={notif.id}
-                      className="flex flex-col gap-1 p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{notif.message}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{notif.time}</p>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu> */}
+                  {/* Language Switcher - only on home page, like BottomNavigator */}
+                  {isHomePage && (
+                    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className={`relative rounded-full h-10 px-3 bg-card/80 border border-border shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
+                                useLightNavbar
+                                  ? 'text-gray-800 dark:text-gray-100'
+                                  : 'text-white border-white/40 bg-white/10'
+                              }`}
+                            >
+                              <Globe className="h-4 w-4 mr-1.5" />
+                              <span className="text-xs font-semibold">
+                                {languages.find((l) => l.code === language)?.name.substring(0, 3)}
+                              </span>
+                              {isTranslating ? (
+                                <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin text-primary" />
+                              ) : (
+                                <ChevronDown className="h-3.5 w-3.5 ml-1.5 opacity-60" />
+                              )}
+                            </Button>
+                          </DropdownMenuTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="mt-2">
+                          <p>Change Language</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <DropdownMenuContent
+                        align="end"
+                        side="bottom"
+                        className="w-44 bg-popover/95 backdrop-blur-xl border-border shadow-xl rounded-xl p-1 mt-2"
+                      >
+                        {languages.map((lang) => (
+                          <DropdownMenuItem
+                            key={lang.code}
+                            onClick={() => handleLanguageChange(lang.code)}
+                            className={`cursor-pointer rounded-lg px-3 py-2 transition-all duration-150 ${
+                              language === lang.code
+                                ? 'bg-primary/15 text-primary font-semibold'
+                                : 'hover:bg-accent text-foreground font-medium'
+                            }`}
+                          >
+                            {lang.name}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                </TooltipProvider>
+              )}
 
               {/* Theme Toggle */}
               {/* <button
@@ -353,18 +401,79 @@ export function AdvancedNavbar() {
               )}
             </div>
 
-            {/* Mobile Menu Toggle */}
-            <div className="lg:hidden flex items-center gap-2">
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className={`p-2 rounded-full transition-colors ${useLightNavbar
-                  ? 'text-gray-700 dark:text-gray-300'
-                  : 'text-white'
-                  }`}
-                aria-label="Search"
-              >
-                <Search className="h-5 w-5" />
-              </button>
+            {/* Mobile: Voice, Language, Search, Menu */}
+            <div className="lg:hidden flex items-center gap-1.5 sm:gap-2">
+              {isMounted && (
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="relative rounded-full h-9 w-9 sm:h-10 sm:w-10 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 text-white border-0 shadow-md hover:brightness-110"
+                        onClick={handleVoiceClick}
+                      >
+                        <Mic className="h-4 w-4 sm:h-4 w-4" />
+                        <span className="sr-only">Voice Navigator</span>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="mt-2">
+                      <p>Voice Navigator</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  {isHomePage && (
+                    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className={`rounded-full h-9 sm:h-10 px-2.5 sm:px-3 bg-card/80 border shadow-md ${
+                                useLightNavbar
+                                  ? 'text-gray-800 dark:text-gray-100 border-border'
+                                  : 'text-white border-white/40 bg-white/10'
+                              }`}
+                            >
+                              <Globe className="h-4 w-4 mr-1 sm:mr-1.5" />
+                              <span className="text-xs font-semibold">
+                                {languages.find((l) => l.code === language)?.name.substring(0, 3)}
+                              </span>
+                              {isTranslating ? (
+                                <Loader2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1 animate-spin text-primary" />
+                              ) : (
+                                <ChevronDown className="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1 opacity-60" />
+                              )}
+                            </Button>
+                          </DropdownMenuTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="mt-2">
+                          <p>Change Language</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <DropdownMenuContent
+                        align="end"
+                        side="bottom"
+                        className="w-44 bg-popover/95 backdrop-blur-xl border-border shadow-xl rounded-xl p-1 mt-2"
+                      >
+                        {languages.map((lang) => (
+                          <DropdownMenuItem
+                            key={lang.code}
+                            onClick={() => handleLanguageChange(lang.code)}
+                            className={`cursor-pointer rounded-lg px-3 py-2 transition-all duration-150 ${
+                              language === lang.code
+                                ? 'bg-primary/15 text-primary font-semibold'
+                                : 'hover:bg-accent text-foreground font-medium'
+                            }`}
+                          >
+                            {lang.name}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                </TooltipProvider>
+              )}
               <Button
                 variant="ghost"
                 size="icon"
@@ -460,6 +569,12 @@ export function AdvancedNavbar() {
           </nav>
         </div>
       )}
+
+      {/* Voice Navigator - hidden button, triggered from navbar */}
+      <div className="voice-navigator-wrapper [&_button]:!hidden">
+        <VoiceNavigator />
+      </div>
     </>
   );
 }
+

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { Mic, Globe, Loader2, ChevronDown, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Widget from "@/components/voice/Widget"
 import { VoiceNavigator } from "@/components/voice/voice-navigator"
@@ -41,15 +40,15 @@ export default function BottomNavigator() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="max-w-screen-xl mx-auto px-4 pb-3 md:pb-4">
-          <div className="pointer-events-auto relative bg-card/80 backdrop-blur-xl border border-border/50 shadow-xl overflow-hidden rounded-2xl">
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
+      {/* Compact control dock on the right side */}
+      <div className="fixed bottom-4 right-4 z-50 pointer-events-none">
+        <div className="pointer-events-auto relative bg-card/80 backdrop-blur-xl border border-border/50 shadow-xl overflow-hidden rounded-2xl w-[260px] md:w-[320px]">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
 
-            <div className="relative flex items-center justify-between gap-3 px-3 py-2.5 md:px-4 md:py-3">
-              {/* Left Section - Meeting Info (Desktop only) */}
-              <div className="hidden lg:flex items-center space-x-2.5 px-3 py-1.5 rounded-full bg-muted/60 border border-border/40">
+          <div className="relative flex items-center justify-between gap-3 px-3 py-2.5 md:px-4 md:py-3">
+            {/* Left Section - Meeting Info (Desktop only) */}
+            <div className="hidden lg:flex items-center space-x-2.5 px-3 py-1.5 rounded-full bg-muted/60 border border-border/40">
                 {isMounted && (
                   <>
                     <div className="relative">
@@ -62,10 +61,10 @@ export default function BottomNavigator() {
                     <span className="text-xs font-medium text-muted-foreground">Pollen Daily</span>
                   </>
                 )}
-              </div>
+            </div>
 
-              {/* Center Section - Main Controls */}
-              <div className="flex items-center justify-center gap-2 md:gap-3 mx-auto lg:mx-0">
+            {/* Center Section - Main Controls */}
+            <div className="flex items-center justify-center gap-2 md:gap-3 mx-auto lg:mx-0">
                 {isMounted && (
                   <TooltipProvider delayDuration={200}>
                     {/* Voice Navigator Button */}
@@ -110,61 +109,13 @@ export default function BottomNavigator() {
                       </TooltipContent>
                     </Tooltip>
 
-                    {/* Language Switcher - Only visible on home page */}
-                    {isHomePage && (
-                      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="relative rounded-full h-11 md:h-12 px-3 md:px-4 bg-card/80 border-2 border-border hover:bg-accent hover:border-accent shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-                              >
-                                <Globe className="h-4 w-4 md:h-5 md:w-5 mr-1.5 text-foreground" />
-                                <span className="text-xs md:text-sm font-semibold text-foreground">
-                                  {languages.find((l) => l.code === language)?.name.substring(0, 3)}
-                                </span>
-                                {isTranslating ? (
-                                  <Loader2 className="h-3.5 w-3.5 md:h-4 md:w-4 ml-1.5 animate-spin text-primary" />
-                                ) : (
-                                  <ChevronDown className="h-3.5 w-3.5 md:h-4 md:w-4 ml-1.5 text-muted-foreground" />
-                                )}
-                              </Button>
-                            </DropdownMenuTrigger>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" className="mb-2">
-                            <p>Change Language</p>
-                          </TooltipContent>
-                        </Tooltip>
-                        <DropdownMenuContent
-                          align="end"
-                          side="top"
-                          className="w-44 bg-popover/95 backdrop-blur-xl border-border shadow-xl rounded-xl p-1 mb-2"
-                        >
-                          {languages.map((lang) => (
-                            <DropdownMenuItem
-                              key={lang.code}
-                              onClick={() => handleLanguageChange(lang.code)}
-                              className={`cursor-pointer rounded-lg px-3 py-2 transition-all duration-150 ${
-                                language === lang.code
-                                  ? "bg-primary/15 text-primary font-semibold"
-                                  : "hover:bg-accent text-foreground font-medium"
-                              }`}
-                            >
-                              {lang.name}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                    {/* Language switcher has been moved to the main navbar */}
                   </TooltipProvider>
                 )}
-              </div>
-
-              {/* Right Section - Spacer for balance on desktop */}
-              <div className="hidden lg:block w-32" />
             </div>
+
+            {/* Right Section - Spacer for balance on desktop */}
+            <div className="hidden lg:block w-8" />
           </div>
         </div>
       </div>
