@@ -1,6 +1,11 @@
 "use client";
 
-import React,{ useState, useTransition } from "react";
+import React, {
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+} from "react";
 import { Calendar, Views, type View } from "react-big-calendar";
 import withDragAndDrop, {
   type EventInteractionArgs,
@@ -17,7 +22,11 @@ import {
 } from "lucide-react";
 import { format, differenceInMinutes, isBefore, startOfDay } from "date-fns";
 
-import { localizer } from "../lib/localizer";
+import {
+  createCalendarLocalizer,
+  getWeekStartsOnClient,
+  getWeekStartsOnServerSnapshot,
+} from "../lib/localizer";
 import {
   CALENDAR_CONFIG,
   MAX_TIME,
@@ -56,6 +65,10 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 
 const DnDCalendar = withDragAndDrop<CalendarEvent>(Calendar);
 
+function subscribeNoop() {
+  return () => {};
+}
+
 interface AvailabilityCalendarProps {
   initialBlocks?: TimeBlock[];
   busyBlocks?: BusyBlock[];
@@ -67,6 +80,16 @@ export function AvailabilityCalendar({
   busyBlocks = [],
   bookedBlocks = [],
 }: AvailabilityCalendarProps) {
+  const weekStartsOn = useSyncExternalStore(
+    subscribeNoop,
+    getWeekStartsOnClient,
+    getWeekStartsOnServerSnapshot,
+  );
+  const localizer = useMemo(
+    () => createCalendarLocalizer(weekStartsOn),
+    [weekStartsOn],
+  );
+
   const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());
   const [selectedBooking, setSelectedBooking] = useState<BookedBlock | null>(

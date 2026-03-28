@@ -1,20 +1,31 @@
 import { dateFnsLocalizer } from "react-big-calendar";
-import { format, getDay, parse, startOfWeek } from "date-fns";
+import {
+  format,
+  getDay,
+  parse,
+  startOfWeek as dfStartOfWeek,
+} from "date-fns";
+import type { Locale } from "date-fns";
 import { enUS } from "date-fns/locale";
 
-// Week starts on Monday (1) for most of the world
-// Sunday (0) for US, Canada, Japan
-const getWeekStartDay = (): 0 | 1 => {
-  if (typeof navigator === "undefined") return 1;
+/** Sunday (0) for US, Canada, Japan; Monday (1) elsewhere — must match getWeekStartsOnClient. */
+export function getWeekStartsOnClient(): 0 | 1 {
   const lang = navigator.language;
   return ["en-US", "en-CA", "ja", "ja-JP"].includes(lang) ? 0 : 1;
-};
+}
 
-export const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek: () =>
-    startOfWeek(new Date(), { weekStartsOn: getWeekStartDay() }),
-  getDay,
-  locales: { "en-US": enUS },
-});
+/** SSR / hydration snapshot: ISO Monday week so server HTML matches first paint (see useSyncExternalStore). */
+export function getWeekStartsOnServerSnapshot(): 0 | 1 {
+  return 1;
+}
+
+export function createCalendarLocalizer(weekStartsOn: 0 | 1) {
+  return dateFnsLocalizer({
+    format,
+    parse,
+    startOfWeek: (date: Date, options?: { locale?: Locale }) =>
+      dfStartOfWeek(date, { ...options, weekStartsOn }),
+    getDay,
+    locales: { "en-US": enUS },
+  });
+}
