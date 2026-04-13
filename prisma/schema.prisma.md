@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider      = "prisma-client-js"
   output        = "../lib/generated/prisma"
@@ -7,6 +13,10 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ==========================================
+// CORE USER MODEL
+// ==========================================
 
 model User {
   id          String    @id @default(cuid())
@@ -18,25 +28,9 @@ model User {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   isAdmin     Boolean   @default(false)
-  /** App-level biometric lock preference (synced from mobile). */
-  biometricLockEnabled Boolean @default(false)
   nationalId  String?
   address     String?
   dateOfBirth DateTime? // Date of birth for KYC
-
-  /** KYC upload step: keys like nrcFront, nrcBack, paySlip, selfie (mirrored from Clerk on sync). */
-  kycDocuments    String[]  @default([])
-  /** Slot key → HTTPS URL (UploadThing), mirrored from Clerk `unsafeMetadata.kycDocumentUrls`. */
-  kycDocumentUrls Json?
-  kycCompleted    Boolean   @default(false)
-  kycSubmittedAt  DateTime?
-  /** Admin rejected KYC (user may re-submit after addressing feedback). */
-  kycRejectedAt         DateTime?
-  kycRejectionReason    String?  @db.Text
-  /** Slot keys (e.g. nrcFront) the admin asked the user to replace. */
-  kycReuploadSlots      String[] @default([])
-  kycReuploadNote       String?  @db.Text
-  kycReuploadRequestedAt DateTime?
 
   // Relations
   memberships         Membership[]
@@ -55,8 +49,6 @@ model User {
   solarDocuments      SolarLoanDocuments?
   individualLoans     IndividualLoan[]
   insurancePolicies   InsurancePolicy[]      @relation("UserInsurancePolicies")
-  paymentRequestsSent PaymentRequest[]       @relation("PaymentRequestRequester")
-  paymentRequestsReceived PaymentRequest[]   @relation("PaymentRequestRecipient")
 
   // Pollen Ledger Relations
   memberBalance         MemberBalance?
@@ -289,25 +281,6 @@ model Transaction {
   contribution  Contribution?
   loanRequestId String?
   loanRequest   LoanRequest?      @relation(fields: [loanRequestId], references: [id], onDelete: Cascade)
-}
-
-model PaymentRequest {
-  id                  String               @id @default(cuid())
-  requesterUserId     String
-  requester           User                 @relation("PaymentRequestRequester", fields: [requesterUserId], references: [id], onDelete: Cascade)
-  recipientUserId     String?
-  recipient           User?                @relation("PaymentRequestRecipient", fields: [recipientUserId], references: [id], onDelete: SetNull)
-  recipientIdentifier String
-  amount              Decimal
-  note                String?
-  status              PaymentRequestStatus @default(PENDING)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-
-  @@index([requesterUserId])
-  @@index([recipientUserId])
-  @@index([status])
-  @@index([createdAt])
 }
 
 // ==========================================
@@ -591,10 +564,6 @@ model Contribution {
 model LoanRequest {
   id             String        @id @default(cuid())
   amount         Decimal
-  /// Original principal; `amount` is outstanding after repayments.
-  originalAmount Decimal       @default(0)
-  /// Immutable total due at origination (principal + interest estimate).
-  totalRepaymentAmount Decimal @default(0)
   purpose        String        @db.Text
   repaymentDate  DateTime
   repaymentTerms String        @db.Text
@@ -1355,9 +1324,6 @@ enum MembershipStatus {
 enum TransactionType {
   DEPOSIT
   WITHDRAWAL
-  TRANSFER_OUT
-  TRANSFER_IN
-  REQUEST
   CONTRIBUTION
   INTEREST
   FEE
@@ -1371,13 +1337,6 @@ enum TransactionStatus {
   COMPLETED
   FAILED
   CANCELLED
-}
-
-enum PaymentRequestStatus {
-  PENDING
-  PAID
-  CANCELLED
-  EXPIRED
 }
 
 enum AttendanceStatus {

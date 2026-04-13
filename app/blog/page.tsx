@@ -1954,7 +1954,7 @@ function BlogContent() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white">
+      {/* <section className="py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <motion.div
@@ -1996,10 +1996,10 @@ function BlogContent() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Related Topics Section */}
-      <section className="py-16 bg-white dark:bg-gray-900">
+      <section className="py-16 bg-white dark:bg-gray-900 -mt-16">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-primary dark:text-white mb-4">
@@ -2050,7 +2050,7 @@ function BlogContent() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white">
+      {/* <section className="py-16 md:py-24 bg-linear-to-br from-primary to-[#002244] text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <motion.div
@@ -2092,7 +2092,7 @@ function BlogContent() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
     
     </div>

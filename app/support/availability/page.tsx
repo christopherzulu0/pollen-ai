@@ -27,7 +27,7 @@ export default async function AvailabilityPage() {
   const rangeStart = startOfWeek(now);
   const rangeEnd = addWeeks(rangeStart, 8); // 8 weeks ahead
 
-  const [{ data: user }, { data: bookings }, busyTimes] = await Promise.all([
+  const [userFetch, bookingsFetch, busyFetch] = await Promise.allSettled([
     sanityFetch({
       query: USER_WITH_AVAILABILITY_QUERY,
       params: { clerkId: userId },
@@ -39,10 +39,39 @@ export default async function AvailabilityPage() {
     getGoogleBusyTimes(rangeStart, rangeEnd),
   ]);
 
+  if (userFetch.status === "rejected") {
+    console.error("[availability] Sanity user fetch failed:", userFetch.reason);
+  }
+  if (bookingsFetch.status === "rejected") {
+    console.error("[availability] Sanity bookings fetch failed:", bookingsFetch.reason);
+  }
+  if (busyFetch.status === "rejected") {
+    console.error("[availability] Google busy times failed:", busyFetch.reason);
+  }
+
+  const user =
+    userFetch.status === "fulfilled" ? userFetch.value.data : undefined;
+  const bookings =
+    bookingsFetch.status === "fulfilled"
+      ? bookingsFetch.value.data
+      : undefined;
+  const busyTimes =
+    busyFetch.status === "fulfilled" ? busyFetch.value : [];
+
+  const sanityUnavailable =
+    userFetch.status === "rejected" || bookingsFetch.status === "rejected";
+
   const availability = user?.availability ?? [];
 
-  // Process bookings with Google Calendar statuses
-  const { activeBookings } = await processBookingsWithStatuses(bookings ?? []);
+  let activeBookings: Awaited<
+    ReturnType<typeof processBookingsWithStatuses>
+  >["activeBookings"] = [];
+  try {
+    const processed = await processBookingsWithStatuses(bookings ?? []);
+    activeBookings = processed.activeBookings;
+  } catch (err) {
+    console.error("[availability] processBookingsWithStatuses failed:", err);
+  }
 
   // Transform to BookedBlock format
   const bookedBlocks: BookedBlock[] = activeBookings.map((booking) => ({
@@ -86,6 +115,18 @@ export default async function AvailabilityPage() {
 
   return (
     <main className="mx-auto max-w-7xl bg-background px-4 py-8 text-foreground sm:px-6 lg:px-8 max-sm:py-4">
+      {sanityUnavailable && (
+        <div
+          className="mb-6 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-foreground"
+          role="alert"
+        >
+          <p className="font-medium">Could not load calendar data from the CMS</p>
+          <p className="mt-1 text-muted-foreground">
+            Check your network connection or try again in a moment. Availability
+            and bookings may be empty until the connection succeeds.
+          </p>
+        </div>
+      )}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">

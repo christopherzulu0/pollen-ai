@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/lib/generated/prisma";
 import { triggerBackgroundAnalysis } from "@/lib/ai-analysis-helper";
 
 export async function POST(
@@ -46,6 +47,27 @@ export async function POST(
       );
     }
 
+    const currentDec = new Prisma.Decimal(goal.currentAmount.toString());
+    const targetDec = new Prisma.Decimal(goal.targetAmount.toString());
+    const remaining = targetDec.sub(currentDec);
+
+    if (goal.isCompleted || remaining.lte(0)) {
+      return NextResponse.json(
+        { error: "This goal is already fully funded" },
+        { status: 400 }
+      );
+    }
+
+    const amountDec = new Prisma.Decimal(String(amount));
+    if (amountDec.gt(remaining)) {
+      return NextResponse.json(
+        {
+          error: `Amount cannot exceed the remaining target (K${remaining.toFixed(2)})`,
+        },
+        { status: 400 }
+      );
+    }
+
     // Get or create personal savings record
     let personalSavings = await prisma.personalSavings.findFirst({
       where: {
@@ -62,9 +84,12 @@ export async function POST(
       });
     }
 
+    const newCurrent = currentDec.add(amountDec);
+    const reachedTarget = newCurrent.gte(targetDec);
+
     // Start a transaction to ensure both updates succeed or fail together
     const [updatedGoal] = await prisma.$transaction([
-      // Update the goal's current amount
+      // Update the goal's current amount (and mark completed when target is met)
       prisma.savingsGoal.update({
         where: {
           id: id
@@ -72,7 +97,8 @@ export async function POST(
         data: {
           currentAmount: {
             increment: amount
-          }
+          },
+          ...(reachedTarget ? { isCompleted: true } : {})
         }
       }),
       // Update the user's personal savings balance

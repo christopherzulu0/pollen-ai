@@ -48,8 +48,20 @@ import { useMeetingPolls, useCreatePoll, useSubmitVote } from "@/hooks/usePolls"
 import { useMeetingMinutes, useSaveMeetingMinutes } from "@/hooks/useMinutes"
 import { useMeetingGoals, useCreateGoal, useContributeToGoal } from "@/hooks/useGoals"
 import { useUploadThing } from "@/lib/uploadthing-react"
+import { Calendar as CalendarDayPicker } from "@/components/ui/calendar"
+import { format, isValid, parse, startOfDay } from "date-fns"
+import { cn } from "@/lib/utils"
 
+const HOUR_OPTIONS = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"))
+const MINUTE_OPTIONS = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
 
+function meetingTimeParts(time: string): { h: string; m: string } {
+  if (!time) return { h: "12", m: "00" }
+  const [a, b] = time.split(":")
+  const h = (a ?? "12").padStart(2, "0").slice(-2)
+  const m = (b ?? "00").padStart(2, "0").slice(0, 2)
+  return { h: h || "12", m: m || "00" }
+}
 
 const mockAttendanceRewards = [
   { userId: "u1", name: "You", attendanceRate: 95, points: 475, rank: 1, badge: "Perfect Attendance", rewards: 50 },
@@ -126,6 +138,7 @@ export function MemberMeetingsClient() {
   const [isLoadingGroupMembers, setIsLoadingGroupMembers] = useState(false)
   const [chairpersonPopoverOpen, setChairpersonPopoverOpen] = useState(false)
   const [noteTakerPopoverOpen, setNoteTakerPopoverOpen] = useState(false)
+  const [createMeetingDatePickerOpen, setCreateMeetingDatePickerOpen] = useState(false)
 
   const [groups, setGroups] = useState<GroupWithDetails[]>([])
   const [isLoadingGroups, setIsLoadingGroups] = useState(true)
@@ -1574,7 +1587,7 @@ export function MemberMeetingsClient() {
                         : "Choose a meeting to add the poll to"}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="z-[200] w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                  <PopoverContent className="z-[250] w-[var(--radix-popover-trigger-width)] p-0" align="start">
                     <Command>
                       <CommandInput placeholder="Search meetings..." />
                       <CommandList className="max-h-60 overflow-y-auto">
@@ -1666,6 +1679,7 @@ export function MemberMeetingsClient() {
                 type="datetime-local"
                 value={pollEndDate}
                 onChange={(e) => setPollEndDate(e.target.value)}
+                className="min-h-10 w-full min-w-0"
               />
             </div>
 
@@ -1857,7 +1871,7 @@ export function MemberMeetingsClient() {
                 <SelectTrigger id="goal-meeting">
                   <SelectValue placeholder="Choose a meeting" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-[260]">
                   {(meetings || []).map((m: any) => (
                     <SelectItem key={m.id} value={m.id}>
                       {m.title} — {m.group?.name} ({new Date(m.date).toLocaleDateString()})
@@ -1918,6 +1932,7 @@ export function MemberMeetingsClient() {
                 type="date"
                 value={goalDeadline}
                 onChange={(e) => setGoalDeadline(e.target.value)}
+                className="min-h-10 w-full min-w-0"
               />
             </div>
 
@@ -2786,22 +2801,37 @@ export function MemberMeetingsClient() {
       </Dialog>
 
       {/* Create Meeting Dialog */}
-      <Dialog open={showCreateMeetingDialog} onOpenChange={setShowCreateMeetingDialog}>
-        <DialogContent className="sm:max-w-[560px] max-h-[90vh] flex flex-col">
-          <DialogHeader>
-            <DialogTitle>Create New Meeting</DialogTitle>
-            <DialogDescription>
+      <Dialog
+        open={showCreateMeetingDialog}
+        onOpenChange={(open) => {
+          setShowCreateMeetingDialog(open)
+          if (open) {
+            setNewMeeting((p) => ({ ...p, time: p.time || "12:00" }))
+          }
+        }}
+      >
+        <DialogContent className="grid max-h-[min(90vh,100dvh-1.5rem)] w-[min(100vw-1rem,560px)] max-w-[560px] grid-rows-[auto_minmax(0,1fr)_auto] gap-4 overflow-hidden p-4 sm:p-6">
+          <DialogHeader className="space-y-1.5 text-left">
+            <DialogTitle className="pr-8 text-base leading-snug sm:pr-0 sm:text-lg">
+              Create New Meeting
+            </DialogTitle>
+            <DialogDescription className="text-pretty text-left text-xs sm:text-sm">
               Schedule a meeting for your group members. (Found {myManagedGroups.length} groups)
             </DialogDescription>
           </DialogHeader>
-          <div className="flex-1 overflow-y-auto pt-2">
-          <Tabs defaultValue="details">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="agenda">Agenda</TabsTrigger>
+          <div className="min-h-0 min-w-0 overflow-x-hidden overflow-y-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
+          <Tabs defaultValue="details" className="min-w-0">
+            <TabsList className="grid h-9 w-full shrink-0 grid-cols-2 gap-1 p-1 sm:h-10">
+              <TabsTrigger value="details" className="px-2 text-xs sm:px-3 sm:text-sm">
+                Details
+              </TabsTrigger>
+              <TabsTrigger value="agenda" className="px-2 text-xs sm:px-3 sm:text-sm">
+                Agenda
+              </TabsTrigger>
             </TabsList>
-            <TabsContent value="details" className="mt-4 space-y-4">
-              <div className="grid gap-2">
+            <TabsContent value="details" className="mt-3 flex w-full max-w-full flex-col gap-4 outline-none">
+              <div className="mx-auto flex w-full max-w-xs flex-col gap-4 sm:max-w-sm -ml-0">
+              <div className="flex w-full max-w-full shrink-0 flex-col gap-2">
                 <Label htmlFor="groupId">Select Group</Label>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -2809,14 +2839,19 @@ export function MemberMeetingsClient() {
                       variant="outline"
                       id="groupId"
                       role="combobox"
-                      className="w-full justify-between"
+                      className="h-auto min-h-10 w-full max-w-full min-w-0 shrink-0 justify-between gap-2 py-2 font-normal sm:min-h-11"
                     >
-                      {newMeeting.groupId
-                        ? myManagedGroups.find((g) => g.id === newMeeting.groupId)?.name ?? "Select a group"
-                        : "Select a group"}
+                      <span className="truncate text-left">
+                        {newMeeting.groupId
+                          ? myManagedGroups.find((g) => g.id === newMeeting.groupId)?.name ?? "Select a group"
+                          : "Select a group"}
+                      </span>
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="z-[100] w-[var(--radix-select-trigger-width,20rem)] p-0">
+                  <PopoverContent
+                    className="z-[250] w-[min(var(--radix-popover-trigger-width,100vw),calc(100vw-1.5rem))] max-w-[calc(100vw-1.5rem)] p-0"
+                    align="start"
+                  >
                     <Command>
                       <CommandInput placeholder="Search groups..." />
                       <CommandList className="max-h-60 overflow-y-auto">
@@ -2844,70 +2879,172 @@ export function MemberMeetingsClient() {
                   </PopoverContent>
                 </Popover>
               </div>
-              <div className="grid gap-2">
+              <div className="flex w-full max-w-full shrink-0 flex-col gap-2">
                 <Label htmlFor="title">Meeting Title</Label>
                 <Input
                   id="title"
                   placeholder="e.g., Monthly Review"
                   value={newMeeting.title}
                   onChange={(e) => setNewMeeting({ ...newMeeting, title: e.target.value })}
+                  className="h-10 min-h-10 w-full max-w-full shrink-0"
                 />
               </div>
-              <div className="grid gap-2">
+              <div className="flex w-full max-w-full shrink-0 flex-col gap-2">
                 <Label htmlFor="description">Description (Optional)</Label>
                 <Textarea
                   id="description"
+                  rows={4}
                   placeholder="What is this meeting about?"
                   value={newMeeting.description}
                   onChange={(e) => setNewMeeting({ ...newMeeting, description: e.target.value })}
+                  className="max-h-40 min-h-[80px] w-full max-w-full shrink-0 resize-y md:max-h-48"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="date">Date</Label>
-                  <Input
-                    id="date"
-                    type="date"
-                    value={newMeeting.date}
-                    onChange={(e) => setNewMeeting({ ...newMeeting, date: e.target.value })}
-                  />
+              <div className="flex w-full max-w-full shrink-0 flex-col gap-4">
+                <div className="flex min-w-0 max-w-full flex-col gap-2">
+                  <Label>Date</Label>
+                  <Popover open={createMeetingDatePickerOpen} onOpenChange={setCreateMeetingDatePickerOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="min-h-10 w-full max-w-full shrink-0 justify-start text-left font-normal sm:min-h-11"
+                      >
+                        <CalendarDays className="mr-2 h-4 w-4 shrink-0 opacity-70" />
+                        <span className="truncate">
+                          {(() => {
+                            if (!newMeeting.date) return "Pick a date"
+                            const d = parse(newMeeting.date, "yyyy-MM-dd", new Date())
+                            return isValid(d) ? format(d, "MMM d, yyyy") : "Pick a date"
+                          })()}
+                        </span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="z-[300] w-auto max-w-[calc(100vw-2rem)] p-0" align="start">
+                      <CalendarDayPicker
+                        mode="single"
+                        selected={
+                          newMeeting.date
+                            ? (() => {
+                                const d = parse(newMeeting.date, "yyyy-MM-dd", new Date())
+                                return isValid(d) ? d : undefined
+                              })()
+                            : undefined
+                        }
+                        onSelect={(d) => {
+                          if (d) {
+                            setNewMeeting((prev) => ({
+                              ...prev,
+                              date: format(startOfDay(d), "yyyy-MM-dd"),
+                            }))
+                            setCreateMeetingDatePickerOpen(false)
+                          }
+                        }}
+                        disabled={(date) => startOfDay(date) < startOfDay(new Date())}
+                        initialFocus
+                        className="w-full max-w-full"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="time">Time</Label>
-                  <Input
-                    id="time"
-                    type="time"
-                    value={newMeeting.time}
-                    onChange={(e) => setNewMeeting({ ...newMeeting, time: e.target.value })}
-                  />
+                <div className="flex min-w-0 max-w-full flex-col gap-3">
+                  <div className="shrink-0">
+                    <Label className="text-sm font-medium">Time</Label>
+                    <p className="mt-1 text-lg font-medium tabular-nums tracking-wide text-foreground sm:text-base">
+                      {(() => {
+                        const { h, m } = meetingTimeParts(newMeeting.time)
+                        return `${h}:${m}`
+                      })()}
+                    </p>
+                  </div>
+                  <div className="grid min-w-0 max-w-full grid-cols-2 gap-3 sm:gap-4">
+                    <div className="flex min-w-0 max-w-full flex-col gap-1.5">
+                      <Label htmlFor="createMeetingHour" className="text-xs text-muted-foreground">
+                        Hour
+                      </Label>
+                      <select
+                        id="createMeetingHour"
+                        value={meetingTimeParts(newMeeting.time).h}
+                        onChange={(e) =>
+                          setNewMeeting((prev) => {
+                            const { m } = meetingTimeParts(prev.time)
+                            return { ...prev, time: `${e.target.value}:${m}` }
+                          })
+                        }
+                        className={cn(
+                          "h-10 w-full max-w-full min-w-0 shrink-0 rounded-md border border-input bg-background px-2 py-1.5 text-foreground sm:h-11 sm:px-3 sm:py-2",
+                          "text-base sm:text-sm ring-offset-background",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        )}
+                      >
+                        {HOUR_OPTIONS.map((h) => (
+                          <option key={h} value={h}>
+                            {h}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex min-w-0 max-w-full flex-col gap-1.5">
+                      <Label htmlFor="createMeetingMinute" className="text-xs text-muted-foreground">
+                        Minute
+                      </Label>
+                      <select
+                        id="createMeetingMinute"
+                        value={meetingTimeParts(newMeeting.time).m}
+                        onChange={(e) =>
+                          setNewMeeting((prev) => {
+                            const { h } = meetingTimeParts(prev.time)
+                            return { ...prev, time: `${h}:${e.target.value}` }
+                          })
+                        }
+                        className={cn(
+                          "h-10 w-full max-w-full min-w-0 shrink-0 rounded-md border border-input bg-background px-2 py-1.5 text-foreground sm:h-11 sm:px-3 sm:py-2",
+                          "text-base sm:text-sm ring-offset-background",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        )}
+                      >
+                        {MINUTE_OPTIONS.map((m) => (
+                          <option key={m} value={m}>
+                            {m}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-2 py-2">
+              <div className="flex shrink-0 items-start gap-2 py-2 sm:items-center">
                 <Checkbox
                   id="isVirtual"
+                  className="mt-0.5 sm:mt-0"
                   checked={newMeeting.isVirtual}
                   onCheckedChange={(checked) =>
                     setNewMeeting({ ...newMeeting, isVirtual: !!checked })
                   }
                 />
-                <Label htmlFor="isVirtual" className="flex items-center gap-2 cursor-pointer">
-                  <Video className="h-4 w-4 text-blue-500" />
-                  Virtual Meeting (Google Meet)
+                <Label
+                  htmlFor="isVirtual"
+                  className="flex cursor-pointer flex-wrap items-center gap-x-2 gap-y-1 text-sm leading-snug"
+                >
+                  <Video className="h-4 w-4 shrink-0 text-blue-500" />
+                  <span>Virtual Meeting (Google Meet)</span>
                 </Label>
               </div>
               {!newMeeting.isVirtual && (
-                <div className="grid gap-2">
+                <div className="flex w-full max-w-full shrink-0 flex-col gap-2">
                   <Label htmlFor="location">Physical Location</Label>
                   <Input
                     id="location"
                     placeholder="e.g., Office Boardroom"
                     value={newMeeting.location}
                     onChange={(e) => setNewMeeting({ ...newMeeting, location: e.target.value })}
+                    className="h-10 min-h-10 w-full max-w-full shrink-0"
                   />
                 </div>
               )}
+              </div>
             </TabsContent>
-            <TabsContent value="agenda" className="mt-4 space-y-4">
+            <TabsContent value="agenda" className="mt-3 flex w-full max-w-full flex-col gap-4 outline-none">
               <div className="grid gap-2">
                 <Label>Meeting Agenda (Optional)</Label>
                 <p className="text-xs text-muted-foreground">
@@ -2915,8 +3052,8 @@ export function MemberMeetingsClient() {
                 </p>
                 <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
                   {agendaItems.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <span className="w-6 text-xs text-muted-foreground text-right">
+                    <div key={index} className="flex min-w-0 items-start gap-2 sm:items-center">
+                      <span className="w-6 shrink-0 pt-2.5 text-right text-xs text-muted-foreground sm:pt-0">
                         {index + 1}.
                       </span>
                       <Input
@@ -2927,13 +3064,13 @@ export function MemberMeetingsClient() {
                           next[index] = e.target.value
                           setAgendaItems(next)
                         }}
-                        className="flex-1"
+                        className="h-10 min-h-10 min-w-0 max-w-full flex-1"
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="text-muted-foreground"
+                        className="shrink-0 text-muted-foreground"
                         onClick={() => {
                           if (agendaItems.length === 1) {
                             setAgendaItems([""])
@@ -2963,8 +3100,8 @@ export function MemberMeetingsClient() {
                 <p className="text-xs text-muted-foreground">
                   Select a group member to chair the meeting and one to take notes. Only members of the selected group are shown.
                 </p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="space-y-1">
+                <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+                  <div className="min-w-0 space-y-1">
                     <Label htmlFor="chairperson">Chairperson</Label>
                     <Popover open={chairpersonPopoverOpen} onOpenChange={setChairpersonPopoverOpen}>
                       <PopoverTrigger asChild>
@@ -2972,19 +3109,24 @@ export function MemberMeetingsClient() {
                           variant="outline"
                           id="chairperson"
                           role="combobox"
-                          className="w-full justify-between font-normal"
+                          className="h-auto min-h-11 w-full min-w-0 justify-between gap-2 py-2 font-normal"
                           disabled={!newMeeting.groupId}
                         >
-                          {isLoadingGroupMembers
-                            ? "Loading members..."
-                            : chairpersonMembershipId
-                              ? groupMembers.find((m) => m.id === chairpersonMembershipId)?.user.name ||
-                                groupMembers.find((m) => m.id === chairpersonMembershipId)?.user.email ||
-                                "Select member"
-                              : "Select member"}
+                          <span className="truncate text-left">
+                            {isLoadingGroupMembers
+                              ? "Loading members..."
+                              : chairpersonMembershipId
+                                ? groupMembers.find((m) => m.id === chairpersonMembershipId)?.user.name ||
+                                  groupMembers.find((m) => m.id === chairpersonMembershipId)?.user.email ||
+                                  "Select member"
+                                : "Select member"}
+                          </span>
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                      <PopoverContent
+                        className="z-[250] w-[min(var(--radix-popover-trigger-width,100vw),calc(100vw-1.5rem))] max-w-[calc(100vw-1.5rem)] p-0"
+                        align="start"
+                      >
                         <Command>
                           <CommandInput placeholder="Search member..." />
                           <CommandList>
@@ -3022,7 +3164,7 @@ export function MemberMeetingsClient() {
                       </PopoverContent>
                     </Popover>
                   </div>
-                  <div className="space-y-1">
+                  <div className="min-w-0 space-y-1">
                     <Label htmlFor="noteTaker">Minutes taker</Label>
                     <Popover open={noteTakerPopoverOpen} onOpenChange={setNoteTakerPopoverOpen}>
                       <PopoverTrigger asChild>
@@ -3030,19 +3172,24 @@ export function MemberMeetingsClient() {
                           variant="outline"
                           id="noteTaker"
                           role="combobox"
-                          className="w-full justify-between font-normal"
+                          className="h-auto min-h-11 w-full min-w-0 justify-between gap-2 py-2 font-normal"
                           disabled={!newMeeting.groupId}
                         >
-                          {isLoadingGroupMembers
-                            ? "Loading members..."
-                            : noteTakerMembershipId
-                              ? groupMembers.find((m) => m.id === noteTakerMembershipId)?.user.name ||
-                                groupMembers.find((m) => m.id === noteTakerMembershipId)?.user.email ||
-                                "Select member"
-                              : "Select member"}
+                          <span className="truncate text-left">
+                            {isLoadingGroupMembers
+                              ? "Loading members..."
+                              : noteTakerMembershipId
+                                ? groupMembers.find((m) => m.id === noteTakerMembershipId)?.user.name ||
+                                  groupMembers.find((m) => m.id === noteTakerMembershipId)?.user.email ||
+                                  "Select member"
+                                : "Select member"}
+                          </span>
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                      <PopoverContent
+                        className="z-[250] w-[min(var(--radix-popover-trigger-width,100vw),calc(100vw-1.5rem))] max-w-[calc(100vw-1.5rem)] p-0"
+                        align="start"
+                      >
                         <Command>
                           <CommandInput placeholder="Search member..." />
                           <CommandList>
@@ -3085,11 +3232,15 @@ export function MemberMeetingsClient() {
             </TabsContent>
           </Tabs>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreateMeetingDialog(false)}>
+          <DialogFooter className="mt-2 shrink-0 gap-2 sm:mt-0 sm:gap-0">
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto"
+              onClick={() => setShowCreateMeetingDialog(false)}
+            >
               Cancel
             </Button>
-            <Button onClick={handleCreateMeeting} disabled={isCreatingMeeting}>
+            <Button className="w-full sm:w-auto" onClick={handleCreateMeeting} disabled={isCreatingMeeting}>
               {isCreatingMeeting ? "Creating..." : "Create Meeting"}
             </Button>
           </DialogFooter>

@@ -3,6 +3,7 @@ import { Facebook, Instagram, Linkedin, Twitter, ArrowRight } from "lucide-react
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { PollenLogo } from "@/components/shared/pollen-logo"
+import Image from "next/image"
 
 export default function Footer() {
   return (
@@ -40,10 +41,17 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="space-y-6">
               <Link href="/" className="flex items-center space-x-3 group">
-                <PollenLogo size={40} className="group-hover:scale-110 transition-transform duration-300" />
+              <Image
+              src="/pollen-logo.png"
+              width={200}
+              height={200}
+              alt={"Pollen Logo"}
+              />
+                
+                {/* <PollenLogo size={40} className="group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-2xl font-black tracking-tight text-white">
                   Pollen<span className="text-[#4C4EFB]">AI</span>
-                </span>
+                </span> */}
               </Link>
               <p className="text-white/70">Empowering financial inclusion with AI and blockchain technology.</p>
               <div className="flex space-x-4">

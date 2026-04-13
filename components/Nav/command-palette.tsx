@@ -73,9 +73,9 @@ const COMMAND_ITEMS: CommandItem[] = [
     href: '/contact',
   },
   {
-    id: '6',
+    id: '8',
     label: 'KYC Submissions',
-    description: 'Solor Equipment Form',
+    description: 'Solar equipment form',
     category: 'Navigation',
     icon: <FileText className="w-4 h-4" />,
     href: '/kyc/submit',

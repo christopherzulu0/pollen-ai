@@ -295,7 +295,7 @@ meeting-scheduled (Workflow)
       </ul>
 
       <h3>Need to Reschedule?</h3>
-      <p>If you need to reschedule or cancel, please contact us at <a href="mailto:support@pollenai.com">support@pollenai.com</a> or call +260 123 456 789.</p>
+      <p>If you need to reschedule or cancel, please contact us at <a href="mailto:support@pollenzm.com">support@pollenzm.com</a> or call +260 123 456 789.</p>
       
       <div class="footer">
         <p>Pollen - Empowering Financial Inclusion</p>

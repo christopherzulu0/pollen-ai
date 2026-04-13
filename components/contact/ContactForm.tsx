@@ -31,7 +31,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { ThemeProvider } from "@/components/theme-provider"
 
 // Add subtle background pattern
 const bgPattern = {
@@ -359,8 +358,7 @@ export function ContactForm({
   const formProgress = (formStep / 3) * 100
 
   return (
-    <ThemeProvider forcedTheme="light" attribute="class">
-      <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
         {/* Hero Section with Parallax Effect */}
         <section className="relative py-20 md:py-32 overflow-hidden">
           <div className="absolute inset-0 bg-linear-to-r from-[#002244] to-primary z-0">
@@ -481,8 +479,8 @@ export function ContactForm({
                               </div>
                               <div className="p-4">
                                 <h3 className="font-semibold text-primary mb-1">Email Us</h3>
-                                <p className="text-gray-600">info@pollenai.com</p>
-                                <p className="text-gray-600">support@pollenai.com</p>
+                                <p className="text-gray-600">info@pollenzm.com</p>
+                                <p className="text-gray-600">support@pollenzm.com</p>
                               </div>
                             </div>
                           </CardContent>
@@ -1312,8 +1310,8 @@ export function ContactForm({
                             title: "Customer Support",
                             description: "Get help with your account, services, or general questions.",
                             contacts: [
-                              { name: "Customer Care Team", email: "support@pollenai.com", phone: "+260 123 456 789" },
-                              { name: "Account Services", email: "accounts@pollenai.com", phone: "+260 123 456 790" },
+                              { name: "Customer Care Team", email: "support@pollenzm.com", phone: "+260964499767" },
+                              { name: "Account Services", email: "accounts@pollenzm.com", phone: "+260 964499767" },
                             ],
                           },
                           {
@@ -1321,8 +1319,8 @@ export function ContactForm({
                             title: "Sales & Partnerships",
                             description: "Inquire about our services or explore partnership opportunities.",
                             contacts: [
-                              { name: "Sales Team", email: "sales@pollenai.com", phone: "+260 123 456 791" },
-                              { name: "Partnerships", email: "partners@pollenai.com", phone: "+260 123 456 792" },
+                              { name: "Sales Team", email: "sales@pollenzm.com", phone: "+260 964499767" },
+                              { name: "Partnerships", email: "partners@pollenzm.com", phone: "+260 964499767" },
                             ],
                           },
                           {
@@ -1330,8 +1328,8 @@ export function ContactForm({
                             title: "Technical Support",
                             description: "Get technical assistance with our platform and services.",
                             contacts: [
-                              { name: "Technical Team", email: "tech@pollenai.com", phone: "+260 123 456 793" },
-                              { name: "API Support", email: "api@pollenai.com", phone: "+260 123 456 794" },
+                              { name: "Technical Team", email: "tech@pollenzm.com", phone: "+260 964499767" },
+                              { name: "API Support", email: "api@pollenzm.com", phone: "+260 964499767" },
                             ],
                           },
                           {
@@ -1339,8 +1337,8 @@ export function ContactForm({
                             title: "Management Team",
                             description: "Contact our leadership team for strategic inquiries.",
                             contacts: [
-                              { name: "Executive Office", email: "exec@pollenai.com", phone: "+260 123 456 795" },
-                              { name: "Media Relations", email: "media@pollenai.com", phone: "+260 123 456 796" },
+                              { name: "Executive Office", email: "exec@pollenzm.com", phone: "+260 123 456 795" },
+                              { name: "Media Relations", email: "media@pollenzm.com", phone: "+260 123 456 796" },
                             ],
                           },
                         ].map((department) => (
@@ -1528,12 +1526,12 @@ export function ContactForm({
                   {
                     question: "How can I apply for a job at Pollen AI?",
                     answer:
-                      "Please send your resume and cover letter to careers@pollenai.com. You can also check our Careers page for current openings. We're always looking for talented individuals who are passionate about financial inclusion and technology.",
+                      "Please send your resume and cover letter to careers@pollenzm.com. You can also check our Careers page for current openings. We're always looking for talented individuals who are passionate about financial inclusion and technology.",
                   },
                   {
                     question: "Can I get technical support for your services?",
                     answer:
-                      "Yes, our technical support team is available Monday through Friday from 8:00 AM to 5:00 PM. You can reach them by selecting 'Technical Support' in the department dropdown of our contact form or by emailing tech@pollenai.com.",
+                      "Yes, our technical support team is available Monday through Friday from 8:00 AM to 5:00 PM. You can reach them by selecting 'Technical Support' in the department dropdown of our contact form or by emailing tech@pollenzm.com.",
                   },
                   {
                     question: "How do I report an issue with my account?",
@@ -1632,8 +1630,7 @@ export function ContactForm({
             <MessageSquare className="h-6 w-6 relative z-10" />
           </Button>
         )}
-      </div>
-    </ThemeProvider>
+    </div>
   )
 }
 

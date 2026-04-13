@@ -7,6 +7,7 @@ import {
   USER_WITH_TOKENS_QUERY,
   type ConnectedAccountWithTokens,
 } from "@/sanity/queries/users";
+import type { USER_WITH_TOKENS_QUERYResult } from "@/sanity/types";
 import { BOOKING_WITH_HOST_CALENDAR_QUERY } from "@/sanity/queries/bookings";
 import {
   getCalendarClient,
@@ -52,23 +53,35 @@ export async function getGoogleBusyTimes(
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await client.fetch(USER_WITH_TOKENS_QUERY, { clerkId: userId });
+  let user: USER_WITH_TOKENS_QUERYResult | null = null;
+  try {
+    user = await client.fetch(USER_WITH_TOKENS_QUERY, { clerkId: userId });
+  } catch (err) {
+    console.error("[calendar] Sanity fetch failed (getGoogleBusyTimes):", err);
+    return [];
+  }
+
   if (!user?.connectedAccounts?.length) {
     return [];
   }
 
-  const events = await fetchCalendarEvents(
-    user.connectedAccounts,
-    startDate,
-    endDate
-  );
+  try {
+    const events = await fetchCalendarEvents(
+      user.connectedAccounts,
+      startDate,
+      endDate
+    );
 
-  return events.map((event) => ({
-    start: event.start.toISOString(),
-    end: event.end.toISOString(),
-    accountEmail: event.accountEmail,
-    title: event.title,
-  }));
+    return events.map((event) => ({
+      start: event.start.toISOString(),
+      end: event.end.toISOString(),
+      accountEmail: event.accountEmail,
+      title: event.title,
+    }));
+  } catch (err) {
+    console.error("[calendar] Google Calendar fetch failed (getGoogleBusyTimes):", err);
+    return [];
+  }
 }
 
 /**
@@ -245,7 +258,17 @@ export async function getBookingAttendeeStatuses(
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await client.fetch(USER_WITH_TOKENS_QUERY, { clerkId: userId });
+  let user: USER_WITH_TOKENS_QUERYResult | null = null;
+  try {
+    user = await client.fetch(USER_WITH_TOKENS_QUERY, { clerkId: userId });
+  } catch (err) {
+    console.error(
+      "[calendar] Sanity fetch failed (getBookingAttendeeStatuses):",
+      err
+    );
+    return {};
+  }
+
   if (!user?.connectedAccounts?.length) {
     return {};
   }
@@ -262,33 +285,41 @@ export async function getBookingAttendeeStatuses(
   // Fetch statuses in parallel
   const bookingsWithEvents = bookings.filter((b) => b.googleEventId);
 
-  await Promise.all(
-    bookingsWithEvents.map(async (booking) => {
-      if (booking.googleEventId) {
-        const { hostStatus, guestStatus } = await getEventAttendeeStatuses(
-          account,
-          booking.googleEventId,
-          hostEmail,
-          booking.guestEmail
-        );
-
-        // Event is cancelled if deleted OR guest declined (no meeting will happen)
-        const isCancelled =
-          hostStatus === "declined" || guestStatus === "declined";
-        statuses[booking.id] = { guestStatus, isCancelled };
-
-        // Lazy delete: If cancelled, clean up Google Calendar event and Sanity booking
-        if (isCancelled) {
-          await cleanupCancelledBooking(
+  try {
+    await Promise.all(
+      bookingsWithEvents.map(async (booking) => {
+        if (booking.googleEventId) {
+          const { hostStatus, guestStatus } = await getEventAttendeeStatuses(
             account,
-            booking.id,
             booking.googleEventId,
-            hostStatus !== "declined"
+            hostEmail,
+            booking.guestEmail
           );
+
+          // Event is cancelled if deleted OR guest declined (no meeting will happen)
+          const isCancelled =
+            hostStatus === "declined" || guestStatus === "declined";
+          statuses[booking.id] = { guestStatus, isCancelled };
+
+          // Lazy delete: If cancelled, clean up Google Calendar event and Sanity booking
+          if (isCancelled) {
+            await cleanupCancelledBooking(
+              account,
+              booking.id,
+              booking.googleEventId,
+              hostStatus !== "declined"
+            );
+          }
         }
-      }
-    })
-  );
+      })
+    );
+  } catch (err) {
+    console.error(
+      "[calendar] Google attendee status fetch failed (getBookingAttendeeStatuses):",
+      err
+    );
+    return {};
+  }
 
   return statuses;
 }

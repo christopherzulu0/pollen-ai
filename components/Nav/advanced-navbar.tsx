@@ -19,6 +19,7 @@ import { useTheme } from 'next-themes';
 import { PollenLogo } from '../shared/pollen-logo';
 import { VoiceNavigator } from '@/components/voice/voice-navigator';
 import { useLanguage } from '@/contexts/LanguageContext';
+import Image from 'next/image';
 
 interface NavLink {
   label: string;
@@ -56,7 +57,8 @@ export function AdvancedNavbar() {
   const { theme, setTheme } = useTheme();
   const { language, languages, isTranslating, handleLanguageChange } = useLanguage();
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDesktopLangOpen, setIsDesktopLangOpen] = useState(false);
+  const [isMobileLangOpen, setIsMobileLangOpen] = useState(false);
 
   const isHomePage = pathname === '/';
 
@@ -106,8 +108,36 @@ export function AdvancedNavbar() {
   }, [showCommandPalette]);
 
   const toggleMenu = useCallback(() => {
+    setIsDesktopLangOpen(false);
+    setIsMobileLangOpen(false);
     setIsMenuOpen((prev) => !prev);
   }, []);
+
+  const handleDesktopLangOpenChange = useCallback((open: boolean) => {
+    setIsDesktopLangOpen(open);
+    if (open) setIsMobileLangOpen(false);
+  }, []);
+
+  const handleMobileLangOpenChange = useCallback((open: boolean) => {
+    setIsMobileLangOpen(open);
+    if (open) setIsDesktopLangOpen(false);
+  }, []);
+
+  const handleDesktopLanguageSelect = useCallback(
+    (code: string) => {
+      handleLanguageChange(code);
+      setIsDesktopLangOpen(false);
+    },
+    [handleLanguageChange]
+  );
+
+  const handleMobileLanguageSelect = useCallback(
+    (code: string) => {
+      handleLanguageChange(code);
+      setIsMobileLangOpen(false);
+    },
+    [handleLanguageChange]
+  );
 
   const handleGetStarted = useCallback(() => {
     router.push('/sign-in');
@@ -133,6 +163,10 @@ export function AdvancedNavbar() {
   const isAdmin = useMemo(
     () => userRole === 'org:admin' || userRole === 'admin',
     [userRole]
+  );
+  const selectedLanguageShort = useMemo(
+    () => languages.find((l) => l.code === language)?.name.substring(0, 3) ?? 'Lan',
+    [language, languages]
   );
 
   // Generate breadcrumbs from pathname
@@ -166,6 +200,86 @@ export function AdvancedNavbar() {
   const textClasses = useLightNavbar
     ? 'text-gray-700 dark:text-gray-300 hover:text-[#003366] dark:hover:text-[#00CC66] transition-colors'
     : 'text-white/90 hover:text-white transition-colors';
+
+  const renderLanguageSwitcher = useCallback(
+    (variant: 'desktop' | 'mobile') => {
+      const isMobile = variant === 'mobile';
+      const open = isMobile ? isMobileLangOpen : isDesktopLangOpen;
+      const onOpenChange = isMobile ? handleMobileLangOpenChange : handleDesktopLangOpenChange;
+      const onSelect = isMobile ? handleMobileLanguageSelect : handleDesktopLanguageSelect;
+
+      return (
+        <DropdownMenu open={open} onOpenChange={onOpenChange}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={
+                    isMobile
+                      ? `rounded-full h-9 sm:h-10 px-2.5 sm:px-3 bg-card/80 border shadow-md ${
+                          useLightNavbar
+                            ? 'text-gray-800 dark:text-gray-100 border-border'
+                            : 'text-white border-white/40 bg-white/10'
+                        }`
+                      : `relative rounded-full h-10 px-3 bg-card/80 border border-border shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
+                          useLightNavbar
+                            ? 'text-gray-800 dark:text-gray-100'
+                            : 'text-white border-white/40 bg-white/10'
+                        }`
+                  }
+                >
+                  <Globe className={isMobile ? 'h-4 w-4 mr-1 sm:mr-1.5' : 'h-4 w-4 mr-1.5'} />
+                  <span className="text-xs font-semibold">{selectedLanguageShort}</span>
+                  {isTranslating ? (
+                    <Loader2 className={isMobile ? 'h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1 animate-spin text-primary' : 'h-3.5 w-3.5 ml-1.5 animate-spin text-primary'} />
+                  ) : (
+                    <ChevronDown className={isMobile ? 'h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1 opacity-60' : 'h-3.5 w-3.5 ml-1.5 opacity-60'} />
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="mt-2">
+              <p>Change Language</p>
+            </TooltipContent>
+          </Tooltip>
+          <DropdownMenuContent
+            align="end"
+            side="bottom"
+            className="w-44 bg-popover/95 backdrop-blur-xl border-border shadow-xl rounded-xl p-1 mt-2"
+          >
+            {languages.map((lang) => (
+              <DropdownMenuItem
+                key={lang.code}
+                onClick={() => onSelect(lang.code)}
+                className={`cursor-pointer rounded-lg px-3 py-2 transition-all duration-150 ${
+                  language === lang.code
+                    ? 'bg-primary/15 text-primary font-semibold'
+                    : 'hover:bg-accent text-foreground font-medium'
+                }`}
+              >
+                {lang.name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+    [
+      handleDesktopLangOpenChange,
+      handleDesktopLanguageSelect,
+      handleMobileLangOpenChange,
+      handleMobileLanguageSelect,
+      isDesktopLangOpen,
+      isMobileLangOpen,
+      isTranslating,
+      language,
+      languages,
+      selectedLanguageShort,
+      useLightNavbar,
+    ]
+  );
 
   return (
     <>
@@ -217,13 +331,20 @@ export function AdvancedNavbar() {
             {/* Logo Section */}
             <div className="flex items-center gap-2 shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
-                <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300 " />
+              <Image
+              src="/pollen-logo.png"
+              width={200}
+              height={200}
+              alt={"Pollen Logo"}
+              />
+
+                {/* <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300 " />
                 <span
                   className={`text-2xl font-black tracking-tight transition-colors duration-300 ${useLightNavbar ? 'text-gray-900 dark:text-white' : 'text-white'
                     }`}
                 >
                   Pollen<span className="text-[#4C4EFB]">AI</span>
-                </span>
+                </span> */}
               </Link>
             </div>
 
@@ -268,55 +389,7 @@ export function AdvancedNavbar() {
 
                   {/* Language Switcher - only on home page, like BottomNavigator */}
                   {isHomePage && (
-                    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className={`relative rounded-full h-10 px-3 bg-card/80 border border-border shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 ${
-                                useLightNavbar
-                                  ? 'text-gray-800 dark:text-gray-100'
-                                  : 'text-white border-white/40 bg-white/10'
-                              }`}
-                            >
-                              <Globe className="h-4 w-4 mr-1.5" />
-                              <span className="text-xs font-semibold">
-                                {languages.find((l) => l.code === language)?.name.substring(0, 3)}
-                              </span>
-                              {isTranslating ? (
-                                <Loader2 className="h-3.5 w-3.5 ml-1.5 animate-spin text-primary" />
-                              ) : (
-                                <ChevronDown className="h-3.5 w-3.5 ml-1.5 opacity-60" />
-                              )}
-                            </Button>
-                          </DropdownMenuTrigger>
-                        </TooltipTrigger>
-                        <TooltipContent side="bottom" className="mt-2">
-                          <p>Change Language</p>
-                        </TooltipContent>
-                      </Tooltip>
-                      <DropdownMenuContent
-                        align="end"
-                        side="bottom"
-                        className="w-44 bg-popover/95 backdrop-blur-xl border-border shadow-xl rounded-xl p-1 mt-2"
-                      >
-                        {languages.map((lang) => (
-                          <DropdownMenuItem
-                            key={lang.code}
-                            onClick={() => handleLanguageChange(lang.code)}
-                            className={`cursor-pointer rounded-lg px-3 py-2 transition-all duration-150 ${
-                              language === lang.code
-                                ? 'bg-primary/15 text-primary font-semibold'
-                                : 'hover:bg-accent text-foreground font-medium'
-                            }`}
-                          >
-                            {lang.name}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    renderLanguageSwitcher('desktop')
                   )}
                 </TooltipProvider>
               )}
@@ -422,55 +495,7 @@ export function AdvancedNavbar() {
                     </TooltipContent>
                   </Tooltip>
                   {isHomePage && (
-                    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className={`rounded-full h-9 sm:h-10 px-2.5 sm:px-3 bg-card/80 border shadow-md ${
-                                useLightNavbar
-                                  ? 'text-gray-800 dark:text-gray-100 border-border'
-                                  : 'text-white border-white/40 bg-white/10'
-                              }`}
-                            >
-                              <Globe className="h-4 w-4 mr-1 sm:mr-1.5" />
-                              <span className="text-xs font-semibold">
-                                {languages.find((l) => l.code === language)?.name.substring(0, 3)}
-                              </span>
-                              {isTranslating ? (
-                                <Loader2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1 animate-spin text-primary" />
-                              ) : (
-                                <ChevronDown className="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1 opacity-60" />
-                              )}
-                            </Button>
-                          </DropdownMenuTrigger>
-                        </TooltipTrigger>
-                        <TooltipContent side="bottom" className="mt-2">
-                          <p>Change Language</p>
-                        </TooltipContent>
-                      </Tooltip>
-                      <DropdownMenuContent
-                        align="end"
-                        side="bottom"
-                        className="w-44 bg-popover/95 backdrop-blur-xl border-border shadow-xl rounded-xl p-1 mt-2"
-                      >
-                        {languages.map((lang) => (
-                          <DropdownMenuItem
-                            key={lang.code}
-                            onClick={() => handleLanguageChange(lang.code)}
-                            className={`cursor-pointer rounded-lg px-3 py-2 transition-all duration-150 ${
-                              language === lang.code
-                                ? 'bg-primary/15 text-primary font-semibold'
-                                : 'hover:bg-accent text-foreground font-medium'
-                            }`}
-                          >
-                            {lang.name}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    renderLanguageSwitcher('mobile')
                   )}
                 </TooltipProvider>
               )}

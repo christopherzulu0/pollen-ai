@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar as CalendarDayPicker } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -45,7 +48,7 @@ import {
 import { motion } from "framer-motion"
 import { useToast } from "@/hooks/use-toast"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { format } from "date-fns"
+import { addMonths, format, startOfDay } from "date-fns"
 
 interface SavingsGoal {
   id: string
@@ -88,6 +91,17 @@ interface AIAnalysis {
   }
 }
 
+function getGoalRemaining(goal: SavingsGoal): number {
+  return Math.max(0, Number(goal.targetAmount) - Number(goal.currentAmount))
+}
+
+function goalAllowsAddFunds(goal: SavingsGoal): boolean {
+  return !goal.isCompleted && getGoalRemaining(goal) > 0
+}
+
+const HOUR_OPTIONS = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"))
+const MINUTE_OPTIONS = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
+
 export default function PersonalSavingsTab() {
   const [showNewGoalDialog, setShowNewGoalDialog] = useState(false)
   const [showDetailsDialog, setShowDetailsDialog] = useState(false)
@@ -97,6 +111,10 @@ export default function PersonalSavingsTab() {
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null)
   const [amount, setAmount] = useState("")
   const [isDeposit, setIsDeposit] = useState(true)
+  const [newGoalDeadlineDate, setNewGoalDeadlineDate] = useState<Date | undefined>(undefined)
+  const [newGoalHour, setNewGoalHour] = useState("12")
+  const [newGoalMinute, setNewGoalMinute] = useState("00")
+  const [goalDatePickerOpen, setGoalDatePickerOpen] = useState(false)
   const { toast } = useToast()
   const queryClient = useQueryClient()
 
@@ -154,23 +172,25 @@ export default function PersonalSavingsTab() {
         },
         body: JSON.stringify({ amount }),
       })
+      const body = await response.json().catch(() => ({}))
       if (!response.ok) {
-        throw new Error("Failed to add funds")
+        throw new Error(typeof body.error === "string" ? body.error : "Failed to add funds")
       }
-      return response.json()
+      return body
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalSavings'] })
       setShowAddFundsDialog(false)
+      setAmount("")
       toast({
         title: "Success",
         description: "Funds added successfully",
       })
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: "Error",
-        description: "Failed to add funds",
+        description: error.message || "Failed to add funds",
         variant: "destructive",
       })
     }
@@ -249,14 +269,41 @@ export default function PersonalSavingsTab() {
     },
   });
 
+  useEffect(() => {
+    if (showNewGoalDialog) {
+      setNewGoalDeadlineDate((d) => d ?? startOfDay(addMonths(new Date(), 1)))
+    } else {
+      setNewGoalDeadlineDate(undefined)
+      setNewGoalHour("12")
+      setNewGoalMinute("00")
+      setGoalDatePickerOpen(false)
+    }
+  }, [showNewGoalDialog])
+
+  useEffect(() => {
+    if (showAddFundsDialog) setAmount("")
+  }, [showAddFundsDialog])
+
   const handleAddNewGoal = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    if (!newGoalDeadlineDate) {
+      toast({
+        title: "Error",
+        description: "Please select a target date",
+        variant: "destructive",
+      })
+      return
+    }
+    const dateStr = format(newGoalDeadlineDate, "yyyy-MM-dd")
+    const timeStr = `${newGoalHour.padStart(2, "0")}:${newGoalMinute.padStart(2, "0")}`
+    const deadline = new Date(`${dateStr}T${timeStr}`)
+
     const newGoal = {
       name: formData.get("goalName") as string,
       targetAmount: Number(formData.get("targetAmount")),
       currentAmount: 0,
-      deadline: new Date(formData.get("targetDate") as string),
+      deadline,
     }
     addGoalMutation.mutate(newGoal)
   }
@@ -266,9 +313,9 @@ export default function PersonalSavingsTab() {
     if (!selectedGoal) return
 
     const formData = new FormData(e.currentTarget)
-    const amount = Number(formData.get("amount"))
+    const raw = Number(formData.get("amount"))
 
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(raw) || raw <= 0) {
       toast({
         title: "Error",
         description: "Please enter a valid amount",
@@ -277,7 +324,51 @@ export default function PersonalSavingsTab() {
       return
     }
 
-    addFundsMutation.mutate({ goalId: selectedGoal.id, amount })
+    const remaining = getGoalRemaining(selectedGoal)
+    if (raw > remaining) {
+      toast({
+        title: "Error",
+        description: `Amount cannot exceed the remaining target (K${remaining.toLocaleString()})`,
+        variant: "destructive",
+      })
+      return
+    }
+
+    addFundsMutation.mutate({ goalId: selectedGoal.id, amount: raw })
+  }
+
+  const addFundsCap = selectedGoal ? getGoalRemaining(selectedGoal) : 0
+  const addFundsNumeric = amount.trim() === "" ? NaN : Number(amount)
+  const addFundsValid =
+    !!selectedGoal &&
+    goalAllowsAddFunds(selectedGoal) &&
+    amount.trim() !== "" &&
+    Number.isFinite(addFundsNumeric) &&
+    addFundsNumeric > 0 &&
+    addFundsNumeric <= addFundsCap
+
+  const handleAddFundsAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value
+    if (raw === "") {
+      setAmount("")
+      return
+    }
+    if (!selectedGoal) {
+      setAmount(raw)
+      return
+    }
+    const cap = getGoalRemaining(selectedGoal)
+    const n = Number(raw)
+    if (Number.isNaN(n)) return
+    if (n <= 0) {
+      setAmount("")
+      return
+    }
+    if (n > cap) {
+      setAmount(Number.isInteger(cap) ? String(cap) : String(cap))
+      return
+    }
+    setAmount(raw)
   }
 
   const handleTransaction = (goal: SavingsGoal) => {
@@ -447,7 +538,7 @@ export default function PersonalSavingsTab() {
                   <span className="sm:hidden">New Goal</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[425px]">
+              <DialogContent className="w-[calc(100vw-2rem)] max-w-[min(100vw-2rem,28rem)] sm:max-w-[480px]">
                 <form onSubmit={handleAddNewGoal}>
                   <DialogHeader>
                     <DialogTitle>Create New Savings Goal</DialogTitle>
@@ -476,15 +567,91 @@ export default function PersonalSavingsTab() {
                         className="text-foreground"
                       />
                     </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="targetDate">Target Date</Label>
-                      <Input
-                        id="targetDate"
-                        name="targetDate"
-                        type="date"
-                        required
-                        className="text-foreground"
-                      />
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-4">
+                      <div className="grid gap-2 min-w-0">
+                        <Label>Target Date</Label>
+                        <Popover open={goalDatePickerOpen} onOpenChange={setGoalDatePickerOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="min-h-11 w-full justify-start text-left font-normal text-foreground"
+                            >
+                              <Calendar className="mr-2 h-4 w-4 shrink-0 opacity-70" />
+                              <span className="truncate">
+                                {newGoalDeadlineDate
+                                  ? format(newGoalDeadlineDate, "MMM d, yyyy")
+                                  : "Pick a date"}
+                              </span>
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="z-[300] w-auto max-w-[calc(100vw-2rem)] p-0" align="start">
+                            <CalendarDayPicker
+                              mode="single"
+                              selected={newGoalDeadlineDate}
+                              onSelect={(d) => {
+                                setNewGoalDeadlineDate(d)
+                                setGoalDatePickerOpen(false)
+                              }}
+                              disabled={(date) => startOfDay(date) < startOfDay(new Date())}
+                              initialFocus
+                              className="w-full max-w-full"
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <div className="grid gap-3 min-w-0">
+                        <div>
+                          <Label className="text-sm font-medium">Target Time</Label>
+                          <p className="mt-1 text-lg font-medium tabular-nums tracking-wide text-foreground sm:text-base">
+                            {newGoalHour}:{newGoalMinute}
+                          </p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                          <div className="grid gap-1.5 min-w-0">
+                            <Label htmlFor="newGoalHour" className="text-xs text-muted-foreground">
+                              Hour
+                            </Label>
+                            <select
+                              id="newGoalHour"
+                              value={newGoalHour}
+                              onChange={(e) => setNewGoalHour(e.target.value)}
+                              className={cn(
+                                "h-11 w-full min-w-0 rounded-md border border-input bg-background px-2 sm:px-3 py-2 text-foreground",
+                                "text-base sm:text-sm ring-offset-background",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              )}
+                            >
+                              {HOUR_OPTIONS.map((h) => (
+                                <option key={h} value={h}>
+                                  {h}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="grid gap-1.5 min-w-0">
+                            <Label htmlFor="newGoalMinute" className="text-xs text-muted-foreground">
+                              Minute
+                            </Label>
+                            <select
+                              id="newGoalMinute"
+                              value={newGoalMinute}
+                              onChange={(e) => setNewGoalMinute(e.target.value)}
+                              className={cn(
+                                "h-11 w-full min-w-0 rounded-md border border-input bg-background px-2 sm:px-3 py-2 text-foreground",
+                                "text-base sm:text-sm ring-offset-background",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              )}
+                            >
+                              {MINUTE_OPTIONS.map((m) => (
+                                <option key={m} value={m}>
+                                  {m}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="category">Category</Label>
@@ -492,7 +659,7 @@ export default function PersonalSavingsTab() {
                         <SelectTrigger className="text-foreground">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[260]">
                           <SelectItem value="personal">Personal</SelectItem>
                           <SelectItem value="travel">Travel</SelectItem>
                           <SelectItem value="education">Education</SelectItem>
@@ -762,7 +929,7 @@ export default function PersonalSavingsTab() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 text-xs sm:text-sm"
+                            className={`text-xs sm:text-sm ${goalAllowsAddFunds(goal) ? "flex-1" : "w-full"}`}
                             onClick={() => {
                               setSelectedGoal(goal)
                               setShowDetailsDialog(true)
@@ -770,16 +937,18 @@ export default function PersonalSavingsTab() {
                           >
                             Details
                           </Button>
-                          <Button
-                            size="sm"
-                            className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-xs sm:text-sm"
-                            onClick={() => {
-                              setSelectedGoal(goal)
-                              setShowAddFundsDialog(true)
-                            }}
-                          >
-                            Add Funds
-                          </Button>
+                          {goalAllowsAddFunds(goal) ? (
+                            <Button
+                              size="sm"
+                              className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-xs sm:text-sm"
+                              onClick={() => {
+                                setSelectedGoal(goal)
+                                setShowAddFundsDialog(true)
+                              }}
+                            >
+                              Add Funds
+                            </Button>
+                          ) : null}
                         </div>
                         <div className="w-full">
                           <Button
@@ -1078,15 +1247,17 @@ export default function PersonalSavingsTab() {
               </div>
             )}
             <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowDetailsDialog(false)
-                  setShowAddFundsDialog(true)
-                }}
-              >
-                Add Funds
-              </Button>
+              {selectedGoal && goalAllowsAddFunds(selectedGoal) ? (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowDetailsDialog(false)
+                    setShowAddFundsDialog(true)
+                  }}
+                >
+                  Add Funds
+                </Button>
+              ) : null}
               <Button
                 variant="outline"
                 onClick={() => setShowDetailsDialog(false)}
@@ -1106,6 +1277,14 @@ export default function PersonalSavingsTab() {
             </DialogHeader>
             <form onSubmit={handleAddFunds}>
               <div className="grid gap-4 py-4">
+                {selectedGoal ? (
+                  <p className="text-sm text-muted-foreground">
+                    Remaining to reach target:{" "}
+                    <span className="font-medium text-foreground">
+                      K{getGoalRemaining(selectedGoal).toLocaleString()}
+                    </span>
+                  </p>
+                ) : null}
                 <div className="grid gap-2">
                   <Label htmlFor="amount">Amount (K)</Label>
                   <Input
@@ -1113,12 +1292,28 @@ export default function PersonalSavingsTab() {
                     name="amount"
                     type="number"
                     min="1"
+                    max={selectedGoal ? addFundsCap : undefined}
+                    step="1"
                     placeholder="Enter amount"
                     required
                     className="text-foreground"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={handleAddFundsAmountChange}
                   />
+                  {selectedGoal && addFundsCap <= 0 ? (
+                    <p className="text-xs text-amber-600 dark:text-amber-500">
+                      This goal is already fully funded.
+                    </p>
+                  ) : null}
+                  {selectedGoal &&
+                  addFundsCap > 0 &&
+                  amount.trim() !== "" &&
+                  Number.isFinite(addFundsNumeric) &&
+                  addFundsNumeric > addFundsCap ? (
+                    <p className="text-xs text-destructive">
+                      Maximum you can add is K{addFundsCap.toLocaleString()}.
+                    </p>
+                  ) : null}
                 </div>
               </div>
               <DialogFooter>
@@ -1132,7 +1327,7 @@ export default function PersonalSavingsTab() {
                 <Button
                   type="submit"
                   className="bg-gradient-to-r from-emerald-500 to-teal-600"
-                  disabled={addFundsMutation.isPending}
+                  disabled={addFundsMutation.isPending || !addFundsValid}
                 >
                   {addFundsMutation.isPending ? (
                     <>
@@ -1327,17 +1522,17 @@ export default function PersonalSavingsTab() {
               >
                 Close
               </Button>
-              <Button
-                className="bg-gradient-to-r from-emerald-500 to-teal-600"
-                onClick={() => {
-                  setShowAIAnalysisDialog(false)
-                  if (selectedGoal) {
+              {selectedGoal && goalAllowsAddFunds(selectedGoal) ? (
+                <Button
+                  className="bg-gradient-to-r from-emerald-500 to-teal-600"
+                  onClick={() => {
+                    setShowAIAnalysisDialog(false)
                     setShowAddFundsDialog(true)
-                  }
-                }}
-              >
-                Add Funds Now
-              </Button>
+                  }}
+                >
+                  Add Funds Now
+                </Button>
+              ) : null}
             </DialogFooter>
           </DialogContent>
         </Dialog>

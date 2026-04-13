@@ -6,4 +6,7 @@ import { client } from './client'
 
 export const { sanityFetch, SanityLive } = defineLive({
   client,
+  // No live preview tokens: published content only; silences next-sanity console warnings.
+  serverToken: false,
+  browserToken: false,
 });
