@@ -7,10 +7,6 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   env: {
     KNOCK_SECRET_API_KEY: process.env.KNOCK_SECRET_API_KEY,
   },
@@ -76,7 +72,6 @@ const nextConfig = {
     unoptimized: true,
    
   },
-  optimizeFonts: false,
 }
 
 // Merge user config if it exists

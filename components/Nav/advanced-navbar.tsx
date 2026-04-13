@@ -329,14 +329,15 @@ export function AdvancedNavbar() {
 
           <div className="flex h-20 items-center justify-between">
             {/* Logo Section */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="hidden md:flex items-center gap-2 shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
-              <Image
-              src="/pollen-logo.png"
-              width={200}
-              height={200}
-              alt={"Pollen Logo"}
-              />
+                <Image
+                  src="/pollen-logo.png"
+                  width={200}
+                  height={200}
+                  alt="Pollen Logo"
+                  className="h-auto w-auto max-h-10 lg:max-h-12"
+                />
 
                 {/* <PollenLogo size={42} className="group-hover:scale-110 transition-transform duration-300 " />
                 <span
@@ -474,8 +475,8 @@ export function AdvancedNavbar() {
               )}
             </div>
 
-            {/* Mobile: Voice, Language, Search, Menu */}
-            <div className="lg:hidden flex items-center gap-1.5 sm:gap-2">
+            {/* Mobile: Voice, Language, Search, Menu (ml-auto when logo hidden below md) */}
+            <div className="ml-auto flex items-center gap-1.5 sm:gap-2 lg:ml-0 lg:hidden">
               {isMounted && (
                 <TooltipProvider delayDuration={200}>
                   <Tooltip>
