@@ -139,12 +139,6 @@
       "sharp",
       "unrs-resolver",
       "utf-8-validate"
-    ],
-    "overrides": {
-      "@types/react": "19.2.14",
-      "@types/react-dom": "19.2.3",
-      "js-yaml@>=4.0.0 <4.1.1": ">=4.1.1",
-      "glob@>=10.2.0 <10.5.0": ">=10.5.0"
-    }
+    ]
   }
 }
