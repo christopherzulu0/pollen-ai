@@ -17,8 +17,6 @@
   },
   "dependencies": {
     "@aave/client": "6.1.0",
-    "@celo-tools/use-contractkit": "^3.1.0",
-    "@celo/contractkit": "^10.0.3",
     "@clerk/nextjs": "^6.39.5",
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "^3.10.0",
@@ -136,16 +134,11 @@
       "bufferutil",
       "es5-ext",
       "esbuild",
-      "keccak",
       "msgpackr-extract",
       "prisma",
-      "secp256k1",
       "sharp",
       "unrs-resolver",
-      "utf-8-validate",
-      "web3",
-      "web3-bzz",
-      "web3-shh"
+      "utf-8-validate"
     ],
     "overrides": {
       "@types/react": "19.2.14",
