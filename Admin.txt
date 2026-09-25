@@ -1,0 +1,20 @@
+Admin
+
+HeroSection
+-Title
+-Description 
+-Picture
+  (Title & Description)
+
+Our Mission Section
+-Title
+-Description
+- Card(Icon, Tile ,description)
+
+Blog Section
+-Date
+-Category
+-Title
+-Description
+-Image
+-User(image and username)

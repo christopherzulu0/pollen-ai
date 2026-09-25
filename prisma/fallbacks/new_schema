@@ -1,0 +1,682 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../lib/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "linux-arm64-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+model AavePosition {
+  id                String   @id @default(cuid())
+  groupId           String
+  group             Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  totalSupplied     Decimal  @default(0)
+  totalBorrowed     Decimal  @default(0)
+  netAPY            Decimal  @default(0)
+  healthFactor      Decimal  @default(0)
+  liquidationRisk   String   @default("low") // low, medium, high
+  lastUpdated       DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  assets            AaveAsset[]
+  transactions      AaveTransaction[]
+
+  @@index([groupId])
+}
+
+model AaveAsset {
+  id              String        @id @default(cuid())
+  positionId      String
+  position        AavePosition  @relation(fields: [positionId], references: [id], onDelete: Cascade)
+  assetType       String        // USDC, CELO, ETH, etc.
+  assetSymbol     String
+  suppliedAmount  Decimal       @default(0)
+  borrowedAmount  Decimal       @default(0)
+  supplyAPY       Decimal       @default(0)
+  borrowAPY       Decimal       @default(0)
+  ltv             Decimal       @default(0) // Loan to Value
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([positionId])
+  @@index([assetType])
+}
+
+model AaveTransaction {
+  id              String        @id @default(cuid())
+  positionId      String
+  position        AavePosition  @relation(fields: [positionId], references: [id], onDelete: Cascade)
+  type            String        // SUPPLY, BORROW, REPAY, WITHDRAW
+  assetSymbol     String
+  amount          Decimal
+  txHash          String?
+  status          String        @default("pending") // pending, confirmed, failed
+  timestamp       DateTime      @default(now())
+  createdAt       DateTime      @default(now())
+
+  @@index([positionId])
+  @@index([type])
+  @@index([timestamp])
+}
+
+
+model MeetingMinute {
+  id              String   @id @default(cuid())
+  meetingId       String
+  meeting         Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  summary         String   @db.Text
+  keyDecisions    String[] 
+  actionItems     Json[]   // Array of {task, assignee, deadline, completed}
+  attendeeCount   Int
+  attendeeList    String[]
+  recordedBy      String
+  approvedBy      String?
+  documentUrl     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([meetingId])
+}
+
+model GroupPoll {
+  id              String      @id @default(cuid())
+  groupId         String
+  group           Group       @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  title           String
+  description     String?     @db.Text
+  type            String      // investment, governance, general
+  options         Json[]      // Array of {id, text, votes}
+  startDate       DateTime
+  endDate         DateTime
+  status          String      @default("active") // active, closed, pending
+  createdBy       String
+  totalVotes      Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  votes           PollVote[]
+
+  @@index([groupId])
+  @@index([status])
+}
+
+model PollVote {
+  id              String    @id @default(cuid())
+  pollId          String
+  poll            GroupPoll @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  userId          String
+  optionId        String
+  votedAt         DateTime  @default(now())
+
+  @@unique([pollId, userId])
+  @@index([pollId])
+  @@index([userId])
+}
+
+model GroupFinancialGoal {
+  id              String   @id @default(cuid())
+  groupId         String
+  group           Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  name            String
+  description     String?  @db.Text
+  targetAmount    Decimal
+  currentAmount   Decimal  @default(0)
+  deadline        DateTime
+  category        String   // investment, emergency, project
+  status          String   @default("active") // active, completed, cancelled
+  createdBy       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  contributions   GoalContribution[]
+
+  @@index([groupId])
+  @@index([status])
+}
+
+model GoalContribution {
+  id              String              @id @default(cuid())
+  goalId          String
+  goal            GroupFinancialGoal  @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  userId          String
+  amount          Decimal
+  contributedAt   DateTime            @default(now())
+
+  @@index([goalId])
+  @@index([userId])
+}
+
+model GroupBudget {
+  id              String          @id @default(cuid())
+  groupId         String
+  group           Group           @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  name            String
+  totalAmount     Decimal
+  period          String          // monthly, quarterly, annual
+  startDate       DateTime
+  endDate         DateTime
+  status          String          @default("active") // active, completed, archived
+  createdBy       String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  categories      BudgetCategory[]
+
+  @@index([groupId])
+  @@index([status])
+}
+
+model BudgetCategory {
+  id              String       @id @default(cuid())
+  budgetId        String
+  budget          GroupBudget  @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  name            String
+  allocatedAmount Decimal
+  spentAmount     Decimal      @default(0)
+  description     String?
+
+  @@index([budgetId])
+}
+
+model AttendanceReward {
+  id              String   @id @default(cuid())
+  userId          String
+  groupId         String
+  points          Int
+  reason          String   // meeting_attendance, perfect_month, etc.
+  earnedAt        DateTime @default(now())
+
+  @@index([userId])
+  @@index([groupId])
+}
+
+model SubGroup {
+  id              String   @id @default(cuid())
+  parentGroupId   String
+  parentGroup     Group    @relation(fields: [parentGroupId], references: [id], onDelete: Cascade)
+  name            String
+  description     String?  @db.Text
+  type            String   // committee, project, task_force
+  chairpersonId   String
+  memberIds       String[]
+  status          String   @default("active") // active, inactive, dissolved
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([parentGroupId])
+  @@index([status])
+}
+
+
+model KYCVerification {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  kycLevel            Int       @default(1) // 1, 2, 3
+  status              String    @default("pending") // pending, approved, rejected, under_review
+  riskLevel           String    @default("low") // low, medium, high
+  transactionLimit    Decimal   @default(0)
+  
+  // Personal Information
+  fullName            String?
+  dateOfBirth         DateTime?
+  nationality         String?
+  occupation          String?
+  sourceOfIncome      String?
+  
+  // Document Verification
+  idType              String?   // passport, national_id, drivers_license
+  idNumber            String?
+  idExpiryDate        DateTime?
+  idFrontUrl          String?
+  idBackUrl           String?
+  proofOfAddressUrl   String?
+  selfieUrl           String?
+  
+  // Biometric Data
+  fingerprintData     String?   @db.Text
+  faceIdData          String?   @db.Text
+  biometricStatus     String?   @default("not_verified") // not_verified, verified, failed
+  
+  // Video KYC
+  videoKycUrl         String?
+  videoKycStatus      String?   @default("not_submitted") // not_submitted, pending, approved, rejected
+  videoKycDate        DateTime?
+  videoKycReviewedBy  String?
+  
+  // Screening
+  sanctionsChecked    Boolean   @default(false)
+  sanctionsStatus     String?   // clear, flagged
+  pepChecked          Boolean   @default(false)
+  pepStatus           String?   // not_pep, pep, flagged
+  adverseMediaCheck   Boolean   @default(false)
+  
+  // Verification Details
+  verifiedBy          String?
+  verifiedAt          DateTime?
+  rejectionReason     String?   @db.Text
+  notes               String?   @db.Text
+  
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  documents           KYCDocument[]
+  activityReports     SuspiciousActivityReport[]
+
+  @@index([status])
+  @@index([kycLevel])
+  @@index([riskLevel])
+}
+
+model KYCDocument {
+  id                String          @id @default(cuid())
+  verificationId    String
+  verification      KYCVerification @relation(fields: [verificationId], references: [id], onDelete: Cascade)
+  documentType      String          // id_front, id_back, proof_of_address, selfie, etc.
+  documentUrl       String
+  status            String          @default("pending") // pending, approved, rejected
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  rejectionReason   String?
+  uploadedAt        DateTime        @default(now())
+
+  @@index([verificationId])
+  @@index([status])
+}
+
+model SuspiciousActivityReport {
+  id                String          @id @default(cuid())
+  verificationId    String
+  verification      KYCVerification @relation(fields: [verificationId], references: [id], onDelete: Cascade)
+  activityType      String          // unusual_transaction, high_frequency, suspicious_pattern
+  description       String          @db.Text
+  severity          String          // low, medium, high, critical
+  amount            Decimal?
+  transactionIds    String[]
+  status            String          @default("open") // open, investigating, resolved, closed
+  reportedBy        String          // system or user_id
+  assignedTo        String?
+  resolution        String?         @db.Text
+  reportedAt        DateTime        @default(now())
+  resolvedAt        DateTime?
+
+  @@index([verificationId])
+  @@index([status])
+  @@index([severity])
+}
+
+
+model ChartOfAccount {
+  id              String          @id @default(cuid())
+  accountCode     String          @unique
+  accountName     String
+  accountType     String          // asset, liability, equity, revenue, expense
+  category        String
+  parentAccountId String?
+  parentAccount   ChartOfAccount? @relation("AccountHierarchy", fields: [parentAccountId], references: [id])
+  subAccounts     ChartOfAccount[] @relation("AccountHierarchy")
+  balance         Decimal         @default(0)
+  isActive        Boolean         @default(true)
+  description     String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  journalEntries  JournalEntry[]
+
+  @@index([accountType])
+  @@index([accountCode])
+}
+
+model JournalEntry {
+  id              String        @id @default(cuid())
+  entryNumber     String        @unique
+  date            DateTime
+  description     String        @db.Text
+  reference       String?
+  totalDebit      Decimal
+  totalCredit     Decimal
+  status          String        @default("posted") // draft, posted, void
+  createdBy       String
+  approvedBy      String?
+  notes           String?       @db.Text
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  lineItems       JournalEntryLine[]
+
+  @@index([date])
+  @@index([status])
+}
+
+model JournalEntryLine {
+  id              String          @id @default(cuid())
+  entryId         String
+  entry           JournalEntry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  accountId       String
+  account         ChartOfAccount  @relation(fields: [accountId], references: [id])
+  description     String?
+  debit           Decimal         @default(0)
+  credit          Decimal         @default(0)
+
+  @@index([entryId])
+  @@index([accountId])
+}
+
+model BankReconciliation {
+  id                  String   @id @default(cuid())
+  accountName         String
+  bankAccountNumber   String
+  statementDate       DateTime
+  bankBalance         Decimal
+  bookBalance         Decimal
+  difference          Decimal
+  status              String   @default("pending") // pending, reconciled, discrepancy
+  reconciledBy        String?
+  reconciledAt        DateTime?
+  notes               String?  @db.Text
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  items               ReconciliationItem[]
+
+  @@index([status])
+  @@index([statementDate])
+}
+
+model ReconciliationItem {
+  id                  String              @id @default(cuid())
+  reconciliationId    String
+  reconciliation      BankReconciliation  @relation(fields: [reconciliationId], references: [id], onDelete: Cascade)
+  transactionDate     DateTime
+  description         String
+  amount              Decimal
+  type                String              // bank_only, book_only, matched
+  status              String              @default("pending") // pending, cleared, investigated
+  notes               String?
+
+  @@index([reconciliationId])
+}
+
+model AuditTrail {
+  id              String   @id @default(cuid())
+  userId          String
+  userName        String
+  action          String   // create, update, delete, approve, reject
+  entityType      String   // transaction, journal_entry, user, etc.
+  entityId        String
+  changes         Json?    // Before and after values
+  ipAddress       String?
+  userAgent       String?
+  timestamp       DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType])
+  @@index([timestamp])
+}
+
+model TaxReport {
+  id              String   @id @default(cuid())
+  reportType      String   // vat, income_tax, withholding
+  period          String   // 2024-Q1, 2024-annual
+  startDate       DateTime
+  endDate         DateTime
+  totalRevenue    Decimal
+  totalExpenses   Decimal
+  taxableAmount   Decimal
+  taxAmount       Decimal
+  status          String   @default("draft") // draft, filed, approved
+  filedBy         String?
+  filedAt         DateTime?
+  documentUrl     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([reportType])
+  @@index([period])
+  @@index([status])
+}
+
+model ComplianceCheck {
+  id              String   @id @default(cuid())
+  checkType       String   // kyc_compliance, transaction_monitoring, reporting
+  status          String   // passed, failed, warning
+  severity        String   // low, medium, high, critical
+  description     String   @db.Text
+  recommendation  String?  @db.Text
+  checkedAt       DateTime @default(now())
+  resolvedAt      DateTime?
+  assignedTo      String?
+
+  @@index([checkType])
+  @@index([status])
+  @@index([severity])
+}
+
+
+model InsuranceProduct {
+  id                  String            @id @default(cuid())
+  name                String
+  productType         String            // crop, health, loan_protection, savings_fraud, mobile, weather
+  description         String            @db.Text
+  coverageAmount      Decimal
+  premiumAmount       Decimal
+  premiumFrequency    String            // seasonal, monthly, annual
+  features            String[]
+  requirements        String[]
+  status              String            @default("active") // active, inactive, suspended
+  claimProcessingTime String?           // e.g., "7-14 days"
+  maxClaimAmount      Decimal?
+  deductible          Decimal?          @default(0)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  
+  policies            InsurancePolicy[]
+
+  @@index([productType])
+  @@index([status])
+}
+
+model InsurancePolicy {
+  id                  String            @id @default(cuid())
+  policyNumber        String            @unique
+  productId           String
+  product             InsuranceProduct  @relation(fields: [productId], references: [id])
+  userId              String
+  groupId             String?
+  
+  // Coverage Details
+  coverageAmount      Decimal
+  premiumAmount       Decimal
+  premiumFrequency    String
+  startDate           DateTime
+  endDate             DateTime
+  renewalDate         DateTime?
+  
+  // Status
+  status              String            @default("active") // active, expired, cancelled, claimed
+  paymentStatus       String            @default("pending") // pending, paid, overdue
+  lastPremiumPaid     DateTime?
+  nextPremiumDue      DateTime?
+  
+  // Additional Details
+  beneficiaries       String[]
+  documents           String[]
+  notes               String?           @db.Text
+  
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  
+  claims              InsuranceClaim[]
+  payments            InsurancePremium[]
+
+  @@index([userId])
+  @@index([groupId])
+  @@index([productId])
+  @@index([status])
+  @@index([policyNumber])
+}
+
+model InsuranceClaim {
+  id                  String            @id @default(cuid())
+  claimNumber         String            @unique
+  policyId            String
+  policy              InsurancePolicy   @relation(fields: [policyId], references: [id])
+  
+  // Claim Details
+  claimType           String
+  claimAmount         Decimal
+  approvedAmount      Decimal?
+  incidentDate        DateTime
+  claimDate           DateTime          @default(now())
+  description         String            @db.Text
+  
+  // Supporting Documents
+  documents           String[]
+  evidenceUrls        String[]
+  
+  // Status & Processing
+  status              String            @default("submitted") // submitted, under_review, approved, rejected, paid
+  priority            String            @default("normal") // low, normal, high, urgent
+  assignedTo          String?
+  reviewedBy          String?
+  reviewedAt          DateTime?
+  approvedBy          String?
+  approvedAt          DateTime?
+  paidAt              DateTime?
+  
+  // Rejection/Notes
+  rejectionReason     String?           @db.Text
+  internalNotes       String?           @db.Text
+  
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  @@index([policyId])
+  @@index([status])
+  @@index([claimNumber])
+}
+
+model InsurancePremium {
+  id                  String            @id @default(cuid())
+  policyId            String
+  policy              InsurancePolicy   @relation(fields: [policyId], references: [id])
+  amount              Decimal
+  dueDate             DateTime
+  paidDate            DateTime?
+  paymentMethod       String?
+  transactionRef      String?
+  status              String            @default("pending") // pending, paid, overdue, waived
+  createdAt           DateTime          @default(now())
+
+  @@index([policyId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+model UnderwritingRule {
+  id                  String   @id @default(cuid())
+  productType         String
+  ruleName            String
+  ruleType            String   // coverage_limit, age_range, credit_score, risk_assessment
+  conditions          Json     // Rule conditions as JSON
+  action              String   // approve, reject, require_review, adjust_premium
+  priority            Int      @default(0)
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([productType])
+  @@index([isActive])
+}
+
+model FraudAlert {
+  id                  String   @id @default(cuid())
+  alertType           String   // duplicate_claim, suspicious_pattern, high_frequency
+  severity            String   // low, medium, high, critical
+  entityType          String   // policy, claim, user
+  entityId            String
+  description         String   @db.Text
+  indicators          Json     // Array of fraud indicators
+  riskScore           Int      // 0-100
+  status              String   @default("open") // open, investigating, resolved, false_positive
+  assignedTo          String?
+  investigatedBy      String?
+  resolution          String?  @db.Text
+  createdAt           DateTime @default(now())
+  resolvedAt          DateTime?
+
+  @@index([alertType])
+  @@index([severity])
+  @@index([status])
+  @@index([entityId])
+}
+
+model Group {
+  id                    String                @id @default(cuid())
+  name                  String
+  description           String?
+  logo                  String?
+  groupCode             String?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  ownerId               String
+  owner                 User                  @relation("GroupOwner", fields: [ownerId], references: [id])
+  privacy               GroupPrivacy          @default(PRIVATE)
+  governanceType        GovernanceType        @default(ADMIN)
+  contributionAmount    Decimal               @default(0)
+  contributionFrequency ContributionFrequency @default(MONTHLY)
+  depositGoal           Decimal?
+  latePenaltyFee        Decimal               @default(0)
+  gracePeriod           Int                   @default(3)
+  interestRate          Decimal               @default(0)
+  allowEarlyWithdrawal  Boolean               @default(false)
+  earlyWithdrawalFee    Decimal               @default(0)
+  requireApproval       Boolean               @default(true)
+  autoReminders         Boolean               @default(true)
+  votingThreshold       Int                   @default(50)
+  allowLateJoining      Boolean               @default(true)
+  groupDuration         Int?
+  maxMembers            Int?
+  meetingFrequency      MeetingFrequency      @default(WEEKLY)
+  groupRules            String?               @db.Text
+  bylaws                String?               @db.Text
+  tags                  String?
+  status                GroupStatus           @default(ACTIVE)
+  
+  memberships           Membership[]
+  transactions          Transaction[]
+  meetings              Meeting[]
+  invitations           GroupInvitation[]
+  contributions         Contribution[]
+  loanRequests          LoanRequest[]         @relation("GroupLoanRequests")
+  
+  aavePositions         AavePosition[]
+  polls                 GroupPoll[]
+  financialGoals        GroupFinancialGoal[]
+  budgets               GroupBudget[]
+  subGroups             SubGroup[]
+}
+
+model Meeting {
+  id          String            @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  location    String?
+  isVirtual   Boolean           @default(false)
+  meetingLink String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  groupId     String
+  group       Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  
+  attendees   MeetingAttendee[]
+  minutes     MeetingMinute[]   // Added relation
+}
